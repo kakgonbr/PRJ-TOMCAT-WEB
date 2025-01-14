@@ -36,7 +36,7 @@ public class TestServlet extends HttpServlet {
             out.println("<title>Servlet TestServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>123</h1>");
+            out.println("<h1>TEST HTTPS</h1>");
             out.println("</body>");
             out.println("</html>");
         }
