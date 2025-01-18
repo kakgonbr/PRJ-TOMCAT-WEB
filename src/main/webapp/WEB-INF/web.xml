@@ -4,9 +4,42 @@
         <servlet-name>n_TestServlet</servlet-name>
         <servlet-class>TestServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>n_AJAXServlet</servlet-name>
+        <servlet-class>vnpay.AJAXServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>n_QueryServlet</servlet-name>
+        <servlet-class>vnpay.QueryServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>n_RefundServlet</servlet-name>
+        <servlet-class>vnpay.RefundServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>n_VNPayRedirectServlet</servlet-name>
+        <servlet-class>vnpay.VNPayRedirectServlet</servlet-class>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>n_TestServlet</servlet-name>
         <url-pattern>/test</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>n_AJAXServlet</servlet-name>
+        <url-pattern>/vnpay/ajax</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>n_QueryServlet</servlet-name>
+        <url-pattern>/vnpay/query</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>n_RefundServlet</servlet-name>
+        <url-pattern>/vnpay/refund</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>n_VNPayRedirectServlet</servlet-name>
+        <url-pattern>/vnpay/redirect/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
