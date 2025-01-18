@@ -38,8 +38,12 @@
     if (fields.containsKey("vnp_SecureHash")) {
         fields.remove("vnp_SecureHash");
     }
+
+    System.out.println("Received.");
+
     String signValue = VNPConfig.hashAllFields(fields);
     if (signValue.equals(vnp_SecureHash)) {
+        System.out.println("Signature matches.");
         boolean checkOrderId = true; // Giá trị của vnp_TxnRef tồn tại trong CSDL của merchant
         boolean checkAmount = true; //Kiểm tra số tiền thanh toán do VNPAY phản hồi(vnp_Amount/100) với số tiền của đơn hàng merchant tạo thanh toán: giả sử số tiền kiểm tra là đúng.
         boolean checkOrderStatus = true; // Giả sử PaymnentStatus = 0 (pending) là trạng thái thanh toán của giao dịch khởi tạo chưa có IPN.
