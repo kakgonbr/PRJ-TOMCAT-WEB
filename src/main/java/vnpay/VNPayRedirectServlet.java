@@ -33,7 +33,7 @@ public class VNPayRedirectServlet extends HttpServlet {
         }
 
         String jspFilePath = JSP_PATH + path;
-        System.out.println(jspFilePath);
+        // System.out.println(jspFilePath);
         request.getRequestDispatcher(jspFilePath).forward(request, response);
     }
 
