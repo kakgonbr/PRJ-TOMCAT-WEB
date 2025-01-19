@@ -15,6 +15,15 @@ public class DatabaseConnectionListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
+
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        } catch (ClassNotFoundException e) {
+            System.err.println("SQL exception occurred while connecting to the SQL Server.");
+            e.printStackTrace();
+            return;
+        }
+        
         System.out.println("Initializing database connection...");
 
         // JDBC URL for MS SQL Server

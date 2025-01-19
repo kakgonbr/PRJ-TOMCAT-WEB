@@ -5,6 +5,10 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,18 +31,26 @@ public class TestServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet TestServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>HTTPS TEST</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        ServletContext context = getServletContext();
+        Connection connection = (Connection) context.getAttribute("DB_CONNECTION");
+
+        response.setContentType("text/plain");
+        PrintWriter writer = response.getWriter();
+
+        if (connection == null) {
+            writer.println("No database connection available.");
+            return;
+        }
+
+        // Example query
+        String query = "SELECT * FROM test";
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                writer.println("Row: " + rs.getString(1)); // Adjust column indexing
+            }
+        } catch (Exception e) {
+            writer.println("Error querying database: " + e.getMessage());
         }
     }
 
