@@ -151,14 +151,14 @@ create table tblProductCustomization
 
 create table tblReview
 (
-	id int primary key,
+	id int PRIMARY KEY,
 	userID int,
 	productID int,
 	rate int,
 	comment nvarchar(255),
 
-	constraint fk_review_user foreign key (userID) references tblUser(id),
-	constraint fk_review_product foreign key (productID) references tblProduct(id)
+	constraint fk_review_user FOREIGN KEY (userID) REFERENCES tblUser(id),
+	constraint fk_review_product FOREIGN KEY (productID) REFERENCES tblProduct(id)
 )
 
 CREATE TABLE tblCart
@@ -204,7 +204,7 @@ CREATE TABLE tblOrder
 
 CREATE TABLE tblOrderedItem
 (
-	id int primary key,
+	id int PRIMARY KEY,
 	orderID int,
 	productItemID int,
 	orderStatus varchar(30),
@@ -217,11 +217,21 @@ CREATE TABLE tblOrderedItem
 
 CREATE TABLE tblOnholdCredit
 (
-	id int primary key,
+	id int PRIMARY KEY,
 	userID int,
 	amount money NOT NULL,
 	date date DEFAULT GETDATE(),
 	claimDate date DEFAULT DATEADD(day, 7, GETDATE()),
 
 	CONSTRAINT fk_onhold_user FOREIGN KEY (userID) REFERENCES tblUser(id)
+)
+
+CREATE TABLE tblNotification
+(
+	id int PRIMARY KEY,
+	userID int, -- can be null if the notification is global
+	title nvarchar(30) NOT NULL,
+	body nvarchar(255),
+
+	CONSTRAINT fk_notification_user FOREIGN KEY (userID) REFERENCES tblUser
 )
