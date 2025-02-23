@@ -52,6 +52,21 @@ public static void deleteUser(Connection connection, int id) throws SQLException
 ```
 ---
 # Java
+## Practices
+Add documentation to methods if what they do are not obvious enough. Documentation can be added using:
+```java
+/**
+ * create_instance
+ * @param array of attributes for instance containing web, db, arrival_rate, response_time for instance 
+ * respectively.
+ * @return Instance object
+ */
+```
+
+Consider adding `synchronized` for better concurrency.
+
+Only import what is needed, full class path should be used for classes that only get used once or a few times.
+
 ## Runtime Environment Variables
 Set at /opt/tomcat/bin/setenv.sh
 
@@ -95,3 +110,5 @@ service.Logging.logger.fatal("FAILED TO CONNECT TO THE DATABASE. REASON: '{}'", 
 Reference: https://logging.apache.org/log4j/2.x/jakarta.html
 # Build
 Simply commit to the main branch if you wish the web application to be automatically built and deployed.
+
+For troubleshooting and other functionalities, visit the Jenkins page.
