@@ -25,3 +25,6 @@ replay_pid*
 
 # Build directory
 /target
+
+# Config
+/src/main/java/config/ConfigOld.java
