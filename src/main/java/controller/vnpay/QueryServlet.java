@@ -1,4 +1,4 @@
-package service.vnpay;
+package controller.vnpay;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -30,10 +30,10 @@ public class QueryServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Command:querydr
 
-        String vnp_RequestId = VNPConfig.getRandomNumber(8);
+        String vnp_RequestId = config.VNPConfig.getRandomNumber(8);
         String vnp_Version = "2.1.0";
         String vnp_Command = "querydr";
-        String vnp_TmnCode = VNPConfig.vnp_TmnCode;
+        String vnp_TmnCode = config.VNPConfig.vnp_TmnCode;
         String vnp_TxnRef = req.getParameter("order_id");
         String vnp_OrderInfo = "Kiem tra ket qua GD OrderId:" + vnp_TxnRef;
         //String vnp_TransactionNo = req.getParameter("transactionNo");
@@ -43,7 +43,7 @@ public class QueryServlet extends HttpServlet {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
         String vnp_CreateDate = formatter.format(cld.getTime());
         
-        String vnp_IpAddr = VNPConfig.getIpAddress(req);
+        String vnp_IpAddr = config.VNPConfig.getIpAddress(req);
         
         JsonObject  vnp_Params = new JsonObject ();
         
@@ -59,11 +59,11 @@ public class QueryServlet extends HttpServlet {
         vnp_Params.addProperty("vnp_IpAddr", vnp_IpAddr);
         
         String hash_Data= String.join("|", vnp_RequestId, vnp_Version, vnp_Command, vnp_TmnCode, vnp_TxnRef, vnp_TransDate, vnp_CreateDate, vnp_IpAddr, vnp_OrderInfo);
-        String vnp_SecureHash = VNPConfig.hmacSHA512(VNPConfig.secretKey, hash_Data.toString());
+        String vnp_SecureHash = config.VNPConfig.hmacSHA512(config.VNPConfig.secretKey, hash_Data.toString());
         
         vnp_Params.addProperty("vnp_SecureHash", vnp_SecureHash);
         
-        URL url = new URL (VNPConfig.vnp_ApiUrl);
+        URL url = new URL (config.VNPConfig.vnp_ApiUrl);
         HttpURLConnection con = (HttpURLConnection)url.openConnection();
         con.setRequestMethod("POST");
         con.setRequestProperty("Content-Type", "application/json");

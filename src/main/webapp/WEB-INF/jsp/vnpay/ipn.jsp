@@ -41,7 +41,7 @@
 
     System.out.println("Received.");
 
-    String signValue = VNPConfig.hashAllFields(fields);
+    String signValue = config.VNPConfig.hashAllFields(fields);
     if (signValue.equals(vnp_SecureHash)) {
         System.out.println("Signature matches.");
         boolean checkOrderId = true; // Giá trị của vnp_TxnRef tồn tại trong CSDL của merchant

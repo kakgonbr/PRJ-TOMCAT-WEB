@@ -47,7 +47,7 @@
             if (fields.containsKey("vnp_SecureHash")) {
                 fields.remove("vnp_SecureHash");
             }
-            String signValue = VNPConfig.hashAllFields(fields);
+            String signValue = config.VNPConfig.hashAllFields(fields);
 
         %>
         <!--Begin display -->

@@ -1,4 +1,4 @@
-package service.vnpay;
+package controller.vnpay;
 import com.google.gson.JsonObject;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -25,10 +25,10 @@ public class RefundServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         //Command: refund
-        String vnp_RequestId = VNPConfig.getRandomNumber(8);
+        String vnp_RequestId = config.VNPConfig.getRandomNumber(8);
         String vnp_Version = "2.1.0";
         String vnp_Command = "refund";
-        String vnp_TmnCode = VNPConfig.vnp_TmnCode;
+        String vnp_TmnCode = config.VNPConfig.vnp_TmnCode;
         String vnp_TransactionType = req.getParameter("trantype");
         String vnp_TxnRef = req.getParameter("order_id");
         long amount = Integer.parseInt(req.getParameter("amount"))*100;
@@ -42,7 +42,7 @@ public class RefundServlet extends HttpServlet {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
         String vnp_CreateDate = formatter.format(cld.getTime());
         
-        String vnp_IpAddr = VNPConfig.getIpAddress(req);
+        String vnp_IpAddr = config.VNPConfig.getIpAddress(req);
 
         JsonObject  vnp_Params = new JsonObject ();
 
@@ -69,11 +69,11 @@ public class RefundServlet extends HttpServlet {
                 vnp_TransactionType, vnp_TxnRef, vnp_Amount, vnp_TransactionNo, vnp_TransactionDate, 
                 vnp_CreateBy, vnp_CreateDate, vnp_IpAddr, vnp_OrderInfo);
         
-        String vnp_SecureHash = VNPConfig.hmacSHA512(VNPConfig.secretKey, hash_Data.toString());
+        String vnp_SecureHash = config.VNPConfig.hmacSHA512(config.VNPConfig.secretKey, hash_Data.toString());
         
         vnp_Params.addProperty("vnp_SecureHash", vnp_SecureHash);
         
-        URL url = new URL (VNPConfig.vnp_ApiUrl);
+        URL url = new URL (config.VNPConfig.vnp_ApiUrl);
         HttpURLConnection con = (HttpURLConnection)url.openConnection();
         con.setRequestMethod("POST");
         con.setRequestProperty("Content-Type", "application/json");

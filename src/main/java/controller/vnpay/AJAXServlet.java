@@ -1,4 +1,4 @@
-package service.vnpay;
+package controller.vnpay;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -31,17 +31,16 @@ public class AJAXServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String orderType = "other";
         long amount = Integer.parseInt(req.getParameter("amount"))*100;
         String bankCode = req.getParameter("bankCode");
         
-        String vnp_TxnRef = VNPConfig.getRandomNumber(8);
+        String vnp_TxnRef = config.VNPConfig.getRandomNumber(8);
         String vnp_IpAddr = "171.225.185.51";
 
-        String vnp_TmnCode = VNPConfig.vnp_TmnCode;
+        String vnp_TmnCode = config.VNPConfig.vnp_TmnCode;
         
         Map<String, String> vnp_Params = new HashMap<>();
         vnp_Params.put("vnp_Version", vnp_Version);
@@ -63,7 +62,7 @@ public class AJAXServlet extends HttpServlet {
         } else {
             vnp_Params.put("vnp_Locale", "vn");
         }
-        vnp_Params.put("vnp_ReturnUrl", VNPConfig.vnp_ReturnUrl);
+        vnp_Params.put("vnp_ReturnUrl", config.VNPConfig.vnp_ReturnUrl);
         vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
 
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
@@ -99,10 +98,10 @@ public class AJAXServlet extends HttpServlet {
             }
         }
         String queryUrl = query.toString();
-        String vnp_SecureHash = VNPConfig.hmacSHA512(VNPConfig.secretKey, hashData.toString());
+        String vnp_SecureHash = config.VNPConfig.hmacSHA512(config.VNPConfig.secretKey, hashData.toString());
         System.out.println(vnp_SecureHash);
         queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
-        String paymentUrl = VNPConfig.vnp_PayUrl + "?" + queryUrl;
+        String paymentUrl = config.VNPConfig.vnp_PayUrl + "?" + queryUrl;
         com.google.gson.JsonObject job = new JsonObject();
         job.addProperty("code", "00");
         job.addProperty("message", "success");

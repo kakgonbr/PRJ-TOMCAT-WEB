@@ -1,7 +1,15 @@
-
-package service.vnpay;
+package controller;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,8 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author ASUS
  */
-public class VNPayRedirectServlet extends HttpServlet {
-    private static final String JSP_PATH = "/WEB-INF/jsp/vnpay/";
+public class TestServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -25,16 +32,27 @@ public class VNPayRedirectServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String path = request.getPathInfo(); // Extract the path from the URL
-        if (path == null || path.equals("/")) {
-            path = "options.jsp"; // Default to home.jsp
-        } else {
-            path = path.substring(path.lastIndexOf('/', path.length() - 1) + 1) + ".jsp";
+        ServletContext context = getServletContext();
+        Connection connection = (Connection) context.getAttribute("DB_CONNECTION");
+
+        response.setContentType("text/plain");
+        PrintWriter writer = response.getWriter();
+
+        if (connection == null) {
+            writer.println("No database connection available.");
+            return;
         }
 
-        String jspFilePath = JSP_PATH + path;
-        // System.out.println(jspFilePath);
-        request.getRequestDispatcher(jspFilePath).forward(request, response);
+        // Example query
+        String query = "SELECT * FROM test";
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                writer.println("Row: " + rs.getString(1));
+            }
+        } catch (Exception e) {
+            writer.println("Error querying database: " + e.getMessage());
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
