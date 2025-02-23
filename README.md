@@ -27,33 +27,26 @@ VALUES (
 
 Example usage:
 ```java
-public void deleteProduct(int productId) {
-    String selectQuery = "SELECT product_id FROM products WHERE product_id = ? FOR UPDATE";
-    String deleteQuery = "DELETE FROM products WHERE product_id = ?";
+private static final String LOCK_TABLE_USER_BY_ID = "SELECT * FROM tblUser WHERE id = ? FOR UPDATE";
+private static final String LOCK_TABLE_USER = "SELECT * FROM tblUser FOR UPDATE";
 
-    try (Connection conn = Database.getConnection()) {
-        conn.setAutoCommit(false); // Start transaction
+private static final String DELETE_USER = "DELETE * FROM tblUser WHERE id = ?";
 
-        try (PreparedStatement selectStmt = conn.prepareStatement(selectQuery)) {
-            selectStmt.setInt(1, productId);
-            ResultSet rs = selectStmt.executeQuery();
+public static void deleteUser(Connection connection, int id) throws SQLException {
+    try (PreparedStatement lockPS = connection.prepareStatement(LOCK_TABLE_USER_BY_ID)) {
+        lockPS.setInt(1, id);
+        lockPS.executeQuery();    
+    
+            try (PreparedStatement addPS = connection.prepareStatement(DELETE_USER)) {
+                addPS.setInt(1, id);
 
-            if (!rs.next()) {
-                throw new IllegalStateException("Product not found");
+                addPS.executeUpdate();
+
+                connection.commit();
             }
-
-            try (PreparedStatement deleteStmt = conn.prepareStatement(deleteQuery)) {
-                deleteStmt.setInt(1, productId);
-                deleteStmt.executeUpdate();
-            }
-
-            conn.commit(); // Commit transaction
-        } catch (Exception e) {
-            conn.rollback(); // Rollback if anything goes wrong
-            throw e;
-        }
     } catch (SQLException e) {
-        e.printStackTrace();
+        connection.rollback();
+        throw e;
     }
 }
 ```
