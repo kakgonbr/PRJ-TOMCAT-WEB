@@ -27,4 +27,4 @@ replay_pid*
 /target
 
 # Config
-src/main/java/config/Config.java
+/src/main/java/config/Config.java
