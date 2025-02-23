@@ -1,4 +1,4 @@
-log4j2.xml<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="warn">
 	<Properties>
 		<Property name="basePath">prj/logs</Property>
