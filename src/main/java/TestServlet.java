@@ -47,7 +47,7 @@ public class TestServlet extends HttpServlet {
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
             while (rs.next()) {
-                writer.println("Row: " + rs.getString(1)); // Adjust column indexing
+                writer.println("Row: " + rs.getString(1));
             }
         } catch (Exception e) {
             writer.println("Error querying database: " + e.getMessage());

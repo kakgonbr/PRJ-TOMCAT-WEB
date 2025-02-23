@@ -23,7 +23,7 @@ public class DatabaseConnectionListener implements ServletContextListener {
             e.printStackTrace();
             return;
         }
-        
+
         System.out.println("Initializing database connection...");
 
         // JDBC URL for MS SQL Server
@@ -39,7 +39,7 @@ public class DatabaseConnectionListener implements ServletContextListener {
             // Save the connection in the ServletContext for use across the application
             sce.getServletContext().setAttribute("DB_CONNECTION", connection);
         } catch (SQLException e) {
-            System.err.println("Error establishing database connection: " + e.getMessage());
+            System.out.println("Error establishing database connection: " + e.getMessage());
             e.printStackTrace();
         }
     }
