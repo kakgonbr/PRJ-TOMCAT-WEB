@@ -72,6 +72,10 @@ DatabaseConnection.getConnection()
 ### Creating DAO Classes
 When creating DAO classes, no interface is needed. Instead use inner classes to separate and organize DAO methods. How to separate the inner classes is detailed in the diagram.
 
+When creating Database Access methods, let the connection be an argument.
+
+The methods also must throw the exception `java.sql.SQLException`. Any catching of exceptions must be thrown again as these methods are not meant to handle the exceptions by themselves.
+
 **All DAO Classes must be static**
 
 ### Thread-Safety
