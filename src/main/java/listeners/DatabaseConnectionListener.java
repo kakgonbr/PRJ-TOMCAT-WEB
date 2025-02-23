@@ -33,11 +33,6 @@ public class DatabaseConnectionListener implements ServletContextListener {
         String username = config.Config.DBConfig.DB_USERNAME;
         String password = config.Config.DBConfig.DB_PASSWORD;
 
-        // For testing
-        System.out.println(url);
-        System.out.println(username);
-        System.out.println(password);
-
         try {
             // Establish the connection
             connection = DriverManager.getConnection(url, username, password);
