@@ -35,9 +35,11 @@ public class DatabaseConnectionListener implements ServletContextListener {
             // Establish the connection
             connection = DriverManager.getConnection(url, username, password);
             System.out.println("Database connection established.");
+            connection.setAutoCommit(config.Config.DBConfig.AUTO_COMMIT);
 
             // Save the connection in the ServletContext for use across the application
             sce.getServletContext().setAttribute("DB_CONNECTION", connection);
+            service.DatabaseConnection.setConnection(connection);
         } catch (SQLException e) {
             System.out.println("Error establishing database connection: " + e.getMessage());
             e.printStackTrace();

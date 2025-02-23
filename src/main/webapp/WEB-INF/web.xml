@@ -4,22 +4,22 @@
         <servlet-name>n_TestServlet</servlet-name>
         <servlet-class>TestServlet</servlet-class>
     </servlet>
-    <servlet>
+    <!-- <servlet>
         <servlet-name>n_AJAXServlet</servlet-name>
-        <servlet-class>vnpay.AJAXServlet</servlet-class>
+        <servlet-class>service.vnpay.AJAXServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>n_QueryServlet</servlet-name>
-        <servlet-class>vnpay.QueryServlet</servlet-class>
+        <servlet-class>service.vnpay.QueryServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>n_RefundServlet</servlet-name>
-        <servlet-class>vnpay.RefundServlet</servlet-class>
+        <servlet-class>service.vnpay.RefundServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>n_VNPayRedirectServlet</servlet-name>
-        <servlet-class>vnpay.VNPayRedirectServlet</servlet-class>
-    </servlet>
+        <servlet-class>service.vnpay.VNPayRedirectServlet</servlet-class>
+    </servlet> -->
 
     <servlet-mapping>
         <servlet-name>n_TestServlet</servlet-name>
