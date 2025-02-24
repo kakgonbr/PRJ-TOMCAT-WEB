@@ -73,6 +73,11 @@ Set at /opt/tomcat/bin/setenv.sh
 ## Servlets
 If an object or value should be sent to a JSP file to be displayed or another servlet to process, put it inside the `request` object using `request.setAttribute();`. Only for in-class attribute passing, method arguments are allowed. Minimize using arguments as much as possible to avoid compromises.
 
+For forwarding, use "WEB-INF/jsp/...", for forwarding to other servlets, use `request.getContextPath()` and concatenate with the servlet's path.
+
+## JSP
+**All JSP files MUST be placed in WEB-INF/jsp/** as they are meant to be forwarded to with attributes set.
+
 ## Database Access Objects
 ### Acquiring the `java.sql.Connection` Object
 ```java
