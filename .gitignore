@@ -28,3 +28,6 @@ replay_pid*
 
 # Config
 /src/main/java/config/ConfigOld.java
+
+# Temporary directory
+/temp

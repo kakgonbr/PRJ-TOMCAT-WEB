@@ -20,7 +20,7 @@ public final class UserDAO {
         "    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?\n" + //
         ");";
 
-        public static void createUser(Connection connection, User user) throws SQLException {
+        public static synchronized void createUser(Connection connection, User user) throws SQLException {
             try (Statement lockStatement = connection.createStatement();
                 ResultSet lockResultSet = lockStatement.executeQuery(LOCK_TABLE_USER)) {
                 
@@ -50,7 +50,7 @@ public final class UserDAO {
 
         private static final String DELETE_USER = "DELETE * FROM tblUser WHERE id = ?";
 
-        public static void deleteUser(Connection connection, int id) throws SQLException {
+        public static synchronized void deleteUser(Connection connection, int id) throws SQLException {
             try (PreparedStatement lockPS = connection.prepareStatement(LOCK_TABLE_USER_BY_ID)) {
                 lockPS.setInt(1, id);
                 lockPS.executeQuery();    
@@ -71,7 +71,7 @@ public final class UserDAO {
         private static final String UPDATE_USER = "UPDATE tblUser SET email = ?, username = ?, phoneNumber = ?, password = ?, persistentCookie = ?, googleID = ?, facebookID = ?, isAdmin = ?, credit = ?, displayName = ?, profileStringResourceID = ?, bio = ? WHERE id = ?";
 
         // Careful, retrieve user's information from the database first
-        public static void updateUser(Connection connection, User user) throws SQLException{
+        public static synchronized void updateUser(Connection connection, User user) throws SQLException{
             try (PreparedStatement lockPS = connection.prepareStatement(LOCK_TABLE_USER_BY_ID)) {
                 lockPS.setInt(1, user.getId());
                 lockPS.executeQuery();    
