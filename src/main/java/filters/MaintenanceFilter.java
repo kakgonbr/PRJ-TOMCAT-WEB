@@ -32,7 +32,9 @@ public class MaintenanceFilter implements jakarta.servlet.Filter {
                 return;
             }
 
-            httpRequest.getRequestDispatcher(httpRequest.getContextPath() + "/redirect?page=" + controller.RedirectServlet.REDIRECT_MAINTENANCE).forward(httpRequest, response);;
+            httpRequest.setAttribute("page", controller.RedirectServlet.REDIRECT_MAINTENANCE);
+
+            httpRequest.getRequestDispatcher(httpRequest.getContextPath() + "/redirect").forward(httpRequest, response);;
 
             return;
         }
