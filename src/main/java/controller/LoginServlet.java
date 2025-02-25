@@ -22,6 +22,8 @@ public class LoginServlet extends HttpServlet {
             model.User user = (model.User) session.getAttribute("user");
             if (user != null) {
                 redirect(request, response, user.isAdmin());
+
+                return;
             }
         }
 

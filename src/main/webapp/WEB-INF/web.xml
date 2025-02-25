@@ -76,11 +76,19 @@
 
     <!-- FILTER DECLARATIONS -->
     <filter>
+        <filter-name>n_MaintenanceFilter</filter-name>
+        <filter-class>filters.MaintenanceFilter</filter-class>
+    </filter>
+    <filter>
         <filter-name>n_AuthenticationFilter</filter-name>
         <filter-class>filters.AuthenticationFilter</filter-class>
     </filter>
 
     <!-- FILTER MAPPINGS -->
+    <filter-mapping>
+        <filter-name>n_MaintenanceFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     <filter-mapping>
         <filter-name>n_AuthenticationFilter</filter-name>
         <url-pattern>/*</url-pattern>
