@@ -13,9 +13,9 @@
         <h1>Admin page.</h1>
     </jsp:attribute>
 
-    <jsp:body>
+    <jsp:attribute name="body">
         <p>admin?</p>
-    </jsp:body>
+    </jsp:attribute>
 
     <jsp:attribute name="footer">
         <t:footer/>
