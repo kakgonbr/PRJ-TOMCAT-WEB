@@ -15,6 +15,14 @@
 
     <jsp:attribute name="body">
         <p>admin?</p>
+        <form action="${pageContext.request.contextPath}/admin" method="POST">
+            <input type="hidden" value="enableMaintenance"/>
+            <input type="submit" value="Enable Maintenance"/>
+        </form>
+        <form action="${pageContext.request.contextPath}/admin" method="POST">
+            <input type="hidden" value="disableMaintenance"/>
+            <input type="submit" value="Disable Maintenance"/>
+        </form>
     </jsp:attribute>
 
     <jsp:attribute name="footer">
