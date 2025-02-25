@@ -19,10 +19,13 @@ public class MaintenanceFilter implements jakarta.servlet.Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         if (service.ServerMaintenance.isActive()) {
             HttpServletRequest httpRequest = (HttpServletRequest) request;
+            String path = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
 
-            if (httpRequest.getRequestURI().substring(httpRequest.getContextPath().length()).startsWith("/login")) {
-                chain.doFilter(httpRequest, response);
-                return;
+            for (final String nmPath : config.Config.nonMaintenance) {
+                if (path.startsWith(nmPath)) {
+                    chain.doFilter(httpRequest, response);
+                    return;
+                }
             }
 
             HttpSession session = httpRequest.getSession(false);
@@ -32,9 +35,7 @@ public class MaintenanceFilter implements jakarta.servlet.Filter {
                 return;
             }
 
-            httpRequest.setAttribute("page", controller.RedirectServlet.REDIRECT_MAINTENANCE);
-
-            httpRequest.getRequestDispatcher(httpRequest.getContextPath() + "/redirect").forward(httpRequest, response);;
+            ((HttpServletResponse) response).sendRedirect(httpRequest.getContextPath() + "/redirect?page=" + controller.RedirectServlet.REDIRECT_MAINTENANCE);
 
             return;
         }
