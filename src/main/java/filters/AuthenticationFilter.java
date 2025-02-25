@@ -43,7 +43,7 @@ public class AuthenticationFilter implements jakarta.servlet.Filter {
             return;
         }
 
-        ((HttpServletResponse) response).sendRedirect(config.Config.JSPMapper.LOGIN_JSP + "?reason=invalid");
+        ((HttpServletResponse) response).sendRedirect(httpRequest.getContextPath() + "/login?reason=invalid");
     } // public void doFilter
 
 }

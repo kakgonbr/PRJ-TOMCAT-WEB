@@ -11,6 +11,7 @@
 
     <body>
     <h1>Test</h1>
+    <t:footer/>
     </body>
 </html>
 
