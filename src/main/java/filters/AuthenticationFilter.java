@@ -20,7 +20,7 @@ public class AuthenticationFilter implements jakarta.servlet.Filter {
         String path = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
 
         // Allow public and resources
-        if (path.startsWith("/public") || path.startsWith("/home") || path.startsWith("resource")) {
+        if (path.startsWith("/login") || path.startsWith("/public") || path.startsWith("/home") || path.startsWith("resource")) {
             chain.doFilter(httpRequest, response);
             return;
         }
