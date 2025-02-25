@@ -235,3 +235,25 @@ CREATE TABLE tblNotification
 
 	CONSTRAINT fk_notification_user FOREIGN KEY (userID) REFERENCES tblUser
 )
+
+CREATE TABLE tblServerStatistics
+(
+	id int PRIMARY KEY IDENTITY(1, 1), -- stats wont be deleted
+	day date NOT NULL,
+	totalMoneyEarned int,
+	userNum int,
+	productNum int,
+	shopNum int,
+	promotionNum int,
+	purchaseNum int,
+	visitNum int,
+	peakSessionNum int,
+	averageResponseTime int, -- in milisec
+	maxResponseTime int
+)
+
+CREATE TABLE tblShopStatistics
+(
+	id int PRIMARY KEY,
+
+)

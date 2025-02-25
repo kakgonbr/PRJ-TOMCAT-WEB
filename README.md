@@ -2,6 +2,10 @@
 **Read the documentation below to understand how to commit, practices to follow, etc.**
 
 ---
+# Web Application META and INF
+## `web.xml`
+Always use the `web.xml` file to map servlets, listeners, filters. Do not use annotation.
+
 # SQL Database
 ## Tables
 ### Restrictions
@@ -78,6 +82,11 @@ For forwarding, use "WEB-INF/jsp/...", for forwarding to other servlets, use `re
 ## JSP
 **All JSP files MUST be placed in WEB-INF/jsp/** as they are meant to be forwarded to with attributes set.
 
+See `template.jsp` to see the general template for JSP files.
+
+When creating JSP files, put their file path inside `config.Config.JSPMapper`
+WHen forwarding to JSP files, use mappings in `config.Config.JSPMapper`
+
 ## Database Access Objects
 ### Acquiring the `java.sql.Connection` Object
 ```java
@@ -85,7 +94,7 @@ For forwarding, use "WEB-INF/jsp/...", for forwarding to other servlets, use `re
 DatabaseConnection.getConnection()
 
 // From the servlet context
-(java.sql.Connection) getServletContext().getAttribute("DB_CONNECTION"), userId, discountCode)
+(java.sql.Connection) getServletContext().getAttribute("DB_CONNECTION")
 ```
 **IMPORANT:**  Getting the `Connection` object from the servlet context **does not** check if the connection is valid and will not trigger a lockdown if the connection to the database is closed. Avoid it as much as possible.
 
@@ -117,3 +126,15 @@ Reference: https://logging.apache.org/log4j/2.x/jakarta.html
 Simply commit to the main branch if you wish the web application to be automatically built and deployed.
 
 For troubleshooting and other functionalities, visit the Jenkins page.
+
+# Names
+## Session objects
+```
+    "user" : model.User
+```
+
+## Cookies
+Can be found at config.Config.CookieMapper
+
+## JSP Files
+Can be found at config.Config.JSPMapper

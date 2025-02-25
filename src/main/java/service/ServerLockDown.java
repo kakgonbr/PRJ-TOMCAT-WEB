@@ -1,6 +1,6 @@
 package service;
 
-public class ServerLockDown {
+public final class ServerLockDown {
     private static boolean isActive;
     private static String reason;
 

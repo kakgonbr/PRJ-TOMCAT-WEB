@@ -6,7 +6,7 @@ import jakarta.servlet.annotation.WebListener;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @WebListener
-public class SessionCountingServlet implements HttpSessionListener {
+public class SessionCountingListener implements HttpSessionListener {
     private static final AtomicInteger activeSessions = new AtomicInteger(0);
 
     @Override

@@ -8,15 +8,15 @@ import jakarta.servlet.annotation.WebListener;
 public class RequestTimingListener implements ServletRequestListener {
     @Override
     public void requestInitialized(ServletRequestEvent sre) {
-        service.Logging.logger.info("Request received.");
+        service.Logging.logger.info("Request received: {}, from: {}", sre.getServletRequest().getRequestId(), sre.getServletRequest().getRemoteAddr());
 
-        sre.getServletRequest().setAttribute("start", System.currentTimeMillis());
+        sre.getServletRequest().setAttribute("request_time_start", System.currentTimeMillis());
     }
 
     @Override
     public void requestDestroyed(ServletRequestEvent sre) {
-        service.Logging.logger.info("Request destroyed.");
+        service.Logging.logger.info("Request destroyed {}, from: {}", sre.getServletRequest().getRequestId(), sre.getServletRequest().getRemoteAddr());
 
-        dao.StatisticsDAO.SystemStatisticsManager.SystemStatisticsContainer.reportResponseTime(System.currentTimeMillis() - (long) sre.getServletRequest().getAttribute("start"));
+        dao.StatisticsDAO.SystemStatisticsManager.SystemStatisticsContainer.reportResponseTime(System.currentTimeMillis() - (long) sre.getServletRequest().getAttribute("request_time_start"));
     }
 }

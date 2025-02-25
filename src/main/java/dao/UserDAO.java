@@ -55,10 +55,10 @@ public final class UserDAO {
                 lockPS.setInt(1, id);
                 lockPS.executeQuery();    
             
-                    try (PreparedStatement addPS = connection.prepareStatement(DELETE_USER)) {
-                        addPS.setInt(1, id);
+                    try (PreparedStatement ps = connection.prepareStatement(DELETE_USER)) {
+                        ps.setInt(1, id);
 
-                        addPS.executeUpdate();
+                        ps.executeUpdate();
 
                         connection.commit();
                     }
@@ -70,8 +70,11 @@ public final class UserDAO {
 
         private static final String UPDATE_USER = "UPDATE tblUser SET email = ?, username = ?, phoneNumber = ?, password = ?, persistentCookie = ?, googleID = ?, facebookID = ?, isAdmin = ?, credit = ?, displayName = ?, profileStringResourceID = ?, bio = ? WHERE id = ?";
 
-        // Careful, retrieve user's information from the database first
-        public static synchronized void updateUser(Connection connection, User user) throws SQLException{
+        /**
+         *
+         * Careful, retrieve user's information from the database first
+         */
+        public static synchronized void updateUser(Connection connection, User user) throws SQLException {
             try (PreparedStatement lockPS = connection.prepareStatement(LOCK_TABLE_USER_BY_ID)) {
                 lockPS.setInt(1, user.getId());
                 lockPS.executeQuery();    
@@ -103,5 +106,86 @@ public final class UserDAO {
             }
         }
 
+        private static final String UPDATE_COOKIE = "UPDATE tblUser SET persistentCookie = ? WHERE id = ?";
+
+        /**
+         *
+         * Careful, retrieve user's information from the database first
+         */
+        public static synchronized void updateCookie(Connection connection, int userId, String cookie) throws SQLException {
+            try (PreparedStatement lockPS = connection.prepareStatement(LOCK_TABLE_USER_BY_ID)) {
+                lockPS.setInt(1, userId);
+                lockPS.executeQuery();    
+                
+                try (PreparedStatement addPS = connection.prepareStatement(UPDATE_COOKIE)) {
+                    // 2
+                    addPS.setString(1, cookie);
+                    addPS.setInt(2, userId);
+
+                    
+                    addPS.executeUpdate();
+
+                    connection.commit();
+                    }
+            } catch (SQLException e) {
+                connection.rollback();
+                throw e;
+            }
+        }
+
     } // public static final class UserManager
+    
+    /**
+     * 
+     */
+    public static final class UserFetcher {
+        private static final String GET_USER_BY_ID = "SELECT * FROM tblUser WHERE id = ?";
+        
+        public static synchronized model.User getUser(Connection connection, int id) throws SQLException {
+            try (PreparedStatement ps = connection.prepareStatement(GET_USER_BY_ID)) {
+                ps.setInt(1, id);
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) return model.User.fromResultSet(rs);
+                }
+            } 
+            return null;
+        } // public static model.User getUser
+        
+        private static final String GET_USER_BY_COOKIE = "SELECT * FROM tblUser WHERE persistentCookie = ?";
+        public static synchronized model.User getUser(Connection connection, String cookie) throws SQLException {
+            try (PreparedStatement ps = connection.prepareStatement(GET_USER_BY_COOKIE)) {
+                ps.setString(1, cookie);
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) return model.User.fromResultSet(rs);
+                }
+            } 
+            return null;
+        } // public static model.User getUser
+        
+        private static final String GET_USER_BY_USER = "SELECT * FROM tblUser WHERE username = ? AND password = ?";
+        private static final String GET_USER_BY_EMAIL = "SELECT * FROM tblUser WHERE email = ? AND password = ?";
+        public static synchronized model.User getUser(Connection connection, String userOrEmail, String password) throws SQLException {
+            try (PreparedStatement ps = connection.prepareStatement(GET_USER_BY_USER)) {
+                ps.setString(1, userOrEmail);
+                ps.setString(2, password);
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) return model.User.fromResultSet(rs);
+                }
+            }
+
+            try (PreparedStatement ps = connection.prepareStatement(GET_USER_BY_EMAIL)) {
+                ps.setString(1, userOrEmail);
+                ps.setString(2, password);
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) return model.User.fromResultSet(rs);
+                }
+            } 
+
+            return null;
+        } // public static synchronized model.User getUser
+    } // public static final class UserFetcher
 }

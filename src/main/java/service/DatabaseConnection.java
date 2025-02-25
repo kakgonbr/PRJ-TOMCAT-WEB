@@ -1,6 +1,6 @@
 package service;
 
-public class DatabaseConnection {
+public final class DatabaseConnection {
     private static java.sql.Connection connection;
 
     public static void setConnection(java.sql.Connection t_connection) {

@@ -38,10 +38,11 @@ public final class User {
     private String phoneNumber; // Not visible to other users
     private String password; // Only visible to system
     private LinkStatus linkStatus; // Not visible to other users
-    private Cart cart; // Not visible to other users
+    private int cartId; // Not visible to other users
     private String bio;
     private long credit;
     private String cookie;
+    private boolean isAdmin;
 
     public User() {}
 
@@ -55,13 +56,13 @@ public final class User {
     }
 
     // everything
-    public User(int t_id, String t_username, String t_displayName, String t_profile, String t_bio, long t_credit, String t_email, String t_phoneNumber, String t_password, LinkStatus t_linkStatus, Cart t_cart, String t_cookie) {
+    public User(int t_id, String t_username, String t_displayName, String t_profile, String t_bio, long t_credit, String t_email, String t_phoneNumber, String t_password, LinkStatus t_linkStatus, int t_cartId, String t_cookie, boolean t_isAdmin) {
         this(t_id, t_username, t_displayName, t_profile, t_bio, t_credit);
         setEmail(t_email);
         setPhoneNumber(t_phoneNumber);
         setPassword(t_password);
         setLinkStatus(t_linkStatus);
-        setCart(t_cart);
+        setCartId(t_cartId);
         setCookie(t_cookie);
     }
 
@@ -73,8 +74,8 @@ public final class User {
         return credit;
     }
 
-    public Cart getCart() {
-        return cart;
+    public int getCartId() {
+        return cartId;
     }
 
     public String getCookie() {
@@ -121,8 +122,8 @@ public final class User {
         this.credit = credit;
     }
 
-    public void setCart(Cart cart) {
-        this.cart = cart;
+    public void setCartId(int cartId) {
+        this.cartId = cartId;
     }
     
     public void setCookie(String cookie) {
@@ -159,5 +160,25 @@ public final class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public static User fromResultSet(java.sql.ResultSet rs) throws java.sql.SQLException {
+        return new User(rs.getInt("id"),
+        rs.getString("username"),
+        rs.getString("displayName"),
+        rs.getString("profileStringResourceID"),
+        rs.getString("bio"),
+        rs.getLong("credit"),
+        rs.getString("email"),
+        rs.getString("phoneNumber"),
+        rs.getString("password"),
+        new LinkStatus(rs.getString("googleID"), rs.getString("facebookID")),
+        -1,
+        rs.getString("persistentCookie"),
+        rs.getBoolean("isAdmin"));
     }
 }

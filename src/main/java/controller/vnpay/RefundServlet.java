@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -73,7 +74,7 @@ public class RefundServlet extends HttpServlet {
         
         vnp_Params.addProperty("vnp_SecureHash", vnp_SecureHash);
         
-        URL url = new URL (config.VNPConfig.vnp_ApiUrl);
+        URL url = URI.create(config.VNPConfig.vnp_ApiUrl).toURL();
         HttpURLConnection con = (HttpURLConnection)url.openConnection();
         con.setRequestMethod("POST");
         con.setRequestProperty("Content-Type", "application/json");

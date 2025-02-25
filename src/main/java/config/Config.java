@@ -1,7 +1,7 @@
 package config;
 
-public class Config {
-    public static class DBConfig {
+public final class Config {
+    public static final class DBConfig {
         public static final String DB_ADDRESS = System.getenv("DB_ADDRESS");
         public static final String DB_USERNAME = System.getenv("DB_USERNAME");
         public static final String DB_PASSWORD = System.getenv("DB_PASSWORD");
@@ -9,5 +9,18 @@ public class Config {
         public static final boolean AUTO_COMMIT = false;
         public static final int TIMEOUT = 30; // 30 seconds
         public static final int RETRY = 3;
+    }
+
+    public static final class JSPMapper {
+        public static final String LOGIN_JSP = "WEB-INF/jsp/login.jsp";
+        public static final String HOME_JSP = "WEB-INF/jsp/home.jsp";
+
+        public static final String PRIVILEGED_ADMIN_JSP = "WEB-INF/jsp/admin/adminStats.jsp";
+    }
+
+    public static final class CookieMapper {
+        public static final String REMEMBER_ME_COOKIE = "rememberMe";
+
+        public static final int UUID_RETRY = 3;
     }
 }
