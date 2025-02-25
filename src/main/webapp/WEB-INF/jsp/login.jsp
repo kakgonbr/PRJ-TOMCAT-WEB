@@ -10,8 +10,12 @@
     </head>
 
     <body>
-    <h1>Test</h1>
-    <t:footer/>
+        <h1>Test</h1>
+        <t:template>
+            <jsp:attribute name="footer">
+                <t:footer/>
+            </jsp:attribute>
+        </t:template>
     </body>
 </html>
 
