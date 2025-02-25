@@ -10,8 +10,8 @@ CREATE TABLE tblUser
 	email nvarchar(50) NOT NULL,
 	username varchar(30) NOT NULL UNIQUE,
 	phoneNumber varchar(12) not null UNIQUE,
-	password varchar(50) NOT NULL UNIQUE,
-	persistentCookie varchar(255),
+	password varchar(50) NOT NULL,
+	persistentCookie varchar(255) UNIQUE,
 	googleID varchar(255) unique,	
 	facebookID varchar(255) unique,
 	isAdmin bit DEFAULT 0,
@@ -257,3 +257,5 @@ CREATE TABLE tblShopStatistics
 	id int PRIMARY KEY,
 
 )
+
+SELECT * FROM tblUser

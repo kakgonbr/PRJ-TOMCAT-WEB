@@ -1,18 +1,18 @@
 package service;
 
-public final class ServerLockDown {
+public class ServerMaintenance {
     private static boolean isActive;
     private static String reason;
 
-    public static synchronized void lockDownServer(String t_reason) {
+    public static synchronized void enableMaintenance(String t_reason) {
         if (isActive) return;
         reason = t_reason;
         isActive = true;
 
-        service.Logging.logger.fatal("SERVER LOCKDOWN ACTIVE, REASON: '{}'", t_reason);
+        service.Logging.logger.warn("SERVER MAINTENANCE ACTIVE, REASON: '{}'", t_reason);
     }
 
-    public static synchronized void disableLockDown() {
+    public static synchronized void disableMaintenance() {
         if (!isActive) return;
         isActive = false;
     }

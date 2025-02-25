@@ -20,6 +20,19 @@ public class AdminServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // doGet(request, response);
+        String action = request.getParameter("action");
+
+        if (action == null) {
+            doGet(request, response);
+        }
+
+        switch (action) {
+            case "enableMaintenance":
+                service.ServerMaintenance.enableMaintenance("test");
+            break;
+            case "disableMaintenance":
+                service.ServerMaintenance.disableMaintenance();
+            break;
+        }
     }
 }

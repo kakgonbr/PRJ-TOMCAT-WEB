@@ -19,20 +19,22 @@ public class AuthenticationFilter implements jakarta.servlet.Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String path = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
 
-        // Allow public and resources
-        if (path.startsWith("/login") || path.startsWith("/public") || path.startsWith("/home") || path.startsWith("resource")) {
-            chain.doFilter(httpRequest, response);
-            return;
+        // Allow non privileged list
+        for (final String npPath : config.Config.nonPrivileged) {
+            if (path.startsWith(npPath)) {
+                chain.doFilter(httpRequest, response);
+                return;
+            }
         }
 
         HttpSession session = httpRequest.getSession(false);
         model.User user;
 
         if (session != null && (user = (model.User) session.getAttribute("user")) != null) {
-            if (!user.isAdmin() && path.contains("/admin")) {
+            if (!user.isAdmin() && path.startsWith("/admin")) {
                 service.Logging.logger.warn("Session {}, user ID {} attempted to go to page {}, request rejected.", session.getId(), user.getId(), httpRequest.getRequestURI());
 
-                ((HttpServletResponse) response).sendRedirect(httpRequest.getContextPath() + "/login?reason=invalid");
+                ((HttpServletResponse) response).sendRedirect(httpRequest.getContextPath() + "/login?reason=forbidden");
                 return;
             }
             chain.doFilter(request, response);

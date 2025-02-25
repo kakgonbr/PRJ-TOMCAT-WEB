@@ -1,4 +1,4 @@
-<%-- POSSIBLE REQUEST ATTRIBUTES: reason --%>
+<%-- POSSIBLE REQUEST ATTRIBUTES: reason(invalid, forbidden) --%>
 <%-- POSSIBLE REQUEST PARAMETERS: --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8" %>

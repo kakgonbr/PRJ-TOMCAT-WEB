@@ -1,6 +1,8 @@
 package config;
 
 public final class Config {
+    public static final String[] nonPrivileged = {"/login", "/public", "/home"};
+
     public static final class DBConfig {
         public static final String DB_ADDRESS = System.getenv("DB_ADDRESS");
         public static final String DB_USERNAME = System.getenv("DB_USERNAME");
@@ -14,6 +16,8 @@ public final class Config {
     public static final class JSPMapper {
         public static final String LOGIN_JSP = "WEB-INF/jsp/login.jsp";
         public static final String HOME_JSP = "WEB-INF/jsp/home.jsp";
+        public static final String MAINTENANCE_JSP = "WEB-INF/jsp/maintenance.jsp";
+        public static final String ERROR_JSP = "WEB-INF/jsp/error.jsp";
 
         public static final String PRIVILEGED_ADMIN_JSP = "WEB-INF/jsp/admin/adminStats.jsp";
     }

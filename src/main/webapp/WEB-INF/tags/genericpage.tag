@@ -12,7 +12,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>BM Market - ${title}</title>
+    <title>${title} - BM Market</title>
 
     <jsp:invoke fragment="head"/>  <%-- RESOURCES HERE --%>
   </head>
