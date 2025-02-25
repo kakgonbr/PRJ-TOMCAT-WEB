@@ -1,29 +1,17 @@
 <%-- POSSIBLE REQUEST ATTRIBUTES: reason --%>
-<%-- POSSIBLE REQUEST PARAMETERS:  --%>
+<%-- POSSIBLE REQUEST PARAMETERS: --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-<t:genericpage title="Login">
-    <jsp:attribute name="head">
-        <t:resources/>
-    </jsp:attribute>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    </head>
 
-    <jsp:attribute name="header">
-        <h1>LOGIN NOW</h1>
-    </jsp:attribute>
+    <body>
+    <h1>Test</h1>
+    </body>
+</html>
 
-    <jsp:body>
-        <form action="${pageContext.request.contextPath}/login" method="POST">
-            <input type="text" name="userOrEmail">
-            <input type="text" name="password">
-            <input type="submit" value="Login">
-        </form>
-    </jsp:body>
-
-    <jsp:attribute name="footer">
-        <t:footer/>
-    </jsp:attribute>
-</t:genericpage>
-
-<%-- POSSIBLE DESTINATIONS:  /login (POST) --%>
+<%-- POSSIBLE DESTINATIONS: /login (POST) --%>
