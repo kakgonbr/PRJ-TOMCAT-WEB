@@ -40,18 +40,20 @@ public class LoginServlet extends HttpServlet {
         } catch (java.sql.SQLException e) {
             service.Logging.logger.warn("Log in failed for request {}, tried: {} and {}", request.getRequestId(), userOrEmail, password);
 
-            request.setAttribute("reason", "Invalid login");
+            request.setAttribute("reason", "invalid");
 
             doGet(request, response);
 
             return;
         }
 
+        service.Logging.logger.info("User logged in: {}", user.getUsername());
+
         // request.getRequestDispatcher(config.Config.JSPMapper.HOME_JSP).forward(request, response);
 
         // TODO: Add the path of the servlet that handles page redirection here
         if (!user.isAdmin()) {
-            response.sendRedirect("");
+            response.sendRedirect(request.getContextPath() + "/home");
             return;
         }
 

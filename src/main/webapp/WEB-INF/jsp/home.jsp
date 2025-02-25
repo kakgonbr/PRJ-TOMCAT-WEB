@@ -13,9 +13,9 @@
         <h1>Home</h1>
     </jsp:attribute>
 
-    <jsp:body>
+    <jsp:attribute name="body">
         <p>Welcome.</p>
-    </jsp:body>
+    </jsp:attribute>
 
     <jsp:attribute name="footer">
         <t:footer/>

@@ -64,6 +64,7 @@ public final class User {
         setLinkStatus(t_linkStatus);
         setCartId(t_cartId);
         setCookie(t_cookie);
+        isAdmin = t_isAdmin;
     }
 
     public String getBio() {
