@@ -14,9 +14,9 @@
         <h1>TEMPLATE HEADING</h1>
     </jsp:attribute>
 
-    <jsp:body>
+    <jsp:attribute name="body">
         <p>THE CONTENT OF THE TEMPLATE JSP.</p>
-    </jsp:body>
+    </jsp:attribute>
 
     <jsp:attribute name="footer">
         <t:footer/>
