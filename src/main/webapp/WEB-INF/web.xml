@@ -45,6 +45,10 @@
         <servlet-name>n_ErrorServlet</servlet-name>
         <servlet-class>controller.ErrorServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>n_ChatServlet</servlet-name>
+        <servlet-class>controller.ChatServlet</servlet-class>
+    </servlet>
 
     <!-- SERVLET MAPPINGS -->
     <!-- TEMPLATE:
@@ -74,6 +78,10 @@
         <servlet-name>n_ErrorServlet</servlet-name>
         <url-pattern>/error</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>n_ChatServlet</servlet-name>
+        <url-pattern>/chat</url-pattern>
+    </servlet-mapping>
 
     <!-- FILTER DECLARATIONS -->
     <filter>
@@ -96,10 +104,13 @@
     </filter-mapping>
     
     <!-- ERROR PAGE | COMMENT OUT IF YOU WANT TOMCAT'S ERROR PAGE TO BE DISPLAYED INSTEAD -->
-    <error-page>
+    <!-- <error-page>
         <exception-type>java.lang.Throwable</exception-type>
         <location>/error</location>
-    </error-page>
+    </error-page> -->
+
+    <!-- ENDPOINTS -->
+    <!-- ChatEndPoint AT /chat OR ws://kakgonbri.zapto.org/prj/chat-->
 
     <error-page>
         <error-code>500</error-code>
