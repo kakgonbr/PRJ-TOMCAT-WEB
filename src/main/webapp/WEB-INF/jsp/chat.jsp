@@ -32,7 +32,7 @@
                 return;
             }
 
-            ws = new WebSocket('ws://' + location.host + '/your-app-context/chat/' + username);
+            ws = new WebSocket('wss://' + location.host + '/your-app-context/chat');
 
             ws.onopen = () => {
                 document.getElementById('chat-container').style.display = 'block';
