@@ -52,7 +52,7 @@ public class ChatEndPoint {
         Session targetSession = activeSessions.get(targetId);
         if (targetSession != null && targetSession.isOpen()) {
             try {
-                targetSession.getBasicRemote().sendText(gson.toJson(message));
+                targetSession.getBasicRemote().sendText(gson.toJson(model.ChatContent.fromMessage(message, targetId, boxId)));
             } catch (IOException e) {
                 service.Logging.logger.error("FAILED TO SEND MESSAGE TO SESSION {}", targetSession.getId());
             }
@@ -66,7 +66,7 @@ public class ChatEndPoint {
             return;
         }
 
-        service.Logging.logger.info("{} -? {}: {}", user.getId(), targetId, map.get("text"));
+        service.Logging.logger.info("{} -> {}: {}", user.getId(), targetId, map.get("text"));
     }
 
     @OnClose

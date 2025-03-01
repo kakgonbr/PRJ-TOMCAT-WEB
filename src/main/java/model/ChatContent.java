@@ -64,4 +64,8 @@ public class ChatContent {
          rs.getDate("time"),
          rs.getInt("senderID"));
     }
+
+    public static ChatContent fromMessage(String message, int sender, int box) {
+        return new ChatContent(-1, box, message, java.sql.Date.valueOf(java.time.LocalDate.now()), sender);
+    }
 }
