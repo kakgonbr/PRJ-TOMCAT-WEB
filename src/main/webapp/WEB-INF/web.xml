@@ -64,7 +64,6 @@
     <servlet-mapping>
         <servlet-name>n_LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
-        <url-pattern>/</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>n_AdminServlet</servlet-name>

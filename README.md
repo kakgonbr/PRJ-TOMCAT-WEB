@@ -21,7 +21,7 @@ This is not thread-safe, refer below to see how to achieve thread-safety.
 ```sql
 INSERT INTO tblTable (id, column1, column2)
 VALUES (
-    (SELECT MIN(t1.id) + 1 FROM tblTable t1 LEFT JOIN tblTable t2 
+    (SELECT ISNULL(MIN(t1.id) + 1, 1) FROM tblTable t1 LEFT JOIN tblTable t2 
      ON t1.id + 1 = t2.id WHERE t2.id IS NULL),
     'value1', 'value2'
 );

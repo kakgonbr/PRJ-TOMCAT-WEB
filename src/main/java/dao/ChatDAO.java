@@ -10,7 +10,7 @@ public class ChatDAO {
     public static class BoxManager {
         private static final String CREATE_BOX = "INSERT INTO tblChatBox (id, user1, user2)\n" + //
                 "VALUES (\n" + //
-                "    (SELECT MIN(t1.id) + 1 FROM tblChatBox t1 LEFT JOIN tblChatBox t2 \n" + //
+                "    (SELECT ISNULL(MIN(t1.id) + 1, 1) FROM tblChatBox t1 LEFT JOIN tblChatBox t2 \n" + //
                 "     ON t1.id + 1 = t2.id WHERE t2.id IS NULL),\n" + //
                 "    ?, ?\n" + //
                 ");";
@@ -78,7 +78,7 @@ public class ChatDAO {
         private static final String CREATE_CONTENT = "INSERT INTO tblChatBoxContent (id, chatBoxID, message, time, senderID)\n"
                 + //
                 "VALUES (\n" + //
-                "    (SELECT MIN(t1.id) + 1 FROM tblChatBoxContent t1 LEFT JOIN tblChatBoxContent t2 \n" + //
+                "    (SELECT ISNULL(MIN(t1.id) + 1, 1) FROM tblChatBoxContent t1 LEFT JOIN tblChatBoxContent t2 \n" + //
                 "     ON t1.id + 1 = t2.id WHERE t2.id IS NULL),\n" + //
                 "    ?, ?, ?, ?\n" + //
                 ");";

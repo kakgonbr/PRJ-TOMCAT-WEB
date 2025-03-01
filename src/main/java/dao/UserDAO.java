@@ -13,7 +13,7 @@ public final class UserDAO {
         private static final String CREATE_USER = "INSERT INTO tblUser (id, email, username, phoneNumber, password, persistentCookie, googleID, facebookID, isAdmin, credit, displayName, profileStringResourceID, bio)\n"
                 + //
                 "VALUES (\n" + //
-                "    (SELECT MIN(t1.id) + 1 FROM tblUser t1 LEFT JOIN tblUser t2 \n" + //
+                "    (SELECT ISNULL(MIN(t1.id) + 1, 1) FROM tblUser t1 LEFT JOIN tblUser t2 \n" + //
                 "     ON t1.id + 1 = t2.id WHERE t2.id IS NULL),\n" + //
                 "    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?\n" + //
                 ");";
