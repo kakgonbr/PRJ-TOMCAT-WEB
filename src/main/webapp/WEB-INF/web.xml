@@ -49,6 +49,10 @@
         <servlet-name>n_ChatServlet</servlet-name>
         <servlet-class>controller.ChatServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>n_ChatLoader</servlet-name>
+        <servlet-class>controller.ajax.ChatLoader</servlet-class>
+    </servlet>
 
     <!-- SERVLET MAPPINGS -->
     <!-- TEMPLATE:
@@ -81,6 +85,10 @@
     <servlet-mapping>
         <servlet-name>n_ChatServlet</servlet-name>
         <url-pattern>/chat</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>n_ChatLoader</servlet-name>
+        <url-pattern>/ajax/chat</url-pattern>
     </servlet-mapping>
 
     <!-- FILTER DECLARATIONS -->
@@ -127,5 +135,9 @@
         <session-timeout>
             30
         </session-timeout>
+        <cookie-config>
+            <http-only>true</http-only>        
+            <secure>true</secure>        
+        </cookie-config>
     </session-config>
 </web-app>

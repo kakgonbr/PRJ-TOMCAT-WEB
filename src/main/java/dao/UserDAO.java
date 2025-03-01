@@ -151,6 +151,18 @@ public final class UserDAO {
             } 
             return null;
         } // public static model.User getUser
+
+        private static final String GET_USER_BY_USERNAME = "SELECT * FROM tblUser WHERE username = ?";
+        public static synchronized model.User getUserFromUsername(Connection connection, String username) throws SQLException {
+            try (PreparedStatement ps = connection.prepareStatement(GET_USER_BY_USERNAME)) {
+                ps.setString(1, username);
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) return model.User.fromResultSet(rs);
+                }
+            } 
+            throw new java.sql.SQLException("USER NOT FOUND");
+        } // public static model.User getUser
         
         private static final String GET_USER_BY_COOKIE = "SELECT * FROM tblUser WHERE persistentCookie = ?";
         public static synchronized model.User getUser(Connection connection, String cookie) throws SQLException {
@@ -161,7 +173,7 @@ public final class UserDAO {
                     if (rs.next()) return model.User.fromResultSet(rs);
                 }
             } 
-            return null;
+            throw new java.sql.SQLException("USER NOT FOUND");
         } // public static model.User getUser
         
         private static final String GET_USER_BY_USER = "SELECT * FROM tblUser WHERE username = ? AND password = ?";
@@ -185,7 +197,7 @@ public final class UserDAO {
                 }
             } 
 
-            return null;
+            throw new java.sql.SQLException("USER NOT FOUND");
         } // public static synchronized model.User getUser
     } // public static final class UserFetcher
 }
