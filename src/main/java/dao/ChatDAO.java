@@ -42,16 +42,24 @@ public class ChatDAO {
 
                 ResultSet rs = ps.executeQuery();
 
-                java.util.List<model.ChatBox> contents = new java.util.ArrayList<>();
+                java.util.List<model.ChatBox> boxes = new java.util.ArrayList<>();
                 while (rs.next()) {
-                    contents.add(model.ChatBox.fromResultSet(rs));
+                    boxes.add(model.ChatBox.fromResultSet(rs));
                 }
 
-                return contents;
+                return boxes;
             }
         } // public static java.util.List<model.ChatBox> getBoxes
 
-        private static final String GET_BOX_BY_USERS = "SELECT * FROM tblChatBox WHERE (user1 = ? AND user2 = ?) OR (user1 = ? AND user2 = ?)";
+        // private static final String GET_BOX_BY_USERS = "SELECT * FROM tblChatBox WHERE (user1 = ? AND user2 = ?) OR (user1 = ? AND user2 = ?)";
+        
+        private static final String GET_BOX_BY_USERS = "SELECT\r\n" + //
+                        "t1.*,\r\n" + //
+                        "t2a.username AS username1,\r\n" + //
+                        "t2b.username AS username2\r\n" + //
+                        "FROM (SELECT user1, user2 FROM tblChatBox WHERE (user1 = ? AND user2 = ?) OR (user1 = ? AND user2 = ?)) t1\r\n" + //
+                        "LEFT JOIN tblUser t2a ON t1.user1 = t2a.id\r\n" + //
+                        "LEFT JOIN tblUser t2b ON t1.user2 = t2b.id;";
 
         public static synchronized model.ChatBox getBox(Connection connection, int user1, int user2)
                 throws SQLException {

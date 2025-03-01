@@ -19,10 +19,10 @@
         <h2>Open Chats</h2>
         <c:forEach var="chat" items="${chatBoxes}">
             <c:if test="${chat.user1 == currentUser}">
-                <button onclick="openChat('${chat.user2}')">Chat with ${chat.user2}</button>
+                <button onclick="openChat('${chat.user2}')">Chat with ${chat.username2}</button>
             </c:if>
             <c:if test="${chat.user2 == currentUser}">
-                <button onclick="openChat('${chat.user1}')">Chat with ${chat.user1}</button>
+                <button onclick="openChat('${chat.user1}')">Chat with ${chat.username1}</button>
             </c:if>
         </c:forEach>
 
@@ -72,7 +72,7 @@
                         let chatPanel = document.getElementById("message");
                         chatPanel.innerHTML = "";
                         messages.forEach(msg => {
-                            chatPanel.innerHTML += "<p>" + msg.sender + ": " + msg.text + "</p>";
+                            chatPanel.innerHTML += "<p>" + msg + "</p>";
                         });
                     });
             }

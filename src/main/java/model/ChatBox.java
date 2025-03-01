@@ -4,7 +4,9 @@ public class ChatBox {
     private int id;
     private int user1;
     private int user2;
-    
+    private String username1;
+    private String username2;
+
     public ChatBox() {}
 
     public ChatBox(int t_id, int t_user1, int t_user2) {
@@ -13,8 +15,24 @@ public class ChatBox {
         setUser2(t_user2);
     }
 
+    public ChatBox(int t_id, int t_user1, int t_user2, String t_username1, String t_username2) {
+        setId(t_id);
+        setUser1(t_user1);
+        setUser2(t_user2);
+        setUsername1(t_username1);
+        setUsername2(t_username2);
+    }
+
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setUsername1(String username1) {
+        this.username1 = username1;
+    }
+
+    public void setUsername2(String username2) {
+        this.username2 = username2;
     }
 
     public void setUser1(int user1) {
@@ -37,9 +55,19 @@ public class ChatBox {
         return user2;
     }
 
+    public String getUsername1() {
+        return username1;
+    }
+
+    public String getUsername2() {
+        return username2;
+    }
+
     public static ChatBox fromResultSet(java.sql.ResultSet rs) throws java.sql.SQLException {
         return new ChatBox(rs.getInt("id"),
          rs.getInt("user1"),
-         rs.getInt("user2"));
+         rs.getInt("user2"),
+         rs.getString("username1"),
+         rs.getString("username2"));
     }
 }
