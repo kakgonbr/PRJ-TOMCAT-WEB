@@ -16,17 +16,15 @@ public class ChatDAO {
                 ");";
 
         public static synchronized void createBox(Connection connection, int user1, int user2) throws SQLException {
-            try (Statement lockStatement = connection.createStatement();
-                    ResultSet lockResultSet = lockStatement.executeQuery(LOCK_TABLE_CHATBOX)) {
 
-                try (PreparedStatement addPS = connection.prepareStatement(CREATE_BOX)) {
-                    addPS.setInt(1, user1);
-                    addPS.setInt(2, user2);
+            try (PreparedStatement addPS = connection.prepareStatement(CREATE_BOX)) {
+                addPS.setInt(1, user1);
+                addPS.setInt(2, user2);
 
-                    addPS.executeUpdate();
+                addPS.executeUpdate();
 
-                    connection.commit();
-                }
+                connection.commit();
+
             } catch (SQLException e) {
                 connection.rollback();
                 throw e;
