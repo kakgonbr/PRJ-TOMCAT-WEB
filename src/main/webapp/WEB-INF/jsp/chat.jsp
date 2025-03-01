@@ -59,6 +59,8 @@
 
                 window.chatSocket.onmessage = function (event) {
                     let chatPanel = document.getElementById("messages");
+                    let msg = JSON.parse(event.data);
+                    
                     chatPanel.innerHTML += "<p><strong>" + msg.time +" - User " + msg.sender + ":</strong>" + msg.message + "</p>";
                 };
 
