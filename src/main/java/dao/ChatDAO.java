@@ -35,7 +35,7 @@ public class ChatDAO {
                         "t1.*,\r\n" + //
                         "t2a.username AS username1,\r\n" + //
                         "t2b.username AS username2\r\n" + //
-                        "FROM (SELECT user1, user2 FROM tblChatBox WHERE (user1 = ? OR user2 = ?)) t1\r\n" + //
+                        "FROM (SELECT * FROM tblChatBox WHERE (user1 = ? OR user2 = ?)) t1\r\n" + //
                         "LEFT JOIN tblUser t2a ON t1.user1 = t2a.id\r\n" + //
                         "LEFT JOIN tblUser t2b ON t1.user2 = t2b.id;";
 
@@ -65,7 +65,7 @@ public class ChatDAO {
                         "t1.*,\r\n" + //
                         "t2a.username AS username1,\r\n" + //
                         "t2b.username AS username2\r\n" + //
-                        "FROM (SELECT user1, user2 FROM tblChatBox WHERE (user1 = ? AND user2 = ?) OR (user1 = ? AND user2 = ?)) t1\r\n" + //
+                        "FROM (SELECT * FROM tblChatBox WHERE (user1 = ? AND user2 = ?) OR (user1 = ? AND user2 = ?)) t1\r\n" + //
                         "LEFT JOIN tblUser t2a ON t1.user1 = t2a.id\r\n" + //
                         "LEFT JOIN tblUser t2b ON t1.user2 = t2b.id;";
 
