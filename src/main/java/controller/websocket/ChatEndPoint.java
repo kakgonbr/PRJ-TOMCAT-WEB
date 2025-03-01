@@ -13,8 +13,10 @@ public class ChatEndPoint {
     public void onOpen(Session session, EndpointConfig config) {
         httpSession = (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
 
-        if (httpSession == null || httpSession.getAttribute("username") == null) {
+        if (httpSession == null || httpSession.getAttribute("user") == null) {
             try {
+                service.Logging.logger.info("{} tried to connect to an endpoint without authorization", session.getId());
+
                 session.close(new CloseReason(CloseReason.CloseCodes.VIOLATED_POLICY, "Unauthorized"));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -22,7 +24,7 @@ public class ChatEndPoint {
             return;
         }
 
-        service.Logging.logger.info("{} connected to an endpoint", (String) httpSession.getAttribute("username"));
+        service.Logging.logger.info("{} connected to an endpoint", ((model.User) httpSession.getAttribute("user")).getUsername());
     }
 
     @OnMessage
@@ -35,7 +37,10 @@ public class ChatEndPoint {
     public void onClose(Session session) {
         if (httpSession == null) return;
         String username;
-        if ((username = (String) httpSession.getAttribute("username")) == null) return;
+        if ((username = (String) httpSession.getAttribute("username")) == null) {
+            service.Logging.logger.info("{}'s endpoint disconnected.", session.getId());
+            return;
+        }
 
         service.Logging.logger.info("{} disconnected from an endpoint", username);
     }
