@@ -31,7 +31,14 @@ public class ChatDAO {
             }
         } // public static void createBox
 
-        private static final String GET_BOXES_BY_USER = "SELECT * FROM tblChatBox WHERE (user1 = ?) OR (user2 = ?)";
+        private static final String GET_BOXES_BY_USER = "SELECT\r\n" + //
+                        "t1.*,\r\n" + //
+                        "t2a.username AS username1,\r\n" + //
+                        "t2b.username AS username2\r\n" + //
+                        "FROM (SELECT user1, user2 FROM tblChatBox WHERE (user1 = ? OR user2 = ?)) t1\r\n" + //
+                        "LEFT JOIN tblUser t2a ON t1.user1 = t2a.id\r\n" + //
+                        "LEFT JOIN tblUser t2b ON t1.user2 = t2b.id;";
+
 
         public static synchronized java.util.List<model.ChatBox> getBoxes(Connection connection, int userId)
                 throws SQLException {
@@ -43,6 +50,7 @@ public class ChatDAO {
                 ResultSet rs = ps.executeQuery();
 
                 java.util.List<model.ChatBox> boxes = new java.util.ArrayList<>();
+
                 while (rs.next()) {
                     boxes.add(model.ChatBox.fromResultSet(rs));
                 }
