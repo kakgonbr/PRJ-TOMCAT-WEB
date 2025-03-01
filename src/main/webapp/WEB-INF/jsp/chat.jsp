@@ -80,14 +80,18 @@
             function sendMessage() {
                 let messageInput = document.getElementById("message");
                 let message = messageInput.value.trim();
+                messageInput.value = "";
+                let messageObject = {
+                    text: message
+                };
+                window.chatSocket.send(JSON.stringify(messageObject));
 
                 if (message !== "" && window.chatSocket && window.chatSocket === WebSocket.OPEN) {
                     let messageObject = {
                         text: message
                     };
-                    window.chatSocket.send(JSON.stringify(messageObject)); // Send as JSON
-                    messageInput.value = ""; // Clear input field
-                }
+                    window.chatSocket.send(JSON.stringify(messageObject));
+                }   
             }
         </script>
     </jsp:attribute>

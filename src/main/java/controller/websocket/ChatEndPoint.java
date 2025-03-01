@@ -44,8 +44,11 @@ public class ChatEndPoint {
     public void onError(Session session, Throwable throwable) {
         if (httpSession == null) return;
         String username;
-        if ((username = (String) httpSession.getAttribute("username")) == null) return;
-
+        if ((username = (String) httpSession.getAttribute("username")) == null)  {
+            service.Logging.logger.info("{}'s endpoint encountered an error: {}", session.getId(), throwable.getMessage());
+            return;
+        }
+        
         service.Logging.logger.info("{}'s endpoint encountered an error: {}", username, throwable.getMessage());
     }
 }
