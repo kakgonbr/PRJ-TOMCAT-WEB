@@ -81,8 +81,8 @@
                 let messageInput = document.getElementById("message");
                 let message = messageInput.value.trim();
                 messageInput.value = "";
-                
-                if (message !== "" && window.chatSocket && window.chatSocket === WebSocket.OPEN) {
+
+                if (message !== "" && window.chatSocket && window.chatSocket.readyState === WebSocket.OPEN) {
                     let messageObject = {
                         text: message
                     };
