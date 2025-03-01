@@ -9,7 +9,7 @@ import com.google.gson.Gson;
 
 @ServerEndpoint(value = "/chat", configurator = controller.websocket.ChatConfigurator.class)
 public class ChatEndPoint {
-    private static Map<Integer, Session> activeSessions = new java.util.concurrent.ConcurrentHashMap<>();
+    private static Map<Integer, Session> activeSessions = new java.util.concurrent.ConcurrentHashMap<>(); 
     private HttpSession httpSession;
     private int boxId;
     private int targetId = -1;
@@ -52,25 +52,16 @@ public class ChatEndPoint {
         Session targetSession = activeSessions.get(targetId);
         if (targetSession != null && targetSession.isOpen()) {
             try {
-                targetSession.getBasicRemote()
-                        .sendText(
-                                gson.toJson(
-                                model.ChatContent.fromMessage(
-                                com.google.gson.JsonParser.parseString(message).getAsJsonObject().getAsString(),
-                                targetId,
-                                boxId),
-                                        model.ChatContent.class));
+                targetSession.getBasicRemote().sendText(gson.toJson(model.ChatContent.fromMessage(com.google.gson.JsonParser.parseString(message).getAsJsonObject().getAsString(), targetId, boxId), model.ChatContent.class));
             } catch (IOException e) {
                 service.Logging.logger.error("FAILED TO SEND MESSAGE TO SESSION {}", targetSession.getId());
             }
         }
 
         try {
-            dao.ChatDAO.ContentManager.createContent(service.DatabaseConnection.getConnection(), boxId, user.getId(),
-                    map.get("text"));
+            dao.ChatDAO.ContentManager.createContent(service.DatabaseConnection.getConnection(), boxId, user.getId(), map.get("text"));
         } catch (java.sql.SQLException e) {
-            service.Logging.logger.error("FAILED TO INSERT CHAT CONTENT FOR {}, REASON: {}", session.getId(),
-                    e.getMessage());
+            service.Logging.logger.error("FAILED TO INSERT CHAT CONTENT FOR {}, REASON: {}", session.getId(), e.getMessage());
 
             return;
         }
@@ -117,8 +108,7 @@ public class ChatEndPoint {
         int target = Integer.parseInt(map.get("targetUser"));
 
         try {
-            boxId = dao.ChatDAO.BoxManager.getBox(service.DatabaseConnection.getConnection(), user.getId(), target)
-                    .getId();
+            boxId = dao.ChatDAO.BoxManager.getBox(service.DatabaseConnection.getConnection(), user.getId(), target).getId();
 
             targetId = target;
             activeSessions.put(user.getId(), session);

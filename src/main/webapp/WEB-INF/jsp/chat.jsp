@@ -59,7 +59,7 @@
 
                 window.chatSocket.onmessage = function (event) {
                     let chatPanel = document.getElementById("messages");
-                    chatPanel.innerHTML += "<p><strong>${msg.time} - User ${msg.sender}:</strong> ${msg.message}</p>";
+                    chatPanel.innerHTML += "<p><strong>" + msg.time +" - User " + msg.sender + ":</strong>" + msg.message + "</p>";
                 };
 
                 window.chatSocket.onclose = function () {
@@ -73,7 +73,7 @@
                     chatPanel.innerHTML = "";
 
                     messages.forEach(msg => {
-                        chatPanel.innerHTML += `<p><strong>${msg.time} - User ${msg.sender}:</strong> ${msg.message}</p>`;
+                        chatPanel.innerHTML += "<p><strong>" + msg.time +" - User " + msg.sender + ":</strong>" + msg.message + "</p>";
                     });
                 })
                 .catch(error => console.error("Error loading messages:", error));
