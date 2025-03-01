@@ -26,34 +26,6 @@ VALUES (
     'value1', 'value2'
 );
 ```
-## Thread-Safety
-`SELECT ... FOR UPDATE` is used on every update to ensure thread-safety.
-
-Example usage:
-```java
-private static final String LOCK_TABLE_USER_BY_ID = "SELECT * FROM tblUser WHERE id = ? FOR UPDATE";
-private static final String LOCK_TABLE_USER = "SELECT * FROM tblUser FOR UPDATE";
-
-private static final String DELETE_USER = "DELETE * FROM tblUser WHERE id = ?";
-
-public static void deleteUser(Connection connection, int id) throws SQLException {
-    try (PreparedStatement lockPS = connection.prepareStatement(LOCK_TABLE_USER_BY_ID)) {
-        lockPS.setInt(1, id);
-        lockPS.executeQuery();    
-    
-            try (PreparedStatement addPS = connection.prepareStatement(DELETE_USER)) {
-                addPS.setInt(1, id);
-
-                addPS.executeUpdate();
-
-                connection.commit();
-            }
-    } catch (SQLException e) {
-        connection.rollback();
-        throw e;
-    }
-}
-```
 ---
 # Java
 ## Practices
@@ -106,9 +78,6 @@ When creating Database Access methods, let the connection be an argument.
 The methods also must throw the exception `java.sql.SQLException`. Any catching of exceptions must be thrown again as these methods are not meant to handle the exceptions by themselves.
 
 **All DAO Classes must be static**
-
-### Thread-Safety
-See [here](#thread-safety).
 
 ## Logging
 Logger used: `log4j 2.4.3`
