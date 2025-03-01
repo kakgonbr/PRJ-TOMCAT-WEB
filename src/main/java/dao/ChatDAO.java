@@ -38,7 +38,7 @@ public class ChatDAO {
 
             try (PreparedStatement ps = connection.prepareStatement(GET_BOXES_BY_USER)) {
                 ps.setInt(1, userId);
-                ps.setInt(1, userId);
+                ps.setInt(2, userId);
 
                 ResultSet rs = ps.executeQuery();
 
