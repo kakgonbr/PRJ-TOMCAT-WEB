@@ -59,7 +59,7 @@
 
                 window.chatSocket.onmessage = function (event) {
                     let chatPanel = document.getElementById("messages");
-                    chatPanel.innerHTML += "<p>" + event.data + "</p>";
+                    chatPanel.innerHTML += "<p><strong>${msg.time} - User ${msg.sender}:</strong> ${msg.message}</p>";
                 };
 
                 window.chatSocket.onclose = function () {
@@ -67,14 +67,16 @@
                 };
 
                 fetch(contextPath + "/ajax/chat?targetUser=" + targetUser)
-                    .then(response => response.json())
-                    .then(messages => {
-                        let chatPanel = document.getElementById("messages");
-                        chatPanel.innerHTML = "";
-                        messages.forEach(msg => {
-                            chatPanel.innerHTML += "<p>" + msg + "</p>";
-                        });
+                .then(response => response.json())
+                .then(messages => {
+                    let chatPanel = document.getElementById("messages");
+                    chatPanel.innerHTML = "";
+
+                    messages.forEach(msg => {
+                        chatPanel.innerHTML += `<p><strong>${msg.time} - User ${msg.sender}:</strong> ${msg.message}</p>`;
                     });
+                })
+                .catch(error => console.error("Error loading messages:", error));
             }
 
             function sendMessage() {
