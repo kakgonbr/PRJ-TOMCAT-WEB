@@ -16,6 +16,9 @@
     <listener>
         <listener-class>listeners.SessionCountingListener</listener-class>
     </listener>
+    <listener>
+        <listener-class>listeners.SchedulerListener</listener-class>
+    </listener>
 
     <!-- SERVLET DECLARATIONS -->
     <!-- TEMPLATE:

@@ -29,4 +29,12 @@ public final class Config {
 
         public static final int UUID_RETRY = 3;
     }
+
+    public static final class Time {
+        public static final java.time.format.DateTimeFormatter outputFormatDate = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        public static final java.time.format.DateTimeFormatter inputFormatDate = java.time.format.DateTimeFormatter.ofPattern("d/M/yyyy");
+
+        public static final java.time.format.DateTimeFormatter outputFormatTime = java.time.format.DateTimeFormatter.ofPattern("HH:mm:ss - dd/MM/yyyy");
+        public static final java.time.format.DateTimeFormatter inputFormatTime = java.time.format.DateTimeFormatter.ofPattern("H:m:s - d/M/yyyy");
+    }
 }

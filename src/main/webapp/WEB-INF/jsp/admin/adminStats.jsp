@@ -23,6 +23,10 @@
             <input type="hidden" name="action" value="disableMaintenance"/>
             <input type="submit" value="Disable Maintenance"/>
         </form>
+        <form action="${pageContext.request.contextPath}/admin" method="POST">
+            <input type="hidden" name="action" value="logStatistics"/>
+            <input type="submit" value="Disable Maintenance"/>
+        </form>
     </jsp:attribute>
 
     <jsp:attribute name="footer">

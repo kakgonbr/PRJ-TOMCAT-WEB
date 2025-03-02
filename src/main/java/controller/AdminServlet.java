@@ -33,6 +33,19 @@ public class AdminServlet extends HttpServlet {
             case "disableMaintenance":
                 service.ServerMaintenance.disableMaintenance();
             break;
+            case "logStatistics":
+                logStatistics();
+            break;
+        }
+    }
+
+    private static void logStatistics() {
+        try {
+            dao.StatisticsDAO.SystemStatisticsManager.addStatistics(service.DatabaseConnection.getConnection());
+        } catch (java.sql.SQLException e) {
+            service.Logging.logger.warn("Statistics Job failed, reason: {}", e.getMessage());
+            
+            return;
         }
     }
 }

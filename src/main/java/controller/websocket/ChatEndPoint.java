@@ -18,10 +18,23 @@ public class ChatEndPoint {
     public void onOpen(Session session, EndpointConfig config) {
         httpSession = (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
 
-        if (httpSession == null || httpSession.getAttribute("user") == null) {
+        model.User user = (model.User) httpSession.getAttribute("user");
+
+        if (httpSession == null || user == null) {
             try {
                 service.Logging.logger.info("{} tried to connect to an endpoint without authorization",
                         session.getId());
+
+                session.close(new CloseReason(CloseReason.CloseCodes.VIOLATED_POLICY, "Unauthorized"));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+
+        if (activeSessions.containsKey(user.getId())) {
+            try {
+                service.Logging.logger.info("{}'s session is already active.", session.getId());
 
                 session.close(new CloseReason(CloseReason.CloseCodes.VIOLATED_POLICY, "Unauthorized"));
             } catch (Exception e) {

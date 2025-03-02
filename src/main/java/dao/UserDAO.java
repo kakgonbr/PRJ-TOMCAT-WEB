@@ -193,5 +193,20 @@ public final class UserDAO {
 
             throw new java.sql.SQLException("USER NOT FOUND");
         } // public static synchronized model.User getUser
+
+        private static final String GET_ALL_USER = "SELECT * FROM tblUser";
+
+        public static synchronized java.util.List<model.User> getUsers(Connection connection) throws java.sql.SQLException {
+            try (Statement statement = connection.createStatement();
+                ResultSet rs = statement.executeQuery(GET_ALL_USER)) {
+                
+                java.util.List<model.User> users = new java.util.ArrayList<>();
+                while (rs.next()) {
+                    users.add(model.User.fromResultSet(rs));
+                }
+
+                return users;
+            }
+        } // public static synchronized java.util.List<model.User> getUsers
     } // public static final class UserFetcher
 }

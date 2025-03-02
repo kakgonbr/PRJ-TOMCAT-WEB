@@ -4,12 +4,12 @@ public class ChatContent {
     private int id;
     private int boxId;
     private String message;
-    private java.sql.Date time;
+    private java.sql.Timestamp time;
     private int sender;
 
     public ChatContent() {}
 
-    public ChatContent(int t_id, int t_box, String t_message, java.sql.Date t_time, int sender) {
+    public ChatContent(int t_id, int t_box, String t_message, java.sql.Timestamp t_time, int sender) {
         setId(t_id);
         setBoxId(t_box);
         setMessage(t_message);
@@ -33,7 +33,7 @@ public class ChatContent {
         this.sender = sender;
     }
 
-    public void setTime(java.sql.Date time) {
+    public void setTime(java.sql.Timestamp time) {
         this.time = time;
     }
 
@@ -53,7 +53,7 @@ public class ChatContent {
         return sender;
     }
 
-    public java.sql.Date getTime() {
+    public java.sql.Timestamp getTime() {
         return time;
     }
 
@@ -61,11 +61,11 @@ public class ChatContent {
         return new ChatContent(rs.getInt("id"),
          rs.getInt("chatBoxID"),
          rs.getString("message"),
-         rs.getDate("time"),
+         rs.getTimestamp("time"),
          rs.getInt("senderID"));
     }
 
     public static ChatContent fromMessage(String message, int sender, int box) {
-        return new ChatContent(-1, box, message, java.sql.Date.valueOf(java.time.LocalDate.now()), sender);
+        return new ChatContent(-1, box, message, java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()), sender);
     }
 }

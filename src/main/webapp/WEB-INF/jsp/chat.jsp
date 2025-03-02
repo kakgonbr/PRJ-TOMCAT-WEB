@@ -91,7 +91,9 @@
                         text: message
                     };
                     window.chatSocket.send(JSON.stringify(messageObject));
-                }   
+
+                    // ADD MESAGE TO PANEL HERE
+                }
             }
         </script>
     </jsp:attribute>
