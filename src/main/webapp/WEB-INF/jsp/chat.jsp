@@ -19,10 +19,10 @@
         <h2>Open Chats</h2>
         <c:forEach var="chat" items="${chatBoxes}">
             <c:if test="${chat.user1 == currentUser}">
-                <button onclick="openChat('${chat.user2}')">Chat with ${chat.username2}</button>
+                <button onclick="openChat('${chat.user2}', '${chat.username2}')">Chat with ${chat.username2}</button>
             </c:if>
             <c:if test="${chat.user2 == currentUser}">
-                <button onclick="openChat('${chat.user1}')">Chat with ${chat.username1}</button>
+                <button onclick="openChat('${chat.user1}', '${chat.username1}')">Chat with ${chat.username1}</button>
             </c:if>
         </c:forEach>
 
@@ -43,8 +43,11 @@
 
         <script>
             var contextPath = "${pageContext.request.contextPath}";
+            var senderUser;
 
-            function openChat(targetUser) {
+            function openChat(targetUser, sender) {
+                senderUser = sender;
+
                 if (window.chatSocket) {
                     window.chatSocket.close();
                 }
@@ -61,7 +64,7 @@
                     let chatPanel = document.getElementById("messages");
                     let msg = JSON.parse(event.data);
                     
-                    chatPanel.innerHTML += "<p><strong>" + msg.time +" - User " + msg.sender + ":</strong>" + msg.message + "</p>";
+                    chatPanel.innerHTML += "<p><strong>" + msg.time +" - User " + senderUser + ":</strong> " + msg.message + "</p>";
                 };
 
                 window.chatSocket.onclose = function () {
@@ -75,7 +78,7 @@
                     chatPanel.innerHTML = "";
 
                     messages.forEach(msg => {
-                        chatPanel.innerHTML += "<p><strong>" + msg.time +" - User " + msg.sender + ":</strong>" + msg.message + "</p>";
+                        chatPanel.innerHTML += "<p><strong>" + msg.time +" - User " + senderUser + ":</strong> " + msg.message + "</p>";
                     });
                 })
                 .catch(error => console.error("Error loading messages:", error));
