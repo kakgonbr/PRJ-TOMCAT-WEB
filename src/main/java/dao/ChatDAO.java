@@ -105,7 +105,7 @@ public class ChatDAO {
             try (PreparedStatement addPS = connection.prepareStatement(CREATE_CONTENT)) {
                 addPS.setInt(1, box);
                 addPS.setString(2, message);
-                addPS.setDate(3, java.sql.Date.valueOf(java.time.LocalDate.now()));
+                addPS.setTimestamp(3, java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()));
                 addPS.setInt(4, sender);
 
                 addPS.executeUpdate();

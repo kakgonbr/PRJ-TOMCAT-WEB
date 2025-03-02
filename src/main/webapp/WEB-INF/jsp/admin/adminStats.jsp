@@ -25,7 +25,7 @@
         </form>
         <form action="${pageContext.request.contextPath}/admin" method="POST">
             <input type="hidden" name="action" value="logStatistics"/>
-            <input type="submit" value="Disable Maintenance"/>
+            <input type="submit" value="Log today's statistics"/>
         </form>
     </jsp:attribute>
 
