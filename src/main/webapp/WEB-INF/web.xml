@@ -98,7 +98,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>n_ResourceServlet</servlet-name>
-        <url-pattern>/resources</url-pattern>
+        <url-pattern>/resources/*</url-pattern>
     </servlet-mapping>
 
     <!-- FILTER DECLARATIONS -->

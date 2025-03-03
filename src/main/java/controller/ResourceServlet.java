@@ -18,7 +18,6 @@ public class ResourceServlet extends HttpServlet {
 
         if (resourcePath == null) {
             sendError(response);
-
             return;
         }
 
