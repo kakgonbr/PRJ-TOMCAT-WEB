@@ -56,6 +56,10 @@
         <servlet-name>n_ChatLoader</servlet-name>
         <servlet-class>controller.ajax.ChatLoader</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>n_ResourceServlet</servlet-name>
+        <servlet-class>controller.ResourceServlet</servlet-class>
+    </servlet>
 
     <!-- SERVLET MAPPINGS -->
     <!-- TEMPLATE:
@@ -91,6 +95,10 @@
     <servlet-mapping>
         <servlet-name>n_ChatLoader</servlet-name>
         <url-pattern>/ajax/chat</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>n_ResourceServlet</servlet-name>
+        <url-pattern>/resources</url-pattern>
     </servlet-mapping>
 
     <!-- FILTER DECLARATIONS -->

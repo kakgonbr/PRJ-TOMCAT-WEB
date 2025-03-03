@@ -3,4 +3,4 @@
 <%@tag description="Static Resources" pageEncoding="UTF-8"%>
 
 <link rel="stylesheet" href="">
-<script src=""></script>
+<script src="${pageContext.request.contextPath}/resources/test_js"></script>

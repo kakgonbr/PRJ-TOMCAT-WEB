@@ -37,4 +37,8 @@ public final class Config {
         public static final java.time.format.DateTimeFormatter outputFormatTime = java.time.format.DateTimeFormatter.ofPattern("HH:mm:ss - dd/MM/yyyy");
         public static final java.time.format.DateTimeFormatter inputFormatTime = java.time.format.DateTimeFormatter.ofPattern("H:m:s - d/M/yyyy");
     }
+
+    public static final class Resources {
+        public static final String ROOT_DIR = "/prj/resources";
+    }
 }
