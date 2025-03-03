@@ -268,6 +268,9 @@ CREATE TABLE tblShopStatistics
 (
 	id int PRIMARY KEY,
 
+
 )
+
+CREATE TABLE 
 
 SELECT * FROM tblUser
