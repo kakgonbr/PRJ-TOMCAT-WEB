@@ -122,11 +122,21 @@ CREATE TABLE tblProduct
 	description nvarchar(255),
 	availablePromotionID int,
 	imageStringResourceID varchar(30),
-
+	
 	CONSTRAINT fk_product_resourceID FOREIGN KEY (imageStringResourceID) REFERENCES tblResourceMap(id),
 	CONSTRAINT fK_product_shop FOREIGN KEY (shopID) REFERENCES tblShop(id),
 	CONSTRAINT fk_product_category FOREIGN KEY (categoryID) REFERENCES tblCategory(id),
 	CONSTRAINT fk_product_promo FOREIGN KEY (availablePromotionID) REFERENCES tblPromotion(id)
+)
+
+CREATE TABLE tblProductImage 
+(
+	id int PRIMARY KEY,
+	productID int,
+	imageStringResourceID varchar(30),
+
+	CONSTRAINT fk_productimage_resourceID FOREIGN KEY (imageStringResourceID) REFERENCES tblResourceMap(id),
+	CONSTRAINT fk_productimage_product FOREIGN KEY (productID) REFERENCES tblProduct
 )
 
 create table tblProductItem
@@ -197,6 +207,7 @@ CREATE TABLE tblOrder
 	date datetime DEFAULT GETDATE(),
 	finalPrice money,  --after promotion and iclude shipping cost
 
+
 	CONSTRAINT fk_order_user FOREIGN KEY (userID) REFERENCES tblUser(id),
 	CONSTRAINT fK_order_paymentMethod FOREIGN KEY (paymentMethodID) REFERENCES tblPaymentMethod(id),
 	CONSTRAINT fk_order_promotion FOREIGN KEY (promotionID) REFERENCES tblPromotion(id)
@@ -210,6 +221,7 @@ CREATE TABLE tblOrderedItem
 	orderStatus varchar(30),
 	quantity int NOT NULL,
 	totalPrice money,
+	shippingCost money, --per shop per order
 
 	CONSTRAINT fk_ordereditem_order FOREIGN KEY (orderID) REFERENCES tblOrder(id),
 	CONSTRAINT fk_ordereditem_productitem FOREIGN KEY (productItemID) REFERENCES tblProductItem(id)
@@ -256,6 +268,9 @@ CREATE TABLE tblShopStatistics
 (
 	id int PRIMARY KEY,
 
+
 )
+
+CREATE TABLE 
 
 SELECT * FROM tblUser
