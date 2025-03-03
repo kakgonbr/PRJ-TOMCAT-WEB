@@ -34,6 +34,7 @@ public class ChatServlet extends HttpServlet {
     }
 
     private void createChat(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // TODO: enforce restrictions
         model.User user = (model.User) request.getSession(false).getAttribute("user");
         String toName = request.getParameter("targetUser");
 
