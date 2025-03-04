@@ -271,6 +271,159 @@ CREATE TABLE tblShopStatistics
 
 )
 
-CREATE TABLE 
+-- TF-IDF RELATED STUFF
+CREATE TABLE tblBaseVector 
+(
+    keyword nvarchar(400) PRIMARY KEY
+);
 
-SELECT * FROM tblUser
+CREATE TABLE tblVector (
+    id int PRIMARY KEY,
+    vector nvarchar(400)
+);
+
+GO
+CREATE PROCEDURE ComputeTFIDF
+AS
+BEGIN
+	DELETE FROM tblVector;
+	DELETE FROM tblBaseVector;
+
+	INSERT INTO tblBaseVector (keyword)
+	(
+		SELECT DISTINCT TRIM(value) AS keyword 
+		FROM tblProduct
+		CROSS APPLY STRING_SPLIT(LOWER(tblProduct.name), ' ')
+		WHERE LEN(value) > 0
+
+		UNION
+
+		SELECT DISTINCT TRIM(value) AS keyword
+		FROM tblProduct
+		CROSS APPLY STRING_SPLIT(LOWER(tblProduct.description), ' ')
+		WHERE LEN(value) > 0
+	)
+
+	WITH tfbefore AS (
+		SELECT 
+			p.id, 
+			TRIM(s.value) AS keyword, 
+			COUNT(*) * 0.7 / NULLIF((SELECT COUNT(*) FROM STRING_SPLIT(LOWER(p.name), ' ')), 0) AS tf
+		FROM tblProduct p
+		CROSS APPLY STRING_SPLIT(LOWER(p.name), ' ') s
+		GROUP BY p.id, s.value, p.name
+
+		UNION ALL
+
+		SELECT 
+			p.id, 
+			TRIM(s.value) AS keyword, 
+			COUNT(*) * 0.3 / NULLIF((SELECT COUNT(*) FROM STRING_SPLIT(LOWER(p.description), ' ')), 0) AS tf
+		FROM tblProduct p
+		CROSS APPLY STRING_SPLIT(LOWER(p.description), ' ') s
+		GROUP BY p.id, s.value, p.description
+	),
+	tf_combined AS (
+		SELECT 
+			id, 
+			keyword, 
+			SUM(tf) AS tf 
+		FROM tfbefore
+		GROUP BY id, keyword
+	),
+	tf AS (
+		SELECT b.id, a.keyword AS keyword, COALESCE(b2.tf, 0) tf
+		FROM (SELECT DISTINCT keyword FROM tblBaseVector) a
+		CROSS JOIN (SELECT DISTINCT id FROM tf_combined) b
+		LEFT JOIN tf_combined b2 ON b.id = b2.id AND a.keyword = b2.keyword
+	),
+	df AS (
+		SELECT keyword, COUNT(DISTINCT id) AS DF FROM tf_combined GROUP BY keyword
+	),
+	tfidf AS (
+		SELECT 
+			tf.id, 
+			tf.keyword, 
+			tf.TF * LOG((SELECT COUNT(*) FROM tblProduct) / NULLIF(df.DF, 0)) AS TFIDF
+		FROM tf
+		JOIN df ON tf.keyword = df.keyword
+	),
+	vectors AS (
+		SELECT 
+			id, 
+			STRING_AGG(CAST(COALESCE(tfidf, 0) AS NVARCHAR), ',') WITHIN GROUP (ORDER BY tblBaseVector.keyword) AS Vector
+		FROM tblBaseVector
+		LEFT JOIN tfidf ON tblBaseVector.keyword = tfidf.keyword AND tfidf.id = id  -- Fixed join condition
+		GROUP BY id
+	)
+	INSERT INTO tblVector
+	SELECT * FROM vectors;
+END;
+GO
+
+GO
+CREATE PROCEDURE GetRecommendation (@query NVARCHAR(400))
+AS
+BEGIN
+    CREATE TABLE #result (value varchar(400));
+    
+    WITH tf AS (
+		SELECT b.keyword, COUNT(s.value) * 1.0 / NULLIF((SELECT COUNT(*) FROM STRING_SPLIT(@query, ' ')), 0) AS TF
+        FROM STRING_SPLIT(@query, ' ') s
+        RIGHT JOIN tblBaseVector b ON b.keyword = s.value
+        GROUP BY b.keyword
+	),
+	df AS (
+    --SELECT s.value AS keyword, COUNT(*) AS DF FROM STRING_SPLIT(@query, ' ') s GROUP BY s.value
+	SELECT keyword, COUNT(DISTINCT id) AS DF FROM (SELECT 
+													id,
+													TRIM(s.value) AS keyword
+													FROM tblProduct
+													CROSS APPLY STRING_SPLIT(LOWER(tblProduct.description), ' ') s
+													GROUP BY tblProduct.id, s.value, tblProduct.description) tbl
+	GROUP BY keyword
+	),
+	tfidf AS (
+		SELECT 
+			tf.keyword, 
+			tf.TF * LOG((SELECT COUNT(*) FROM tblProduct) / NULLIF(df.DF, 0)) AS TFIDF
+		FROM tf
+		JOIN df ON tf.keyword = df.keyword
+	),
+	vectors AS (
+    SELECT
+        STRING_AGG(CAST(COALESCE(tfidf, 0) AS NVARCHAR), ',') WITHIN GROUP (ORDER BY tblBaseVector.keyword) AS vector
+    FROM tblBaseVector
+    LEFT JOIN tfidf ON tblBaseVector.keyword = tfidf.keyword AND tblBaseVector.keyword = tfidf.keyword
+	)
+	INSERT INTO #result
+    SELECT * FROM vectors;
+
+    --SELECT * FROM STRING_SPLIT((SELECT value FROM #result), ',');
+
+	WITH ItemVector AS (
+		SELECT v.id, s.value AS tfidf_value, 
+           ROW_NUMBER() OVER (PARTITION BY v.id ORDER BY (SELECT NULL)) AS pos
+		FROM tblVector v
+		CROSS APPLY STRING_SPLIT(v.vector, ',') s
+	),
+	QueryVector AS (
+		SELECT s.value AS tfidf_value, ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS pos
+		FROM STRING_SPLIT((SELECT value FROM #result), ',') s
+	),
+	recommendation AS(
+		SELECT TOP 10 iv.id,
+		SUM(CAST(qv.tfidf_value AS FLOAT) * CAST(iv.tfidf_value AS FLOAT)) /
+		(SQRT(SUM(POWER(CAST(iv.tfidf_value AS FLOAT), 2))) * SQRT(SUM(POWER(CAST(qv.tfidf_value AS FLOAT), 2)))) AS similarity
+		FROM ItemVector iv
+		JOIN QueryVector qv ON iv.pos = qv.pos
+		GROUP BY iv.id
+	)
+	SELECT tblProduct.*
+	FROM tblProduct
+	JOIN recommendation ON tblProduct.id = recommendation.id
+	ORDER BY recommendation.similarity DESC
+
+    DROP TABLE #result;
+END;
+GO
