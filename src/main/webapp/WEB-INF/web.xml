@@ -60,6 +60,10 @@
         <servlet-name>n_ResourceServlet</servlet-name>
         <servlet-class>controller.ResourceServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>n_ProductLoader</servlet-name>
+        <servlet-class>controller.ajax.ProductLoader</servlet-class>
+    </servlet>
 
     <!-- SERVLET MAPPINGS -->
     <!-- TEMPLATE:
@@ -99,6 +103,10 @@
     <servlet-mapping>
         <servlet-name>n_ResourceServlet</servlet-name>
         <url-pattern>/resources/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>n_ProductLoader</servlet-name>
+        <url-pattern>/ajax/products</url-pattern>
     </servlet-mapping>
 
     <!-- FILTER DECLARATIONS -->

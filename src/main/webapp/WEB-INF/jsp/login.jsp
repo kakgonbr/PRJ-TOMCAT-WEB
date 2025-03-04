@@ -3,6 +3,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@ page session="false" %>
 
 <t:genericpage title="Login">
     <jsp:attribute name="head">

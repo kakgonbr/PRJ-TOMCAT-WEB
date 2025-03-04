@@ -12,7 +12,9 @@ public class SchedulerListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent event) {
         scheduler = Executors.newSingleThreadScheduledExecutor();
-        scheduler.scheduleAtFixedRate(new service.StatisticsJob(), 24 - java.time.LocalDateTime.now().getHour(), 1, TimeUnit.HOURS);
+
+        scheduler.scheduleAtFixedRate(new service.StatisticsJob(), 24 - java.time.LocalDateTime.now().getHour(), 24, TimeUnit.HOURS);
+        scheduler.scheduleAtFixedRate(new service.TFIDFJob(), 24 - java.time.LocalDateTime.now().getHour(), 24, TimeUnit.HOURS);
     }
 
     @Override

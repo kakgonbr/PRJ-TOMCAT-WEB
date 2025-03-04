@@ -7,27 +7,27 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-public class ChatLoader extends HttpServlet {
+public class ProductLoader extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         model.User user = (model.User) session.getAttribute("user");
-        int targetUserId = Integer.parseInt(request.getParameter("targetUser"));
+        String recommendations = (String) request.getAttribute("query");
+
+        if (recommendations == null || recommendations.isBlank()) return;
 
         try {
-            int box = dao.ChatDAO.BoxManager.getBox(service.DatabaseConnection.getConnection(), user.getId(), targetUserId).getId();
-
-            java.util.List<model.ChatContent> messages = dao.ChatDAO.ContentManager.getContent(service.DatabaseConnection.getConnection(), box);
+            java.util.List<model.Product> products = dao.ProductDAO.ProductFetcher.getRecommendation(service.DatabaseConnection.getConnection(), recommendations);
 
             response.setContentType("application/json");
 
-            String json = new com.google.gson.Gson().toJson(messages);
+            String json = new com.google.gson.Gson().toJson(products);
 
             service.Logging.logger.info("Sending back to user {} json {}", user.getId(), json);
 
             response.getWriter().write(json);
         } catch (java.sql.SQLException e) {
-            service.Logging.logger.warn("FAILED TO GET CHAT CONTENT FOR {}, REASON: {}", user.getId(), e.getMessage());
+            service.Logging.logger.warn("FAILED TO GET RECOMMENDATIONS FOR {}, REASON: {}", user.getId(), e.getMessage());
 
             return;
         }        

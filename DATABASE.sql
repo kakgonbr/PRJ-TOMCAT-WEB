@@ -365,6 +365,12 @@ GO
 CREATE PROCEDURE GetRecommendation (@query NVARCHAR(400))
 AS
 BEGIN
+	IF @query IS NULL OR LTRIM(RTRIM(@query)) = ''
+    BEGIN
+        SELECT TOP 10 * FROM tblProduct ORDER BY NEWID();
+        RETURN;
+    END
+
     CREATE TABLE #result (value varchar(400));
     
     WITH tf AS (

@@ -2,6 +2,7 @@
 <%-- POSSIBLE REQUEST PARAMETERS:  --%>
 
 <%@ page isErrorPage="true" %>
+<%@ page session="false" %>
 
 <!DOCTYPE html>
 <html>
