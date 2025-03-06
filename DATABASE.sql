@@ -7,30 +7,39 @@ CREATE TABLE tblResourceMap
 CREATE TABLE tblUser
 (
 	id int PRIMARY KEY,
-	email nvarchar(50) NOT NULL,
+	email nvarchar(50) NOT NULL UNIQUE,
 	username varchar(30) NOT NULL UNIQUE,
 	phoneNumber varchar(12) not null UNIQUE,
 	password varchar(50) NOT NULL,
 	persistentCookie varchar(255) UNIQUE,
-	googleID varchar(255) unique,	
-	facebookID varchar(255) unique,
+	googleId varchar(255) unique,	
+	facebookId varchar(255) unique,
 	isAdmin bit DEFAULT 0,
 	credit money,
 
 	displayName nvarchar(50),
-	profileStringResourceID varchar(30),
+	profileStringResourceId varchar(30),
 	bio nvarchar(255),
 
-	CONSTRAINT fk_user_resourceID FOREIGN KEY (profileStringResourceID) REFERENCES tblResourceMap(id)
+	CONSTRAINT fk_user_resourceId FOREIGN KEY (profileStringResourceId) REFERENCES tblResourceMap(id)
+)
+
+CREATE TABLE tblPreference
+(
+	id int PRIMARY KEY IdENTITY(1, 1),
+	userId int NOT NULL,
+	keyword varchar(30) NOT NULL,
+
+	CONSTRAINT fk_pref_user FOREIGN KEY (userId) REFERENCES tblUser
 )
 
 CREATE TABLE tblUserPreference
 (
-	userID int,
+	userId int,
 	preference nvarchar(30),
 
-	PRIMARY KEY (userID, preference),
-	CONSTRAINT fk_userpref_user FOREIGN KEY (userID) REFERENCES tblUser(id)
+	PRIMARY KEY (userId, preference),
+	CONSTRAINT fk_userpref_user FOREIGN KEY (userId) REFERENCES tblUser(id)
 )
 
 CREATE TABLE tblChatBox
@@ -46,19 +55,19 @@ CREATE TABLE tblChatBox
 CREATE TABLE tblChatBoxContent
 (
 	id int PRIMARY KEY,
-	chatBoxID int,
+	chatBoxId int,
 	message nvarchar(100) NOT NULL,
 	time DATETIME NOT NULL DEFAULT GETDATE(),
-	senderID int,
+	senderId int,
 
-	CONSTRAINT fk_cbcontent_sender FOREIGN KEY (senderID) REFERENCES tblUser(id),
-	CONSTRAINT fk_cbcontent_chatbox FOREIGN KEY (chatBoxID) REFERENCES tblChatBox(id)
+	CONSTRAINT fk_cbcontent_sender FOREIGN KEY (senderId) REFERENCES tblUser(id),
+	CONSTRAINT fk_cbcontent_chatbox FOREIGN KEY (chatBoxId) REFERENCES tblChatBox(id)
 )
 
 CREATE TABLE tblPromotion
 (
 	id int PRIMARY KEY,
-	creatorID int,
+	creatorId int,
 	name nvarchar(30) NOT NULL,
 	type bit DEFAULT 0, -- 0 is %, 1 is flat
 	ofAdmin bit DEFAULT 0, 
@@ -66,129 +75,129 @@ CREATE TABLE tblPromotion
 	creationDate DATE DEFAULT GETDATE(),
 	expireDate DATE NOT NULL,
 
-	CONSTRAINT fk_promo_creator FOREIGN KEY (creatorID) REFERENCES tblUser(id)
+	CONSTRAINT fk_promo_creator FOREIGN KEY (creatorId) REFERENCES tblUser(id)
 )
 
 CREATE TABLE tblShop
 (
 	id int PRIMARY KEY,
-	ownerID int,
+	ownerId int,
 	name nvarchar(30) NOT NULL,
 	address nvarchar(100),
-	profileStringResourceID varchar(30),
+	profileStringResourceId varchar(30),
 	visible bit DEFAULT 0,
 
-	CONSTRAINT fk_shop_resourceID FOREIGN KEY (profileStringResourceID) REFERENCES tblResourceMap(id),
-	CONSTRAINT fk_shop_owner FOREIGN KEY (ownerID) REFERENCES tblUser(id)
+	CONSTRAINT fk_shop_resourceId FOREIGN KEY (profileStringResourceId) REFERENCES tblResourceMap(id),
+	CONSTRAINT fk_shop_owner FOREIGN KEY (ownerId) REFERENCES tblUser(id)
 )
 
 CREATE TABLE tblCategory
 (
 	id int PRIMARY KEY,
 	name nvarchar(30),
-	imageStringResourceID varchar(30),
+	imageStringResourceId varchar(30),
 	parent_id int
 
-	CONSTRAINT fk_category_resourceID FOREIGN KEY (imageStringResourceID) REFERENCES tblResourceMap(id),
-	CONSTRAINT fk_category_parentID FOREIGN KEY (parent_id) REFERENCES tblCategory(id)
+	CONSTRAINT fk_category_resourceId FOREIGN KEY (imageStringResourceId) REFERENCES tblResourceMap(id),
+	CONSTRAINT fk_category_parentId FOREIGN KEY (parent_id) REFERENCES tblCategory(id)
 )
 
 CREATE TABLE tblVariation
 (
 	id int PRIMARY KEY,
-	categoryID int,
+	categoryId int,
 	name nvarchar(30),
 	datatype varchar(10),
 	unit varchar(10),
 
-	CONSTRAINT fk_variation_category FOREIGN KEY (categoryID) REFERENCES tblCategory(id)
+	CONSTRAINT fk_variation_category FOREIGN KEY (categoryId) REFERENCES tblCategory(id)
 )
 
 CREATE TABLE tblVariationValue
 (
 	id int PRIMARY KEY,
-	variationID int,
+	variationId int,
 	value varchar(15),
 
-	constraint fk_variationvalue_variation foreign key (variationID) references tblVariation(id)
+	constraint fk_variationvalue_variation foreign key (variationId) references tblVariation(id)
 )
 
 CREATE TABLE tblProduct
 (
 	id int PRIMARY KEY,
-	shopID int,
-	categoryID int,
+	shopId int,
+	categoryId int,
 	name nvarchar(50) NOT NULL,
 	description nvarchar(255),
-	availablePromotionID int,
-	imageStringResourceID varchar(30),
+	availablePromotionId int,
+	imageStringResourceId varchar(30),
 	
-	CONSTRAINT fk_product_resourceID FOREIGN KEY (imageStringResourceID) REFERENCES tblResourceMap(id),
-	CONSTRAINT fK_product_shop FOREIGN KEY (shopID) REFERENCES tblShop(id),
-	CONSTRAINT fk_product_category FOREIGN KEY (categoryID) REFERENCES tblCategory(id),
-	CONSTRAINT fk_product_promo FOREIGN KEY (availablePromotionID) REFERENCES tblPromotion(id)
+	CONSTRAINT fk_product_resourceId FOREIGN KEY (imageStringResourceId) REFERENCES tblResourceMap(id),
+	CONSTRAINT fK_product_shop FOREIGN KEY (shopId) REFERENCES tblShop(id),
+	CONSTRAINT fk_product_category FOREIGN KEY (categoryId) REFERENCES tblCategory(id),
+	CONSTRAINT fk_product_promo FOREIGN KEY (availablePromotionId) REFERENCES tblPromotion(id)
 )
 
 CREATE TABLE tblProductImage 
 (
 	id int PRIMARY KEY,
-	productID int,
-	imageStringResourceID varchar(30),
+	productId int,
+	imageStringResourceId varchar(30),
 
-	CONSTRAINT fk_productimage_resourceID FOREIGN KEY (imageStringResourceID) REFERENCES tblResourceMap(id),
-	CONSTRAINT fk_productimage_product FOREIGN KEY (productID) REFERENCES tblProduct
+	CONSTRAINT fk_productimage_resourceId FOREIGN KEY (imageStringResourceId) REFERENCES tblResourceMap(id),
+	CONSTRAINT fk_productimage_product FOREIGN KEY (productId) REFERENCES tblProduct
 )
 
 create table tblProductItem
 (
 	id int primary key,
-	productID int,
+	productId int,
 	stock int,
 	price money,
 
-	constraint fk_productitem_product foreign key (productID) references tblProduct(id)
+	constraint fk_productitem_product foreign key (productId) references tblProduct(id)
 )
 
 create table tblProductCustomization
 (
 	id int primary key,
-	productItemID int,
-	variationValueID int,
+	productItemId int,
+	variationValueId int,
 
-	constraint fk_productcustomization_productitem foreign key (productItemID) references tblProductItem(id),
-	constraint fk_productcustomization_variationvalue foreign key (variationValueID) references tblVariationValue(id)
+	constraint fk_productcustomization_productitem foreign key (productItemId) references tblProductItem(id),
+	constraint fk_productcustomization_variationvalue foreign key (variationValueId) references tblVariationValue(id)
 )
 
 create table tblReview
 (
 	id int PRIMARY KEY,
-	userID int,
-	productID int,
+	userId int,
+	productId int,
 	rate int,
 	comment nvarchar(255),
 
-	constraint fk_review_user FOREIGN KEY (userID) REFERENCES tblUser(id),
-	constraint fk_review_product FOREIGN KEY (productID) REFERENCES tblProduct(id)
+	constraint fk_review_user FOREIGN KEY (userId) REFERENCES tblUser(id),
+	constraint fk_review_product FOREIGN KEY (productId) REFERENCES tblProduct(id)
 )
 
 CREATE TABLE tblCart
 (
 	id int PRIMARY KEY,
-	userID int,
+	userId int,
 
-	CONSTRAINT fk_cart_user FOREIGN KEY (userID) REFERENCES tblUser(id)
+	CONSTRAINT fk_cart_user FOREIGN KEY (userId) REFERENCES tblUser(id)
 )
 
 CREATE TABLE tblCartItem
 (
 	id int PRIMARY KEY,
-	cartID int,
-	productItemID int,
+	cartId int,
+	productItemId int,
 	quantity int NOT NULL,
 
-	-- CONSTRAINT pk_cartitem PRIMARY KEY (cartID, productCustomizationID),
-	CONSTRAINT fk_cartitem_cart FOREIGN KEY (cartID) REFERENCES tblCart(id),
-	CONSTRAINT fk_cartitem_productitem FOREIGN KEY (productItemID) REFERENCES tblProductItem(id)
+	-- CONSTRAINT pk_cartitem PRIMARY KEY (cartId, productCustomizationId),
+	CONSTRAINT fk_cartitem_cart FOREIGN KEY (cartId) REFERENCES tblCart(id),
+	CONSTRAINT fk_cartitem_productitem FOREIGN KEY (productItemId) REFERENCES tblProductItem(id)
 )
 
 CREATE TABLE tblPaymentMethod
@@ -200,57 +209,57 @@ CREATE TABLE tblPaymentMethod
 CREATE TABLE tblOrder
 (
 	id int PRIMARY KEY,
-	userID int,
-	paymentMethodID int,
+	userId int,
+	paymentMethodId int,
 	shippingAddress nvarchar(100),
-	promotionID int,
+	promotionId int,
 	date datetime DEFAULT GETDATE(),
 	finalPrice money,  --after promotion and iclude shipping cost
 
 
-	CONSTRAINT fk_order_user FOREIGN KEY (userID) REFERENCES tblUser(id),
-	CONSTRAINT fK_order_paymentMethod FOREIGN KEY (paymentMethodID) REFERENCES tblPaymentMethod(id),
-	CONSTRAINT fk_order_promotion FOREIGN KEY (promotionID) REFERENCES tblPromotion(id)
+	CONSTRAINT fk_order_user FOREIGN KEY (userId) REFERENCES tblUser(id),
+	CONSTRAINT fK_order_paymentMethod FOREIGN KEY (paymentMethodId) REFERENCES tblPaymentMethod(id),
+	CONSTRAINT fk_order_promotion FOREIGN KEY (promotionId) REFERENCES tblPromotion(id)
 )
 
 CREATE TABLE tblOrderedItem
 (
 	id int PRIMARY KEY,
-	orderID int,
-	productItemID int,
+	orderId int,
+	productItemId int,
 	orderStatus varchar(30),
 	quantity int NOT NULL,
 	totalPrice money,
 	shippingCost money, --per shop per order
 
-	CONSTRAINT fk_ordereditem_order FOREIGN KEY (orderID) REFERENCES tblOrder(id),
-	CONSTRAINT fk_ordereditem_productitem FOREIGN KEY (productItemID) REFERENCES tblProductItem(id)
+	CONSTRAINT fk_ordereditem_order FOREIGN KEY (orderId) REFERENCES tblOrder(id),
+	CONSTRAINT fk_ordereditem_productitem FOREIGN KEY (productItemId) REFERENCES tblProductItem(id)
 )
 
 CREATE TABLE tblOnholdCredit
 (
 	id int PRIMARY KEY,
-	userID int,
+	userId int,
 	amount money NOT NULL,
 	date date DEFAULT GETDATE(),
 	claimDate date DEFAULT DATEADD(day, 7, GETDATE()),
 
-	CONSTRAINT fk_onhold_user FOREIGN KEY (userID) REFERENCES tblUser(id)
+	CONSTRAINT fk_onhold_user FOREIGN KEY (userId) REFERENCES tblUser(id)
 )
 
 CREATE TABLE tblNotification
 (
 	id int PRIMARY KEY,
-	userID int, -- can be null if the notification is global
+	userId int, -- can be null if the notification is global
 	title nvarchar(30) NOT NULL,
 	body nvarchar(255),
 
-	CONSTRAINT fk_notification_user FOREIGN KEY (userID) REFERENCES tblUser
+	CONSTRAINT fk_notification_user FOREIGN KEY (userId) REFERENCES tblUser
 )
 
 CREATE TABLE tblServerStatistics
 (
-	id int PRIMARY KEY IDENTITY(1, 1), -- stats wont be deleted
+	id int PRIMARY KEY IdENTITY(1, 1), -- stats wont be deleted
 	day date NOT NULL,
 	totalMoneyEarned int,
 	userNum int,
@@ -271,7 +280,7 @@ CREATE TABLE tblShopStatistics
 
 )
 
--- TF-IDF RELATED STUFF
+-- TF-IdF RELATED STUFF
 CREATE TABLE tblBaseVector 
 (
     keyword nvarchar(400) PRIMARY KEY
@@ -283,7 +292,7 @@ CREATE TABLE tblVector (
 );
 
 GO
-CREATE PROCEDURE ComputeTFIDF
+CREATE PROCEDURE ComputeTFIdF
 AS
 BEGIN
 	DELETE FROM tblVector;
@@ -344,7 +353,7 @@ BEGIN
 		SELECT 
 			tf.id, 
 			tf.keyword, 
-			tf.TF * LOG((SELECT COUNT(*) FROM tblProduct) / NULLIF(df.DF, 0)) AS TFIDF
+			tf.TF * LOG((SELECT COUNT(*) FROM tblProduct) / NULLIF(df.DF, 0)) AS TFIdF
 		FROM tf
 		JOIN df ON tf.keyword = df.keyword
 	),
@@ -367,7 +376,7 @@ AS
 BEGIN
 	IF @query IS NULL OR LTRIM(RTRIM(@query)) = ''
     BEGIN
-        SELECT TOP 10 * FROM tblProduct ORDER BY NEWID();
+        SELECT TOP 10 * FROM tblProduct ORDER BY NEWId();
         RETURN;
     END
 
@@ -392,7 +401,7 @@ BEGIN
 	tfidf AS (
 		SELECT 
 			tf.keyword, 
-			tf.TF * LOG((SELECT COUNT(*) FROM tblProduct) / NULLIF(df.DF, 0)) AS TFIDF
+			tf.TF * LOG((SELECT COUNT(*) FROM tblProduct) / NULLIF(df.DF, 0)) AS TFIdF
 		FROM tf
 		JOIN df ON tf.keyword = df.keyword
 	),
