@@ -1,5 +1,6 @@
 package service;
 
+import java.util.HashMap;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -7,10 +8,21 @@ import jakarta.persistence.Persistence;
 public class DatabaseConnection {
     private static EntityManagerFactory factory;
 
+    static {
+        
+    }
+
     public static void initialize() {
         try {
             service.Logging.logger.info("Initializing Database Connection.");
-            factory = Persistence.createEntityManagerFactory(config.Config.DBConfig.PERSISTENCE_UNIT_NAME);
+
+            java.util.Map<String, String> properties = new HashMap<>();
+            properties.put("javax.persistence.jdbc.url", String.format("jdbc:sqlserver://%s:1433;databaseName=%s", System.getenv("DB_ADDRESS"), System.getenv("DB_NAME")));
+            properties.put("javax.persistence.jdbc.user", System.getenv("DB_USERNAME"));
+            properties.put("javax.persistence.jdbc.password", System.getenv("DB_PASSWORD"));
+            properties.put("javax.persistence.jdbc.driver", "com.mysql.cj.jdbc.Driver"); // Change based on DB
+
+            factory = Persistence.createEntityManagerFactory(config.Config.DBConfig.PERSISTENCE_UNIT_NAME, properties);
         } catch (Exception e) {
             service.Logging.logger.error("FAILED TO INTIALIZE DATABASE CONNECTION, REASON : {}", e.getMessage());
             

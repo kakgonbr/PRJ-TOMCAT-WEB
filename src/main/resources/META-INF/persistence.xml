@@ -50,9 +50,6 @@
     <class>model.User</class>
     <class>model.Product</class>
     <properties>
-      <property name="jakarta.persistence.jdbc.url" value="jdbc:sqlserver://${DB_ADDRESS}:1433;databaseName=${DB_NAME}"/>
-      <property name="jakarta.persistence.jdbc.user" value="${DB_USERNAME}"/>
-      <property name="jakarta.persistence.jdbc.password" value="${DB_PASSWORD}"/>
       <property name="jakarta.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
       <property name="hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect"/>
       <property name="hibernate.hbm2ddl.auto" value="update"/>
