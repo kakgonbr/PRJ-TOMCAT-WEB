@@ -33,7 +33,7 @@ public class ChatDAO {
                 "t1.*,\r\n" + //
                 "t2a.username AS username1,\r\n" + //
                 "t2b.username AS username2\r\n" + //
-                "FROM (SELECT * FROM tblChatBox WHERE (user1 = ? OR user2 = ?)) t1\r\n" + //
+                "FROM (SELECT * FROM tblChatBox WHERE (user1 = ?1 OR user2 = ?2)) t1\r\n" + //
                 "LEFT JOIN tblUser t2a ON t1.user1 = t2a.id\r\n" + //
                 "LEFT JOIN tblUser t2b ON t1.user2 = t2b.id;";
 
@@ -53,7 +53,7 @@ public class ChatDAO {
                         "t1.*,\r\n" + //
                         "t2a.username AS username1,\r\n" + //
                         "t2b.username AS username2\r\n" + //
-                        "FROM (SELECT * FROM tblChatBox WHERE (user1 = ? AND user2 = ?) OR (user1 = ? AND user2 = ?)) t1\r\n" + //
+                        "FROM (SELECT * FROM tblChatBox WHERE (user1 = ?1 AND user2 = ?2) OR (user1 = ?3 AND user2 = ?4)) t1\r\n" + //
                         "LEFT JOIN tblUser t2a ON t1.user1 = t2a.id\r\n" + //
                         "LEFT JOIN tblUser t2b ON t1.user2 = t2b.id;";
 
@@ -97,7 +97,7 @@ public class ChatDAO {
             }
         } // public static void createContent
 
-        private static final String GET_CONTENT_BY_BOX = "SELECT * FROM tblChatBoxContent WHERE chatBoxID = ?";
+        private static final String GET_CONTENT_BY_BOX = "SELECT * FROM tblChatBoxContent WHERE chatBoxID = ?1";
 
         public static synchronized java.util.List<model.ChatContent> getContent(int box) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {

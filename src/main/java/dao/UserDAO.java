@@ -34,7 +34,7 @@ public final class UserDAO {
             }
         } // public static void createUser
 
-        private static final String DELETE_USER = "UPDATE tblUser SET status = 0 WHERE id = ?";
+        private static final String DELETE_USER = "UPDATE tblUser SET status = 0 WHERE id = ?1";
 
         public static synchronized void deleteUser(int id) throws SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
@@ -43,8 +43,6 @@ public final class UserDAO {
                 throw new java.sql.SQLException(e);
             }
         } // public static void deleteUser
-
-        private static final String UPDATE_USER = "UPDATE tblUser SET email = ?, username = ?, phoneNumber = ?, password = ?, persistentCookie = ?, googleID = ?, facebookID = ?, isAdmin = ?, credit = ?, displayName = ?, profileStringResourceID = ?, bio = ? WHERE id = ?";
 
         /**
          *
@@ -144,8 +142,8 @@ public final class UserDAO {
             }
         } // public static model.User getUser
 
-        private static final String GET_USER_BY_USER = "SELECT * FROM tblUser WHERE username = ? AND password = ?";
-        private static final String GET_USER_BY_EMAIL = "SELECT * FROM tblUser WHERE email = ? AND password = ?";
+        private static final String GET_USER_BY_USER = "SELECT * FROM tblUser WHERE username = ?1 AND password = ?2";
+        private static final String GET_USER_BY_EMAIL = "SELECT * FROM tblUser WHERE email = ?1 AND password = ?2";
 
         public static synchronized model.User getUser(String userOrEmail, String password)
                 throws SQLException {

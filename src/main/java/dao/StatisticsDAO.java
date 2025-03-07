@@ -53,17 +53,17 @@ public final class StatisticsDAO {
         private static final String CREATE_SERVER_STATISTICS = "INSERT INTO tblServerStatistics (day, totalMoneyEarned, userNum, productNum, shopNum, promotionNum, purchaseNum, visitNum, peakSessionNum, averageResponseTime, maxResponseTime)\r\n"
                 + //
                 "VALUES (\r\n" + //
-                "    ?,\r\n" + //
+                "    ?1,\r\n" + //
                 "    SELECT SUM(finalPrice) FROM tblOrder,\r\n" + //
                 "    SELECT COUNT(*) FROM tblUser,\r\n" + //
                 "    SELECT COUNT(*) FROM tblProduct,\r\n" + //
                 "    SELECT COUNT(*) FROM tblShop,\r\n" + //
                 "    SELECT COUNT(*) FROM tblPromotion,\r\n" + //
                 "    SELECT SUM(quantity) FROM tblOrderedItem,\r\n" + //
-                "    ?,\r\n" + //
-                "    ?,\r\n" + //
-                "    ?,\r\n" + //
-                "    ?\r\n" + //
+                "    ?2,\r\n" + //
+                "    ?3,\r\n" + //
+                "    ?4,\r\n" + //
+                "    ?5\r\n" + //
                 ")";
 
         /**
