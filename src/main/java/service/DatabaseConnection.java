@@ -17,9 +17,9 @@ public class DatabaseConnection {
             service.Logging.logger.info("Initializing Database Connection.");
 
             java.util.Map<String, String> properties = new HashMap<>();
-            properties.put("javax.persistence.jdbc.url", String.format("jdbc:sqlserver://%s:1433;databaseName=%s", System.getenv("DB_ADDRESS"), System.getenv("DB_NAME")));
-            properties.put("javax.persistence.jdbc.user", System.getenv("DB_USERNAME"));
-            properties.put("javax.persistence.jdbc.password", System.getenv("DB_PASSWORD"));
+            properties.put("jakartaa.persistence.jdbc.url", String.format("jdbc:sqlserver://%s:1433;databaseName=%s;encrypt=true;trustServerCertificate=true;", System.getenv("DB_ADDRESS"), System.getenv("DB_NAME")));
+            properties.put("jakartaa.persistence.jdbc.user", System.getenv("DB_USERNAME"));
+            properties.put("jakartaa.persistence.jdbc.password", System.getenv("DB_PASSWORD"));
 
             factory = Persistence.createEntityManagerFactory(config.Config.DBConfig.PERSISTENCE_UNIT_NAME, properties);
         } catch (Exception e) {
