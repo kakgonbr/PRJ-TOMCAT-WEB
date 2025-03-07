@@ -28,8 +28,8 @@ import java.util.List;
 @Table(name = "tblCart")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblCart.findAll", query = "SELECT t FROM TblCart t"),
-    @NamedQuery(name = "TblCart.findById", query = "SELECT t FROM TblCart t WHERE t.id = :id")})
+    @NamedQuery(name = "Cart.findAll", query = "SELECT t FROM Cart t"),
+    @NamedQuery(name = "Cart.findById", query = "SELECT t FROM Cart t WHERE t.id = :id")})
 public class Cart implements Serializable {
 
     @OneToMany(mappedBy = "cartId")
@@ -90,7 +90,7 @@ public class Cart implements Serializable {
 
     @Override
     public String toString() {
-        return "model.TblCart[ id=" + id + " ]";
+        return "model.Cart[ id=" + id + " ]";
     }
 
     @XmlTransient

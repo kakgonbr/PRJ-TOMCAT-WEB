@@ -24,8 +24,8 @@ import java.io.Serializable;
 @Table(name = "tblBaseVector")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblBaseVector.findAll", query = "SELECT t FROM TblBaseVector t"),
-    @NamedQuery(name = "TblBaseVector.findByKeyword", query = "SELECT t FROM TblBaseVector t WHERE t.keyword = :keyword")})
+    @NamedQuery(name = "BaseVector.findAll", query = "SELECT t FROM BaseVector t"),
+    @NamedQuery(name = "BaseVector.findByKeyword", query = "SELECT t FROM BaseVector t WHERE t.keyword = :keyword")})
 public class TblBaseVector implements Serializable {
 
     private static final long serialVersionUID = 1L;

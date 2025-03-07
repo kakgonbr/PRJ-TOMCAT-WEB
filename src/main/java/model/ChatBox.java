@@ -29,8 +29,8 @@ import java.util.List;
 @Table(name = "tblChatBox")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblChatBox.findAll", query = "SELECT t FROM TblChatBox t"),
-    @NamedQuery(name = "TblChatBox.findById", query = "SELECT t FROM TblChatBox t WHERE t.id = :id")})
+    @NamedQuery(name = "ChatBox.findAll", query = "SELECT t FROM ChatBox t"),
+    @NamedQuery(name = "ChatBox.findById", query = "SELECT t FROM ChatBox t WHERE t.id = :id")})
 public class ChatBox implements Serializable {
 
     private static final long serialVersionUID = 1L;

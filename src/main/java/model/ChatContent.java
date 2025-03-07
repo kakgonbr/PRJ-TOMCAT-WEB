@@ -30,10 +30,10 @@ import java.util.Date;
 @Table(name = "tblChatBoxContent")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblChatBoxContent.findAll", query = "SELECT t FROM TblChatBoxContent t"),
-    @NamedQuery(name = "TblChatBoxContent.findById", query = "SELECT t FROM TblChatBoxContent t WHERE t.id = :id"),
-    @NamedQuery(name = "TblChatBoxContent.findByMessage", query = "SELECT t FROM TblChatBoxContent t WHERE t.message = :message"),
-    @NamedQuery(name = "TblChatBoxContent.findByTime", query = "SELECT t FROM TblChatBoxContent t WHERE t.time = :time")})
+    @NamedQuery(name = "ChatBoxContent.findAll", query = "SELECT t FROM ChatBoxContent t"),
+    @NamedQuery(name = "ChatBoxContent.findById", query = "SELECT t FROM ChatBoxContent t WHERE t.id = :id"),
+    @NamedQuery(name = "ChatBoxContent.findByMessage", query = "SELECT t FROM ChatBoxContent t WHERE t.message = :message"),
+    @NamedQuery(name = "ChatBoxContent.findByTime", query = "SELECT t FROM ChatBoxContent t WHERE t.time = :time")})
 public class ChatContent implements Serializable {
 
     @Basic(optional = false)
