@@ -10,7 +10,7 @@ import jakarta.persistence.EntityTransaction;
 public class ResourceDAO {
     public static synchronized String getPath(String name) throws java.sql.SQLException {
         try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-            return em.createNamedQuery("ResourceMap.findById", model.ResourceMap.class).setParameter(1, name)
+            return em.createNamedQuery("ResourceMap.findById", model.ResourceMap.class).setParameter("id", name)
                     .getSingleResult().getSystemPath();
         } catch (Exception e) {
             throw new java.sql.SQLException(e);
