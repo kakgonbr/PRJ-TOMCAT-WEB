@@ -37,7 +37,7 @@ public class MaintenanceFilter implements jakarta.servlet.Filter {
 
         HttpSession session = httpRequest.getSession(false);
 
-        if (session != null && ((model.User) session.getAttribute("user")).isAdmin()) {
+        if (session != null && ((model.User) session.getAttribute("user")).getIsAdmin()) {
             chain.doFilter(httpRequest, response);
             return;
         }

@@ -1,7 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="3.0" xmlns="https://jakarta.ee/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
-    <!-- Define Persistence Unit -->
-    <persistence-unit name="my_persistence_unit">
-        
-    </persistence-unit>
+  <persistence-unit name="pu">
+    <class>model.TblVector</class>
+    <class>model.TblVariation</class>
+    <class>model.TblChatBoxContent</class>
+    <class>model.TblPromotion</class>
+    <class>model.TblProduct</class>
+    <class>model.TblNotification</class>
+    <class>model.TblOrderedItem</class>
+    <class>model.TblBaseVector</class>
+    <class>model.TblProductImage</class>
+    <class>model.TblOrder</class>
+    <class>model.TblServerStatistics</class>
+    <class>model.TblShopStatistics</class>
+    <class>model.TblResourceMap</class>
+    <class>model.TblChatBox</class>
+    <class>model.TblProductItem</class>
+    <class>model.TblCartItem</class>
+    <class>model.TblUserPreference</class>
+    <class>model.TblPreference</class>
+    <class>model.TblPaymentMethod</class>
+    <class>model.TblCart</class>
+    <class>model.TblUser</class>
+    <class>model.TblOnholdCredit</class>
+    <class>model.TblCategory</class>
+    <class>model.TblProductCustomization</class>
+    <class>model.TblReview</class>
+    <class>model.TblVariationValue</class>
+    <class>model.TblShop</class>
+    <class>model.Preference</class>
+    <class>model.PaymentMethod</class>
+    <class>model.ProductImage</class>
+    <class>model.Shop</class>
+    <class>model.OnholdCredit</class>
+    <class>model.Variation</class>
+    <class>model.VariationValue</class>
+    <class>model.Notification</class>
+    <class>model.UserPreference</class>
+    <class>model.ResourceMap</class>
+    <class>model.OrderedItem</class>
+    <class>model.Category</class>
+    <class>model.CartItem</class>
+    <class>model.ShopStatistics</class>
+    <class>model.ProductOrder</class>
+    <class>model.ProductItem</class>
+    <class>model.Promotion</class>
+    <class>model.ProductCustomization</class>
+    <class>model.Review</class>
+    <class>model.User</class>
+    <class>model.Product</class>
+    <properties>
+      <property name="jakarta.persistence.jdbc.url" value="jdbc:sqlserver://${DB_ADDRESS}:1433;databaseName=${DB_NAME}"/>
+      <property name="jakarta.persistence.jdbc.user" value="${DB_USERNAME}"/>
+      <property name="jakarta.persistence.jdbc.password" value="${DB_PASSWORD}"/>
+      <property name="jakarta.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect"/>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="hibernate.show_sql" value="false"/>
+      <property name="hibernate.format_sql" value="true"/>
+    </properties>
+  </persistence-unit>
 </persistence>

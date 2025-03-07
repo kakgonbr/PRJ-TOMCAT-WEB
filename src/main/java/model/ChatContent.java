@@ -1,71 +1,142 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package model;
 
-public class ChatContent {
-    private int id;
-    private int boxId;
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
+import java.util.Date;
+
+/**
+ *
+ * @author ASUS
+ */
+@Entity
+@Table(name = "tblChatBoxContent")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "TblChatBoxContent.findAll", query = "SELECT t FROM TblChatBoxContent t"),
+    @NamedQuery(name = "TblChatBoxContent.findById", query = "SELECT t FROM TblChatBoxContent t WHERE t.id = :id"),
+    @NamedQuery(name = "TblChatBoxContent.findByMessage", query = "SELECT t FROM TblChatBoxContent t WHERE t.message = :message"),
+    @NamedQuery(name = "TblChatBoxContent.findByTime", query = "SELECT t FROM TblChatBoxContent t WHERE t.time = :time")})
+public class ChatContent implements Serializable {
+
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
+    @Column(name = "message")
     private String message;
-    private java.sql.Timestamp time;
-    private int sender;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "time")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date time;
 
-    public ChatContent() {}
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "id")
+    private Integer id;
+    @JoinColumn(name = "chatBoxId", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private ChatBox chatBoxId;
+    @JoinColumn(name = "senderId", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User senderId;
 
-    public ChatContent(int t_id, int t_box, String t_message, java.sql.Timestamp t_time, int sender) {
-        setId(t_id);
-        setBoxId(t_box);
-        setMessage(t_message);
-        setTime(t_time);
-        setSender(sender);
+    public ChatContent() {
     }
 
-    public void setBoxId(int boxId) {
-        this.boxId = boxId;
-    }
-
-    public void setId(int id) {
+    public ChatContent(Integer id) {
         this.id = id;
     }
 
-    public void setMessage(String message) {
+    public ChatContent(Integer id, String message, Date time) {
+        this.id = id;
         this.message = message;
-    }
-
-    public void setSender(int sender) {
-        this.sender = sender;
-    }
-
-    public void setTime(java.sql.Timestamp time) {
         this.time = time;
     }
 
-    public int getBoxId() {
-        return boxId;
+    public Integer getId() {
+        return id;
     }
 
-    public int getId() {
-        return id;
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+
+    public ChatBox getChatBoxId() {
+        return chatBoxId;
+    }
+
+    public void setChatBoxId(ChatBox chatBoxId) {
+        this.chatBoxId = chatBoxId;
+    }
+
+    public User getSenderId() {
+        return senderId;
+    }
+
+    public void setSenderId(User senderId) {
+        this.senderId = senderId;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof ChatContent)) {
+            return false;
+        }
+        ChatContent other = (ChatContent) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "model.TblChatBoxContent[ id=" + id + " ]";
     }
 
     public String getMessage() {
         return message;
     }
 
-    public int getSender() {
-        return sender;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public java.sql.Timestamp getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public static ChatContent fromResultSet(java.sql.ResultSet rs) throws java.sql.SQLException {
-        return new ChatContent(rs.getInt("id"),
-         rs.getInt("chatBoxID"),
-         rs.getString("message"),
-         rs.getTimestamp("time"),
-         rs.getInt("senderID"));
+    public void setTime(Date time) {
+        this.time = time;
     }
-
-    public static ChatContent fromMessage(String message, int sender, int box) {
-        return new ChatContent(-1, box, message, java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()), sender);
-    }
+    
 }

@@ -7,48 +7,38 @@ package model;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 import jakarta.xml.bind.annotation.XmlRootElement;
-import jakarta.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  *
  * @author ASUS
  */
 @Entity
-@Table(name = "tblCart")
+@Table(name = "tblShopStatistics")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblCart.findAll", query = "SELECT t FROM TblCart t"),
-    @NamedQuery(name = "TblCart.findById", query = "SELECT t FROM TblCart t WHERE t.id = :id")})
-public class Cart implements Serializable {
-
-    @OneToMany(mappedBy = "cartId")
-    private List<CartItem> cartItemList;
+    @NamedQuery(name = "ShopStatistics.findAll", query = "SELECT s FROM ShopStatistics s"),
+    @NamedQuery(name = "ShopStatistics.findById", query = "SELECT s FROM ShopStatistics s WHERE s.id = :id")})
+public class ShopStatistics implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id")
     private Integer id;
-    @JoinColumn(name = "userId", referencedColumnName = "id")
-    @ManyToOne
-    private User userId;
 
-    public Cart() {
+    public ShopStatistics() {
     }
 
-    public Cart(Integer id) {
+    public ShopStatistics(Integer id) {
         this.id = id;
     }
 
@@ -58,14 +48,6 @@ public class Cart implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public User getUserId() {
-        return userId;
-    }
-
-    public void setUserId(User userId) {
-        this.userId = userId;
     }
 
     @Override
@@ -78,10 +60,10 @@ public class Cart implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Cart)) {
+        if (!(object instanceof ShopStatistics)) {
             return false;
         }
-        Cart other = (Cart) object;
+        ShopStatistics other = (ShopStatistics) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -90,16 +72,7 @@ public class Cart implements Serializable {
 
     @Override
     public String toString() {
-        return "model.TblCart[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    public List<CartItem> getCartItemList() {
-        return cartItemList;
-    }
-
-    public void setCartItemList(List<CartItem> cartItemList) {
-        this.cartItemList = cartItemList;
+        return "model.ShopStatistics[ id=" + id + " ]";
     }
     
 }

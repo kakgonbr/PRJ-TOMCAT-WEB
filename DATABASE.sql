@@ -6,7 +6,7 @@ CREATE TABLE tblResourceMap
 
 CREATE TABLE tblUser
 (
-	id int PRIMARY KEY,
+	id int PRIMARY KEY IDENTITY(1, 1),
 	email nvarchar(50) NOT NULL UNIQUE,
 	username varchar(30) NOT NULL UNIQUE,
 	phoneNumber varchar(12) not null UNIQUE,
@@ -26,7 +26,7 @@ CREATE TABLE tblUser
 
 CREATE TABLE tblPreference
 (
-	id int PRIMARY KEY IdENTITY(1, 1),
+	id int PRIMARY KEY IDENTITY(1, 1),
 	userId int NOT NULL,
 	keyword varchar(30) NOT NULL,
 
@@ -44,7 +44,7 @@ CREATE TABLE tblUserPreference
 
 CREATE TABLE tblChatBox
 (
-	id int PRIMARY KEY,
+	id int PRIMARY KEY IDENTITY(1, 1),
 	user1 int,
 	user2 int,
 
@@ -54,7 +54,7 @@ CREATE TABLE tblChatBox
 
 CREATE TABLE tblChatBoxContent
 (
-	id int PRIMARY KEY,
+	id int PRIMARY KEY IDENTITY(1, 1),
 	chatBoxId int,
 	message nvarchar(100) NOT NULL,
 	time DATETIME NOT NULL DEFAULT GETDATE(),
@@ -66,7 +66,7 @@ CREATE TABLE tblChatBoxContent
 
 CREATE TABLE tblPromotion
 (
-	id int PRIMARY KEY,
+	id int PRIMARY KEY IDENTITY(1, 1),
 	creatorId int,
 	name nvarchar(30) NOT NULL,
 	type bit DEFAULT 0, -- 0 is %, 1 is flat
@@ -80,7 +80,7 @@ CREATE TABLE tblPromotion
 
 CREATE TABLE tblShop
 (
-	id int PRIMARY KEY,
+	id int PRIMARY KEY IDENTITY(1, 1),
 	ownerId int,
 	name nvarchar(30) NOT NULL,
 	address nvarchar(100),
@@ -93,7 +93,7 @@ CREATE TABLE tblShop
 
 CREATE TABLE tblCategory
 (
-	id int PRIMARY KEY,
+	id int PRIMARY KEY IDENTITY(1, 1),
 	name nvarchar(30),
 	imageStringResourceId varchar(30),
 	parent_id int
@@ -104,7 +104,7 @@ CREATE TABLE tblCategory
 
 CREATE TABLE tblVariation
 (
-	id int PRIMARY KEY,
+	id int PRIMARY KEY IDENTITY(1, 1),
 	categoryId int,
 	name nvarchar(30),
 	datatype varchar(10),
@@ -115,7 +115,7 @@ CREATE TABLE tblVariation
 
 CREATE TABLE tblVariationValue
 (
-	id int PRIMARY KEY,
+	id int PRIMARY KEY IDENTITY(1, 1),
 	variationId int,
 	value varchar(15),
 
@@ -124,7 +124,7 @@ CREATE TABLE tblVariationValue
 
 CREATE TABLE tblProduct
 (
-	id int PRIMARY KEY,
+	id int PRIMARY KEY IDENTITY(1, 1),
 	shopId int,
 	categoryId int,
 	name nvarchar(50) NOT NULL,
@@ -140,7 +140,7 @@ CREATE TABLE tblProduct
 
 CREATE TABLE tblProductImage 
 (
-	id int PRIMARY KEY,
+	id int PRIMARY KEY IDENTITY(1, 1),
 	productId int,
 	imageStringResourceId varchar(30),
 
@@ -150,7 +150,7 @@ CREATE TABLE tblProductImage
 
 create table tblProductItem
 (
-	id int primary key,
+	id int PRIMARY KEY IDENTITY(1, 1),
 	productId int,
 	stock int,
 	price money,
@@ -160,7 +160,7 @@ create table tblProductItem
 
 create table tblProductCustomization
 (
-	id int primary key,
+	id int PRIMARY KEY IDENTITY(1, 1),
 	productItemId int,
 	variationValueId int,
 
@@ -170,7 +170,7 @@ create table tblProductCustomization
 
 create table tblReview
 (
-	id int PRIMARY KEY,
+	id int PRIMARY KEY IDENTITY(1, 1),
 	userId int,
 	productId int,
 	rate int,
@@ -182,7 +182,7 @@ create table tblReview
 
 CREATE TABLE tblCart
 (
-	id int PRIMARY KEY,
+	id int PRIMARY KEY IDENTITY(1, 1),
 	userId int,
 
 	CONSTRAINT fk_cart_user FOREIGN KEY (userId) REFERENCES tblUser(id)
@@ -190,7 +190,7 @@ CREATE TABLE tblCart
 
 CREATE TABLE tblCartItem
 (
-	id int PRIMARY KEY,
+	id int PRIMARY KEY IDENTITY(1, 1),
 	cartId int,
 	productItemId int,
 	quantity int NOT NULL,
@@ -202,13 +202,13 @@ CREATE TABLE tblCartItem
 
 CREATE TABLE tblPaymentMethod
 (
-	id int PRIMARY KEY,
+	id int PRIMARY KEY IDENTITY(1, 1),
 	name varchar(30)
 )
 
 CREATE TABLE tblOrder
 (
-	id int PRIMARY KEY,
+	id int PRIMARY KEY IDENTITY(1, 1),
 	userId int,
 	paymentMethodId int,
 	shippingAddress nvarchar(100),
@@ -224,7 +224,7 @@ CREATE TABLE tblOrder
 
 CREATE TABLE tblOrderedItem
 (
-	id int PRIMARY KEY,
+	id int PRIMARY KEY IDENTITY(1, 1),
 	orderId int,
 	productItemId int,
 	orderStatus varchar(30),
@@ -238,7 +238,7 @@ CREATE TABLE tblOrderedItem
 
 CREATE TABLE tblOnholdCredit
 (
-	id int PRIMARY KEY,
+	id int PRIMARY KEY IDENTITY(1, 1),
 	userId int,
 	amount money NOT NULL,
 	date date DEFAULT GETDATE(),
@@ -249,7 +249,7 @@ CREATE TABLE tblOnholdCredit
 
 CREATE TABLE tblNotification
 (
-	id int PRIMARY KEY,
+	id int PRIMARY KEY IDENTITY(1, 1),
 	userId int, -- can be null if the notification is global
 	title nvarchar(30) NOT NULL,
 	body nvarchar(255),
@@ -259,7 +259,7 @@ CREATE TABLE tblNotification
 
 CREATE TABLE tblServerStatistics
 (
-	id int PRIMARY KEY IdENTITY(1, 1), -- stats wont be deleted
+	id int PRIMARY KEY IDENTITY(1, 1), -- stats wont be deleted
 	day date NOT NULL,
 	totalMoneyEarned int,
 	userNum int,
@@ -275,7 +275,7 @@ CREATE TABLE tblServerStatistics
 
 CREATE TABLE tblShopStatistics
 (
-	id int PRIMARY KEY,
+	id int PRIMARY KEY IDENTITY(1, 1),
 
 
 )
@@ -287,7 +287,7 @@ CREATE TABLE tblBaseVector
 );
 
 CREATE TABLE tblVector (
-    id int PRIMARY KEY,
+    productId int PRIMARY KEY,
     vector nvarchar(400)
 );
 
@@ -311,7 +311,7 @@ BEGIN
 		FROM tblProduct
 		CROSS APPLY STRING_SPLIT(LOWER(tblProduct.description), ' ')
 		WHERE LEN(value) > 0
-	)
+	);
 
 	WITH tfbefore AS (
 		SELECT 
@@ -417,9 +417,9 @@ BEGIN
     --SELECT * FROM STRING_SPLIT((SELECT value FROM #result), ',');
 
 	WITH ItemVector AS (
-		SELECT v.id, s.value AS tfidf_value, 
-           ROW_NUMBER() OVER (PARTITION BY v.id ORDER BY (SELECT NULL)) AS pos
-		FROM tblVector v
+		SELECT v.productId, s.value AS tfidf_value, 
+           ROW_NUMBER() OVER (PARTITION BY v.productId ORDER BY (SELECT NULL)) AS pos
+		FROM tblVe	ctor v
 		CROSS APPLY STRING_SPLIT(v.vector, ',') s
 	),
 	QueryVector AS (

@@ -1,6 +1,7 @@
 package controller.ajax;
 
 import java.io.IOException;
+import java.util.stream.Collectors;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,7 +18,7 @@ public class ProductLoader extends HttpServlet {
         if (recommendations == null || recommendations.isBlank()) return;
 
         try {
-            java.util.List<model.Product> products = dao.ProductDAO.ProductFetcher.getRecommendation(service.DatabaseConnection.getConnection(), recommendations);
+            java.util.List<model.ProductWrapper> products = dao.ProductDAO.ProductFetcher.getRecommendation(recommendations).stream().map(model.ProductWrapper::new).collect(Collectors.toList());
 
             response.setContentType("application/json");
 

@@ -1,21 +1,41 @@
 package service;
 
-public final class DatabaseConnection {
-    private static java.sql.Connection connection;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 
-    public static void setConnection(java.sql.Connection t_connection) {
-        connection = t_connection;
-    }
+public class DatabaseConnection {
+    private static EntityManagerFactory factory;
 
-    public static java.sql.Connection getConnection() throws java.sql.SQLException {
-        for (int i = 0; i < config.Config.DBConfig.RETRY; ++i) {
-            if (connection.isValid(config.Config.DBConfig.TIMEOUT)) {
-                return connection;
-            }
+    public static void initialize() {
+        try {
+            service.Logging.logger.info("Initializing Database Connection.");
+            factory = Persistence.createEntityManagerFactory(config.Config.DBConfig.PERSISTENCE_UNIT_NAME);
+        } catch (Exception e) {
+            service.Logging.logger.error("FAILED TO INTIALIZE DATABASE CONNECTION, REASON : {}", e.getMessage());
+            
+            service.ServerLockDown.lockDownServer("DATABASE CONNECTION INVALID");
         }
-
-        service.ServerLockDown.lockDownServer("DATABASE CONNECTION CLOSED");
+    }
+    
+    public static EntityManager getEntityManager() {
+        if (factory == null || !factory.isOpen()) {
+            service.Logging.logger.error("ENTITY MANAGER FACTORY IS INVALID");
+            service.ServerLockDown.lockDownServer("DATABASE CONNECTION INVALID");
+            
+            return null;
+        }
         
-        throw new java.sql.SQLException("DATABASE CONNECTION CLOSED");
+        return factory.createEntityManager();
+    }
+    
+    public static void closeFactory() {
+        service.Logging.logger.info("Closing Entity Manager Factory");
+        if (factory != null && factory.isOpen()) {
+            factory.close();
+            service.Logging.logger.info("Entity Manager Factory Closed");
+        } else {
+            service.Logging.logger.warn("Entity Manager Factory is invalid, unable to close");
+        }
     }
 }

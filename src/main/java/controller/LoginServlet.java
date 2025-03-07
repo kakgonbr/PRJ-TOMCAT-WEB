@@ -21,7 +21,7 @@ public class LoginServlet extends HttpServlet {
         if (session != null) {
             model.User user = (model.User) session.getAttribute("user");
             if (user != null) {
-                redirect(request, response, user.isAdmin());
+                redirect(request, response, user.getIsAdmin());
                 return;
             }
         }
@@ -40,7 +40,7 @@ public class LoginServlet extends HttpServlet {
         model.User user;
 
         try {
-            user = dao.UserDAO.UserFetcher.getUser(service.DatabaseConnection.getConnection(), userOrEmail, password);
+            user = dao.UserDAO.UserFetcher.getUser(userOrEmail, password);
 
             if (user == null) {
                 throw new java.sql.SQLException("Failed to retreive user");
@@ -61,7 +61,7 @@ public class LoginServlet extends HttpServlet {
 
         // request.getRequestDispatcher(config.Config.JSPMapper.HOME_JSP).forward(request, response);
 
-        redirect(request, response, user.isAdmin());
+        redirect(request, response, user.getIsAdmin());
     }
 
     private static void redirect(HttpServletRequest request, HttpServletResponse response, boolean isAdmin) throws ServletException, IOException {

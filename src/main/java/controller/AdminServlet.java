@@ -41,7 +41,7 @@ public class AdminServlet extends HttpServlet {
 
     private static void logStatistics() {
         try {
-            dao.StatisticsDAO.SystemStatisticsManager.addStatistics(service.DatabaseConnection.getConnection());
+            dao.StatisticsDAO.SystemStatisticsManager.addStatistics();
         } catch (java.sql.SQLException e) {
             service.Logging.logger.warn("Statistics Job failed, reason: {}", e.getMessage());
             

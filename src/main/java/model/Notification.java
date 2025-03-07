@@ -7,49 +7,61 @@ package model;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import jakarta.xml.bind.annotation.XmlRootElement;
-import jakarta.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  *
  * @author ASUS
  */
 @Entity
-@Table(name = "tblCart")
+@Table(name = "tblNotification")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblCart.findAll", query = "SELECT t FROM TblCart t"),
-    @NamedQuery(name = "TblCart.findById", query = "SELECT t FROM TblCart t WHERE t.id = :id")})
-public class Cart implements Serializable {
-
-    @OneToMany(mappedBy = "cartId")
-    private List<CartItem> cartItemList;
+    @NamedQuery(name = "Notification.findAll", query = "SELECT n FROM Notification n"),
+    @NamedQuery(name = "Notification.findById", query = "SELECT n FROM Notification n WHERE n.id = :id"),
+    @NamedQuery(name = "Notification.findByTitle", query = "SELECT n FROM Notification n WHERE n.title = :title"),
+    @NamedQuery(name = "Notification.findByBody", query = "SELECT n FROM Notification n WHERE n.body = :body")})
+public class Notification implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id")
     private Integer id;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 30)
+    @Column(name = "title")
+    private String title;
+    @Size(max = 255)
+    @Column(name = "body")
+    private String body;
     @JoinColumn(name = "userId", referencedColumnName = "id")
     @ManyToOne
     private User userId;
 
-    public Cart() {
+    public Notification() {
     }
 
-    public Cart(Integer id) {
+    public Notification(Integer id) {
         this.id = id;
+    }
+
+    public Notification(Integer id, String title) {
+        this.id = id;
+        this.title = title;
     }
 
     public Integer getId() {
@@ -58,6 +70,22 @@ public class Cart implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
     }
 
     public User getUserId() {
@@ -78,10 +106,10 @@ public class Cart implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Cart)) {
+        if (!(object instanceof Notification)) {
             return false;
         }
-        Cart other = (Cart) object;
+        Notification other = (Notification) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -90,16 +118,7 @@ public class Cart implements Serializable {
 
     @Override
     public String toString() {
-        return "model.TblCart[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    public List<CartItem> getCartItemList() {
-        return cartItemList;
-    }
-
-    public void setCartItemList(List<CartItem> cartItemList) {
-        this.cartItemList = cartItemList;
+        return "model.Notification[ id=" + id + " ]";
     }
     
 }

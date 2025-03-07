@@ -1,6 +1,7 @@
 package controller.ajax;
 
 import java.io.IOException;
+import java.util.stream.Collectors;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,9 +16,9 @@ public class ChatLoader extends HttpServlet {
         int targetUserId = Integer.parseInt(request.getParameter("targetUser"));
 
         try {
-            int box = dao.ChatDAO.BoxManager.getBox(service.DatabaseConnection.getConnection(), user.getId(), targetUserId).getId();
+            int box = dao.ChatDAO.BoxManager.getBox(user.getId(), targetUserId).getId();
 
-            java.util.List<model.ChatContent> messages = dao.ChatDAO.ContentManager.getContent(service.DatabaseConnection.getConnection(), box);
+            java.util.List<model.ChatContentWrapper> messages = dao.ChatDAO.ContentManager.getContent(box).stream().map(model.ChatContentWrapper::new).collect(Collectors.toList());;
 
             response.setContentType("application/json");
 

@@ -65,14 +65,14 @@ public class ChatEndPoint {
         Session targetSession = activeSessions.get(targetId);
         if (targetSession != null && targetSession.isOpen()) {
             try {
-                targetSession.getBasicRemote().sendText(gson.toJson(model.ChatContent.fromMessage(map.get("text"), targetId, boxId), model.ChatContent.class));
+                targetSession.getBasicRemote().sendText(gson.toJson(model.ChatContentWrapper.fromMessage(map.get("text"), targetId, boxId), model.ChatContentWrapper.class));
             } catch (IOException e) {
                 service.Logging.logger.error("FAILED TO SEND MESSAGE TO SESSION {}", targetSession.getId());
             }
         }
 
         try {
-            dao.ChatDAO.ContentManager.createContent(service.DatabaseConnection.getConnection(), boxId, user.getId(), map.get("text"));
+            dao.ChatDAO.ContentManager.createContent(boxId, user.getId(), map.get("text"));
         } catch (java.sql.SQLException e) {
             service.Logging.logger.error("FAILED TO INSERT CHAT CONTENT FOR {}, REASON: {}", session.getId(), e.getMessage());
 
@@ -121,7 +121,7 @@ public class ChatEndPoint {
         int target = Integer.parseInt(map.get("targetUser"));
 
         try {
-            boxId = dao.ChatDAO.BoxManager.getBox(service.DatabaseConnection.getConnection(), user.getId(), target).getId();
+            boxId = dao.ChatDAO.BoxManager.getBox(user.getId(), target).getId();
 
             targetId = target;
             activeSessions.put(user.getId(), session);

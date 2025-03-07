@@ -1,5 +1,7 @@
 package service;
 
+import model.User;
+
 public final class SessionAndCookieManager {
     public static boolean createSessionFromCookie(jakarta.servlet.http.HttpSession session, jakarta.servlet.http.HttpServletRequest request) {
         jakarta.servlet.http.Cookie[] cookies = request.getCookies();
@@ -7,11 +9,7 @@ public final class SessionAndCookieManager {
         for (final jakarta.servlet.http.Cookie cookie : cookies) {
             if (cookie.getName().equals(config.Config.CookieMapper.REMEMBER_ME_COOKIE)) {
                 try {
-                    model.User user = dao.UserDAO.UserFetcher.getUser(service.DatabaseConnection.getConnection(), cookie.getValue());
-
-                    if (user == null) {
-                        throw new java.sql.SQLException("Could not locate user from cookie value: " + cookie.getValue());
-                    }
+                    model.User user = dao.UserDAO.UserFetcher.getUser(cookie.getValue());
 
                     session = request.getSession();
                     session.setAttribute("user", user);
@@ -28,7 +26,7 @@ public final class SessionAndCookieManager {
     /**
      *
      */
-    public static void createSession(model.User user, jakarta.servlet.http.HttpSession session, boolean rememberMe) throws java.sql.SQLException {
+    public static void createSession(User user, jakarta.servlet.http.HttpSession session, boolean rememberMe) throws java.sql.SQLException {
         session.setAttribute("user", user);
 
         if (rememberMe) {
@@ -36,7 +34,7 @@ public final class SessionAndCookieManager {
                 // user.setCookie(java.util.UUID.randomUUID().toString());
                 String cookie = java.util.UUID.randomUUID().toString();
                 try {
-                    dao.UserDAO.UserManager.updateCookie(service.DatabaseConnection.getConnection(), user.getId(), cookie);
+                    dao.UserDAO.UserManager.updateCookie(user.getId(), cookie);
                     
                     return;
                 } catch (java.sql.SQLIntegrityConstraintViolationException e) {

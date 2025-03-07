@@ -7,15 +7,14 @@ package model;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
@@ -26,32 +25,30 @@ import java.util.List;
  * @author ASUS
  */
 @Entity
-@Table(name = "tblChatBox")
+@Table(name = "tblPaymentMethod")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblChatBox.findAll", query = "SELECT t FROM TblChatBox t"),
-    @NamedQuery(name = "TblChatBox.findById", query = "SELECT t FROM TblChatBox t WHERE t.id = :id")})
-public class ChatBox implements Serializable {
+    @NamedQuery(name = "PaymentMethod.findAll", query = "SELECT p FROM PaymentMethod p"),
+    @NamedQuery(name = "PaymentMethod.findById", query = "SELECT p FROM PaymentMethod p WHERE p.id = :id"),
+    @NamedQuery(name = "PaymentMethod.findByName", query = "SELECT p FROM PaymentMethod p WHERE p.name = :name")})
+public class PaymentMethod implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id")
     private Integer id;
-    @JoinColumn(name = "user1", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.EAGER)
-    private User user1;
-    @JoinColumn(name = "user2", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.EAGER)
-    private User user2;
-    @OneToMany(mappedBy = "chatBoxId")
-    private List<ChatContent> tblChatBoxContentList;
+    @Size(max = 30)
+    @Column(name = "name")
+    private String name;
+    @OneToMany(mappedBy = "paymentMethodId")
+    private List<ProductOrder> productOrderList;
 
-    public ChatBox() {
+    public PaymentMethod() {
     }
 
-    public ChatBox(Integer id) {
+    public PaymentMethod(Integer id) {
         this.id = id;
     }
 
@@ -63,29 +60,21 @@ public class ChatBox implements Serializable {
         this.id = id;
     }
 
-    public User getUser1() {
-        return user1;
+    public String getName() {
+        return name;
     }
 
-    public void setUser1(User user1) {
-        this.user1 = user1;
-    }
-
-    public User getUser2() {
-        return user2;
-    }
-
-    public void setUser2(User user2) {
-        this.user2 = user2;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @XmlTransient
-    public List<ChatContent> getTblChatBoxContentList() {
-        return tblChatBoxContentList;
+    public List<ProductOrder> getProductOrderList() {
+        return productOrderList;
     }
 
-    public void setTblChatBoxContentList(List<ChatContent> tblChatBoxContentList) {
-        this.tblChatBoxContentList = tblChatBoxContentList;
+    public void setProductOrderList(List<ProductOrder> productOrderList) {
+        this.productOrderList = productOrderList;
     }
 
     @Override
@@ -98,10 +87,10 @@ public class ChatBox implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ChatBox)) {
+        if (!(object instanceof PaymentMethod)) {
             return false;
         }
-        ChatBox other = (ChatBox) object;
+        PaymentMethod other = (PaymentMethod) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -110,7 +99,7 @@ public class ChatBox implements Serializable {
 
     @Override
     public String toString() {
-        return "model.TblChatBox[ id=" + id + " ]";
+        return "model.PaymentMethod[ id=" + id + " ]";
     }
     
 }

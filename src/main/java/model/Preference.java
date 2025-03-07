@@ -7,49 +7,57 @@ package model;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import jakarta.xml.bind.annotation.XmlRootElement;
-import jakarta.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  *
  * @author ASUS
  */
 @Entity
-@Table(name = "tblCart")
+@Table(name = "tblPreference")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblCart.findAll", query = "SELECT t FROM TblCart t"),
-    @NamedQuery(name = "TblCart.findById", query = "SELECT t FROM TblCart t WHERE t.id = :id")})
-public class Cart implements Serializable {
-
-    @OneToMany(mappedBy = "cartId")
-    private List<CartItem> cartItemList;
+    @NamedQuery(name = "Preference.findAll", query = "SELECT p FROM Preference p"),
+    @NamedQuery(name = "Preference.findById", query = "SELECT p FROM Preference p WHERE p.id = :id"),
+    @NamedQuery(name = "Preference.findByKeyword", query = "SELECT p FROM Preference p WHERE p.keyword = :keyword")})
+public class Preference implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id")
     private Integer id;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 30)
+    @Column(name = "keyword")
+    private String keyword;
     @JoinColumn(name = "userId", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private User userId;
 
-    public Cart() {
+    public Preference() {
     }
 
-    public Cart(Integer id) {
+    public Preference(Integer id) {
         this.id = id;
+    }
+
+    public Preference(Integer id, String keyword) {
+        this.id = id;
+        this.keyword = keyword;
     }
 
     public Integer getId() {
@@ -58,6 +66,14 @@ public class Cart implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 
     public User getUserId() {
@@ -78,10 +94,10 @@ public class Cart implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Cart)) {
+        if (!(object instanceof Preference)) {
             return false;
         }
-        Cart other = (Cart) object;
+        Preference other = (Preference) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -90,16 +106,7 @@ public class Cart implements Serializable {
 
     @Override
     public String toString() {
-        return "model.TblCart[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    public List<CartItem> getCartItemList() {
-        return cartItemList;
-    }
-
-    public void setCartItemList(List<CartItem> cartItemList) {
-        this.cartItemList = cartItemList;
+        return "model.Preference[ id=" + id + " ]";
     }
     
 }

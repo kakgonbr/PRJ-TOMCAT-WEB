@@ -14,25 +14,30 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  *
  * @author ASUS
  */
 @Entity
-@Table(name = "tblProduct")
+@Table(name = "tblCategory")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p"),
-    @NamedQuery(name = "Product.findById", query = "SELECT p FROM Product p WHERE p.id = :id"),
-    @NamedQuery(name = "Product.findByName", query = "SELECT p FROM Product p WHERE p.name = :name"),
-    @NamedQuery(name = "Product.findByDescription", query = "SELECT p FROM Product p WHERE p.description = :description")})
-public class Product implements Serializable {
+    @NamedQuery(name = "Category.findAll", query = "SELECT c FROM Category c"),
+    @NamedQuery(name = "Category.findById", query = "SELECT c FROM Category c WHERE c.id = :id"),
+    @NamedQuery(name = "Category.findByName", query = "SELECT c FROM Category c WHERE c.name = :name")})
+public class Category implements Serializable {
+
+    @Size(max = 30)
+    @Column(name = "name")
+    private String name;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -40,37 +45,24 @@ public class Product implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "name")
-    private String name;
-    @Size(max = 255)
-    @Column(name = "description")
-    private String description;
-    @JoinColumn(name = "categoryId", referencedColumnName = "id")
+    @OneToMany(mappedBy = "categoryId")
+    private List<Variation> variationList;
+    @OneToMany(mappedBy = "parentId")
+    private List<Category> categoryList;
+    @JoinColumn(name = "parent_id", referencedColumnName = "id")
     @ManyToOne
-    private Category categoryId;
-    @JoinColumn(name = "availablePromotionId", referencedColumnName = "id")
-    @ManyToOne
-    private Promotion availablePromotionId;
+    private Category parentId;
     @JoinColumn(name = "imageStringResourceId", referencedColumnName = "id")
     @ManyToOne
     private ResourceMap imageStringResourceId;
-    @JoinColumn(name = "shopId", referencedColumnName = "id")
-    @ManyToOne
-    private Shop shopId;
+    @OneToMany(mappedBy = "categoryId")
+    private List<Product> productList;
 
-    public Product() {
+    public Category() {
     }
 
-    public Product(Integer id) {
+    public Category(Integer id) {
         this.id = id;
-    }
-
-    public Product(Integer id, String name) {
-        this.id = id;
-        this.name = name;
     }
 
     public Integer getId() {
@@ -81,36 +73,31 @@ public class Product implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+
+    @XmlTransient
+    public List<Variation> getVariationList() {
+        return variationList;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setVariationList(List<Variation> variationList) {
+        this.variationList = variationList;
     }
 
-    public String getDescription() {
-        return description;
+    @XmlTransient
+    public List<Category> getCategoryList() {
+        return categoryList;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setCategoryList(List<Category> categoryList) {
+        this.categoryList = categoryList;
     }
 
-    public Category getCategoryId() {
-        return categoryId;
+    public Category getParentId() {
+        return parentId;
     }
 
-    public void setCategoryId(Category categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public Promotion getAvailablePromotionId() {
-        return availablePromotionId;
-    }
-
-    public void setAvailablePromotionId(Promotion availablePromotionId) {
-        this.availablePromotionId = availablePromotionId;
+    public void setParentId(Category parentId) {
+        this.parentId = parentId;
     }
 
     public ResourceMap getImageStringResourceId() {
@@ -121,12 +108,13 @@ public class Product implements Serializable {
         this.imageStringResourceId = imageStringResourceId;
     }
 
-    public Shop getShopId() {
-        return shopId;
+    @XmlTransient
+    public List<Product> getProductList() {
+        return productList;
     }
 
-    public void setShopId(Shop shopId) {
-        this.shopId = shopId;
+    public void setProductList(List<Product> productList) {
+        this.productList = productList;
     }
 
     @Override
@@ -139,10 +127,10 @@ public class Product implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Product)) {
+        if (!(object instanceof Category)) {
             return false;
         }
-        Product other = (Product) object;
+        Category other = (Category) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -151,7 +139,15 @@ public class Product implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Product[ id=" + id + " ]";
+        return "model.Category[ id=" + id + " ]";
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
     
 }

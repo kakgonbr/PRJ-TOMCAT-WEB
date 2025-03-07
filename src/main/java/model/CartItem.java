@@ -7,52 +7,58 @@ package model;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.xml.bind.annotation.XmlRootElement;
-import jakarta.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  *
  * @author ASUS
  */
 @Entity
-@Table(name = "tblChatBox")
+@Table(name = "tblCartItem")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblChatBox.findAll", query = "SELECT t FROM TblChatBox t"),
-    @NamedQuery(name = "TblChatBox.findById", query = "SELECT t FROM TblChatBox t WHERE t.id = :id")})
-public class ChatBox implements Serializable {
+    @NamedQuery(name = "CartItem.findAll", query = "SELECT c FROM CartItem c"),
+    @NamedQuery(name = "CartItem.findById", query = "SELECT c FROM CartItem c WHERE c.id = :id"),
+    @NamedQuery(name = "CartItem.findByQuantity", query = "SELECT c FROM CartItem c WHERE c.quantity = :quantity")})
+public class CartItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id")
     private Integer id;
-    @JoinColumn(name = "user1", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.EAGER)
-    private User user1;
-    @JoinColumn(name = "user2", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.EAGER)
-    private User user2;
-    @OneToMany(mappedBy = "chatBoxId")
-    private List<ChatContent> tblChatBoxContentList;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "quantity")
+    private int quantity;
+    @JoinColumn(name = "cartId", referencedColumnName = "id")
+    @ManyToOne
+    private Cart cartId;
+    @JoinColumn(name = "productItemId", referencedColumnName = "id")
+    @ManyToOne
+    private ProductItem productItemId;
 
-    public ChatBox() {
+    public CartItem() {
     }
 
-    public ChatBox(Integer id) {
+    public CartItem(Integer id) {
         this.id = id;
+    }
+
+    public CartItem(Integer id, int quantity) {
+        this.id = id;
+        this.quantity = quantity;
     }
 
     public Integer getId() {
@@ -63,29 +69,28 @@ public class ChatBox implements Serializable {
         this.id = id;
     }
 
-    public User getUser1() {
-        return user1;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setUser1(User user1) {
-        this.user1 = user1;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
-    public User getUser2() {
-        return user2;
+    public Cart getCartId() {
+        return cartId;
     }
 
-    public void setUser2(User user2) {
-        this.user2 = user2;
+    public void setCartId(Cart cartId) {
+        this.cartId = cartId;
     }
 
-    @XmlTransient
-    public List<ChatContent> getTblChatBoxContentList() {
-        return tblChatBoxContentList;
+    public ProductItem getProductItemId() {
+        return productItemId;
     }
 
-    public void setTblChatBoxContentList(List<ChatContent> tblChatBoxContentList) {
-        this.tblChatBoxContentList = tblChatBoxContentList;
+    public void setProductItemId(ProductItem productItemId) {
+        this.productItemId = productItemId;
     }
 
     @Override
@@ -98,10 +103,10 @@ public class ChatBox implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ChatBox)) {
+        if (!(object instanceof CartItem)) {
             return false;
         }
-        ChatBox other = (ChatBox) object;
+        CartItem other = (CartItem) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -110,7 +115,7 @@ public class ChatBox implements Serializable {
 
     @Override
     public String toString() {
-        return "model.TblChatBox[ id=" + id + " ]";
+        return "model.CartItem[ id=" + id + " ]";
     }
     
 }

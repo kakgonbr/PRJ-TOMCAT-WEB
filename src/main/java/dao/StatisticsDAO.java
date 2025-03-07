@@ -2,6 +2,11 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.Statement;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Query;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -64,24 +69,48 @@ public final class StatisticsDAO {
         /**
          * Only called if the system needs to log the current SystemStatisticsContainer
          */
-        public static synchronized void addStatistics(Connection connection) throws SQLException {
+        public static synchronized void addStatistics() throws SQLException {
 
-            try (PreparedStatement addPS = connection.prepareStatement(CREATE_SERVER_STATISTICS)) {
-                // 5
-                addPS.setDate(1, java.sql.Date.valueOf(java.time.LocalDate.now()));
-                addPS.setInt(2, SystemStatisticsContainer.getVisits());
-                addPS.setInt(3, SystemStatisticsContainer.getPeakSession());
-                addPS.setLong(4, SystemStatisticsContainer.getAverageResponseTime());
-                addPS.setLong(5, SystemStatisticsContainer.getMaxResponseTime());
+            // try (PreparedStatement addPS =
+            // connection.prepareStatement(CREATE_SERVER_STATISTICS)) {
+            // // 5
+            // addPS.setDate(1, java.sql.Date.valueOf(java.time.LocalDate.now()));
+            // addPS.setInt(2, SystemStatisticsContainer.getVisits());
+            // addPS.setInt(3, SystemStatisticsContainer.getPeakSession());
+            // addPS.setLong(4, SystemStatisticsContainer.getAverageResponseTime());
+            // addPS.setLong(5, SystemStatisticsContainer.getMaxResponseTime());
 
-                addPS.executeUpdate();
+            // addPS.executeUpdate();
 
-                connection.commit();
+            // connection.commit();
 
-            } catch (SQLException e) {
-                connection.rollback();
-                throw e;
+            // } catch (SQLException e) {
+            // connection.rollback();
+            // throw e;
+            // }
+
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                EntityTransaction et = em.getTransaction();
+
+                try {
+                    et.begin();
+
+                    em.createNativeQuery(CREATE_SERVER_STATISTICS, model.ChatBox.class).setParameter(1, java.time.LocalDate.now())
+                    .setParameter(2, SystemStatisticsContainer.getVisits())
+                    .setParameter(3, SystemStatisticsContainer.getPeakSession())
+                    .setParameter(4, SystemStatisticsContainer.getAverageResponseTime())
+                    .setParameter(5 ,SystemStatisticsContainer.getMaxResponseTime()).executeUpdate();
+
+                    et.commit();
+                } catch (Exception e) {
+                    if (et.isActive()) {
+                        et.rollback();
+
+                        throw new java.sql.SQLException(e);
+                    }
+                }
             }
+
         } // public static void addStatistics(Connection connection) throws
           // java.sql.SQLException
     } // public static final class SystemStatistics

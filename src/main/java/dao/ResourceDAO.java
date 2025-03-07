@@ -1,42 +1,43 @@
 package dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 
 /**
- * Get and make mappings of resources to system path. Note that the systemPath path is <strong>relative</strong> to <code>/prj/resources</code>
+ * Get and make mappings of resources to system path. Note that the systemPath
+ * path is <strong>relative</strong> to <code>/prj/resources</code>
  */
 public class ResourceDAO {
-    
-    private static final String GET_PATH = "SELECT systemPath FROM tblResourceMap WHERE id = ?"; // id is string
-
-    public static synchronized String getPath(Connection connection, String name) throws java.sql.SQLException {
-        try (PreparedStatement ps = connection.prepareStatement(GET_PATH)) {
-            ps.setString(1, name);
-
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                return rs.getString(1);
-            }
-
-            throw new java.sql.SQLException("NO PATH FOUND");
+    public static synchronized String getPath(String name) throws java.sql.SQLException {
+        try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+            return em.createNamedQuery("ResourceMap.findById", model.ResourceMap.class).setParameter(1, name)
+                    .getSingleResult().getSystemPath();
+        } catch (Exception e) {
+            throw new java.sql.SQLException(e);
         }
     }
 
-    private static final String MAKE_MAPPING = "INSERT INTO tblResourceMap (id, systemPath) VALUES (?, ?)";
+    public static synchronized void addMapping(String name, String path) throws java.sql.SQLException {
+        try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+            EntityTransaction et = em.getTransaction();
 
-    public static synchronized void addMapping(Connection connection, String name, String path) throws java.sql.SQLException {
-        try (PreparedStatement ps = connection.prepareStatement(MAKE_MAPPING)) {
-            ps.setString(1, name);
-            ps.setString(1, path);
+            try {
+                et.begin();
 
-            if (ps.executeUpdate() == 0) throw new java.sql.SQLException("CANNOT ADD MAPPING");
+                model.ResourceMap map = new model.ResourceMap();
+                map.setId(name);
+                map.setSystemPath(path);
 
-            connection.commit();
+                em.persist(map);
+
+                et.commit();
+            } catch (Exception e) {
+                if (et.isActive()) {
+                    et.rollback();
+                }
+
+                throw new java.sql.SQLException(e);
+            }
         }
     }
 }

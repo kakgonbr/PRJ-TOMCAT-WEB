@@ -10,7 +10,7 @@ public class TFIDFJob implements Runnable {
         service.Logging.logger.info("TFIDF Job started at: {}", java.time.LocalDateTime.now().format(config.Config.Time.outputFormatTime));
         
         try {
-            dao.ProductDAO.TFIDF.computeTFIDF(service.DatabaseConnection.getConnection());
+            dao.ProductDAO.TFIDF.computeTFIDF();
         } catch (java.sql.SQLException e) {
             service.Logging.logger.warn("TFIDF Job failed, reason: {}", e.getMessage());
             

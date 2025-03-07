@@ -1,61 +1,36 @@
 package dao;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import model.Product;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.ParameterMode;
 
 public class ProductDAO {
     public static class ProductFetcher {
-        private static final String GET_PRODUCTS = "SELECT * FROM tblProduct";
-
-        public static synchronized java.util.List<Product> getProducts(Connection connection) throws SQLException {
-            try (Statement statement = connection.createStatement()) {
-                ResultSet rs = statement.executeQuery(GET_PRODUCTS);
-
-                java.util.List<Product> products = new java.util.ArrayList<>();
-
-                while (rs.next()) {
-                    products.add(Product.fromResultSet(rs));
-                }
-
-                return products;
+        public static synchronized java.util.List<model.Product> getProducts() throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return em.createNamedQuery("Product.findAll", model.Product.class).getResultList();
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
             }
         } // public static synchronized java.util.List<Product> getProducts
 
-        private static final String GET_PRODUCTS_BY_ID = "SELECT * FROM tblProduct WHERE id = ?";
-        
-        public static synchronized Product getProduct(Connection connection, int id) throws SQLException {
-            try (PreparedStatement ps = connection.prepareStatement(GET_PRODUCTS_BY_ID)) {
-                ps.setInt(1, id);
-
-                ResultSet rs = ps.executeQuery();
-
-                while (rs.next()) {
-                    return Product.fromResultSet(rs);
-                }
+        public static synchronized model.Product getProduct(int id) throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return em.createNamedQuery("Product.findById", model.Product.class).setParameter(1, id)
+                        .getSingleResult();
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
             }
+        } // public static synchronized model.Product getProduct
 
-            throw new SQLException("CANNOT FIND PRODUCT");
-        } // public static synchronized Product getProduct
+        private static final String GET_RECOMMENDATION = "GetRecommendation";
 
-        private static final String GET_RECOMMENDATION = "{CALL GetRecommendation(?)}";
-
-        public static synchronized java.util.List<Product> getRecommendation(Connection connection, String query) throws SQLException {
-            try (CallableStatement cs = connection.prepareCall(GET_RECOMMENDATION)) {
-                cs.setString(1, query);
-                ResultSet rs = cs.executeQuery();
-
-                java.util.List<Product> products = new java.util.ArrayList<>();
-
-                while (rs.next()) {
-                    products.add(Product.fromResultSet(rs));
-                }
-
-                return products;
+        public static synchronized java.util.List<model.Product> getRecommendation(String query)
+                throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return em.createStoredProcedureQuery(GET_RECOMMENDATION).registerStoredProcedureParameter("query", String.class, ParameterMode.IN).setParameter(1, query).getResultList();
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
             }
         } // public static synchronized java.util.List<Product> getRecommendation
     } // public static class ProductFetcher
@@ -64,13 +39,23 @@ public class ProductDAO {
      * Try not to touch this, its methods are mostly run by the job handler
      */
     public static class TFIDF {
-        private static final String COMPUTE_TFIDF = "{CALL ComputeTFIDF()}";
+        private static final String COMPUTE_TFIDF = "ComputeTFIDF";
 
-        public static synchronized void computeTFIDF(Connection connection) throws SQLException {
-            try (CallableStatement cs = connection.prepareCall(COMPUTE_TFIDF)) {
-                cs.executeUpdate();
+        public static synchronized void computeTFIDF() throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                EntityTransaction et = em.getTransaction();
+                try {
+                    et.begin();
+                    em.createStoredProcedureQuery(COMPUTE_TFIDF).execute();
 
-                connection.commit();
+                    et.commit();
+                } catch (Exception e) {
+                    if (et.isActive()) {
+                        et.rollback();
+                    }
+
+                    throw new java.sql.SQLException(e);
+                }
             }
         } // public static synchronized void computeTFIDF
     }

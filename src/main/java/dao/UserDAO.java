@@ -2,6 +2,10 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.Statement;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,51 +14,33 @@ import model.User;
 
 public final class UserDAO {
     public static final class UserManager {
-        private static final String CREATE_USER = "INSERT INTO tblUser (id, email, username, phoneNumber, password, persistentCookie, googleID, facebookID, isAdmin, credit, displayName, profileStringResourceID, bio)\n"
-                + //
-                "VALUES (\n" + //
-                "    (SELECT ISNULL(MIN(t1.id) + 1, 1) FROM tblUser t1 LEFT JOIN tblUser t2 \n" + //
-                "     ON t1.id + 1 = t2.id WHERE t2.id IS NULL),\n" + //
-                "    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?\n" + //
-                ");";
+        public static synchronized void createUser(User user) throws SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                EntityTransaction et = em.getTransaction();
 
-        public static synchronized void createUser(Connection connection, User user) throws SQLException {
-            try (PreparedStatement addPS = connection.prepareStatement(CREATE_USER)) {
-                addPS.setString(1, user.getEmail());
-                addPS.setString(2, user.getUsername());
-                addPS.setString(3, user.getPhoneNumber());
-                addPS.setString(4, user.getPassword());
-                addPS.setString(5, user.getCookie());
-                addPS.setString(6, user.getLinkStatus().getGoogleId());
-                addPS.setString(7, user.getLinkStatus().getFacebookId());
-                addPS.setBoolean(8, false);
-                addPS.setLong(9, user.getCredit());
-                addPS.setString(10, user.getDisplayName());
-                addPS.setString(11, user.getProfilePicResource());
-                addPS.setString(12, user.getBio());
+                try {
+                    et.begin();
 
-                addPS.executeUpdate();
+                    em.persist(user);
 
-                connection.commit();
-            } catch (SQLException e) {
-                connection.rollback();
-                throw e;
+                    et.commit();
+                } catch (Exception e) {
+                    if (et.isActive()) {
+                        et.rollback();
+                    }
+
+                    throw new java.sql.SQLException(e);
+                }
             }
         } // public static void createUser
 
-        private static final String DELETE_USER = "DELETE * FROM tblUser WHERE id = ?";
+        private static final String DELETE_USER = "UPDATE tblUser SET status = 0 WHERE id = ?";
 
-        public static synchronized void deleteUser(Connection connection, int id) throws SQLException {
-
-            try (PreparedStatement ps = connection.prepareStatement(DELETE_USER)) {
-                ps.setInt(1, id);
-
-                ps.executeUpdate();
-
-                connection.commit();
-            } catch (SQLException e) {
-                connection.rollback();
-                throw e;
+        public static synchronized void deleteUser(int id) throws SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                em.createNativeQuery(DELETE_USER).setParameter(1, id).executeUpdate();
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
             }
         } // public static void deleteUser
 
@@ -64,56 +50,66 @@ public final class UserDAO {
          *
          * Careful, retrieve user's information from the database first
          */
-        public static synchronized void updateUser(Connection connection, User user) throws SQLException {
+        public static synchronized void updateUser(User user) throws SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                EntityTransaction et = em.getTransaction();
 
-            try (PreparedStatement addPS = connection.prepareStatement(UPDATE_USER)) {
-                // 13
-                addPS.setString(1, user.getEmail());
-                addPS.setString(2, user.getUsername());
-                addPS.setString(3, user.getPhoneNumber());
-                addPS.setString(4, user.getPassword());
-                addPS.setString(5, user.getCookie());
-                addPS.setString(6, user.getLinkStatus().getGoogleId());
-                addPS.setString(7, user.getLinkStatus().getFacebookId());
-                addPS.setBoolean(8, false);
-                addPS.setLong(9, user.getCredit());
-                addPS.setString(10, user.getDisplayName());
-                addPS.setString(11, user.getProfilePicResource());
-                addPS.setString(12, user.getBio());
+                try {
+                    et.begin();
 
-                addPS.setInt(13, user.getId());
+                    User dbUser = em.find(User.class, user.getId());
 
-                addPS.executeUpdate();
+                    dbUser.setEmail(user.getEmail());
+                    dbUser.setUsername(user.getUsername());
+                    dbUser.setPhoneNumber(user.getPhoneNumber());
+                    dbUser.setPassword(user.getPassword());
+                    dbUser.setPersistentCookie(user.getPersistentCookie());
+                    dbUser.setIsAdmin(user.getIsAdmin());
+                    dbUser.setGoogleId(user.getGoogleId());
+                    dbUser.setFacebookId(user.getFacebookId());
+                    dbUser.setCredit(user.getCredit());
+                    dbUser.setDisplayName(user.getDisplayName());
+                    dbUser.setProfileStringResourceId(user.getProfileStringResourceId());
+                    dbUser.setBio(user.getBio());
 
-                connection.commit();
+                    et.commit();
 
-            } catch (SQLException e) {
-                connection.rollback();
-                throw e;
+                } catch (Exception e) {
+                    if (et.isActive()) {
+                        et.rollback();
+                    }
+
+                    throw new java.sql.SQLException(e);
+                }
             }
-        }
 
-        private static final String UPDATE_COOKIE = "UPDATE tblUser SET persistentCookie = ? WHERE id = ?";
+        }
 
         /**
          *
          * Careful, retrieve user's information from the database first
          */
-        public static synchronized void updateCookie(Connection connection, int userId, String cookie)
+        public static synchronized void updateCookie(int userId, String cookie)
                 throws SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                EntityTransaction et = em.getTransaction();
 
-            try (PreparedStatement addPS = connection.prepareStatement(UPDATE_COOKIE)) {
-                // 2
-                addPS.setString(1, cookie);
-                addPS.setInt(2, userId);
+                try {
+                    et.begin();
 
-                addPS.executeUpdate();
+                    User dbUser = em.find(User.class, userId);
 
-                connection.commit();
+                    dbUser.setPersistentCookie(cookie);
 
-            } catch (SQLException e) {
-                connection.rollback();
-                throw e;
+                    et.commit();
+
+                } catch (Exception e) {
+                    if (et.isActive()) {
+                        et.rollback();
+                    }
+
+                    throw new java.sql.SQLException(e);
+                }
             }
         }
 
@@ -123,89 +119,56 @@ public final class UserDAO {
      * 
      */
     public static final class UserFetcher {
-        private static final String GET_USER_BY_ID = "SELECT * FROM tblUser WHERE id = ?";
-
-        public static synchronized model.User getUser(Connection connection, int id) throws SQLException {
-            try (PreparedStatement ps = connection.prepareStatement(GET_USER_BY_ID)) {
-                ps.setInt(1, id);
-
-                try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next())
-                        return model.User.fromResultSet(rs);
-                }
+        public static synchronized model.User getUser(int id) throws SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return em.createNamedQuery("User.findById", model.User.class).getSingleResult();
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
             }
-            return null;
         } // public static model.User getUser
 
-        private static final String GET_USER_BY_USERNAME = "SELECT * FROM tblUser WHERE username = ?";
-
-        public static synchronized model.User getUserFromUsername(Connection connection, String username)
+        public static synchronized model.User getUserFromUsername(String username)
                 throws SQLException {
-            try (PreparedStatement ps = connection.prepareStatement(GET_USER_BY_USERNAME)) {
-                ps.setString(1, username);
-
-                try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next())
-                        return model.User.fromResultSet(rs);
-                }
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return em.createNamedQuery("User.findByUsername", model.User.class).getSingleResult();
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
             }
-            throw new java.sql.SQLException("USER NOT FOUND");
         } // public static model.User getUser
 
-        private static final String GET_USER_BY_COOKIE = "SELECT * FROM tblUser WHERE persistentCookie = ?";
-
-        public static synchronized model.User getUser(Connection connection, String cookie) throws SQLException {
-            try (PreparedStatement ps = connection.prepareStatement(GET_USER_BY_COOKIE)) {
-                ps.setString(1, cookie);
-
-                try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next())
-                        return model.User.fromResultSet(rs);
-                }
+        public static synchronized model.User getUser(String cookie) throws SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return em.createNamedQuery("User.findByPersistentCookie", model.User.class).getSingleResult();
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
             }
-            throw new java.sql.SQLException("USER NOT FOUND");
         } // public static model.User getUser
 
         private static final String GET_USER_BY_USER = "SELECT * FROM tblUser WHERE username = ? AND password = ?";
         private static final String GET_USER_BY_EMAIL = "SELECT * FROM tblUser WHERE email = ? AND password = ?";
 
-        public static synchronized model.User getUser(Connection connection, String userOrEmail, String password)
+        public static synchronized model.User getUser(String userOrEmail, String password)
                 throws SQLException {
-            try (PreparedStatement ps = connection.prepareStatement(GET_USER_BY_USER)) {
-                ps.setString(1, userOrEmail);
-                ps.setString(2, password);
-
-                try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next())
-                        return model.User.fromResultSet(rs);
-                }
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return (User) em.createNativeQuery(GET_USER_BY_USER, User.class).setParameter(1, userOrEmail)
+                        .setParameter(2, password).getSingleResult();
+            } catch (Exception e) {
             }
 
-            try (PreparedStatement ps = connection.prepareStatement(GET_USER_BY_EMAIL)) {
-                ps.setString(1, userOrEmail);
-                ps.setString(2, password);
-
-                try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next())
-                        return model.User.fromResultSet(rs);
-                }
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return (User) em.createNativeQuery(GET_USER_BY_EMAIL, User.class).setParameter(1, userOrEmail)
+                        .setParameter(2, password).getSingleResult();
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
             }
-
-            throw new java.sql.SQLException("USER NOT FOUND");
         } // public static synchronized model.User getUser
 
-        private static final String GET_ALL_USER = "SELECT * FROM tblUser";
-
-        public static synchronized java.util.List<model.User> getUsers(Connection connection) throws java.sql.SQLException {
-            try (Statement statement = connection.createStatement();
-                ResultSet rs = statement.executeQuery(GET_ALL_USER)) {
-                
-                java.util.List<model.User> users = new java.util.ArrayList<>();
-                while (rs.next()) {
-                    users.add(model.User.fromResultSet(rs));
-                }
-
-                return users;
+        public static synchronized java.util.List<model.User> getUsers()
+                throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return em.createNamedQuery("User.findAll", model.User.class).getResultList();
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
             }
         } // public static synchronized java.util.List<model.User> getUsers
     } // public static final class UserFetcher

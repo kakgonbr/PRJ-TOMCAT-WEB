@@ -33,7 +33,7 @@ public class AuthenticationFilter implements jakarta.servlet.Filter {
         model.User user;
 
         if (session != null && (user = (model.User) session.getAttribute("user")) != null) {
-            if (!user.isAdmin() && path.startsWith("/admin")) {
+            if (!user.getIsAdmin() && path.startsWith("/admin")) {
                 service.Logging.logger.warn("Session {}, user ID {} attempted to go to {}, request rejected.", session.getId(), user.getId(), httpRequest.getRequestURI());
 
                 ((HttpServletResponse) response).sendRedirect(httpRequest.getContextPath() + "/login?reason=forbidden");

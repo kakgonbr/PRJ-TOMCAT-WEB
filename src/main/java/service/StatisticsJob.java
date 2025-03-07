@@ -10,7 +10,7 @@ public class StatisticsJob implements Runnable {
         service.Logging.logger.info("Statistics Job started at: {}", java.time.LocalDateTime.now().format(config.Config.Time.outputFormatTime));
         
         try {
-            dao.StatisticsDAO.SystemStatisticsManager.addStatistics(service.DatabaseConnection.getConnection());
+            dao.StatisticsDAO.SystemStatisticsManager.addStatistics();
         } catch (java.sql.SQLException e) {
             service.Logging.logger.warn("Statistics Job failed, reason: {}", e.getMessage());
             

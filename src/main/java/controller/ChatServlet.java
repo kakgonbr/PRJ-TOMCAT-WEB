@@ -1,6 +1,8 @@
 package controller;
 
 import java.io.IOException;
+import java.util.stream.Collectors;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,7 +15,7 @@ public class ChatServlet extends HttpServlet {
         model.User user = (model.User) request.getSession(false).getAttribute("user");
 
         try {
-            java.util.List<model.ChatBox> chatBoxes = dao.ChatDAO.BoxManager.getBoxes(service.DatabaseConnection.getConnection(), user.getId());
+            java.util.List<model.ChatBoxWrapper> chatBoxes = dao.ChatDAO.BoxManager.getBoxes(user.getId()).stream().map(model.ChatBoxWrapper::new).collect(Collectors.toList()); // horrible.
 
             request.setAttribute("chatBoxes", chatBoxes);
             request.setAttribute("currentUser", user.getId());
@@ -39,9 +41,9 @@ public class ChatServlet extends HttpServlet {
         String toName = request.getParameter("targetUser");
 
         try {
-            model.User toUser = dao.UserDAO.UserFetcher.getUserFromUsername(service.DatabaseConnection.getConnection(), toName);
+            model.User toUser = dao.UserDAO.UserFetcher.getUserFromUsername(toName);
 
-            dao.ChatDAO.BoxManager.createBox(service.DatabaseConnection.getConnection(), user.getId(), toUser.getId());
+            dao.ChatDAO.BoxManager.createBox(user.getId(), toUser.getId());
         } catch (java.sql.SQLException e) {
             service.Logging.logger.warn("FAILED TO CREATE CHATBOX FOR {}, REASON: {}", user.getId(), e.getMessage());
 

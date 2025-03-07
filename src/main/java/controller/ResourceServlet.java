@@ -24,7 +24,7 @@ public class ResourceServlet extends HttpServlet {
         service.Logging.logger.info("Resource path received: {}", resourcePath);
 
         try {
-            resourcePath = dao.ResourceDAO.getPath(service.DatabaseConnection.getConnection(), resourcePath.substring(1));
+            resourcePath = dao.ResourceDAO.getPath(resourcePath.substring(1));
         } catch (java.sql.SQLException e) {
             service.Logging.logger.warn("Failed to retrieve the path for resource '{}'. Reason: {}", resourcePath, e.getMessage());
             sendError(response);

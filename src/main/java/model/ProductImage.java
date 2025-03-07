@@ -7,51 +7,46 @@ package model;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 import jakarta.xml.bind.annotation.XmlRootElement;
-import jakarta.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  *
  * @author ASUS
  */
 @Entity
-@Table(name = "tblChatBox")
+@Table(name = "tblProductImage")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblChatBox.findAll", query = "SELECT t FROM TblChatBox t"),
-    @NamedQuery(name = "TblChatBox.findById", query = "SELECT t FROM TblChatBox t WHERE t.id = :id")})
-public class ChatBox implements Serializable {
+    @NamedQuery(name = "ProductImage.findAll", query = "SELECT p FROM ProductImage p"),
+    @NamedQuery(name = "ProductImage.findById", query = "SELECT p FROM ProductImage p WHERE p.id = :id")})
+public class ProductImage implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id")
     private Integer id;
-    @JoinColumn(name = "user1", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.EAGER)
-    private User user1;
-    @JoinColumn(name = "user2", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.EAGER)
-    private User user2;
-    @OneToMany(mappedBy = "chatBoxId")
-    private List<ChatContent> tblChatBoxContentList;
+    @JoinColumn(name = "productId", referencedColumnName = "id")
+    @ManyToOne
+    private Product productId;
+    @JoinColumn(name = "imageStringResourceId", referencedColumnName = "id")
+    @ManyToOne
+    private ResourceMap imageStringResourceId;
 
-    public ChatBox() {
+    public ProductImage() {
     }
 
-    public ChatBox(Integer id) {
+    public ProductImage(Integer id) {
         this.id = id;
     }
 
@@ -63,29 +58,20 @@ public class ChatBox implements Serializable {
         this.id = id;
     }
 
-    public User getUser1() {
-        return user1;
+    public Product getProductId() {
+        return productId;
     }
 
-    public void setUser1(User user1) {
-        this.user1 = user1;
+    public void setProductId(Product productId) {
+        this.productId = productId;
     }
 
-    public User getUser2() {
-        return user2;
+    public ResourceMap getImageStringResourceId() {
+        return imageStringResourceId;
     }
 
-    public void setUser2(User user2) {
-        this.user2 = user2;
-    }
-
-    @XmlTransient
-    public List<ChatContent> getTblChatBoxContentList() {
-        return tblChatBoxContentList;
-    }
-
-    public void setTblChatBoxContentList(List<ChatContent> tblChatBoxContentList) {
-        this.tblChatBoxContentList = tblChatBoxContentList;
+    public void setImageStringResourceId(ResourceMap imageStringResourceId) {
+        this.imageStringResourceId = imageStringResourceId;
     }
 
     @Override
@@ -98,10 +84,10 @@ public class ChatBox implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ChatBox)) {
+        if (!(object instanceof ProductImage)) {
             return false;
         }
-        ChatBox other = (ChatBox) object;
+        ProductImage other = (ProductImage) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -110,7 +96,7 @@ public class ChatBox implements Serializable {
 
     @Override
     public String toString() {
-        return "model.TblChatBox[ id=" + id + " ]";
+        return "model.ProductImage[ id=" + id + " ]";
     }
     
 }

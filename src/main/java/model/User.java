@@ -1,185 +1,270 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package model;
 
-public final class User {
-    public static final class LinkStatus {
-        private String googleId;
-        private String facebookId;
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Collection;
 
-        public LinkStatus() {
-        }
+/**
+ *
+ * @author ASUS
+ */
+@Entity
+@Table(name = "tblUser")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
+    @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id = :id"),
+    @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
+    @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username"),
+    @NamedQuery(name = "User.findByPhoneNumber", query = "SELECT u FROM User u WHERE u.phoneNumber = :phoneNumber"),
+    @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password"),
+    @NamedQuery(name = "User.findByPersistentCookie", query = "SELECT u FROM User u WHERE u.persistentCookie = :persistentCookie"),
+    @NamedQuery(name = "User.findByGoogleId", query = "SELECT u FROM User u WHERE u.googleId = :googleId"),
+    @NamedQuery(name = "User.findByFacebookId", query = "SELECT u FROM User u WHERE u.facebookId = :facebookId"),
+    @NamedQuery(name = "User.findByIsAdmin", query = "SELECT u FROM User u WHERE u.isAdmin = :isAdmin"),
+    @NamedQuery(name = "User.findByCredit", query = "SELECT u FROM User u WHERE u.credit = :credit"),
+    @NamedQuery(name = "User.findByDisplayName", query = "SELECT u FROM User u WHERE u.displayName = :displayName"),
+    @NamedQuery(name = "User.findByBio", query = "SELECT u FROM User u WHERE u.bio = :bio")})
+public class User implements Serializable {
 
-        public LinkStatus(String t_googleId, String t_facebookId) {
-            setFacebookId(t_facebookId);
-            setGoogleId(t_googleId);
-        }
-
-        public String getFacebookId() {
-            return facebookId;
-        }
-
-        public String getGoogleId() {
-            return googleId;
-        }
-
-        public void setFacebookId(String facebookId) {
-            this.facebookId = facebookId;
-        }
-
-        public void setGoogleId(String googleId) {
-            this.googleId = googleId;
-        }
-    }
-
-    private int id;
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "email")
+private String email;
+    @Basic(optional = false)
+    @NotNull()
+    @Size(min = 1, max = 30)
+    @Column(name = "username")
     private String username;
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 12)
+    @Column(name = "phoneNumber")
+    private String phoneNumber;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "password")
+    private String password;
+    @Size(max = 255)
+    @Column(name = "persistentCookie")
+    private String persistentCookie;
+    @Size(max = 255)
+    @Column(name = "googleId")
+    private String googleId;
+    @Size(max = 255)
+    @Column(name = "facebookId")
+    private String facebookId;
+    @Size(max = 50)
+    @Column(name = "displayName")
     private String displayName;
-    private String profilePicResource;
-    private String email; // Not visible to other users
-    private String phoneNumber; // Not visible to other users
-    private String password; // Only visible to system
-    private LinkStatus linkStatus; // Not visible to other users
-    private int cartId; // Not visible to other users
+    @Size(max = 255)
+    @Column(name = "bio")
     private String bio;
-    private long credit;
-    private String cookie;
-    private boolean isAdmin;
+    @OneToMany(mappedBy = "ownerId")
+    private Collection<Shop> shopCollection;
+    @OneToMany(mappedBy = "creatorId")
+    private Collection<Promotion> promotionCollection;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
+    @Column(name = "isAdmin")
+    private Boolean isAdmin;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "credit")
+    private BigDecimal credit;
+    @JoinColumn(name = "profileStringResourceId", referencedColumnName = "id")
+    @ManyToOne
+    private ResourceMap profileStringResourceId;
 
-    public User() {}
-
-    // information only
-    public User(int t_id, String t_username, String t_displayName, String t_profile, String t_bio, long t_credit) {
-        setId(t_id);
-        setUsername(t_username);
-        setDisplayName(t_displayName);
-        setProfilePicResource(t_profile);
-        setBio(t_bio);
+    public User() {
     }
 
-    // everything
-    public User(int t_id, String t_username, String t_displayName, String t_profile, String t_bio, long t_credit, String t_email, String t_phoneNumber, String t_password, LinkStatus t_linkStatus, int t_cartId, String t_cookie, boolean t_isAdmin) {
-        this(t_id, t_username, t_displayName, t_profile, t_bio, t_credit);
-        setEmail(t_email);
-        setPhoneNumber(t_phoneNumber);
-        setPassword(t_password);
-        setLinkStatus(t_linkStatus);
-        setCartId(t_cartId);
-        setCookie(t_cookie);
-        isAdmin = t_isAdmin;
+    public User(Integer id) {
+        this.id = id;
     }
 
-    public String getBio() {
-        return bio;
+    public User(Integer id, String email, String username, String phoneNumber, String password) {
+        this.id = id;
+        this.email = email;
+        this.username = username;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
     }
 
-    public long getCredit() {
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+
+    public Boolean getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+
+    public BigDecimal getCredit() {
         return credit;
     }
 
-    public int getCartId() {
-        return cartId;
+    public void setCredit(BigDecimal credit) {
+        this.credit = credit;
     }
 
-    public String getCookie() {
-        return cookie;
+
+    public ResourceMap getProfileStringResourceId() {
+        return profileStringResourceId;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public void setProfileStringResourceId(ResourceMap profileStringResourceId) {
+        this.profileStringResourceId = profileStringResourceId;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof User)) {
+            return false;
+        }
+        User other = (User) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "model.User[ id=" + id + " ]";
     }
 
     public String getEmail() {
         return email;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public LinkStatus getLinkStatus() {
-        return linkStatus;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public String getProfilePicResource() {
-        return profilePicResource;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
-    
-    public void setCredit(long credit) {
-        this.credit = credit;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public void setCartId(int cartId) {
-        this.cartId = cartId;
-    }
-    
-    public void setCookie(String cookie) {
-        this.cookie = cookie;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setLinkStatus(LinkStatus linkStatus) {
-        this.linkStatus = linkStatus;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
-    public void setProfilePicResource(String profilePicResource) {
-        this.profilePicResource = profilePicResource;
+    public String getPassword() {
+        return password;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public boolean isAdmin() {
-        return isAdmin;
+    public String getPersistentCookie() {
+        return persistentCookie;
     }
 
-    public static User fromResultSet(java.sql.ResultSet rs) throws java.sql.SQLException {
-        return new User(rs.getInt("id"),
-        rs.getString("username"),
-        rs.getString("displayName"),
-        rs.getString("profileStringResourceID"),
-        rs.getString("bio"),
-        rs.getLong("credit"),
-        rs.getString("email"),
-        rs.getString("phoneNumber"),
-        rs.getString("password"),
-        new LinkStatus(rs.getString("googleID"), rs.getString("facebookID")),
-        -1,
-        rs.getString("persistentCookie"),
-        rs.getBoolean("isAdmin"));
+    public void setPersistentCookie(String persistentCookie) {
+        this.persistentCookie = persistentCookie;
     }
+
+    public String getGoogleId() {
+        return googleId;
+    }
+
+    public void setGoogleId(String googleId) {
+        this.googleId = googleId;
+    }
+
+    public String getFacebookId() {
+        return facebookId;
+    }
+
+    public void setFacebookId(String facebookId) {
+        this.facebookId = facebookId;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    @XmlTransient
+    public Collection<Shop> getShopCollection() {
+        return shopCollection;
+    }
+
+    public void setShopCollection(Collection<Shop> shopCollection) {
+        this.shopCollection = shopCollection;
+    }
+
+    @XmlTransient
+    public Collection<Promotion> getPromotionCollection() {
+        return promotionCollection;
+    }
+
+    public void setPromotionCollection(Collection<Promotion> promotionCollection) {
+        this.promotionCollection = promotionCollection;
+    }
+    
 }
