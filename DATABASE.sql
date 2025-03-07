@@ -419,7 +419,7 @@ BEGIN
 	WITH ItemVector AS (
 		SELECT v.productId, s.value AS tfidf_value, 
            ROW_NUMBER() OVER (PARTITION BY v.productId ORDER BY (SELECT NULL)) AS pos
-		FROM tblVe	ctor v
+		FROM tblVector v
 		CROSS APPLY STRING_SPLIT(v.vector, ',') s
 	),
 	QueryVector AS (

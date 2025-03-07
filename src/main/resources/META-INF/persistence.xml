@@ -8,7 +8,7 @@
     <class>model.Product</class>
     <class>model.Notification</class>
     <class>model.OrderedItem</class>
-    <class>model.BaseVector</class>
+    <!-- <class>model.BaseVector</class> -->
     <class>model.ProductImage</class>
     <class>model.Order</class>
     <class>model.ServerStatistics</class>

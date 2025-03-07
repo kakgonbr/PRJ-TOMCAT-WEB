@@ -22,6 +22,8 @@ public class DatabaseConnection {
             properties.put("jakarta.persistence.jdbc.password", System.getenv("DB_PASSWORD"));
 
             factory = Persistence.createEntityManagerFactory(config.Config.DBConfig.PERSISTENCE_UNIT_NAME, properties);
+
+            service.Logging.logger.info("Database connection established.");
         } catch (Exception e) {
             service.Logging.logger.error("FAILED TO INTIALIZE DATABASE CONNECTION, REASON : {}", e.getMessage());
             
