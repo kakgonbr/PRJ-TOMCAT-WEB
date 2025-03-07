@@ -26,7 +26,7 @@ import java.io.Serializable;
 @NamedQueries({
     @NamedQuery(name = "BaseVector.findAll", query = "SELECT t FROM BaseVector t"),
     @NamedQuery(name = "BaseVector.findByKeyword", query = "SELECT t FROM BaseVector t WHERE t.keyword = :keyword")})
-public class TblBaseVector implements Serializable {
+public class BaseVector implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -36,10 +36,10 @@ public class TblBaseVector implements Serializable {
     @Column(name = "keyword")
     private String keyword;
 
-    public TblBaseVector() {
+    public BaseVector() {
     }
 
-    public TblBaseVector(String keyword) {
+    public BaseVector(String keyword) {
         this.keyword = keyword;
     }
 
@@ -61,10 +61,10 @@ public class TblBaseVector implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TblBaseVector)) {
+        if (!(object instanceof BaseVector)) {
             return false;
         }
-        TblBaseVector other = (TblBaseVector) object;
+        BaseVector other = (BaseVector) object;
         if ((this.keyword == null && other.keyword != null) || (this.keyword != null && !this.keyword.equals(other.keyword))) {
             return false;
         }
