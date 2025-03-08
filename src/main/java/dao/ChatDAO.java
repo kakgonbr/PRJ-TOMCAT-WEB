@@ -71,6 +71,7 @@ public class ChatDAO {
                     content.setMessage(message);
                     content.setSenderId(em.getReference(model.User.class, sender));
                     content.setChatBoxId(em.getReference(model.ChatBox.class, box));
+                    content.setTime(new java.util.Date());
 
                     em.persist(content);
                     
