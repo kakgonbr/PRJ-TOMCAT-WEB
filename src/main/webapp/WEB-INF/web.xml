@@ -64,7 +64,7 @@
         <servlet-name>n_ProductLoader</servlet-name>
         <servlet-class>controller.ajax.ProductLoader</servlet-class>
     </servlet>
-    <servlet>
+    <!-- <servlet>
         <servlet-name>n_AJAXServlet</servlet-name>
         <servlet-class>controller.vnpay.AJAXServlet</servlet-class>
     </servlet>
@@ -79,7 +79,7 @@
     <servlet>
         <servlet-name>n_VNPayRedirectServlet</servlet-name>
         <servlet-class>controller.vnpay.VNPayRedirectServlet</servlet-class>
-    </servlet>
+    </servlet> -->
     <servlet>
         <servlet-name>n_IPNServlet</servlet-name>
         <servlet-class>controller.IPNServlet</servlet-class>
@@ -87,6 +87,10 @@
     <servlet>
         <servlet-name>n_PayReturnServlet</servlet-name>
         <servlet-class>controller.PayReturnServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>n_PayServlet</servlet-name>
+        <servlet-class>controller.PayServlet</servlet-class>
     </servlet>
 
     <!-- SERVLET MAPPINGS -->
@@ -132,7 +136,7 @@
         <servlet-name>n_ProductLoader</servlet-name>
         <url-pattern>/ajax/products</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
+    <!-- <servlet-mapping>
         <servlet-name>n_AJAXServlet</servlet-name>
         <url-pattern>/vnpay/ajax</url-pattern>
     </servlet-mapping>
@@ -147,7 +151,7 @@
     <servlet-mapping>
         <servlet-name>n_VNPayRedirectServlet</servlet-name>
         <url-pattern>/vnpay/redirect/*</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping> -->
     <servlet-mapping>
         <servlet-name>n_IPNServlet</servlet-name>
         <url-pattern>/ipn</url-pattern>
@@ -155,6 +159,10 @@
     <servlet-mapping>
         <servlet-name>n_PayReturnServlet</servlet-name>
         <url-pattern>/return</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>n_PayServlet</servlet-name>
+        <url-pattern>/pay</url-pattern>
     </servlet-mapping>
 
     <!-- FILTER DECLARATIONS -->

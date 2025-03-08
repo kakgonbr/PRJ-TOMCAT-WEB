@@ -23,6 +23,7 @@ public final class Config {
         public static final String ERROR_JSP = "WEB-INF/jsp/error.jsp";
         public static final String CHAT_JSP = "WEB-INF/jsp/chat.jsp";
         public static final String PAYMENT_RETURN_JSP = "WEB-INF/jsp/return.jsp";
+        public static final String PAYMENT_PAY_JSP = "WEB-INF/jsp/pay.jsp";
 
         public static final String PRIVILEGED_ADMIN_JSP = "WEB-INF/jsp/admin/adminStats.jsp";
     }
