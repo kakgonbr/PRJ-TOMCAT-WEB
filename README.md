@@ -21,6 +21,18 @@ Insertion is done mostly through JPA now.
 TO BE CHANGED
 ```
 ---
+# Front-end
+## Resources
+Resources are placed inside `./resources`. The content of this directory will be moved to where the server looks up resources.
+
+To look up resources, add a mapping in the database, as a record in the table `tblResourceMap`. The key is the identifier of the file, the the other column is the path string.
+
+Example: Adding a new JavaScript file
+- Add an .js file in `./resources`
+- Add a mapping `test_js -> test.js` as a record in the database
+- Trigger a build on Jenkins, either through a GitHub push, or manually.
+- On the front-end, look up using the linK `${pageContext.request.contextPath}/resources/test_js`. Where `resources` is the context path of the servlet responsible for fetching, `test_js` is the identifier.
+
 # Java
 ## Practices
 Add documentation to methods if what they do are not obvious enough. Documentation can be added using:

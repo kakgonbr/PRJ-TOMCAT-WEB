@@ -108,8 +108,6 @@ public class AJAXServlet extends HttpServlet {
         job.addProperty("data", paymentUrl);
         Gson gson = new Gson();
         resp.getWriter().write(gson.toJson(job));
-        
-        System.out.println("");
     }
 
 }
