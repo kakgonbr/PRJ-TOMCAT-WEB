@@ -166,11 +166,7 @@
         <exception-type>java.lang.Throwable</exception-type>
         <location>/error</location>
     </error-page> -->
-
-    <!-- ENDPOINTS -->
-    <!-- ChatEndPoint AT /chat OR ws://kakgonbri.zapto.org/prj/chat-->
-
-    <error-page>
+    <!-- <error-page>
         <error-code>500</error-code>
         <location>/error</location>
     </error-page>
@@ -178,7 +174,11 @@
     <error-page>
         <error-code>404</error-code>
         <location>/error</location>
-    </error-page>
+    </error-page> -->
+
+    <!-- ENDPOINTS -->
+    <!-- ChatEndPoint AT /chat OR ws://kakgonbri.zapto.org/prj/chat-->
+
 
 
     <session-config>
