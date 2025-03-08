@@ -11,9 +11,9 @@ CREATE TABLE tblUser
 	username varchar(30) NOT NULL UNIQUE,
 	phoneNumber varchar(12) not null UNIQUE,
 	password varchar(50) NOT NULL,
-	persistentCookie varchar(255) UNIQUE,
-	googleId varchar(255) unique,	
-	facebookId varchar(255) unique,
+	persistentCookie varchar(255),
+	googleId varchar(255),	
+	facebookId varchar(255),
 	isAdmin bit DEFAULT 0,
 	credit money,
 
