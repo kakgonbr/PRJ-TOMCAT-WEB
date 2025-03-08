@@ -14,12 +14,12 @@
         <h1>PAYMENT RESULT</h1>
         <p>Status: ${status}</p>
         <c:if test="${status != 'Invalid signature'}">
-            <p>Payment Code: ${param[vnp_TxnRef]}</p>
-            <p>Amount: ${param[vnp_Amount]} VND</p>
-            <p>Order Information: ${param[vnp_OrderInfo]}</p>
-            <p>Response Code: ${param[vnp_ResponseCode]}</p>
-            <p>Bank Code: ${param[vnp_BankCode]}</p>
-            <p>Payment Date: ${param[vnp_PayDate]}</p>
+            <p>Payment Code: ${param.vnp_TxnRef}</p>
+            <p>Amount: ${param.vnp_Amount} VND</p>
+            <p>Order Information: ${param.vnp_OrderInfo}</p>
+            <p>Response Code: ${param.vnp_ResponseCode}</p>
+            <p>Bank Code: ${param.vnp_BankCode}</p>
+            <p>Payment Date: ${param.vnp_PayDate}</p>
         </c:if>
     </jsp:attribute>
 

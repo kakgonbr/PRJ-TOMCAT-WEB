@@ -39,11 +39,12 @@ public class IPNServlet extends HttpServlet {
         }
 
         String orderId = request.getParameter("vnp_TxnRef");
-        BigDecimal paidAmount = BigDecimal.valueOf(Long.parseLong(request.getParameter("vnp_TxnRef")));
+        BigDecimal paidAmount = BigDecimal.valueOf(Long.parseLong(request.getParameter("vnp_Amount")));
+        String date = request.getParameter("vnp_PayDate");
 
         String signValue = config.VNPConfig.hashAllFields(fields);
         if (signValue.equals(vnp_SecureHash)) {
-            service.Logging.logger.info("Order {}, amount {}", orderId, paidAmount);
+            service.Logging.logger.info("Order {}, amount {}, date {}", orderId, paidAmount, date);
             // TODO: ASK THE DATABASE FOR THE FOLLOWING INFORMATION:
             boolean checkOrderId = true; // Giá trị của vnp_TxnRef tồn tại trong CSDL của merchant
             boolean checkAmount = true; // Kiểm tra số tiền thanh toán do VNPAY phản hồi(vnp_Amount/100) với số tiền của
