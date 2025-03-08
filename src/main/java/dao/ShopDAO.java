@@ -23,7 +23,6 @@ public class ShopDAO {
                     et.begin();
                     em.persist(shop);
                     et.commit();
-                    System.out.println("check");
                 } catch (Exception e) {
                     if (et.isActive()) {
                         et.rollback();
