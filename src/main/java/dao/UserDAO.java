@@ -119,7 +119,7 @@ public final class UserDAO {
     public static final class UserFetcher {
         public static synchronized model.User getUser(int id) throws SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                return em.createNamedQuery("User.findById", model.User.class).getSingleResult();
+                return em.createNamedQuery("User.findById", model.User.class).setParameter("id", id).getSingleResult();
             } catch (Exception e) {
                 throw new java.sql.SQLException(e);
             }
@@ -128,7 +128,7 @@ public final class UserDAO {
         public static synchronized model.User getUserFromUsername(String username)
                 throws SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                return em.createNamedQuery("User.findByUsername", model.User.class).getSingleResult();
+                return em.createNamedQuery("User.findByUsername", model.User.class).setParameter("username", username).getSingleResult();
             } catch (Exception e) {
                 throw new java.sql.SQLException(e);
             }
@@ -136,7 +136,7 @@ public final class UserDAO {
 
         public static synchronized model.User getUser(String cookie) throws SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                return em.createNamedQuery("User.findByPersistentCookie", model.User.class).getSingleResult();
+                return em.createNamedQuery("User.findByPersistentCookie", model.User.class).setParameter("persistentCookie", cookie).getSingleResult();
             } catch (Exception e) {
                 throw new java.sql.SQLException(e);
             }

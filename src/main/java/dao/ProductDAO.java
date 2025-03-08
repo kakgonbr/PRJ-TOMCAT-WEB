@@ -16,7 +16,7 @@ public class ProductDAO {
 
         public static synchronized model.Product getProduct(int id) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                return em.createNamedQuery("Product.findById", model.Product.class).setParameter(1, id)
+                return em.createNamedQuery("Product.findById", model.Product.class).setParameter("id", id)
                         .getSingleResult();
             } catch (Exception e) {
                 throw new java.sql.SQLException(e);
