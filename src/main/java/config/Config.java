@@ -1,7 +1,7 @@
 package config;
 
 public final class Config {
-    public static final String[] nonPrivileged = {"/login", "/public", "/home", "/redirect", "/resources"};
+    public static final String[] nonPrivileged = {"/login", "/public", "/home", "/redirect", "/resources", "/ipn", "/return"};
     public static final String[] nonMaintenance = {"/login", "/error", "/redirect"};
 
     public static final class DBConfig {
@@ -22,6 +22,7 @@ public final class Config {
         public static final String MAINTENANCE_JSP = "WEB-INF/jsp/maintenance.jsp";
         public static final String ERROR_JSP = "WEB-INF/jsp/error.jsp";
         public static final String CHAT_JSP = "WEB-INF/jsp/chat.jsp";
+        public static final String PAYMENT_RETURN_JSP = "WEB-INF/jsp/return.jsp";
 
         public static final String PRIVILEGED_ADMIN_JSP = "WEB-INF/jsp/admin/adminStats.jsp";
     }

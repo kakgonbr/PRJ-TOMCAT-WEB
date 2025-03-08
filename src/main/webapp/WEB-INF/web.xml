@@ -80,6 +80,14 @@
         <servlet-name>n_VNPayRedirectServlet</servlet-name>
         <servlet-class>controller.vnpay.VNPayRedirectServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>n_IPNServlet</servlet-name>
+        <servlet-class>controller.IPNServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>n_PayReturnServlet</servlet-name>
+        <servlet-class>controller.PayReturnServlet</servlet-class>
+    </servlet>
 
     <!-- SERVLET MAPPINGS -->
     <!-- TEMPLATE:
@@ -139,6 +147,14 @@
     <servlet-mapping>
         <servlet-name>n_VNPayRedirectServlet</servlet-name>
         <url-pattern>/vnpay/redirect/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>n_IPNServlet</servlet-name>
+        <url-pattern>/ipn</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>n_PayReturnServlet</servlet-name>
+        <url-pattern>/return</url-pattern>
     </servlet-mapping>
 
     <!-- FILTER DECLARATIONS -->
