@@ -74,9 +74,9 @@ public class QueryServlet extends HttpServlet {
         wr.flush();
         wr.close();
         int responseCode = con.getResponseCode();
-        System.out.println("nSending 'POST' request to URL : " + url);
-        System.out.println("Post Data : " + vnp_Params);
-        System.out.println("Response Code : " + responseCode);
+        service.Logging.logger.info("Sending 'POST' request to URL : {}", url);
+        service.Logging.logger.info("Post Data : {}", vnp_Params);
+        service.Logging.logger.info("Response Code : {}", responseCode);
         BufferedReader in = new BufferedReader(
         new InputStreamReader(con.getInputStream()));
         String output;
@@ -85,6 +85,6 @@ public class QueryServlet extends HttpServlet {
         response.append(output);
         }
         in.close();
-        System.out.println(response.toString());
+        service.Logging.logger.info(response.toString());
     }
 }
