@@ -29,13 +29,7 @@ public class ChatDAO {
             }
         } // public static synchronized void createBox
 
-        private static final String GET_BOXES_BY_USER = "SELECT\r\n" + //
-                "t1.*,\r\n" + //
-                "t2a.username AS username1,\r\n" + //
-                "t2b.username AS username2\r\n" + //
-                "FROM (SELECT * FROM tblChatBox WHERE (user1 = ?1 OR user2 = ?2)) t1\r\n" + //
-                "LEFT JOIN tblUser t2a ON t1.user1 = t2a.id\r\n" + //
-                "LEFT JOIN tblUser t2b ON t1.user2 = t2b.id;";
+        private static final String GET_BOXES_BY_USER = "SELECT * FROM tblChatBox WHERE (user1 = ?1 OR user2 = ?2)";
 
         public static synchronized java.util.List<model.ChatBox> getBoxes(int userId) throws java.sql.SQLException {
 
@@ -49,13 +43,7 @@ public class ChatDAO {
             }
         } // public static java.util.List<model.ChatBox> getBoxes
 
-        private static final String GET_BOX_BY_USERS = "SELECT\r\n" + //
-                        "t1.*,\r\n" + //
-                        "t2a.username AS username1,\r\n" + //
-                        "t2b.username AS username2\r\n" + //
-                        "FROM (SELECT * FROM tblChatBox WHERE (user1 = ?1 AND user2 = ?2) OR (user1 = ?3 AND user2 = ?4)) t1\r\n" + //
-                        "LEFT JOIN tblUser t2a ON t1.user1 = t2a.id\r\n" + //
-                        "LEFT JOIN tblUser t2b ON t1.user2 = t2b.id;";
+        private static final String GET_BOX_BY_USERS = "SELECT * FROM tblChatBox WHERE (user1 = ?1 AND user2 = ?2) OR (user1 = ?3 AND user2 = ?4)";
 
         public static synchronized model.ChatBox getBox(int user1, int user2)
                 throws java.sql.SQLException {

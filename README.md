@@ -126,23 +126,17 @@ public static synchronized java.util.List<model.Product> getRecommendation(Strin
 
 Native Query Execution:
 ```java
-private static final String GET_BOX_BY_USERS = "SELECT\r\n" + //
-                        "t1.*,\r\n" + //
-                        "t2a.username AS username1,\r\n" + //
-                        "t2b.username AS username2\r\n" + //
-                        "FROM (SELECT * FROM tblChatBox WHERE (user1 = ?1 AND user2 = ?2) OR (user1 = ?3 AND user2 = ?4)) t1\r\n" + //
-                        "LEFT JOIN tblUser t2a ON t1.user1 = t2a.id\r\n" + //
-                        "LEFT JOIN tblUser t2b ON t1.user2 = t2b.id;";
+private static final String GET_BOX_BY_USERS = "SELECT * FROM tblChatBox WHERE (user1 = ?1 AND user2 = ?2) OR (user1 = ?3 AND user2 = ?4)";
 
-public static synchronized model.ChatBox getBox(int user1, int user2)
-        throws java.sql.SQLException {
+        public static synchronized model.ChatBox getBox(int user1, int user2)
+                throws java.sql.SQLException {
 
-    try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-        return (model.ChatBox) em.createNativeQuery(GET_BOX_BY_USERS, model.ChatBox.class).setParameter(1, user1).setParameter(2, user2).setParameter(3, user2).setParameter(4, user1).getSingleResult();
-    } catch (Exception e) {
-        throw new java.sql.SQLException("CHATBOX DOES NOT EXIST");
-    }
-} // public static model.ChatBox getBox
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return (model.ChatBox) em.createNativeQuery(GET_BOX_BY_USERS, model.ChatBox.class).setParameter(1, user1).setParameter(2, user2).setParameter(3, user2).setParameter(4, user1).getSingleResult();
+            } catch (Exception e) {
+                throw new java.sql.SQLException("CHATBOX DOES NOT EXIST");
+            }
+        } // public static model.ChatBox getBox
 ```
 
 ## Logging
