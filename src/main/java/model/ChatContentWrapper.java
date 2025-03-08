@@ -9,6 +9,14 @@ public class ChatContentWrapper {
 
     public ChatContentWrapper() {}
 
+    public ChatContentWrapper(int t_id, int t_box, String t_message, java.sql.Timestamp t_time, int sender) {
+        setId(t_id);
+        setBoxId(t_box);
+        setMessage(t_message);
+        setTime(t_time);
+        setSender(sender);
+    }
+
     public ChatContentWrapper(ChatContent content) {
         setId(content.getId());
         setBoxId(content.getChatBoxId().getId());
@@ -57,15 +65,8 @@ public class ChatContentWrapper {
         return time;
     }
 
-    public static ChatContentOld fromResultSet(java.sql.ResultSet rs) throws java.sql.SQLException {
-        return new ChatContentOld(rs.getInt("id"),
-         rs.getInt("chatBoxID"),
-         rs.getString("message"),
-         rs.getTimestamp("time"),
-         rs.getInt("senderID"));
-    }
 
-    public static ChatContentOld fromMessage(String message, int sender, int box) {
-        return new ChatContentOld(-1, box, message, java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()), sender);
+    public static ChatContentWrapper fromMessage(String message, int sender, int box) {
+        return new ChatContentWrapper(-1, box, message, java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()), sender);
     }
 }
