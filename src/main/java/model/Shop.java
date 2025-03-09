@@ -63,8 +63,6 @@ public class Shop implements Serializable {
     @JoinColumn(name = "ownerId", referencedColumnName = "id")
     @ManyToOne
     private User ownerId;
-    @Column(name = "status")
-    private boolean status;
 
     public Shop() {
     }
@@ -120,13 +118,6 @@ public class Shop implements Serializable {
         this.ownerId = ownerId;
     }
 
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
 
     @Override
     public int hashCode() {
