@@ -91,6 +91,13 @@ CREATE TABLE tblShop
 	CONSTRAINT fk_shop_owner FOREIGN KEY (ownerId) REFERENCES tblUser(id)
 )
 
+CREATE TABLE tblShopStatistics
+(
+	id int PRIMARY KEY IDENTITY(1,1),
+	shopId int,
+	CONSTRAINT fk_shop_id FOREIGN KEY (shopId) references tblShop(id)
+)
+
 CREATE TABLE tblCategory
 (
 	id int PRIMARY KEY IDENTITY(1, 1),
