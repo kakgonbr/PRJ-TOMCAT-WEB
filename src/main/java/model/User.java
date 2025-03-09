@@ -126,7 +126,7 @@ private String email;
     @ManyToOne
     private ResourceMap profileStringResourceId;
     @Column(name = "status")
-    private boolean status;
+    private Boolean status;
 
     public User() {
     }
@@ -207,7 +207,7 @@ private String email;
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 

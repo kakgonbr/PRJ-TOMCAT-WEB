@@ -71,7 +71,7 @@ public class Product implements Serializable {
     @ManyToOne
     private Shop shopId;
     @Column(name = "status")
-    private boolean status;
+    private Boolean status;
 
     public Product() {
     }
@@ -130,7 +130,7 @@ public class Product implements Serializable {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 

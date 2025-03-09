@@ -196,7 +196,7 @@ CREATE TABLE tblCartItem
 	cartId int,
 	productItemId int,
 	quantity int NOT NULL,
-	status bit,
+	status bit DEFAULT 0,
 
 	-- CONSTRAINT pk_cartitem PRIMARY KEY (cartId, productCustomizationId),
 	CONSTRAINT fk_cartitem_cart FOREIGN KEY (cartId) REFERENCES tblCart(id),
@@ -446,3 +446,11 @@ BEGIN
     DROP TABLE #result;
 END;
 GO
+
+INSERT INTO tblResourceMap
+VALUES
+('test_js', 'test.js');
+
+INSERT INTO tblUser (email, username, phoneNumber, password, persistentCookie, googleId, facebookId, isAdmin)
+VALUES ('abc@example.com', 'user', '00000', 'user', NULL, NULL, NULL, 0),
+('abc1@example.com', 'admin', '00001', 'admin', NULL, NULL, NULL, 1);

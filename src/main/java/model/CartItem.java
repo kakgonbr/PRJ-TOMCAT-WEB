@@ -51,7 +51,7 @@ public class CartItem implements Serializable {
     @ManyToOne
     private ProductItem productItemId;
     @Column(name = "status")
-    private boolean status;
+    private Boolean status;
 
     public CartItem() {
     }
@@ -94,7 +94,7 @@ public class CartItem implements Serializable {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 
