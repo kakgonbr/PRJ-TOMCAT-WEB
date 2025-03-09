@@ -34,7 +34,7 @@ public class ShopDAO {
             }
         }
 
-        private static final String DELETE_SHOP = "UPDATE tblShop SET status = 0 WHERE id = ?1";
+        private static final String DELETE_SHOP = "UPDATE tblShop SET visible = 0 WHERE id = ?1";
 
         public static synchronized void deleteShop(int id) throws SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
@@ -59,7 +59,6 @@ public class ShopDAO {
                         dbShop.setVisible(shop.getVisible());
                         dbShop.setProfileStringResourceId(shop.getProfileStringResourceId());
                         dbShop.setOwnerId(shop.getOwnerId());
-                        dbShop.setStatus(shop.isStatus());
                     }
 
                     et.commit();

@@ -87,7 +87,6 @@ CREATE TABLE tblShop
 	address nvarchar(100),
 	profileStringResourceId varchar(30),
 	visible bit DEFAULT 0,
-	status bit,
 
 	CONSTRAINT fk_shop_resourceId FOREIGN KEY (profileStringResourceId) REFERENCES tblResourceMap(id),
 	CONSTRAINT fk_shop_owner FOREIGN KEY (ownerId) REFERENCES tblUser(id)
