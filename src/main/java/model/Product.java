@@ -60,6 +60,8 @@ public class Product implements Serializable {
     @JoinColumn(name = "shopId", referencedColumnName = "id")
     @ManyToOne
     private Shop shopId;
+    @Column(name = "status")
+    private boolean status;
 
     public Product() {
     }
@@ -127,6 +129,14 @@ public class Product implements Serializable {
 
     public void setShopId(Shop shopId) {
         this.shopId = shopId;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     @Override
