@@ -16,6 +16,7 @@ CREATE TABLE tblUser
 	facebookId varchar(255),
 	isAdmin bit DEFAULT 0,
 	credit money,
+	status bit,
 
 	displayName nvarchar(50),
 	profileStringResourceId varchar(30),
@@ -131,6 +132,7 @@ CREATE TABLE tblProduct
 	description nvarchar(255),
 	availablePromotionId int,
 	imageStringResourceId varchar(30),
+	status bit,
 	
 	CONSTRAINT fk_product_resourceId FOREIGN KEY (imageStringResourceId) REFERENCES tblResourceMap(id),
 	CONSTRAINT fK_product_shop FOREIGN KEY (shopId) REFERENCES tblShop(id),
@@ -194,6 +196,7 @@ CREATE TABLE tblCartItem
 	cartId int,
 	productItemId int,
 	quantity int NOT NULL,
+	status bit,
 
 	-- CONSTRAINT pk_cartitem PRIMARY KEY (cartId, productCustomizationId),
 	CONSTRAINT fk_cartitem_cart FOREIGN KEY (cartId) REFERENCES tblCart(id),
@@ -276,9 +279,9 @@ CREATE TABLE tblServerStatistics
 
 CREATE TABLE tblShopStatistics
 (
-	id int PRIMARY KEY IDENTITY(1, 1),
-
-
+	id int PRIMARY KEY IDENTITY(1,1),
+	shopId int,
+	CONSTRAINT fk_shopstatistics_id FOREIGN KEY (shopId) references tblShop(id)
 )
 
 -- TF-IdF RELATED STUFF

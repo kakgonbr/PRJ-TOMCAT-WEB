@@ -49,6 +49,8 @@ public class CartItem implements Serializable {
     @JoinColumn(name = "productItemId", referencedColumnName = "id")
     @ManyToOne
     private ProductItem productItemId;
+    @Column(name = "status")
+    private boolean status;
 
     public CartItem() {
     }
@@ -92,6 +94,14 @@ public class CartItem implements Serializable {
 
     public void setProductItemId(ProductItem productItemId) {
         this.productItemId = productItemId;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     @Override

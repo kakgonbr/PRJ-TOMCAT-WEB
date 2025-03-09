@@ -102,6 +102,8 @@ private String email;
     @JoinColumn(name = "profileStringResourceId", referencedColumnName = "id")
     @ManyToOne
     private ResourceMap profileStringResourceId;
+    @Column(name = "status")
+    private boolean status;
 
     public User() {
     }
@@ -247,6 +249,14 @@ private String email;
 
     public void setBio(String bio) {
         this.bio = bio;
+    }
+    
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     @XmlTransient
