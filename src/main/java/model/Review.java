@@ -33,6 +33,10 @@ import java.io.Serializable;
     @NamedQuery(name = "Review.findByComment", query = "SELECT r FROM Review r WHERE r.comment = :comment")})
 public class Review implements Serializable {
 
+    @Size(max = 255)
+    @Column(name = "comment")
+    private String comment;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,9 +45,6 @@ public class Review implements Serializable {
     private Integer id;
     @Column(name = "rate")
     private Integer rate;
-    @Size(max = 255)
-    @Column(name = "comment")
-    private String comment;
     @JoinColumn(name = "productId", referencedColumnName = "id")
     @ManyToOne
     private Product productId;
@@ -74,13 +75,6 @@ public class Review implements Serializable {
         this.rate = rate;
     }
 
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
 
     public Product getProductId() {
         return productId;
@@ -121,6 +115,14 @@ public class Review implements Serializable {
     @Override
     public String toString() {
         return "model.Review[ id=" + id + " ]";
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
     
 }

@@ -34,12 +34,6 @@ import java.io.Serializable;
     @NamedQuery(name = "Notification.findByBody", query = "SELECT n FROM Notification n WHERE n.body = :body")})
 public class Notification implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 30)
@@ -48,6 +42,13 @@ public class Notification implements Serializable {
     @Size(max = 255)
     @Column(name = "body")
     private String body;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
     @JoinColumn(name = "userId", referencedColumnName = "id")
     @ManyToOne
     private User userId;
@@ -72,21 +73,6 @@ public class Notification implements Serializable {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
 
     public User getUserId() {
         return userId;
@@ -119,6 +105,22 @@ public class Notification implements Serializable {
     @Override
     public String toString() {
         return "model.Notification[ id=" + id + " ]";
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
     }
     
 }

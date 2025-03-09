@@ -35,12 +35,16 @@ import java.util.List;
 @Table(name = "tblOrder")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "ProductOrder.findAll", query = "SELECT p FROM ProductOrder p"),
-    @NamedQuery(name = "ProductOrder.findById", query = "SELECT p FROM ProductOrder p WHERE p.id = :id"),
-    @NamedQuery(name = "ProductOrder.findByShippingAddress", query = "SELECT p FROM ProductOrder p WHERE p.shippingAddress = :shippingAddress"),
-    @NamedQuery(name = "ProductOrder.findByDate", query = "SELECT p FROM ProductOrder p WHERE p.date = :date"),
-    @NamedQuery(name = "ProductOrder.findByFinalPrice", query = "SELECT p FROM ProductOrder p WHERE p.finalPrice = :finalPrice")})
+        @NamedQuery(name = "ProductOrder.findAll", query = "SELECT p FROM ProductOrder p"),
+        @NamedQuery(name = "ProductOrder.findById", query = "SELECT p FROM ProductOrder p WHERE p.id = :id"),
+        @NamedQuery(name = "ProductOrder.findByShippingAddress", query = "SELECT p FROM ProductOrder p WHERE p.shippingAddress = :shippingAddress"),
+        @NamedQuery(name = "ProductOrder.findByDate", query = "SELECT p FROM ProductOrder p WHERE p.date = :date"),
+        @NamedQuery(name = "ProductOrder.findByFinalPrice", query = "SELECT p FROM ProductOrder p WHERE p.finalPrice = :finalPrice") })
 public class ProductOrder implements Serializable {
+
+    @Size(max = 100)
+    @Column(name = "shippingAddress")
+    private String shippingAddress;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -48,13 +52,11 @@ public class ProductOrder implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 100)
-    @Column(name = "shippingAddress")
-    private String shippingAddress;
     @Column(name = "date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    // @Max(value=?) @Min(value=?)//if you know range of your decimal fields
+    // consider using these annotations to enforce field validation
     @Column(name = "finalPrice")
     private BigDecimal finalPrice;
     @JoinColumn(name = "paymentMethodId", referencedColumnName = "id")
@@ -84,14 +86,6 @@ public class ProductOrder implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getShippingAddress() {
-        return shippingAddress;
-    }
-
-    public void setShippingAddress(String shippingAddress) {
-        this.shippingAddress = shippingAddress;
     }
 
     public Date getDate() {
@@ -160,7 +154,7 @@ public class ProductOrder implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        
+
         if (!(object instanceof ProductOrder)) {
             return false;
         }
@@ -175,5 +169,13 @@ public class ProductOrder implements Serializable {
     public String toString() {
         return "model.ProductOrder[ id=" + id + " ]";
     }
-    
+
+    public String getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(String shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
 }
+

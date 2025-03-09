@@ -37,12 +37,6 @@ import java.math.BigDecimal;
     @NamedQuery(name = "OrderedItem.findByShippingCost", query = "SELECT o FROM OrderedItem o WHERE o.shippingCost = :shippingCost")})
 public class OrderedItem implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
     @Size(max = 30)
     @Column(name = "orderStatus")
     private String orderStatus;
@@ -50,6 +44,13 @@ public class OrderedItem implements Serializable {
     @NotNull
     @Column(name = "quantity")
     private int quantity;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "totalPrice")
     private BigDecimal totalPrice;
@@ -82,21 +83,6 @@ public class OrderedItem implements Serializable {
         this.id = id;
     }
 
-    public String getOrderStatus() {
-        return orderStatus;
-    }
-
-    public void setOrderStatus(String orderStatus) {
-        this.orderStatus = orderStatus;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
 
     public BigDecimal getTotalPrice() {
         return totalPrice;
@@ -153,6 +139,22 @@ public class OrderedItem implements Serializable {
     @Override
     public String toString() {
         return "model.OrderedItem[ id=" + id + " ]";
+    }
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
     
 }

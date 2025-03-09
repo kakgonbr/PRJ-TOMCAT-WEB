@@ -5,6 +5,7 @@
 package model;
 
 import jakarta.persistence.Basic;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,6 +24,7 @@ import jakarta.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.List;
 
 /**
  *
@@ -47,6 +49,7 @@ import java.util.Collection;
     @NamedQuery(name = "User.findByBio", query = "SELECT u FROM User u WHERE u.bio = :bio")})
 public class User implements Serializable {
 
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
@@ -84,6 +87,26 @@ private String email;
     @Size(max = 255)
     @Column(name = "bio")
     private String bio;
+    @OneToMany(mappedBy = "user1")
+    private List<ChatBox> chatBoxList;
+    @OneToMany(mappedBy = "user2")
+    private List<ChatBox> chatBoxList1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    private List<Preference> preferenceList;
+    @OneToMany(mappedBy = "userId")
+    private List<Notification> notificationList;
+    @OneToMany(mappedBy = "userId")
+    private List<Cart> cartList;
+    @OneToMany(mappedBy = "senderId")
+    private List<ChatContent> chatContentList;
+    @OneToMany(mappedBy = "userId")
+    private List<ProductOrder> productOrderList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<UserPreference> userPreferenceList;
+    @OneToMany(mappedBy = "userId")
+    private List<Review> reviewList;
+    @OneToMany(mappedBy = "userId")
+    private List<OnholdCredit> onholdCreditList;
     @OneToMany(mappedBy = "ownerId")
     private Collection<Shop> shopCollection;
     @OneToMany(mappedBy = "creatorId")
@@ -179,6 +202,33 @@ private String email;
         return "model.User[ id=" + id + " ]";
     }
 
+    
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    @XmlTransient
+    public Collection<Shop> getShopCollection() {
+        return shopCollection;
+    }
+
+    public void setShopCollection(Collection<Shop> shopCollection) {
+        this.shopCollection = shopCollection;
+    }
+
+    @XmlTransient
+    public Collection<Promotion> getPromotionCollection() {
+        return promotionCollection;
+    }
+
+    public void setPromotionCollection(Collection<Promotion> promotionCollection) {
+        this.promotionCollection = promotionCollection;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -250,31 +300,95 @@ private String email;
     public void setBio(String bio) {
         this.bio = bio;
     }
-    
-    public boolean isStatus() {
-        return status;
+
+    @XmlTransient
+    public List<ChatBox> getChatBoxList() {
+        return chatBoxList;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setChatBoxList(List<ChatBox> chatBoxList) {
+        this.chatBoxList = chatBoxList;
     }
 
     @XmlTransient
-    public Collection<Shop> getShopCollection() {
-        return shopCollection;
+    public List<ChatBox> getChatBoxList1() {
+        return chatBoxList1;
     }
 
-    public void setShopCollection(Collection<Shop> shopCollection) {
-        this.shopCollection = shopCollection;
+    public void setChatBoxList1(List<ChatBox> chatBoxList1) {
+        this.chatBoxList1 = chatBoxList1;
     }
 
     @XmlTransient
-    public Collection<Promotion> getPromotionCollection() {
-        return promotionCollection;
+    public List<Preference> getPreferenceList() {
+        return preferenceList;
     }
 
-    public void setPromotionCollection(Collection<Promotion> promotionCollection) {
-        this.promotionCollection = promotionCollection;
+    public void setPreferenceList(List<Preference> preferenceList) {
+        this.preferenceList = preferenceList;
+    }
+
+    @XmlTransient
+    public List<Notification> getNotificationList() {
+        return notificationList;
+    }
+
+    public void setNotificationList(List<Notification> notificationList) {
+        this.notificationList = notificationList;
+    }
+
+    @XmlTransient
+    public List<Cart> getCartList() {
+        return cartList;
+    }
+
+    public void setCartList(List<Cart> cartList) {
+        this.cartList = cartList;
+    }
+
+    @XmlTransient
+    public List<ChatContent> getChatContentList() {
+        return chatContentList;
+    }
+
+    public void setChatContentList(List<ChatContent> chatContentList) {
+        this.chatContentList = chatContentList;
+    }
+
+    @XmlTransient
+    public List<ProductOrder> getProductOrderList() {
+        return productOrderList;
+    }
+
+    public void setProductOrderList(List<ProductOrder> productOrderList) {
+        this.productOrderList = productOrderList;
+    }
+
+    @XmlTransient
+    public List<UserPreference> getUserPreferenceList() {
+        return userPreferenceList;
+    }
+
+    public void setUserPreferenceList(List<UserPreference> userPreferenceList) {
+        this.userPreferenceList = userPreferenceList;
+    }
+
+    @XmlTransient
+    public List<Review> getReviewList() {
+        return reviewList;
+    }
+
+    public void setReviewList(List<Review> reviewList) {
+        this.reviewList = reviewList;
+    }
+
+    @XmlTransient
+    public List<OnholdCredit> getOnholdCreditList() {
+        return onholdCreditList;
+    }
+
+    public void setOnholdCreditList(List<OnholdCredit> onholdCreditList) {
+        this.onholdCreditList = onholdCreditList;
     }
     
 }

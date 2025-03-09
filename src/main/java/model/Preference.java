@@ -33,17 +33,18 @@ import java.io.Serializable;
     @NamedQuery(name = "Preference.findByKeyword", query = "SELECT p FROM Preference p WHERE p.keyword = :keyword")})
 public class Preference implements Serializable {
 
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 30)
+    @Column(name = "keyword")
+    private String keyword;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 30)
-    @Column(name = "keyword")
-    private String keyword;
     @JoinColumn(name = "userId", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private User userId;
@@ -68,13 +69,6 @@ public class Preference implements Serializable {
         this.id = id;
     }
 
-    public String getKeyword() {
-        return keyword;
-    }
-
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
-    }
 
     public User getUserId() {
         return userId;
@@ -107,6 +101,14 @@ public class Preference implements Serializable {
     @Override
     public String toString() {
         return "model.Preference[ id=" + id + " ]";
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
     
 }
