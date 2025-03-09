@@ -19,8 +19,8 @@ import com.google.gson.JsonObject;
  * Noteworthy: On a successful query, vnp_ResponseCode is 00.<br></br>
  * The detail of the transaction is in vnp_TransactionStatus, 00 if the transaction was successful<br></br>
  * <strong>Parameters needed: vnp_TxnRef, vnp_CreateDate (MUST MATCH THE ORDER'S)</strong><br></br>
- * Example json sent to VNPay: <code>{"vnp_RequestId":"41735318","vnp_Version":"2.1.0","vnp_Command":"querydr","vnp_TmnCode":"E32QASX8","vnp_TxnRef":"34428014","vnp_OrderInfo":"Kiem tra ket qua GD OrderId:34428014","vnp_TransactionDate":"20250308183518","vnp_CreateDate":"20250308184308","vnp_IpAddr":"171.225.185.32","vnp_SecureHash":"hashhere"}</code><br></br>
- * Example json sent back from VNPay: <code>{"vnp_ResponseId":"282a3735af2c4eb782a753dafd007b25","vnp_Command":"querydr","vnp_ResponseCode":"00","vnp_Message":"QueryDR Success","vnp_TmnCode":"E32QASX8","vnp_TxnRef":"34428014","vnp_Amount":"1000000","vnp_OrderInfo":"Thanh toan don hang:34428014","vnp_BankCode":"VISA","vnp_PayDate":"20250308183518","vnp_TransactionNo":"14836051","vnp_TransactionType":"01","vnp_TransactionStatus":"00","vnp_SecureHash":"hashhere"}</code>
+ * Example json sent to VNPay: <code>{"vnp_RequestId":"31280303","vnp_Version":"2.1.0","vnp_Command":"refund","vnp_TmnCode":"E32QASX8","vnp_TransactionType":"02","vnp_TxnRef":"34428014","vnp_Amount":"1000000","vnp_OrderInfo":"Hoan tien GD OrderId:34428014","vnp_TransactionDate":"20250308183518","vnp_CreateBy":"admin","vnp_CreateDate":"20250308184330","vnp_IpAddr":"171.225.185.32","vnp_SecureHash":"hash"}</code><br></br>
+ * Example json sent back from VNPay: <code>{"vnp_ResponseId":"fa14474280ea49b9b5987308e35ccb06","vnp_Command":"refund","vnp_ResponseCode":"00","vnp_Message":"Refund success","vnp_TmnCode":"E32QASX8","vnp_TxnRef":"34428014","vnp_Amount":"1000000","vnp_OrderInfo":"Hoan tien GD OrderId:34428014","vnp_BankCode":"VISA","vnp_PayDate":"20250308184331","vnp_TransactionNo":"14836054","vnp_TransactionType":"02","vnp_TransactionStatus":"05","vnp_SecureHash":"6ceafc8fb23f4c329608bf3a7c064278e77978aa771c51cdbf4384b1d7c8c2a7a5d84479df45061ef928e3e7b44353449611345bccfcf2cd7eb92e29f2f7171d"}</code>
  */
 public class RefundService {
     public static java.util.Map<String, String> refund(String vnp_IpAddr, String vnp_TransactionType, String vnp_TxnRef, long amount, String vnp_TransactionDate, String vnp_CreateBy) throws IOException {
@@ -101,5 +101,20 @@ public class RefundService {
         }.getType();
         Gson gson = new Gson();
         return gson.fromJson(response.toString(), type);
+    }
+
+    /**
+     * Wrapper method to make it look cleaner
+     * @param vnp_IpAddr
+     * @param vnp_TransactionType
+     * @param vnp_TxnRef
+     * @param amount
+     * @param vnp_TransactionDate
+     * @param vnp_CreateBy
+     * @return
+     * @throws IOException
+     */
+    public static boolean issueRefund(String vnp_IpAddr, String vnp_TransactionType, String vnp_TxnRef, long amount, String vnp_TransactionDate, String vnp_CreateBy) throws IOException {
+        return refund(vnp_IpAddr, vnp_TransactionType, vnp_TxnRef, amount, vnp_TransactionDate, vnp_CreateBy).get("vnp_ResponseCode").equals("00");
     }
 }

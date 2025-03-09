@@ -1,14 +1,7 @@
 package dao;
 
-import java.sql.Connection;
-import java.sql.Statement;
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Query;
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public final class StatisticsDAO {

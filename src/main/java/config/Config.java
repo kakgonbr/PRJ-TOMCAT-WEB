@@ -45,4 +45,10 @@ public final class Config {
     public static final class Resources {
         public static final String ROOT_DIR = "/prj/resources";
     }
+
+    public static final class MailConfig {
+        public static final String EMAIL_AUTH_USER = System.getenv("EMAIL_AUTH_USER");
+        public static final String EMAIL_AUTH_PASSWORD = System.getenv("EMAIL_AUTH_PASSWORD"); // Dangerous
+        public static final String EMAIL_FROM = EMAIL_AUTH_USER;
+    }
 }

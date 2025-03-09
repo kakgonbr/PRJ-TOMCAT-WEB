@@ -24,9 +24,9 @@ public class VNPConfig {
     }
     public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
     // public static String vnp_ReturnUrl = "http://localhost:8080/prj/vnpay/redirect/return";
-    public static String vnp_ReturnUrl = "https://kakgonbri.zapto.org:8443/prj/return";
-    public static String vnp_TmnCode = "E32QASX8";
-    public static String secretKey = "0Y5NQBVAF9FET13E32PIHKPI3XVR151Q";
+    public static String vnp_ReturnUrl = System.getenv("VNP_RETURN");
+    public static String vnp_TmnCode = System.getenv("VNP_TMN");
+    public static String secretKey = System.getenv("VNP_SECRET");
     public static String vnp_ApiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
 
     public static String md5(String message) {

@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * The servlet responsible for displaying the payment result, redirected by
- * VNPay.
+ * VNPay.<br></br>
  * Example redirect parameters:
  * <code>?vnp_Amount=1000000&vnp_BankCode=VISA&vnp_BankTranNo=7414299775556409503612&vnp_CardType=VISA&vnp_OrderInfo=Thanh+toan+don+hang%3A94878848&vnp_PayDate=20250308173205&vnp_ResponseCode=00&vnp_TmnCode=E32QASX8&vnp_TransactionNo=14835978&vnp_TransactionStatus=00&vnp_TxnRef=94878848&vnp_SecureHash=f88c46d03fb1cbbf7ff6168c909ae96aad4db209e0c3153d49892575d556d20eaa8eda6fe39042a55fbe5eb7b0ff76fdc4c9385ac6f659a8d2bf79d827e4eaed</code>
  */

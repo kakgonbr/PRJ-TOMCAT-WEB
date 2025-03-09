@@ -215,6 +215,7 @@ CREATE TABLE tblOrder
 	promotionId int,
 	date datetime DEFAULT GETDATE(),
 	finalPrice money,  --after promotion and iclude shipping cost
+	status bit DEFAULT 0,
 
 
 	CONSTRAINT fk_order_user FOREIGN KEY (userId) REFERENCES tblUser(id),

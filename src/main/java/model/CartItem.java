@@ -7,6 +7,7 @@ package model;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -43,7 +44,7 @@ public class CartItem implements Serializable {
     @Column(name = "quantity")
     private int quantity;
     @JoinColumn(name = "cartId", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER) // to get the user's id, which is required for the order's ifnromation
     private Cart cartId;
     @JoinColumn(name = "productItemId", referencedColumnName = "id")
     @ManyToOne

@@ -7,6 +7,7 @@ package model;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -65,6 +66,8 @@ public class ProductOrder implements Serializable {
     @JoinColumn(name = "userId", referencedColumnName = "id")
     @ManyToOne
     private User userId;
+    @Column(name = "status")
+    private Boolean status;
     @OneToMany(mappedBy = "orderId")
     private List<OrderedItem> orderedItemList;
 
@@ -129,6 +132,14 @@ public class ProductOrder implements Serializable {
 
     public void setUserId(User userId) {
         this.userId = userId;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    public Boolean getStatus() {
+        return status;
     }
 
     @XmlTransient
