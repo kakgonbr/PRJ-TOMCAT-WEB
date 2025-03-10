@@ -52,7 +52,7 @@ public class Review implements Serializable {
     @ManyToOne
     private User userId;
     @Column(name = "status")
-    private boolean status;
+    private Boolean status;
 
     public Review() {
     }

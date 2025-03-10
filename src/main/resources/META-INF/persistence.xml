@@ -1,32 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="3.0" xmlns="https://jakarta.ee/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
   <persistence-unit name="pu">
-    <class>model.Variation</class>
     <class>model.ChatBoxContent</class>
-    <class>model.Promotion</class>
-    <class>model.Product</class>
     <class>model.Notification</class>
     <class>model.OrderedItem</class>
     <class>model.BaseVector</class>
-    <class>model.ProductImage</class>
-    <class>model.Order</class>
     <class>model.ServerStatistics</class>
-    <class>model.ShopStatistics</class>
-    <class>model.ResourceMap</class>
     <class>model.ChatBox</class>
-    <class>model.ProductItem</class>
-    <class>model.CartItem</class>
-    <class>model.UserPreference</class>
-    <class>model.Preference</class>
-    <class>model.PaymentMethod</class>
     <class>model.Cart</class>
-    <class>model.User</class>
-    <class>model.OnholdCredit</class>
-    <class>model.Category</class>
-    <class>model.ProductCustomization</class>
-    <class>model.Review</class>
-    <class>model.VariationValue</class>
-    <class>model.Shop</class>
     <class>model.Preference</class>
     <class>model.PaymentMethod</class>
     <class>model.ProductImage</class>
@@ -37,7 +18,6 @@
     <class>model.Notification</class>
     <class>model.UserPreference</class>
     <class>model.ResourceMap</class>
-    <class>model.OrderedItem</class>
     <class>model.Category</class>
     <class>model.CartItem</class>
     <class>model.ShopStatistics</class>
