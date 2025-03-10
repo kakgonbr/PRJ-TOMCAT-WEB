@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 public class RedirectServlet extends HttpServlet {
     public static final String REDIRECT_MAINTENANCE = "maintenance"; 
+    public static final String REDIRECT_LOG = "log"; 
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -21,6 +22,9 @@ public class RedirectServlet extends HttpServlet {
             switch (target) {
                 case REDIRECT_MAINTENANCE:
                     request.getRequestDispatcher(config.Config.JSPMapper.MAINTENANCE_JSP).forward(request, response);
+                return;
+                case REDIRECT_LOG:
+                    request.getRequestDispatcher(config.Config.JSPMapper.LOG_JSP).forward(request, response);
                 return;
             }
         }

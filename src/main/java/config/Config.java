@@ -1,8 +1,10 @@
 package config;
 
 public final class Config {
-    public static final String[] nonPrivileged = {"/login", "/public", "/home", "/redirect", "/resources", "/ipn", "/return"};
+    public static final String[] nonPrivileged = {"/login", "/public", "/home", "/redirect", "/resources", "/ipn", "/return", "/logs"};
     public static final String[] nonMaintenance = {"/login", "/error", "/redirect"};
+    
+    public static final String LOG_LOCATION = "/prj/logs/app.log";
 
     public static final class DBConfig {
         // public static final String DB_ADDRESS = System.getenv("DB_ADDRESS");
@@ -24,6 +26,7 @@ public final class Config {
         public static final String CHAT_JSP = "WEB-INF/jsp/chat.jsp";
         public static final String PAYMENT_RETURN_JSP = "WEB-INF/jsp/return.jsp";
         public static final String PAYMENT_PAY_JSP = "WEB-INF/jsp/pay.jsp";
+        public static final String LOG_JSP = "WEB-INF/jsp/log.jsp";
 
         public static final String PRIVILEGED_ADMIN_JSP = "WEB-INF/jsp/admin/adminStats.jsp";
     }

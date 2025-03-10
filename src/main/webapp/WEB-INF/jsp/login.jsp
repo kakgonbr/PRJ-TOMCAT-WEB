@@ -20,6 +20,8 @@
             <input type="text" name="password">
             <input type="submit" value="Login">
         </form>
+        <br></br>
+        <h2><a href="${pageContext.request.contextPath}/redirect?page=log">View Log</a></h2>
     </jsp:attribute>
 
     <jsp:attribute name="footer">

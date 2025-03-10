@@ -92,6 +92,10 @@
         <servlet-name>n_PayServlet</servlet-name>
         <servlet-class>controller.PayServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>n_LogServlet</servlet-name>
+        <servlet-class>controller.LogServlet</servlet-class>
+    </servlet>
 
     <!-- SERVLET MAPPINGS -->
     <!-- TEMPLATE:
@@ -163,6 +167,10 @@
     <servlet-mapping>
         <servlet-name>n_PayServlet</servlet-name>
         <url-pattern>/pay</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>n_LogServlet</servlet-name>
+        <url-pattern>/logs</url-pattern>
     </servlet-mapping>
 
     <!-- FILTER DECLARATIONS -->
