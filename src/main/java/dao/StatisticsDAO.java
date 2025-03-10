@@ -70,7 +70,7 @@ public final class StatisticsDAO {
                 try {
                     et.begin();
 
-                    em.createNativeQuery(CREATE_SERVER_STATISTICS, model.ChatBox.class).setParameter(1, java.time.LocalDate.now())
+                    em.createNativeQuery(CREATE_SERVER_STATISTICS).setParameter(1, java.time.LocalDate.now())
                     .setParameter(2, SystemStatisticsContainer.getVisits())
                     .setParameter(3, SystemStatisticsContainer.getPeakSession())
                     .setParameter(4, SystemStatisticsContainer.getAverageResponseTime())
