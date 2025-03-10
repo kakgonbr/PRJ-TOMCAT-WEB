@@ -1,6 +1,7 @@
 package service;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
@@ -10,6 +11,7 @@ import org.apache.http.client.fluent.Request;
 import org.apache.http.util.EntityUtils;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 public class LoginService {
@@ -24,8 +26,8 @@ public class LoginService {
 						            .build()).execute().handleResponse(responseHandler);
         if(response==null)
         {
-            service.Logging.logger.error("Database connection established.");
-            throw new ClientProtocolException("response null");
+            service.Logging.logger.error("access token from google is null");
+            throw new ClientProtocolException("google access token null");
         }
 		JsonObject jobj = new Gson().fromJson(response, JsonObject.class);
 		String accessToken = jobj.get("access_token").toString().replaceAll("\"", "");
@@ -45,15 +47,15 @@ public class LoginService {
 		}
 	};
 
-	public static String getGGUserInfoJson(final String accessToken) throws ClientProtocolException, IOException {
+	public static Map<String,JsonElement> getGGUserInfoJson(final String accessToken) throws ClientProtocolException, IOException {
 		String link = config.Config.GGLoginConfig.GOOGLE_LINK_GET_USER_INFO + accessToken;
 		String response = Request.Get(link).execute().handleResponse(responseHandler);
 		JsonObject jobj = new Gson().fromJson(response, JsonObject.class);
-		return jobj.get("id").getAsString()+", "+jobj.get("email").getAsString();
-        
+		return jobj.asMap();
 	}
 
 	//FB Login
+	//if not work, check https://developers.facebook.com/apps/1292754858725836/settings/basic/ for changing domain name, url
 	public static String getFBToken(String code) throws ClientProtocolException,IOException  {
 		String response = Request.Post(config.Config.FBLoginConfig.FACEBOOK_LINK_GET_TOKEN).bodyForm
                         (Form.form().add("client_id", config.Config.FBLoginConfig.FACEBOOK_CLIENT_ID)
@@ -71,12 +73,12 @@ public class LoginService {
 		return accessToken;
 	}
 
-	public static String getFBUserInfoJson(final String accessToken) throws ClientProtocolException, IOException {
+	public static Map<String,JsonElement> getFBUserInfoJson(final String accessToken) throws ClientProtocolException, IOException {
 		String link = config.Config.FBLoginConfig.FACEBOOK_LINK_GET_USER_INFO + accessToken;
 		String response = Request.Get(link).execute().handleResponse(responseHandler);
 		Gson gson = new Gson();
         JsonObject jsonObject = gson.fromJson(response, JsonObject.class);
-        return jsonObject.get("email").getAsString();
+        return jsonObject.asMap();
 	}
 
 	/* 

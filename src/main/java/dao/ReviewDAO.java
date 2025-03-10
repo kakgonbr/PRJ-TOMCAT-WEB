@@ -48,6 +48,7 @@ public class ReviewDAO {
     }
 
     public static class ReviewFetcher {
+        /*wrong query -> lack productID -> pagination wrong */
         public static final String GET_REVIEW_PAGE_NEXT = "select *\r\n" + //
                         "from tblReview\r\n" + //
                         "where id > ?1\r\n" + //
