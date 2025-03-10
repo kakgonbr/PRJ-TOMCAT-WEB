@@ -451,7 +451,11 @@ GO
 
 INSERT INTO tblResourceMap
 VALUES
-('test_js', 'test.js');
+('test_js', 'test.js'),
+('chat_js', 'chat.js'),
+('admin_js', 'admin.js'),
+('admin_css', 'admin.css'),
+('chart_js', 'customChart.js');
 
 INSERT INTO tblUser (email, username, phoneNumber, password, persistentCookie, googleId, facebookId, isAdmin)
 VALUES ('abc@example.com', 'user', '00000', 'user', NULL, NULL, NULL, 0),

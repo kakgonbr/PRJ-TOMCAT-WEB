@@ -92,6 +92,18 @@ public final class StatisticsDAO {
 
         } // public static void addStatistics(Connection connection) throws
           // java.sql.SQLException
+        
+        private static final String GET_STATISTICS = "SELECT TOP 10 * FROM tblServerStatistics ORDER BY day DESC";
+
+        public static synchronized java.util.List<model.TblServerStatistics> getStatistics() throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+
+                return em.createNativeQuery(GET_STATISTICS, model.TblServerStatistics.class).getResultList();
+
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
+            }
+        }
     } // public static final class SystemStatistics
 
     public static final class ShopStatisticsManager {

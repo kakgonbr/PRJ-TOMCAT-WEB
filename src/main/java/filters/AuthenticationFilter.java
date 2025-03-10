@@ -19,7 +19,7 @@ public class AuthenticationFilter implements jakarta.servlet.Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String path = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
 
-        service.Logging.logger.info("Filter AuthenticationFilter received a request going to: {}", path);
+        // service.Logging.logger.info("Filter AuthenticationFilter received a request going to: {}", path);
 
         // Allow non privileged list
         for (final String npPath : config.Config.nonPrivileged) {

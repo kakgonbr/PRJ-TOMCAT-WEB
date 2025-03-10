@@ -96,6 +96,10 @@
         <servlet-name>n_LogServlet</servlet-name>
         <servlet-class>controller.LogServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>n_AdminStatsServlet</servlet-name>
+        <servlet-class>controller.AdminStatsServlet</servlet-class>
+    </servlet>
 
     <!-- SERVLET MAPPINGS -->
     <!-- TEMPLATE:
@@ -171,6 +175,10 @@
     <servlet-mapping>
         <servlet-name>n_LogServlet</servlet-name>
         <url-pattern>/logs</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>n_AdminStatsServlet</servlet-name>
+        <url-pattern>/admin/data</url-pattern>
     </servlet-mapping>
 
     <!-- FILTER DECLARATIONS -->

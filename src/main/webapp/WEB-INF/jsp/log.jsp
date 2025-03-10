@@ -3,6 +3,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@ page session="false" %>
 
 <t:genericpage title="TEMPLATE">
     <jsp:attribute name="head">
@@ -13,7 +14,7 @@
                 .then(response => response.text())
                 .then(text => document.getElementById("logContainer").innerText = text);
         }
-        setInterval(refreshLogs, 3000);
+        setInterval(refreshLogs, 10000);
         window.onload = refreshLogs;
     </script>
     </jsp:attribute>

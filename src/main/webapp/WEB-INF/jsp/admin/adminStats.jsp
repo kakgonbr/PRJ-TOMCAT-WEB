@@ -7,6 +7,17 @@
 <t:genericpage title="Admin Statistics">
     <jsp:attribute name="head">
         <t:resources/>
+
+        <script>
+            var contextPath = "${pageContext.request.contextPath}";
+        </script>
+        
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="${pageContext.request.contextPath}/resources/chart_js"></script>
+        <script src="${pageContext.request.contextPath}/resources/admin_js"></script>
+
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/admin_css">
     </jsp:attribute>
 
     <jsp:attribute name="header">
@@ -27,6 +38,15 @@
             <input type="hidden" name="action" value="logStatistics"/>
             <input type="submit" value="Log today's statistics"/>
         </form>
+
+        <canvas id="chartTotalMoney" class="adminChart"></canvas>
+        <canvas id="chartNumVisit" class="adminChart"></canvas>
+        <canvas id="chartNumPurchase" class="adminChart"></canvas>
+        <canvas id="chartNumUsers" class="adminChart"></canvas>
+        <canvas id="chartNumProducts" class="adminChart"></canvas>
+        <canvas id="chartNumShops" class="adminChart"></canvas>
+        <canvas id="chartNumPromotions" class="adminChart"></canvas>
+        <pre id="logContainer"></pre>
     </jsp:attribute>
 
     <jsp:attribute name="footer">

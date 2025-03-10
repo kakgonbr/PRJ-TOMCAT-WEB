@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * Mapped to /admin
  */
 public class AdminServlet extends HttpServlet {
-    /**
+/**
      * This methods expects the authentication has already been done by the filter
      */
     @Override
@@ -37,6 +37,8 @@ public class AdminServlet extends HttpServlet {
                 logStatistics();
             break;
         }
+
+        doGet(request, response);
     }
 
     private static void logStatistics() {
