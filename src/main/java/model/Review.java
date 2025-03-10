@@ -51,6 +51,8 @@ public class Review implements Serializable {
     @JoinColumn(name = "userId", referencedColumnName = "id")
     @ManyToOne
     private User userId;
+    @Column(name = "status")
+    private boolean status;
 
     public Review() {
     }
@@ -90,6 +92,14 @@ public class Review implements Serializable {
 
     public void setUserId(User userId) {
         this.userId = userId;
+    }
+    
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     @Override
