@@ -15,7 +15,7 @@ function fetchChartData() {
     fetch(contextPath + "/admin/data")
         .then(response => response.json())
         .then(data => {
-            data.array.forEach(chart => {
+            data.forEach(chart => {
                 createChart(chart.for, chart.type, chart.label, chart.labels, chart.values);
             });
             
