@@ -47,12 +47,12 @@ public final class StatisticsDAO {
                 + //
                 "VALUES (\r\n" + //
                 "    ?1,\r\n" + //
-                "    SELECT SUM(finalPrice) FROM tblOrder,\r\n" + //
-                "    SELECT COUNT(*) FROM tblUser,\r\n" + //
-                "    SELECT COUNT(*) FROM tblProduct,\r\n" + //
-                "    SELECT COUNT(*) FROM tblShop,\r\n" + //
-                "    SELECT COUNT(*) FROM tblPromotion,\r\n" + //
-                "    SELECT SUM(quantity) FROM tblOrderedItem,\r\n" + //
+                "    (SELECT SUM(finalPrice) FROM tblOrder),\r\n" + //
+                "    (SELECT COUNT(*) FROM tblUser),\r\n" + //
+                "    (SELECT COUNT(*) FROM tblProduct),\r\n" + //
+                "    (SELECT COUNT(*) FROM tblShop),\r\n" + //
+                "    (SELECT COUNT(*) FROM tblPromotion),\r\n" + //
+                "    (SELECT SUM(quantity) FROM tblOrderedItem),\r\n" + //
                 "    ?2,\r\n" + //
                 "    ?3,\r\n" + //
                 "    ?4,\r\n" + //
@@ -63,24 +63,6 @@ public final class StatisticsDAO {
          * Only called if the system needs to log the current SystemStatisticsContainer
          */
         public static synchronized void addStatistics() throws SQLException {
-
-            // try (PreparedStatement addPS =
-            // connection.prepareStatement(CREATE_SERVER_STATISTICS)) {
-            // // 5
-            // addPS.setDate(1, java.sql.Date.valueOf(java.time.LocalDate.now()));
-            // addPS.setInt(2, SystemStatisticsContainer.getVisits());
-            // addPS.setInt(3, SystemStatisticsContainer.getPeakSession());
-            // addPS.setLong(4, SystemStatisticsContainer.getAverageResponseTime());
-            // addPS.setLong(5, SystemStatisticsContainer.getMaxResponseTime());
-
-            // addPS.executeUpdate();
-
-            // connection.commit();
-
-            // } catch (SQLException e) {
-            // connection.rollback();
-            // throw e;
-            // }
 
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 EntityTransaction et = em.getTransaction();
