@@ -177,6 +177,7 @@ create table tblReview
 	productId int,
 	rate int,
 	comment nvarchar(255),
+	status bit,
 
 	constraint fk_review_user FOREIGN KEY (userId) REFERENCES tblUser(id),
 	constraint fk_review_product FOREIGN KEY (productId) REFERENCES tblProduct(id)
