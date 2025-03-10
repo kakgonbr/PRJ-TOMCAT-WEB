@@ -13,13 +13,13 @@ public class SessionCountingListener implements HttpSessionListener {
     public void sessionCreated(HttpSessionEvent se) {
         int count = activeSessions.incrementAndGet();
         service.Logging.logger.info("Session created: {} | Active Sessions: {}", se.getSession().getId(), count);
+
+        dao.StatisticsDAO.SystemStatisticsManager.SystemStatisticsContainer.reportSession(count);
     }
 
     @Override
     public void sessionDestroyed(HttpSessionEvent se) {
         int count = activeSessions.decrementAndGet();
         service.Logging.logger.info("Session destroyed: {} | Active Sessions: {}", se.getSession().getId(), count);
-
-        dao.StatisticsDAO.SystemStatisticsManager.SystemStatisticsContainer.reportSession(count);
     }
 }
