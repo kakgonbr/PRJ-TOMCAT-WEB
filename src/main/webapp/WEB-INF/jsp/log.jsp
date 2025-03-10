@@ -9,14 +9,9 @@
     <jsp:attribute name="head">
         <t:resources/>
         <script>
-        function refreshLogs() {
-            fetch('${pageContext.request.contextPath}/logs')
-                .then(response => response.text())
-                .then(text => document.getElementById("logContainer").innerText = text);
-        }
-        setInterval(refreshLogs, 10000);
-        window.onload = refreshLogs;
-    </script>
+            var contextPath = "${pageContext.request.contextPath}";
+        </script>
+        <script src="${pageContext.request.contextPath}/resources/log_js"></script>
     </jsp:attribute>
 
     <jsp:attribute name="header">

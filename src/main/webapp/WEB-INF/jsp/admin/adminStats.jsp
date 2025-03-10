@@ -16,7 +16,8 @@
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="${pageContext.request.contextPath}/resources/chart_js"></script>
         <script src="${pageContext.request.contextPath}/resources/admin_js"></script>
-
+        <script src="${pageContext.request.contextPath}/resources/log_js"></script>
+        
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/admin_css">
     </jsp:attribute>
 
