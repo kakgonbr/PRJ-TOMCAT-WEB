@@ -32,17 +32,17 @@ public final class StatisticsDAO {
             public static synchronized void reportResponseTime(long t_responseTime) {
                 ++responseTimeReports;
 
-                averageResponseTime = (averageResponseTime + t_responseTime) / responseTimeReports;
+                averageResponseTime = (averageResponseTime + t_responseTime) / 2;
                 maxResponseTime = t_responseTime > maxResponseTime ? t_responseTime : maxResponseTime;
 
-                service.Logging.logger.info("Response report received, reports: {}, average: {} ms, max: {} ms", responseTimeReports, averageResponseTime, maxResponseTime);
+                // service.Logging.logger.info("Response report received, reports: {}, average: {} ms, max: {} ms", responseTimeReports, averageResponseTime, maxResponseTime);
             }
             
             public static synchronized void reportSession(int t_sessionCount) {
                 ++visits;
                 peakSession = t_sessionCount > peakSession ? t_sessionCount : peakSession;
 
-                service.Logging.logger.info("Session report received, visits: {}, peak: {} ms", visits, peakSession);
+                // service.Logging.logger.info("Session report received, visits: {}, peak: {} ms", visits, peakSession);
             }
 
         } // public static final class SystemStatisticsContainer
