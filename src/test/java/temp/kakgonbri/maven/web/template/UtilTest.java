@@ -9,6 +9,6 @@ public class UtilTest {
     {
         System.out.println("BEGIN UTIL TEST");
 
-        Assertions.assertEquals(misc.Utils.formatDate(new java.util.Date()), java.time.LocalDate.now().format(config.Config.Time.outputFormatDate));
+        Assertions.assertEquals(misc.Utils.formatDate(java.sql.Date.valueOf(java.time.LocalDate.now())), java.time.LocalDate.now().format(config.Config.Time.outputFormatDate));
     }
 }
