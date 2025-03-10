@@ -51,4 +51,26 @@ public final class Config {
         public static final String EMAIL_AUTH_PASSWORD = System.getenv("EMAIL_AUTH_PASSWORD"); // Dangerous
         public static final String EMAIL_FROM = EMAIL_AUTH_USER;
     }
+
+    public static class GGLoginConfig {
+        public static final String GOOGLE_CLIENT_ID = System.getenv("GOOGLE_CLIENT_ID");
+        public static final String GOOGLE_CLIENT_SECRET = System.getenv("GOOGLE_CLIENT_SECRET");
+        public static final String GOOGLE_REDIRECT_URI = "https://kakgonbri.zapto.org/prj/login?method=gg";
+        public static final String GOOGLE_GRANT_TYPE = "authorization_code";
+        public static final String GOOGLE_LINK_GET_TOKEN = "https://accounts.google.com/o/oauth2/token";
+        public static final String GOOGLE_LINK_GET_USER_INFO = "https://www.googleapis.com/oauth2/v1/userinfo?access_token=";
+    }
+
+    public static class FBLoginConfig {
+        public static final String FACEBOOK_CLIENT_ID = System.getenv("FACEBOOK_CLIENT_ID");
+        public static final String FACEBOOK_CLIENT_SECRET = System.getenv("FACEBOOK_CLIENT_SECRET");
+        public static final String FACEBOOK_REDIRECT_URI = "https://kakgonbri.zapto.org/prj/login?method=fb";
+        public static final String FACEBOOK_LINK_GET_TOKEN = "https://graph.facebook.com/v22.0/oauth/access_token";
+        public static final String FACEBOOK_LINK_GET_USER_INFO = "https://graph.facebook.com/me?fields=id,name,email&access_token=";
+    }
+
+    public static class GoongMapAPIConfig {
+        public static final String API_KEY = System.getenv("GOONG_API_KEY");
+        public static final String API_AUTOCOMPLETE_LINK = "https://rsapi.goong.io/place/autocomplete?";
+    }
 }

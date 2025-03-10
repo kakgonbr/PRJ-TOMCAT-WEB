@@ -12,7 +12,8 @@ public final class CartDAO {
 
         public static synchronized model.Cart getCart(int userID) throws SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                return em.createNamedQuery("Cart.findById", model.Cart.class).setParameter("userID", userID).getSingleResult();
+                return em.createNamedQuery("Cart.findById", model.Cart.class).setParameter("userID", userID)
+                        .getSingleResult();
             } catch (Exception e) {
                 throw new java.sql.SQLException(e);
             }
@@ -43,7 +44,7 @@ public final class CartDAO {
                 try {
                     et.begin();
                     CartItem cartItem = new CartItem();
-                    cartItem.setProductItemId(productItem); 
+                    cartItem.setProductItemId(productItem);
                     cartItem.setQuantity(quantity);
                     cartItem.setStatus(true);
                     em.persist(cartItem);
@@ -58,32 +59,32 @@ public final class CartDAO {
             }
         }
 
-            public static synchronized boolean changeCount(int index, int quantity) throws SQLException {
-                try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                    EntityTransaction et = em.getTransaction();
+        public static synchronized boolean changeCount(int index, int quantity) throws SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                EntityTransaction et = em.getTransaction();
 
-                    try {
-                        et.begin();
-                        CartItem cartItem = em.find(CartItem.class, index);
-                        if (cartItem != null) {
-                            if (quantity > 0) {
-                                cartItem.setQuantity(quantity);
-                                em.merge(cartItem);
-                            } else {
-                                em.remove(cartItem);
-                            }
-                            et.commit();
-                            return true;
+                try {
+                    et.begin();
+                    CartItem cartItem = em.find(CartItem.class, index);
+                    if (cartItem != null) {
+                        if (quantity > 0) {
+                            cartItem.setQuantity(quantity);
+                            em.merge(cartItem);
+                        } else {
+                            em.remove(cartItem);
                         }
-                        return false;
-                    } catch (Exception e) {
-                        if (et.isActive()) {
-                            et.rollback();
-                        }
-                        throw new SQLException(e);
+                        et.commit();
+                        return true;
                     }
+                    return false;
+                } catch (Exception e) {
+                    if (et.isActive()) {
+                        et.rollback();
+                    }
+                    throw new SQLException(e);
                 }
             }
+        }
     }
 
 }

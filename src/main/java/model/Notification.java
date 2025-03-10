@@ -53,6 +53,9 @@ public class Notification implements Serializable {
     @ManyToOne
     private User userId;
 
+    @Column(name = "isRead")
+    private Boolean isRead;
+
     public Notification() {
     }
 
@@ -71,6 +74,14 @@ public class Notification implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public void setIsRead(Boolean isRead) {
+        this.isRead = isRead;
+    }
+
+    public Boolean getIsRead() {
+        return isRead;
     }
 
 

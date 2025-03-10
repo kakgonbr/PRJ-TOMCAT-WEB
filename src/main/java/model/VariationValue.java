@@ -7,6 +7,7 @@ package model;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -46,7 +47,7 @@ public class VariationValue implements Serializable {
     @Column(name = "id")
     private Integer id;
     @JoinColumn(name = "variationId", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Variation variationId;
     @OneToMany(mappedBy = "variationValueId")
     private List<ProductCustomization> productCustomizationList;

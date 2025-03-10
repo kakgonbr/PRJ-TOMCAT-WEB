@@ -258,6 +258,7 @@ CREATE TABLE tblNotification
 	userId int, -- can be null if the notification is global
 	title nvarchar(30) NOT NULL,
 	body nvarchar(255),
+	isRead bit DEFAULT 0,
 
 	CONSTRAINT fk_notification_user FOREIGN KEY (userId) REFERENCES tblUser
 )
@@ -288,12 +289,12 @@ CREATE TABLE tblShopStatistics
 -- TF-IdF RELATED STUFF
 CREATE TABLE tblBaseVector 
 (
-    keyword nvarchar(400) PRIMARY KEY
+    keyword nvarchar(MAX) PRIMARY KEY
 );
 
 CREATE TABLE tblVector (
     productId int PRIMARY KEY,
-    vector nvarchar(400)
+    vector nvarchar(MAX)
 );
 
 GO
