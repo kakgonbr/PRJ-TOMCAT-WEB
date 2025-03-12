@@ -380,6 +380,8 @@ GO
 CREATE PROCEDURE GetRecommendation (@query NVARCHAR(400), @page int)
 AS
 BEGIN
+	SET NOCOUNT ON;
+
 	IF @query IS NULL OR LTRIM(RTRIM(@query)) = ''
     BEGIN
         SELECT TOP 10 * FROM tblProduct ORDER BY NEWId();
@@ -453,6 +455,7 @@ BEGIN
 	SELECT tblProduct.*
 	FROM tblProduct
 	JOIN recommendation ON tblProduct.id = recommendation.id
+	WHERE recommendation.similarity != 0
 	ORDER BY recommendation.similarity DESC
 	OFFSET @page * 10 ROWS 
     FETCH NEXT 10 ROWS ONLY
@@ -539,7 +542,7 @@ VALUES
 (3, 7, 'Dishwasher', 'Efficient and modern', NULL, 'admin_js', 1),
 (4, 8, 'Smart TV', '4K Ultra HD', 4, 'test_js', 1),
 (5, 9, 'Bookshelf', 'Modern wooden bookshelf', 5, 'admin_js', 1),
-(5, 9, 'FlagShip Phone', 'A phone that is flagship', 5, 'admin_js', 1),
+(5, 9, 'FlagShip Phone', 'A phone that is flagship, also, gaming', 5, 'admin_js', 1),
 (5, 9, 'FlagShip Tablet', 'Cool tablet', 5, 'admin_js', 1);
 
 
@@ -571,8 +574,4 @@ VALUES
 (3, 6, 1400),
 (4, 9, 800);
 
-
-
-SELECT * FROM tblServerStatistics
-
-SELECT * FROM tblProduct
+EXEC ComputeTFIdF

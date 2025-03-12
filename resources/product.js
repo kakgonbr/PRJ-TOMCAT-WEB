@@ -34,7 +34,7 @@ function fetchProducts() {
                 row.appendChild(cell);
 
                 cell = document.createElement("td");
-                cell.textContent = item.thumbNailId;
+                cell.textContent = item.thumbnailId;
                 row.appendChild(cell);
 
                 tableBody.appendChild(row);
