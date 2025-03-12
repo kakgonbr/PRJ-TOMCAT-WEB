@@ -494,17 +494,24 @@ VALUES
 (5, 'Fashion Hub', '456 Style Ave', 'admin_css', 1);
 select * from tblShop
 
+/*parent id is for testing -> change when real*/
 INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
 VALUES
-('Smartphones', 'chart_js', 1),
-('Laptops', 'chart_js', 1),
-('Footwear', 'admin_css', 2),
-('Accessories', 'admin_css', 2),
-('Home Appliances', 'admin_js', NULL),
-('Gaming Consoles', 'test_js', NULL),
-('Furniture', 'admin_js', NULL),
-('Electronics', 'chart_js', NULL),
-('Clothing', 'admin_css', NULL);
+	('fashion','chart_js',NULL),
+	('electronics','chart_js',NULL),
+	('furniture','chart_js',NULL),
+	('comestic','chart_js',NULL),
+	('book','chart_js',NULL),
+	('t-shirt','chart_js',15),
+	('vest','chart_js',15),
+	('hoodie','chart_js',15),
+	('shirt','chart_js',15),
+	('jacket','chart_js',15),
+	('coat','chart_js',15),
+	('polo shirt','chart_js',15),
+	('man jean','chart_js',15),
+	('short','chart_js',15),
+	('trouser','chart_js',15);
 
 INSERT INTO tblPromotion (creatorId, name, type, ofAdmin, value, expireDate)
 VALUES
