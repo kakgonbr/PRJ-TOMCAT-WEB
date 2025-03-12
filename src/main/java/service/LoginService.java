@@ -16,6 +16,7 @@ import com.google.gson.JsonObject;
 
 public class LoginService {
  
+	/* 
 	public static String getGoogleToken(String code) throws ClientProtocolException, IOException {
 		String response= Request.Post(config.Config.GGLoginConfig.GOOGLE_LINK_GET_TOKEN).bodyForm(
 			Form.form().add("client_id", config.Config.GGLoginConfig.GOOGLE_CLIENT_ID)
@@ -30,8 +31,9 @@ public class LoginService {
 		return accessToken;
 
 	}
+	*/
 
-	/* 
+	
     public static String getGGToken(String code) throws ClientProtocolException,IOException  {
 		String response = Request.Post(config.Config.GGLoginConfig.GOOGLE_LINK_GET_TOKEN).bodyForm
                         (Form.form().add("client_id", config.Config.GGLoginConfig.GOOGLE_CLIENT_ID)
@@ -39,8 +41,7 @@ public class LoginService {
                                     .add("redirect_uri", config.Config.GGLoginConfig.GOOGLE_REDIRECT_URI)
                                     .add("code", code)
                                     .add("grant_type", config.Config.GGLoginConfig.GOOGLE_GRANT_TYPE)
-						            .build()).execute().returnContent().asString();
-        
+						            .build()).execute().handleResponse(responseHandler);
 		if(response==null)
         {
             service.Logging.logger.error("access token from google is null");
@@ -50,7 +51,7 @@ public class LoginService {
 		String accessToken = jobj.get("access_token").toString().replaceAll("\"", "");
 		return accessToken;
 	}
-	*/
+	
 	
 	private static final ResponseHandler<String> responseHandler= response -> {
 		int status= response.getStatusLine().getStatusCode();

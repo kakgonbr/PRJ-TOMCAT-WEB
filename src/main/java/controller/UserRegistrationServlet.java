@@ -28,7 +28,7 @@ public class UserRegistrationServlet extends HttpServlet {
             try {
                 switch (request.getParameter("method")) {
                     case "gg":
-                        accessToken= service.LoginService.getGoogleToken(code);
+                        accessToken= service.LoginService.getGGToken(code);
                         infoMap = service.LoginService.getGGUserInfoJson(accessToken);
                         id= infoMap.get("id").getAsString();
                         email= infoMap.get("email").getAsString();
@@ -43,8 +43,7 @@ public class UserRegistrationServlet extends HttpServlet {
                         */
                     default:
                         break;
-                }
-                response.sendRedirect(config.Config.JSPMapper.HOME_JSP);    
+                }   
             } catch (ClientProtocolException e) {
                 service.Logging.logger.error("ClientProtocolException error login service error");
             }
