@@ -46,6 +46,7 @@ public class LoginServlet extends HttpServlet {
             String id;
             String email; 
             Map<String, JsonElement> infoMap= null;
+            service.Logging.logger.error(code);
             try {
                 switch (request.getParameter("method")) {
                     case "gg":
@@ -68,7 +69,7 @@ public class LoginServlet extends HttpServlet {
                 response.sendRedirect(config.Config.JSPMapper.HOME_JSP);
                 return;    
             } catch (ClientProtocolException e) {
-                service.Logging.logger.error("ClientProtocolException error");
+                service.Logging.logger.error("ClientProtocolException error login service error");
             }
             
         }

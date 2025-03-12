@@ -30,7 +30,6 @@ public class LoginService {
             service.Logging.logger.error("access token from google is null");
             throw new ClientProtocolException("google access token null");
         }
-		
 		JsonObject jobj = new Gson().fromJson(response, JsonObject.class);
 		String accessToken = jobj.get("access_token").toString().replaceAll("\"", "");
 		return accessToken;
@@ -52,7 +51,8 @@ public class LoginService {
 
 	public static Map<String,JsonElement> getGGUserInfoJson(final String accessToken) throws ClientProtocolException, IOException {
 		String link = config.Config.GGLoginConfig.GOOGLE_LINK_GET_USER_INFO + accessToken;
-		String response = Request.Get(link).execute().handleResponse(responseHandler);
+		//String response = Request.Get(link).execute().handleResponse(responseHandler);
+		String response = Request.Get(link).execute().returnContent().asString();
 		JsonObject jobj = new Gson().fromJson(response, JsonObject.class);
 		return jobj.asMap();
 	}
