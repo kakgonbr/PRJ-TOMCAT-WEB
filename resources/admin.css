@@ -1,11 +1,26 @@
-.adminChart {
-    display: block;
-}
-
 #logContainer {
     background: #f4f4f4;
     padding: 10px;
     border: 1px solid #ccc;
     max-height: 500px;
     overflow-y: auto;
+}
+
+.chart-container {
+    display: grid;
+    grid-template-columns: repeat(1fr, 3);
+    gap: 20px;
+    padding: 20px;
+}
+
+.chart-item {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.adminChart {
+    max-width: 100%;
 }
