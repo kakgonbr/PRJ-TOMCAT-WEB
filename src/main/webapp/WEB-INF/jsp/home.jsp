@@ -8,12 +8,13 @@
     <jsp:attribute name="head">
         <t:resources/>
 
+        <script src="${pageContext.request.contextPath}/resources/product_js"></script>
+        
         <script>
             var contextPath = "${pageContext.request.contextPath}";
             window.onload = fetchProducts;
         </script>
 
-        <script src="${pageContext.request.contextPath}/resources/product_js"></script>
     </jsp:attribute>
 
     <jsp:attribute name="header">

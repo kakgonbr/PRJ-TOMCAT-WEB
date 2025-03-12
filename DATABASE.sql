@@ -289,7 +289,7 @@ CREATE TABLE tblShopStatistics
 -- TF-IdF RELATED STUFF
 CREATE TABLE tblBaseVector 
 (
-    keyword nvarchar(MAX) PRIMARY KEY
+    keyword nvarchar(MAX)
 );
 
 CREATE TABLE tblVector (
@@ -502,31 +502,31 @@ VALUES
 
 INSERT INTO tblProduct (shopId, categoryId, name, description, availablePromotionId, imageStringResourceId, status)
 VALUES
-(4, 3, 'Samsung Galaxy S22', 'Flagship Samsung smartphone', 1, 'test_js', 1),
-(4, 4, 'MacBook Pro 14', 'Apple high-end laptop', 2, 'test_js', 1),
-(5, 5, 'Nike Air Max', 'Stylish and comfortable sneakers', 3, 'admin_css', 1),
-(5, 6, 'Leather Handbag', 'Elegant leather handbag', NULL, 'admin_css', 1),
-(6, 7, 'Air Fryer', 'Healthy cooking appliance', NULL, 'admin_js', 1),
-(6, 7, 'Vacuum Cleaner', 'Powerful home cleaning device', NULL, 'admin_js', 1),
-(7, 8, 'PlayStation 5', 'Next-gen gaming console', 4, 'test_js', 1),
-(7, 8, 'Xbox Series X', 'Powerful Microsoft gaming console', 4, 'test_js', 1),
-(8, 9, 'Modern Sofa', 'Comfortable and stylish', 5, 'admin_js', 1),
-(8, 9, 'Wooden Dining Table', 'Elegant and durable', 5, 'admin_js', 1),
-(4, 3, 'iPhone 14 Pro', 'Latest Apple smartphone', 1, 'test_js', 1),
-(4, 5, 'Adidas Ultraboost', 'High-performance running shoes', 3, 'admin_css', 1),
-(6, 7, 'Microwave Oven', 'Efficient and modern', NULL, 'admin_js', 1),
-(7, 8, 'Nintendo Switch', 'Portable gaming console', 4, 'test_js', 1),
-(8, 9, 'Queen Size Bed', 'Luxurious and comfortable', 5, 'admin_js', 1),
-(4, 3, 'Google Pixel 7', 'Latest Google smartphone', 1, 'test_js', 1),
-(5, 5, 'Puma Running Shoes', 'Lightweight and stylish', 3, 'admin_css', 1),
-(6, 7, 'Blender', 'Powerful kitchen appliance', NULL, 'admin_js', 1),
-(7, 8, 'Gaming Laptop', 'High-end gaming performance', 4, 'test_js', 1),
-(8, 9, 'Office Chair', 'Ergonomic and comfortable', 5, 'admin_js', 1),
+(1, 3, 'Samsung Galaxy S22', 'Flagship Samsung smartphone', 1, 'test_js', 1),
+(1, 4, 'MacBook Pro 14', 'Apple high-end laptop', 2, 'test_js', 1),
+(2, 5, 'Nike Air Max', 'Stylish and comfortable sneakers', 3, 'admin_css', 1),
+(2, 6, 'Leather Handbag', 'Elegant leather handbag', NULL, 'admin_css', 1),
+(3, 7, 'Air Fryer', 'Healthy cooking appliance', NULL, 'admin_js', 1),
+(3, 7, 'Vacuum Cleaner', 'Powerful home cleaning device', NULL, 'admin_js', 1),
+(4, 8, 'PlayStation 5', 'Next-gen gaming console', 4, 'test_js', 1),
+(4, 8, 'Xbox Series X', 'Powerful Microsoft gaming console', 4, 'test_js', 1),
+(5, 9, 'Modern Sofa', 'Comfortable and stylish', 5, 'admin_js', 1),
+(5, 9, 'Wooden Dining Table', 'Elegant and durable', 5, 'admin_js', 1),
+(1, 3, 'iPhone 14 Pro', 'Latest Apple smartphone', 1, 'test_js', 1),
+(1, 5, 'Adidas Ultraboost', 'High-performance running shoes', 3, 'admin_css', 1),
+(3, 7, 'Microwave Oven', 'Efficient and modern', NULL, 'admin_js', 1),
+(4, 8, 'Nintendo Switch', 'Portable gaming console', 4, 'test_js', 1),
+(5, 9, 'Queen Size Bed', 'Luxurious and comfortable', 5, 'admin_js', 1),
+(1, 3, 'Google Pixel 7', 'Latest Google smartphone', 1, 'test_js', 1),
+(2, 5, 'Puma Running Shoes', 'Lightweight and stylish', 3, 'admin_css', 1),
+(3, 7, 'Blender', 'Powerful kitchen appliance', NULL, 'admin_js', 1),
+(4, 8, 'Gaming Laptop', 'High-end gaming performance', 4, 'test_js', 1),
+(5, 9, 'Office Chair', 'Ergonomic and comfortable', 5, 'admin_js', 1),
 (4, 3, 'OnePlus 11', 'Flagship OnePlus smartphone', 1, 'test_js', 1),
-(5, 5, 'Reebok Sneakers', 'Durable and comfortable', 3, 'admin_css', 1),
-(6, 7, 'Dishwasher', 'Efficient and modern', NULL, 'admin_js', 1),
-(7, 8, 'Smart TV', '4K Ultra HD', 4, 'test_js', 1),
-(8, 9, 'Bookshelf', 'Modern wooden bookshelf', 5, 'admin_js', 1);
+(2, 5, 'Reebok Sneakers', 'Durable and comfortable', 3, 'admin_css', 1),
+(3, 7, 'Dishwasher', 'Efficient and modern', NULL, 'admin_js', 1),
+(4, 8, 'Smart TV', '4K Ultra HD', 4, 'test_js', 1),
+(5, 9, 'Bookshelf', 'Modern wooden bookshelf', 5, 'admin_js', 1);
 
 
 INSERT INTO tblProductItem (productId, stock, price)
@@ -552,7 +552,7 @@ VALUES
 (23, 10, 850),
 (24, 5, 1800),
 (25, 8, 950),
-(26, 12, 500),
+(1, 12, 500),
 (2, 18, 650),
 (3, 6, 1400),
 (4, 9, 800);
@@ -560,3 +560,5 @@ VALUES
 
 
 SELECT * FROM tblServerStatistics
+
+SELECT * FROM tblProduct
