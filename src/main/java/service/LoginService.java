@@ -35,13 +35,17 @@ public class LoginService {
 
 	
     public static String getGGToken(String code) throws ClientProtocolException,IOException  {
-		String response = Request.Post(config.Config.GGLoginConfig.GOOGLE_LINK_GET_TOKEN).bodyForm
-                        (Form.form().add("client_id", config.Config.GGLoginConfig.GOOGLE_CLIENT_ID)
-                                    .add("client_secret", config.Config.GGLoginConfig.GOOGLE_CLIENT_SECRET)
-                                    .add("redirect_uri", config.Config.GGLoginConfig.GOOGLE_REDIRECT_URI)
-                                    .add("code", code)
-                                    .add("grant_type", config.Config.GGLoginConfig.GOOGLE_GRANT_TYPE)
-						            .build()).execute().handleResponse(responseHandler);
+		Request request = Request.Post(config.Config.GGLoginConfig.GOOGLE_LINK_GET_TOKEN).bodyForm
+		(Form.form().add("client_id", config.Config.GGLoginConfig.GOOGLE_CLIENT_ID)
+					.add("client_secret", config.Config.GGLoginConfig.GOOGLE_CLIENT_SECRET)
+					.add("redirect_uri", config.Config.GGLoginConfig.GOOGLE_REDIRECT_URI)
+					.add("code", code)
+					.add("grant_type", config.Config.GGLoginConfig.GOOGLE_GRANT_TYPE)
+					.build());
+
+		service.Logging.logger.info("Request: {}", request);
+		
+		String response = request.execute().handleResponse(responseHandler);
 		if(response==null)
         {
             service.Logging.logger.error("access token from google is null");
