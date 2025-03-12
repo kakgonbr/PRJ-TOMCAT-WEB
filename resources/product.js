@@ -41,8 +41,4 @@ function fetchProducts() {
             });
         })
         .catch(error => console.error("Error fetching data:", error));
-        // let li = document.createElement("li");
-        // li.textContent = item.id + "\n" + item.shopId + "\n" + item.categoryId + "\n" + item.name + "\n" + item.description + "\n" + item.thumbnailId;
-        // listElement.appendChild(li);
-
 }

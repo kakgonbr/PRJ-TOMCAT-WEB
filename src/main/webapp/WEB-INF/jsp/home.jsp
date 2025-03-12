@@ -24,7 +24,7 @@
     <jsp:attribute name="body">
         <p>Welcome.</p>
         <input type="text" id="searchBox" placeholder="Query">
-        <button onclick="fetchData()">Search</button>
+        <button onclick="fetchProducts()">Search</button>
         <p>Products:</p>
         <table border="1" id="productTable">
         </table>

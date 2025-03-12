@@ -64,8 +64,10 @@ public class ProductDAO {
                 throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 return em.createStoredProcedureQuery(GET_RECOMMENDATION, model.Product.class)
-                .registerStoredProcedureParameter("query", String.class, ParameterMode.IN)
-                .setParameter("query", query).getResultList();
+                        .registerStoredProcedureParameter("query", String.class, ParameterMode.IN)
+                        .registerStoredProcedureParameter("page", Integer.class, ParameterMode.IN)
+                        .setParameter("query", query).setParameter("page", page).getResultList();
+
             } catch (Exception e) {
                 throw new java.sql.SQLException(e);
             }
