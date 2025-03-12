@@ -17,7 +17,7 @@ public class ProductWrapper {
         setCategoryId(product.getCategoryId().getId());
         setName(product.getName());
         setDescription(product.getDescription());
-        setPromotionId(product.getAvailablePromotionId().getId());
+        setPromotionId(product.getAvailablePromotionId() == null ? null : product.getAvailablePromotionId().getId());
         setThumbnailId(product.getImageStringResourceId().getId());
     }
 
