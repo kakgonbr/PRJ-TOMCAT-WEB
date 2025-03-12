@@ -24,14 +24,12 @@ public class LoginService {
                                     .add("code", code)
                                     .add("grant_type", config.Config.GGLoginConfig.GOOGLE_GRANT_TYPE)
 						            .build()).execute().returnContent().asString();
-        /* 
+        
 		if(response==null)
         {
             service.Logging.logger.error("access token from google is null");
             throw new ClientProtocolException("google access token null");
         }
-		*/
-	
 		JsonObject jobj = new Gson().fromJson(response, JsonObject.class);
 		String accessToken = jobj.get("access_token").toString().replaceAll("\"", "");
 		return accessToken;
