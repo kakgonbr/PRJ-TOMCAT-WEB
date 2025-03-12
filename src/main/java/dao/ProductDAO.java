@@ -3,6 +3,7 @@ package dao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.ParameterMode;
+import jakarta.persistence.StoredProcedureQuery;
 
 public class ProductDAO {
     public static class ProductFetcher {
@@ -24,7 +25,9 @@ public class ProductDAO {
         } // public static synchronized model.Product getProduct
 
         /**
-         * Eagerly fetches most information about a product, used for displaying the product detail screen
+         * Eagerly fetches most information about a product, used for displaying the
+         * product detail screen
+         * 
          * @param id
          * @return
          * @throws java.sql.SQLException
@@ -46,7 +49,7 @@ public class ProductDAO {
         } // public static synchronized model.Product getProductDetails
 
         // TODO: PAGINATE THIS
-        public static synchronized java.util.List<model.Review> getReviews(int productId) throws java.sql.SQLException {    
+        public static synchronized java.util.List<model.Review> getReviews(int productId) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 return em.find(model.Product.class, productId).getReviewList();
             } catch (Exception e) {
@@ -56,10 +59,19 @@ public class ProductDAO {
 
         private static final String GET_RECOMMENDATION = "GetRecommendation";
 
+        @SuppressWarnings("unchecked")
         public static synchronized java.util.List<model.Product> getRecommendation(String query, int page)
                 throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                return em.createStoredProcedureQuery(GET_RECOMMENDATION, model.Product.class).registerStoredProcedureParameter("query", String.class, ParameterMode.IN).registerStoredProcedureParameter("page", Integer.class, ParameterMode.IN).setParameter("query", query).setParameter("page", page).getResultList();
+                StoredProcedureQuery querySQL = em.createStoredProcedureQuery(GET_RECOMMENDATION, model.Product.class)
+                .registerStoredProcedureParameter("query", String.class, ParameterMode.IN)
+                .registerStoredProcedureParameter("page", Integer.class, ParameterMode.IN)
+                .setParameter("query", query)
+                .setParameter("page", page);
+
+                querySQL.execute();
+
+                return querySQL.getResultList();
             } catch (Exception e) {
                 throw new java.sql.SQLException(e);
             }
@@ -67,13 +79,16 @@ public class ProductDAO {
 
         private static final String GET_CUSTOMIZATIONS = "SELECT tblProductCustomization.* FROM tblProductCustomization INNER JOIN tblProductItem ON productItemId = tblProductItem.id WHERE tblProductItem.productId = ?1";
 
-        public static synchronized java.util.List<model.ProductCustomization> getCustomizations(int productId) throws java.sql.SQLException {
+        public static synchronized java.util.List<model.ProductCustomization> getCustomizations(int productId)
+                throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                return em.createNativeQuery(GET_CUSTOMIZATIONS, model.ProductCustomization.class).setParameter(1, productId).getResultList();
+                return em.createNativeQuery(GET_CUSTOMIZATIONS, model.ProductCustomization.class)
+                        .setParameter(1, productId).getResultList();
             } catch (Exception e) {
                 throw new java.sql.SQLException(e);
             }
-        } // public static synchronized java.util.List<model.ProductCustomization> getCustomizations
+        } // public static synchronized java.util.List<model.ProductCustomization>
+          // getCustomizations
     } // public static class ProductFetcher
 
     /**
@@ -119,12 +134,14 @@ public class ProductDAO {
 
                     throw new java.sql.SQLException(e);
                 }
-            } 
+            }
 
         } // public static synchronized void addProduct
-        
+
         /**
-         * Make sure the product has its category set and the category exists in the database
+         * Make sure the product has its category set and the category exists in the
+         * database
+         * 
          * @param product
          * @throws java.sql.SQLException
          */
@@ -159,7 +176,8 @@ public class ProductDAO {
             }
         } // public static synchronized void editProduct
 
-        public static synchronized void addCustomizations(int productId, java.util.List<model.ProductCustomization> customizations) throws java.sql.SQLException {
+        public static synchronized void addCustomizations(int productId,
+                java.util.List<model.ProductCustomization> customizations) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 EntityTransaction et = em.getTransaction();
 
@@ -169,7 +187,8 @@ public class ProductDAO {
                     for (final model.ProductCustomization customization : customizations) {
                         model.VariationValue variationValue = customization.getVariationValueId();
 
-                        if (em.find(model.Variation.class, variationValue) == null) continue;
+                        if (em.find(model.Variation.class, variationValue) == null)
+                            continue;
 
                         // customization's VariationValue gets its ID assigned here.
                         em.persist(variationValue);
