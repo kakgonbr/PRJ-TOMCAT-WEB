@@ -455,8 +455,12 @@ VALUES
 ('chat_js', 'chat.js'),
 ('admin_js', 'admin.js'),
 ('admin_css', 'admin.css'),
+('log_js', 'log.js'),
+('product_js', 'product.js'),
 ('chart_js', 'customChart.js');
 
 INSERT INTO tblUser (email, username, phoneNumber, password, persistentCookie, googleId, facebookId, isAdmin)
 VALUES ('abc@example.com', 'user', '00000', 'user', NULL, NULL, NULL, 0),
 ('abc1@example.com', 'admin', '00001', 'admin', NULL, NULL, NULL, 1);
+
+SELECT * FROM tblServerStatistics

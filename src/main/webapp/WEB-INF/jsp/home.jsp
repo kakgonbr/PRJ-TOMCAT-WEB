@@ -7,6 +7,13 @@
 <t:genericpage title="Home">
     <jsp:attribute name="head">
         <t:resources/>
+
+        <script>
+            var contextPath = "${pageContext.request.contextPath}";
+            window.onload = fetchProducts;
+        </script>
+
+        <script src="${pageContext.request.contextPath}/resources/product_js"></script>
     </jsp:attribute>
 
     <jsp:attribute name="header">
@@ -15,6 +22,8 @@
 
     <jsp:attribute name="body">
         <p>Welcome.</p>
+        <p>Products:</p>
+        <ul id="list"></ul>
     </jsp:attribute>
 
     <jsp:attribute name="footer">
