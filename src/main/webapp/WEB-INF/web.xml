@@ -101,8 +101,8 @@
         <servlet-class>controller.AdminStatsServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>GgFbLogin</servlet-name>
-        <servlet-class>controller.GgFbLogin</servlet-class>
+        <servlet-name>UserRegistrationServlet</servlet-name>
+        <servlet-class>controller.UserRegistrationServlet</servlet-class>
     </servlet>
     <!-- SERVLET MAPPINGS -->
     <!-- TEMPLATE:
@@ -184,8 +184,8 @@
         <url-pattern>/admin/data</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>GgFbLogin</servlet-name>
-        <url-pattern>/ggfblogin</url-pattern>
+        <servlet-name>UserRegistrationServlet</servlet-name>
+        <url-pattern>/signup</url-pattern>
     </servlet-mapping>
 
     <!-- FILTER DECLARATIONS -->

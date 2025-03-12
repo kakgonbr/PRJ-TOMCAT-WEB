@@ -1,7 +1,7 @@
 package config;
 
 public final class Config {
-    public static final String[] nonPrivileged = {"/login", "/public", "/home", "/redirect", "/resources", "/ipn", "/return", "/logs", "/ajax/products"};
+    public static final String[] nonPrivileged = {"/login", "/public", "/home", "/redirect", "/resources", "/ipn", "/return", "/logs", "/ajax/products", "/signup"};
     public static final String[] nonMaintenance = {"/login", "/error", "/redirect"};
     
     public static final String LOG_LOCATION = "/prj/logs/app.log";
@@ -27,6 +27,7 @@ public final class Config {
         public static final String PAYMENT_RETURN_JSP = "WEB-INF/jsp/return.jsp";
         public static final String PAYMENT_PAY_JSP = "WEB-INF/jsp/pay.jsp";
         public static final String LOG_JSP = "WEB-INF/jsp/log.jsp";
+        public static final String SIGNUP_JSP = "WEB-INF/jsp/signup.jsp";
 
         public static final String PRIVILEGED_ADMIN_JSP = "WEB-INF/jsp/admin/adminStats.jsp";
     }
@@ -58,7 +59,7 @@ public final class Config {
     public static class GGLoginConfig {
         public static final String GOOGLE_CLIENT_ID = System.getenv("GOOGLE_CLIENT_ID");
         public static final String GOOGLE_CLIENT_SECRET = System.getenv("GOOGLE_CLIENT_SECRET");
-        public static final String GOOGLE_REDIRECT_URI = "https://kakgonbri.zapto.org:8443/prj/ggfblogin?method=gg";
+        public static final String GOOGLE_REDIRECT_URI = "https://kakgonbri.zapto.org:8443/prj/signup?method=gg";
         public static final String GOOGLE_GRANT_TYPE = "authorization_code";
         public static final String GOOGLE_LINK_GET_TOKEN = "https://oauth2.googleapis.com/token";
         public static final String GOOGLE_LINK_GET_USER_INFO = "https://www.googleapis.com/oauth2/v1/userinfo?access_token=";

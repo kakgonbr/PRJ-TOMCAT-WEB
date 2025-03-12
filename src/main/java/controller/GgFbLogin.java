@@ -2,11 +2,8 @@ package controller;
 
 import java.io.IOException;
 import java.util.Map;
-
 import org.apache.hc.client5.http.ClientProtocolException;
-
 import com.google.gson.JsonElement;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
