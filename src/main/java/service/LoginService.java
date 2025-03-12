@@ -27,7 +27,6 @@ public class LoginService {
 		JsonObject jobj= new Gson().fromJson(response, JsonObject.class);
 		String accessToken = jobj.get("access_token").toString().replaceAll("\"", "");
 		return accessToken;
-
 	}
 
     public static String getGGToken(String code) throws ClientProtocolException,IOException  {
