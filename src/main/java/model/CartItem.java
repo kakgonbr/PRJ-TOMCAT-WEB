@@ -33,16 +33,17 @@ import java.io.Serializable;
     @NamedQuery(name = "CartItem.findByQuantity", query = "SELECT c FROM CartItem c WHERE c.quantity = :quantity")})
 public class CartItem implements Serializable {
 
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "quantity")
+    private int quantity;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "quantity")
-    private int quantity;
     @JoinColumn(name = "cartId", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.EAGER) // to get the user's id, which is required for the order's ifnromation
     private Cart cartId;
@@ -50,7 +51,7 @@ public class CartItem implements Serializable {
     @ManyToOne
     private ProductItem productItemId;
     @Column(name = "status")
-    private boolean status;
+    private Boolean status;
 
     public CartItem() {
     }
@@ -72,13 +73,6 @@ public class CartItem implements Serializable {
         this.id = id;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
 
     public Cart getCartId() {
         return cartId;
@@ -100,7 +94,7 @@ public class CartItem implements Serializable {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 
@@ -113,7 +107,7 @@ public class CartItem implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+        
         if (!(object instanceof CartItem)) {
             return false;
         }
@@ -127,6 +121,14 @@ public class CartItem implements Serializable {
     @Override
     public String toString() {
         return "model.CartItem[ id=" + id + " ]";
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
     
 }

@@ -72,13 +72,6 @@ public class IPNServlet extends HttpServlet {
                 }
             } else {
                 service.Logging.logger.info("Order {} does not exist, or paid amount does not match", orderId);
-
-                try {
-                    if (!service.vnpay.RefundService.issueRefund(request.getRemoteAddr(), "02", Integer.toString(orderId), paidAmount.longValue() * 100, date, "Admin")) throw new IOException("Response code is not 00");
-                } catch (IOException ioe) {
-                    // TODO: uh oh
-                    service.Logging.logger.error("FAILED TO ISSUE A REFUND FOR ORDER {}, REASON: {}", orderId, ioe.getMessage());
-                }
             }
         } else {
             service.Logging.logger.info("Order {}'s checksum does not match.", orderId);

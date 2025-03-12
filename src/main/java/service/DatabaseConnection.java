@@ -26,6 +26,8 @@ public class DatabaseConnection {
             service.Logging.logger.info("Database connection established.");
         } catch (Exception e) {
             service.Logging.logger.error("FAILED TO INTIALIZE DATABASE CONNECTION, REASON : {}", e.getMessage());
+
+            e.printStackTrace();
             
             service.ServerLockDown.lockDownServer("DATABASE CONNECTION INVALID");
         }

@@ -7,6 +7,7 @@ package model;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -35,17 +36,18 @@ import java.util.List;
     @NamedQuery(name = "VariationValue.findByValue", query = "SELECT v FROM VariationValue v WHERE v.value = :value")})
 public class VariationValue implements Serializable {
 
+    @Size(max = 15)
+    @Column(name = "value")
+    private String value;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 15)
-    @Column(name = "value")
-    private String value;
     @JoinColumn(name = "variationId", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Variation variationId;
     @OneToMany(mappedBy = "variationValueId")
     private List<ProductCustomization> productCustomizationList;
@@ -65,13 +67,6 @@ public class VariationValue implements Serializable {
         this.id = id;
     }
 
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
 
     public Variation getVariationId() {
         return variationId;
@@ -99,7 +94,7 @@ public class VariationValue implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+        
         if (!(object instanceof VariationValue)) {
             return false;
         }
@@ -113,6 +108,14 @@ public class VariationValue implements Serializable {
     @Override
     public String toString() {
         return "model.VariationValue[ id=" + id + " ]";
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
     
 }

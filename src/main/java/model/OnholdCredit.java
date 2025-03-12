@@ -38,17 +38,18 @@ import java.util.Date;
     @NamedQuery(name = "OnholdCredit.findByClaimDate", query = "SELECT o FROM OnholdCredit o WHERE o.claimDate = :claimDate")})
 public class OnholdCredit implements Serializable {
 
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "amount")
+    private BigDecimal amount;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "amount")
-    private BigDecimal amount;
     @Column(name = "date")
     @Temporal(TemporalType.DATE)
     private Date date;
@@ -79,13 +80,6 @@ public class OnholdCredit implements Serializable {
         this.id = id;
     }
 
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
 
     public Date getDate() {
         return date;
@@ -120,7 +114,7 @@ public class OnholdCredit implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+        
         if (!(object instanceof OnholdCredit)) {
             return false;
         }
@@ -134,6 +128,14 @@ public class OnholdCredit implements Serializable {
     @Override
     public String toString() {
         return "model.OnholdCredit[ id=" + id + " ]";
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
     }
     
 }

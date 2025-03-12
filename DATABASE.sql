@@ -177,6 +177,7 @@ create table tblReview
 	productId int,
 	rate int,
 	comment nvarchar(255),
+	status bit,
 
 	constraint fk_review_user FOREIGN KEY (userId) REFERENCES tblUser(id),
 	constraint fk_review_product FOREIGN KEY (productId) REFERENCES tblProduct(id)
@@ -196,7 +197,7 @@ CREATE TABLE tblCartItem
 	cartId int,
 	productItemId int,
 	quantity int NOT NULL,
-	status bit,
+	status bit DEFAULT 0,
 
 	-- CONSTRAINT pk_cartitem PRIMARY KEY (cartId, productCustomizationId),
 	CONSTRAINT fk_cartitem_cart FOREIGN KEY (cartId) REFERENCES tblCart(id),
@@ -257,6 +258,7 @@ CREATE TABLE tblNotification
 	userId int, -- can be null if the notification is global
 	title nvarchar(30) NOT NULL,
 	body nvarchar(255),
+	isRead bit DEFAULT 0,
 
 	CONSTRAINT fk_notification_user FOREIGN KEY (userId) REFERENCES tblUser
 )
@@ -287,12 +289,12 @@ CREATE TABLE tblShopStatistics
 -- TF-IdF RELATED STUFF
 CREATE TABLE tblBaseVector 
 (
-    keyword nvarchar(400) PRIMARY KEY
+    keyword nvarchar(MAX)
 );
 
 CREATE TABLE tblVector (
     productId int PRIMARY KEY,
-    vector nvarchar(400)
+    vector nvarchar(MAX)
 );
 
 GO
@@ -375,9 +377,11 @@ END;
 GO
 
 GO
-CREATE PROCEDURE GetRecommendation (@query NVARCHAR(400))
+CREATE PROCEDURE GetRecommendation (@query NVARCHAR(400), @page int)
 AS
 BEGIN
+	SET NOCOUNT ON;
+
 	IF @query IS NULL OR LTRIM(RTRIM(@query)) = ''
     BEGIN
         SELECT TOP 10 * FROM tblProduct ORDER BY NEWId();
@@ -394,13 +398,23 @@ BEGIN
 	),
 	df AS (
     --SELECT s.value AS keyword, COUNT(*) AS DF FROM STRING_SPLIT(@query, ' ') s GROUP BY s.value
-	SELECT keyword, COUNT(DISTINCT id) AS DF FROM (SELECT 
-													id,
-													TRIM(s.value) AS keyword
-													FROM tblProduct
-													CROSS APPLY STRING_SPLIT(LOWER(tblProduct.description), ' ') s
-													GROUP BY tblProduct.id, s.value, tblProduct.description) tbl
-	GROUP BY keyword
+	SELECT keyword, COUNT(DISTINCT id) AS DF 
+    FROM (
+        SELECT 
+            id,
+            TRIM(s.value) AS keyword
+        FROM tblProduct
+        CROSS APPLY STRING_SPLIT(LOWER(tblProduct.description), ' ') s
+        
+        UNION
+        
+        SELECT 
+            id,
+            TRIM(s.value) AS keyword
+        FROM tblProduct
+        CROSS APPLY STRING_SPLIT(LOWER(tblProduct.name), ' ') s
+    ) tbl
+    GROUP BY keyword
 	),
 	tfidf AS (
 		SELECT 
@@ -421,7 +435,7 @@ BEGIN
     --SELECT * FROM STRING_SPLIT((SELECT value FROM #result), ',');
 
 	WITH ItemVector AS (
-		SELECT v.productId, s.value AS tfidf_value, 
+		SELECT v.productId AS id, s.value AS tfidf_value, 
            ROW_NUMBER() OVER (PARTITION BY v.productId ORDER BY (SELECT NULL)) AS pos
 		FROM tblVector v
 		CROSS APPLY STRING_SPLIT(v.vector, ',') s
@@ -431,9 +445,9 @@ BEGIN
 		FROM STRING_SPLIT((SELECT value FROM #result), ',') s
 	),
 	recommendation AS(
-		SELECT TOP 10 iv.id,
+		SELECT iv.id,
 		SUM(CAST(qv.tfidf_value AS FLOAT) * CAST(iv.tfidf_value AS FLOAT)) /
-		(SQRT(SUM(POWER(CAST(iv.tfidf_value AS FLOAT), 2))) * SQRT(SUM(POWER(CAST(qv.tfidf_value AS FLOAT), 2)))) AS similarity
+		NULLIF((SQRT(SUM(POWER(CAST(iv.tfidf_value AS FLOAT), 2))) * SQRT(SUM(POWER(CAST(qv.tfidf_value AS FLOAT), 2)))), 0) AS similarity
 		FROM ItemVector iv
 		JOIN QueryVector qv ON iv.pos = qv.pos
 		GROUP BY iv.id
@@ -441,8 +455,123 @@ BEGIN
 	SELECT tblProduct.*
 	FROM tblProduct
 	JOIN recommendation ON tblProduct.id = recommendation.id
+	WHERE recommendation.similarity != 0
 	ORDER BY recommendation.similarity DESC
+	OFFSET @page * 10 ROWS 
+    FETCH NEXT 10 ROWS ONLY
 
     DROP TABLE #result;
 END;
 GO
+
+INSERT INTO tblResourceMap
+VALUES
+('test_js', 'test.js'),
+('chat_js', 'chat.js'),
+('admin_js', 'admin.js'),
+('admin_css', 'admin.css'),
+('log_js', 'log.js'),
+('product_js', 'product.js'),
+('chart_js', 'customChart.js'),
+('userMain_css', 'userMain.css'),
+('login_css', 'login.css');
+
+INSERT INTO tblUser (email, username, phoneNumber, password, persistentCookie, googleId, facebookId, isAdmin)
+VALUES 
+('abc@example.com', 'user', '00000', 'user', NULL, NULL, NULL, 0),
+('abc1@example.com', 'admin', '00001', 'admin', NULL, NULL, NULL, 1),
+('abc2@example.com', 'user123', '05602', 'user', NULL, NULL, NULL, 0),
+('abc3@example.com', 'user33443', '12003', 'user', NULL, NULL, NULL, 0),
+('abc4@example.com', 'user126543', '56004', 'user', NULL, NULL, NULL, 0);
+
+
+INSERT INTO tblShop (ownerId, name, address, profileStringResourceId, visible)
+VALUES
+(1, 'Gadget World', '789 Tech Road', 'chart_js', 1),
+(2, 'Sneaker Haven', '321 Fashion Blvd', 'admin_css', 1),
+(3, 'Home Essentials', '567 Home Lane', 'admin_js', 1),
+(4, 'Tech Universe', '123 Innovation St', 'test_js', 1),
+(5, 'Fashion Hub', '456 Style Ave', 'admin_css', 1);
+select * from tblShop
+
+INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
+VALUES
+('Smartphones', 'chart_js', 1),
+('Laptops', 'chart_js', 1),
+('Footwear', 'admin_css', 2),
+('Accessories', 'admin_css', 2),
+('Home Appliances', 'admin_js', NULL),
+('Gaming Consoles', 'test_js', NULL),
+('Furniture', 'admin_js', NULL),
+('Electronics', 'chart_js', NULL),
+('Clothing', 'admin_css', NULL);
+
+INSERT INTO tblPromotion (creatorId, name, type, ofAdmin, value, expireDate)
+VALUES
+(1, 'Black Friday Sale', 0, 0, 15, '2025-11-29'),
+(3, 'New Year Offer', 1, 0, 75000, '2025-12-31'),
+(2, 'Buy 1 Get 1', 0, 1, 50, '2025-12-31'),
+(4, 'Summer Discount', 0, 0, 20, '2025-06-30'),
+(5, 'Winter Clearance', 1, 1, 10000, '2025-12-15');
+
+
+INSERT INTO tblProduct (shopId, categoryId, name, description, availablePromotionId, imageStringResourceId, status)
+VALUES
+(1, 3, 'Samsung Galaxy S22', 'Flagship Samsung smartphone', 1, 'test_js', 1),
+(1, 4, 'MacBook Pro 14', 'Apple high-end laptop', 2, 'test_js', 1),
+(2, 5, 'Nike Air Max', 'Stylish and comfortable sneakers', 3, 'admin_css', 1),
+(2, 6, 'Leather Handbag', 'Elegant leather handbag', NULL, 'admin_css', 1),
+(3, 7, 'Air Fryer', 'Healthy cooking appliance', NULL, 'admin_js', 1),
+(3, 7, 'Vacuum Cleaner', 'Powerful home cleaning device', NULL, 'admin_js', 1),
+(4, 8, 'PlayStation 5', 'Next-gen gaming console', 4, 'test_js', 1),
+(4, 8, 'Xbox Series X', 'Powerful Microsoft gaming console', 4, 'test_js', 1),
+(5, 9, 'Modern Sofa', 'Comfortable and stylish', 5, 'admin_js', 1),
+(5, 9, 'Wooden Dining Table', 'Elegant and durable', 5, 'admin_js', 1),
+(1, 3, 'iPhone 14 Pro', 'Latest Apple smartphone', 1, 'test_js', 1),
+(1, 5, 'Adidas Ultraboost', 'High-performance running shoes', 3, 'admin_css', 1),
+(3, 7, 'Microwave Oven', 'Efficient and modern', NULL, 'admin_js', 1),
+(4, 8, 'Nintendo Switch', 'Portable gaming console', 4, 'test_js', 1),
+(5, 9, 'Queen Size Bed', 'Luxurious and comfortable', 5, 'admin_js', 1),
+(1, 3, 'Google Pixel 7', 'Latest Google smartphone', 1, 'test_js', 1),
+(2, 5, 'Puma Running Shoes', 'Lightweight and stylish', 3, 'admin_css', 1),
+(3, 7, 'Blender', 'Powerful kitchen appliance', NULL, 'admin_js', 1),
+(4, 8, 'Gaming Laptop', 'High-end gaming performance', 4, 'test_js', 1),
+(5, 9, 'Office Chair', 'Ergonomic and comfortable', 5, 'admin_js', 1),
+(4, 3, 'OnePlus 11', 'Flagship OnePlus smartphone', 1, 'test_js', 1),
+(2, 5, 'Reebok Sneakers', 'Durable and comfortable', 3, 'admin_css', 1),
+(3, 7, 'Dishwasher', 'Efficient and modern', NULL, 'admin_js', 1),
+(4, 8, 'Smart TV', '4K Ultra HD', 4, 'test_js', 1),
+(5, 9, 'Bookshelf', 'Modern wooden bookshelf', 5, 'admin_js', 1),
+(5, 9, 'FlagShip Phone', 'A phone that is flagship, also, gaming', 5, 'admin_js', 1),
+(5, 9, 'FlagShip Tablet', 'Cool tablet', 5, 'admin_js', 1);
+
+
+INSERT INTO tblProductItem (productId, stock, price)
+VALUES
+(5, 12, 1100),
+(6, 8, 2000),
+(7, 30, 250),
+(8, 15, 180),
+(9, 10, 300),
+(10, 5, 500),
+(11, 25, 1300),
+(12, 20, 220),
+(13, 18, 400),
+(14, 10, 450),
+(15, 8, 550),
+(16, 12, 350),
+(17, 5, 700),
+(18, 6, 600),
+(19, 7, 1200),
+(20, 4, 1500),
+(21, 15, 750),
+(22, 20, 300),
+(23, 10, 850),
+(24, 5, 1800),
+(25, 8, 950),
+(1, 12, 500),
+(2, 18, 650),
+(3, 6, 1400),
+(4, 9, 800);
+
+EXEC ComputeTFIdF

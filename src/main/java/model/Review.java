@@ -33,6 +33,10 @@ import java.io.Serializable;
     @NamedQuery(name = "Review.findByComment", query = "SELECT r FROM Review r WHERE r.comment = :comment")})
 public class Review implements Serializable {
 
+    @Size(max = 255)
+    @Column(name = "comment")
+    private String comment;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,15 +45,14 @@ public class Review implements Serializable {
     private Integer id;
     @Column(name = "rate")
     private Integer rate;
-    @Size(max = 255)
-    @Column(name = "comment")
-    private String comment;
     @JoinColumn(name = "productId", referencedColumnName = "id")
     @ManyToOne
     private Product productId;
     @JoinColumn(name = "userId", referencedColumnName = "id")
     @ManyToOne
     private User userId;
+    @Column(name = "status")
+    private Boolean status;
 
     public Review() {
     }
@@ -74,13 +77,6 @@ public class Review implements Serializable {
         this.rate = rate;
     }
 
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
 
     public Product getProductId() {
         return productId;
@@ -97,6 +93,14 @@ public class Review implements Serializable {
     public void setUserId(User userId) {
         this.userId = userId;
     }
+    
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
 
     @Override
     public int hashCode() {
@@ -107,7 +111,7 @@ public class Review implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+        
         if (!(object instanceof Review)) {
             return false;
         }
@@ -121,6 +125,14 @@ public class Review implements Serializable {
     @Override
     public String toString() {
         return "model.Review[ id=" + id + " ]";
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
     
 }

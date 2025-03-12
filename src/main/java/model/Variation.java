@@ -37,12 +37,6 @@ import java.util.List;
     @NamedQuery(name = "Variation.findByUnit", query = "SELECT v FROM Variation v WHERE v.unit = :unit")})
 public class Variation implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
     @Size(max = 30)
     @Column(name = "name")
     private String name;
@@ -52,6 +46,13 @@ public class Variation implements Serializable {
     @Size(max = 10)
     @Column(name = "unit")
     private String unit;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
     @JoinColumn(name = "categoryId", referencedColumnName = "id")
     @ManyToOne
     private Category categoryId;
@@ -73,29 +74,6 @@ public class Variation implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDatatype() {
-        return datatype;
-    }
-
-    public void setDatatype(String datatype) {
-        this.datatype = datatype;
-    }
-
-    public String getUnit() {
-        return unit;
-    }
-
-    public void setUnit(String unit) {
-        this.unit = unit;
-    }
 
     public Category getCategoryId() {
         return categoryId;
@@ -123,7 +101,7 @@ public class Variation implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+        
         if (!(object instanceof Variation)) {
             return false;
         }
@@ -137,6 +115,30 @@ public class Variation implements Serializable {
     @Override
     public String toString() {
         return "model.Variation[ id=" + id + " ]";
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDatatype() {
+        return datatype;
+    }
+
+    public void setDatatype(String datatype) {
+        this.datatype = datatype;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
     
 }

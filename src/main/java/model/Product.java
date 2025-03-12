@@ -7,6 +7,7 @@ package model;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -14,11 +15,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  *
@@ -34,12 +38,6 @@ import java.io.Serializable;
     @NamedQuery(name = "Product.findByDescription", query = "SELECT p FROM Product p WHERE p.description = :description")})
 public class Product implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -48,20 +46,33 @@ public class Product implements Serializable {
     @Size(max = 255)
     @Column(name = "description")
     private String description;
+    @OneToMany(mappedBy = "productId")
+    private List<ProductItem> productItemList;
+    @OneToMany(mappedBy = "productId")
+    private List<ProductImage> productImageList;
+    @OneToMany(mappedBy = "productId")
+    private List<Review> reviewList;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
     @JoinColumn(name = "categoryId", referencedColumnName = "id")
     @ManyToOne
     private Category categoryId;
     @JoinColumn(name = "availablePromotionId", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Promotion availablePromotionId;
     @JoinColumn(name = "imageStringResourceId", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private ResourceMap imageStringResourceId;
     @JoinColumn(name = "shopId", referencedColumnName = "id")
     @ManyToOne
     private Shop shopId;
     @Column(name = "status")
-    private boolean status;
+    private Boolean status;
 
     public Product() {
     }
@@ -83,21 +94,6 @@ public class Product implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     public Category getCategoryId() {
         return categoryId;
@@ -135,7 +131,7 @@ public class Product implements Serializable {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 
@@ -148,7 +144,7 @@ public class Product implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+        
         if (!(object instanceof Product)) {
             return false;
         }
@@ -162,6 +158,49 @@ public class Product implements Serializable {
     @Override
     public String toString() {
         return "model.Product[ id=" + id + " ]";
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @XmlTransient
+    public List<ProductItem> getProductItemList() {
+        return productItemList;
+    }
+
+    public void setProductItemList(List<ProductItem> productItemList) {
+        this.productItemList = productItemList;
+    }
+
+    @XmlTransient
+    public List<ProductImage> getProductImageList() {
+        return productImageList;
+    }
+
+    public void setProductImageList(List<ProductImage> productImageList) {
+        this.productImageList = productImageList;
+    }
+
+    @XmlTransient
+    public List<Review> getReviewList() {
+        return reviewList;
+    }
+
+    public void setReviewList(List<Review> reviewList) {
+        this.reviewList = reviewList;
     }
     
 }

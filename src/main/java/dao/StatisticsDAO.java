@@ -32,13 +32,17 @@ public final class StatisticsDAO {
             public static synchronized void reportResponseTime(long t_responseTime) {
                 ++responseTimeReports;
 
-                averageResponseTime = (averageResponseTime + t_responseTime) / responseTimeReports;
+                averageResponseTime = (averageResponseTime + t_responseTime) / 2;
                 maxResponseTime = t_responseTime > maxResponseTime ? t_responseTime : maxResponseTime;
-            }
 
+                // service.Logging.logger.info("Response report received, reports: {}, average: {} ms, max: {} ms", responseTimeReports, averageResponseTime, maxResponseTime);
+            }
+            
             public static synchronized void reportSession(int t_sessionCount) {
                 ++visits;
                 peakSession = t_sessionCount > peakSession ? t_sessionCount : peakSession;
+
+                // service.Logging.logger.info("Session report received, visits: {}, peak: {} ms", visits, peakSession);
             }
 
         } // public static final class SystemStatisticsContainer
@@ -47,12 +51,12 @@ public final class StatisticsDAO {
                 + //
                 "VALUES (\r\n" + //
                 "    ?1,\r\n" + //
-                "    SELECT SUM(finalPrice) FROM tblOrder,\r\n" + //
-                "    SELECT COUNT(*) FROM tblUser,\r\n" + //
-                "    SELECT COUNT(*) FROM tblProduct,\r\n" + //
-                "    SELECT COUNT(*) FROM tblShop,\r\n" + //
-                "    SELECT COUNT(*) FROM tblPromotion,\r\n" + //
-                "    SELECT SUM(quantity) FROM tblOrderedItem,\r\n" + //
+                "    (SELECT SUM(finalPrice) FROM tblOrder),\r\n" + //
+                "    (SELECT COUNT(*) FROM tblUser),\r\n" + //
+                "    (SELECT COUNT(*) FROM tblProduct),\r\n" + //
+                "    (SELECT COUNT(*) FROM tblShop),\r\n" + //
+                "    (SELECT COUNT(*) FROM tblPromotion),\r\n" + //
+                "    (SELECT SUM(quantity) FROM tblOrderedItem),\r\n" + //
                 "    ?2,\r\n" + //
                 "    ?3,\r\n" + //
                 "    ?4,\r\n" + //
@@ -64,31 +68,13 @@ public final class StatisticsDAO {
          */
         public static synchronized void addStatistics() throws SQLException {
 
-            // try (PreparedStatement addPS =
-            // connection.prepareStatement(CREATE_SERVER_STATISTICS)) {
-            // // 5
-            // addPS.setDate(1, java.sql.Date.valueOf(java.time.LocalDate.now()));
-            // addPS.setInt(2, SystemStatisticsContainer.getVisits());
-            // addPS.setInt(3, SystemStatisticsContainer.getPeakSession());
-            // addPS.setLong(4, SystemStatisticsContainer.getAverageResponseTime());
-            // addPS.setLong(5, SystemStatisticsContainer.getMaxResponseTime());
-
-            // addPS.executeUpdate();
-
-            // connection.commit();
-
-            // } catch (SQLException e) {
-            // connection.rollback();
-            // throw e;
-            // }
-
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 EntityTransaction et = em.getTransaction();
 
                 try {
                     et.begin();
 
-                    em.createNativeQuery(CREATE_SERVER_STATISTICS, model.ChatBox.class).setParameter(1, java.time.LocalDate.now())
+                    em.createNativeQuery(CREATE_SERVER_STATISTICS).setParameter(1, java.time.LocalDate.now())
                     .setParameter(2, SystemStatisticsContainer.getVisits())
                     .setParameter(3, SystemStatisticsContainer.getPeakSession())
                     .setParameter(4, SystemStatisticsContainer.getAverageResponseTime())
@@ -106,6 +92,18 @@ public final class StatisticsDAO {
 
         } // public static void addStatistics(Connection connection) throws
           // java.sql.SQLException
+        
+        private static final String GET_STATISTICS = "SELECT t.* FROM (SELECT TOP 10 * FROM tblServerStatistics ORDER BY day DESC) AS t ORDER BY t.day ASC;";
+
+        public static synchronized java.util.List<model.TblServerStatistics> getStatistics() throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+
+                return em.createNativeQuery(GET_STATISTICS, model.TblServerStatistics.class).getResultList();
+
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
+            }
+        }
     } // public static final class SystemStatistics
 
     public static final class ShopStatisticsManager {

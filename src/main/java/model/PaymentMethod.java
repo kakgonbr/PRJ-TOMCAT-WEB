@@ -33,15 +33,16 @@ import java.util.List;
     @NamedQuery(name = "PaymentMethod.findByName", query = "SELECT p FROM PaymentMethod p WHERE p.name = :name")})
 public class PaymentMethod implements Serializable {
 
+    @Size(max = 30)
+    @Column(name = "name")
+    private String name;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 30)
-    @Column(name = "name")
-    private String name;
     @OneToMany(mappedBy = "paymentMethodId")
     private List<ProductOrder> productOrderList;
 
@@ -60,13 +61,6 @@ public class PaymentMethod implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     @XmlTransient
     public List<ProductOrder> getProductOrderList() {
@@ -86,7 +80,7 @@ public class PaymentMethod implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+        
         if (!(object instanceof PaymentMethod)) {
             return false;
         }
@@ -100,6 +94,14 @@ public class PaymentMethod implements Serializable {
     @Override
     public String toString() {
         return "model.PaymentMethod[ id=" + id + " ]";
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
     
 }

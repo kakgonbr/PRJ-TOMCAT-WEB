@@ -7,6 +7,7 @@ package model;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -37,10 +38,10 @@ public class ProductCustomization implements Serializable {
     @Column(name = "id")
     private Integer id;
     @JoinColumn(name = "productItemId", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private ProductItem productItemId;
     @JoinColumn(name = "variationValueId", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private VariationValue variationValueId;
 
     public ProductCustomization() {
@@ -83,7 +84,7 @@ public class ProductCustomization implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+        
         if (!(object instanceof ProductCustomization)) {
             return false;
         }

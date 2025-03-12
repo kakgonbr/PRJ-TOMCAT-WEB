@@ -1,12 +1,12 @@
 package model;
 
 public class ProductWrapper {
-    private int id;
-    private int shopId;
-    private int categoryId;
+    private Integer id;
+    private Integer shopId;
+    private Integer categoryId;
     private String name;
     private String description;
-    private int promotionId;
+    private Integer promotionId;
     private String thumbnailId;
 
     public ProductWrapper() {}
@@ -17,11 +17,11 @@ public class ProductWrapper {
         setCategoryId(product.getCategoryId().getId());
         setName(product.getName());
         setDescription(product.getDescription());
-        setPromotionId(product.getAvailablePromotionId().getId());
+        setPromotionId(product.getAvailablePromotionId() == null ? null : product.getAvailablePromotionId().getId());
         setThumbnailId(product.getImageStringResourceId().getId());
     }
 
-    public int getCategoryId() {
+    public Integer getCategoryId() {
         return categoryId;
     }
 
@@ -29,7 +29,7 @@ public class ProductWrapper {
         return description;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -37,11 +37,11 @@ public class ProductWrapper {
         return name;
     }
 
-    public int getPromotionId() {
+    public Integer getPromotionId() {
         return promotionId;
     }
 
-    public int getShopId() {
+    public Integer getShopId() {
         return shopId;
     }
 
@@ -49,7 +49,7 @@ public class ProductWrapper {
         return thumbnailId;
     }
     
-    public void setCategoryId(int categoryId) {
+    public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
     }
 
@@ -57,7 +57,7 @@ public class ProductWrapper {
         this.description = description;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -65,11 +65,11 @@ public class ProductWrapper {
         this.name = name;
     }
 
-    public void setPromotionId(int promotionId) {
+    public void setPromotionId(Integer promotionId) {
         this.promotionId = promotionId;
     }
 
-    public void setShopId(int shopId) {
+    public void setShopId(Integer shopId) {
         this.shopId = shopId;
     }
 
