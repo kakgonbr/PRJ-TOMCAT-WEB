@@ -38,6 +38,8 @@ public class LoginService {
 					.add("grant_type", config.Config.GGLoginConfig.GOOGLE_GRANT_TYPE)
 					.build());
 
+		request.setHeader("Content-type", "application/x-www-form-urlencoded");
+
 		service.Logging.logger.info("Request: {}", request);
 		
 		String response = request.execute().returnContent().asString();
