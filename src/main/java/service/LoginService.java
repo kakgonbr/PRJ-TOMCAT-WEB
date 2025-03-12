@@ -40,7 +40,12 @@ public class LoginService {
 
 		request.setHeader("Content-type", "application/x-www-form-urlencoded");
 
-		service.Logging.logger.info("Request: {}", request);
+		service.Logging.logger.info("Request: {}, client_id {}, client_secret {}, redirect_uri {}, code {}, grant_type {}", request,
+		 config.Config.GGLoginConfig.GOOGLE_CLIENT_ID,
+		 config.Config.GGLoginConfig.GOOGLE_CLIENT_SECRET,
+		 config.Config.GGLoginConfig.GOOGLE_REDIRECT_URI,
+		 code,
+		 config.Config.GGLoginConfig.GOOGLE_GRANT_TYPE);
 		
 		String response = request.execute().returnContent().asString();
         
