@@ -68,8 +68,12 @@ public class LoginService {
 
 	public static Map<String,JsonElement> getGGUserInfoJson(final String accessToken) throws ClientProtocolException, IOException {
 		String link = config.Config.GGLoginConfig.GOOGLE_LINK_GET_USER_INFO + accessToken;
+		service.Logging.logger.info("Sending token access request: {}", link);
 		//String response = Request.Get(link).execute().handleResponse(responseHandler);
 		String response = Request.Get(link).execute().returnContent().asString();
+
+		service.Logging.logger.info("Response received: {}", response);
+
 		JsonObject jobj = new Gson().fromJson(response, JsonObject.class);
 		return jobj.asMap();
 	}
