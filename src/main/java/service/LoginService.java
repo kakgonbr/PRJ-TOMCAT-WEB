@@ -16,7 +16,6 @@ import com.google.gson.JsonObject;
 
 public class LoginService {
  
-	/* 
 	public static String getGoogleToken(String code) throws ClientProtocolException, IOException {
 		String response= Request.Post(config.Config.GGLoginConfig.GOOGLE_LINK_GET_TOKEN).bodyForm(
 			Form.form().add("client_id", config.Config.GGLoginConfig.GOOGLE_CLIENT_ID)
@@ -25,15 +24,12 @@ public class LoginService {
 						.add("code", code)
 						.add("grant_type", config.Config.GGLoginConfig.GOOGLE_GRANT_TYPE)
 						.build()).execute().returnContent().asString();
-		service.Logging.logger.error("response: " + response);
 		JsonObject jobj= new Gson().fromJson(response, JsonObject.class);
 		String accessToken = jobj.get("access_token").toString().replaceAll("\"", "");
 		return accessToken;
 
 	}
-	*/
 
-	
     public static String getGGToken(String code) throws ClientProtocolException,IOException  {
 		Request request = Request.Post(config.Config.GGLoginConfig.GOOGLE_LINK_GET_TOKEN).bodyForm
 		(Form.form().add("client_id", config.Config.GGLoginConfig.GOOGLE_CLIENT_ID)
@@ -45,7 +41,8 @@ public class LoginService {
 
 		service.Logging.logger.info("Request: {}", request);
 		
-		String response = request.execute().handleResponse(responseHandler);
+		String response = request.execute().returnContent().asString();
+        
 		if(response==null)
         {
             service.Logging.logger.error("access token from google is null");
@@ -73,13 +70,11 @@ public class LoginService {
 
 	public static Map<String,JsonElement> getGGUserInfoJson(final String accessToken) throws ClientProtocolException, IOException {
 		String link = config.Config.GGLoginConfig.GOOGLE_LINK_GET_USER_INFO + accessToken;
-		service.Logging.logger.info("Sending token access request: {}", link);
 		//String response = Request.Get(link).execute().handleResponse(responseHandler);
 		String response = Request.Get(link).execute().returnContent().asString();
-
-		service.Logging.logger.info("Response received: {}", response);
-
 		JsonObject jobj = new Gson().fromJson(response, JsonObject.class);
+		service.Logging.logger.info("id = "+jobj.asMap().get("id"));
+		service.Logging.logger.info("mail = "+jobj.asMap().get("email"));
 		return jobj.asMap();
 	}
 
