@@ -100,7 +100,10 @@
         <servlet-name>n_AdminStatsServlet</servlet-name>
         <servlet-class>controller.AdminStatsServlet</servlet-class>
     </servlet>
-
+    <servlet>
+        <servlet-name>GgFbLogin</servlet-name>
+        <servlet-class>controller.GgFbLogin</servlet-class>
+    </servlet>
     <!-- SERVLET MAPPINGS -->
     <!-- TEMPLATE:
     <servlet-mapping>
@@ -179,6 +182,10 @@
     <servlet-mapping>
         <servlet-name>n_AdminStatsServlet</servlet-name>
         <url-pattern>/admin/data</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GgFbLogin</servlet-name>
+        <url-pattern>/ggfblogin</url-pattern>
     </servlet-mapping>
 
     <!-- FILTER DECLARATIONS -->

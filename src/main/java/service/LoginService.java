@@ -15,7 +15,23 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 public class LoginService {
+ 
+	public static String getGoogleToken(String code) throws ClientProtocolException, IOException {
+		String response= Request.Post(config.Config.GGLoginConfig.GOOGLE_LINK_GET_TOKEN).bodyForm(
+			Form.form().add("client_id", config.Config.GGLoginConfig.GOOGLE_CLIENT_ID)
+						.add("client_secret", config.Config.GGLoginConfig.GOOGLE_CLIENT_SECRET)
+						.add("redirect_uri", config.Config.GGLoginConfig.GOOGLE_REDIRECT_URI)
+						.add("code", code)
+						.add("grant_type", config.Config.GGLoginConfig.GOOGLE_GRANT_TYPE)
+						.build()).execute().returnContent().asString();
+		service.Logging.logger.error("response: " + response);
+		JsonObject jobj= new Gson().fromJson(response, JsonObject.class);
+		String accessToken = jobj.get("access_token").toString().replaceAll("\"", "");
+		return accessToken;
 
+	}
+
+	/* 
     public static String getGGToken(String code) throws ClientProtocolException,IOException  {
 		String response = Request.Post(config.Config.GGLoginConfig.GOOGLE_LINK_GET_TOKEN).bodyForm
                         (Form.form().add("client_id", config.Config.GGLoginConfig.GOOGLE_CLIENT_ID)
@@ -34,7 +50,8 @@ public class LoginService {
 		String accessToken = jobj.get("access_token").toString().replaceAll("\"", "");
 		return accessToken;
 	}
-
+	*/
+	
 	private static final ResponseHandler<String> responseHandler= response -> {
 		int status= response.getStatusLine().getStatusCode();
 		if(status>=200 && status<300)

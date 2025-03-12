@@ -46,11 +46,11 @@ public class LoginServlet extends HttpServlet {
             String id;
             String email; 
             Map<String, JsonElement> infoMap= null;
-            service.Logging.logger.error(code);
             try {
                 switch (request.getParameter("method")) {
                     case "gg":
-                        accessToken= service.LoginService.getGGToken(code);
+                        accessToken= service.LoginService.getGoogleToken(code);
+                        service.Logging.logger.error("accessToken = " + accessToken);
                         infoMap = service.LoginService.getGGUserInfoJson(accessToken);
                         id= infoMap.get("id").getAsString();
                         email= infoMap.get("email").getAsString();
