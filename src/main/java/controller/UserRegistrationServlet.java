@@ -12,45 +12,36 @@ import jakarta.servlet.http.HttpServletResponse;
 public class UserRegistrationServlet extends HttpServlet {
 
     /**
-     * Retrieves information from google or facebook, autofill what is available. Then, displays the signup page as usual, with the information acquired from google or facebook locked.<br></br>
-     * Only autofill what is available from google or facebook.<br></br>
+     * Retrieves information from google or facebook, autofill what is available.
+     * Then, displays the signup page as usual, with the information acquired from
+     * google or facebook locked.<br>
+     * </br>
+     * Only autofill what is available from google or facebook.<br>
+     * </br>
      * For normal signups, no information is available.
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String code= request.getParameter("code");
-        if(code != null && !code.isEmpty())
-        {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String code = request.getParameter("code");
+        if (code != null && !code.isEmpty()) {
             String accessToken;
-            String id=null;
-            String email = null; 
-            Map<String, JsonElement> infoMap= null;
+            String id = null;
+            String email = null;
+            Map<String, JsonElement> infoMap = null;
             try {
-                switch (request.getParameter("method")) {
-                    case "gg":
-                        accessToken= service.LoginService.getGGToken(code);
-                        infoMap = service.LoginService.getGGUserInfoJson(accessToken);
-                        id= infoMap.get("id").getAsString();
-                        email= infoMap.get("email").getAsString();
-                        break;
-                    case "fb":
-                    /* 
-                        accessToken= Login.getFBToken(code);
-                        map = Login.getFBUserInfoJson(accessToken);
-                        json= map.get("id").getAsString();
-                        json= json + ", " + map.get("email").getAsString();
-                        break;
-                        */
-                    default:
-                        break;
-                }   
+                accessToken = service.LoginService.getGGToken(code);
+                infoMap = service.LoginService.getGGUserInfoJson(accessToken);
+                id = infoMap.get("id").getAsString();
+                email = infoMap.get("email").getAsString();
             } catch (ClientProtocolException e) {
                 service.Logging.logger.error("ClientProtocolException error login service error");
             }
             service.Logging.logger.info("Received Login credentials: ID: {}, Email: {}", id, email);
-            
+
             request.setAttribute("email", email);
-            request.setAttribute("id", id); // the user needs to send this back to the dopost method to complete registration, potential security risk
+            request.setAttribute("id", id); // the user needs to send this back to the dopost method to complete
+                                            // registration, potential security risk
             request.setAttribute("text", "hello");
         }
 
@@ -64,5 +55,5 @@ public class UserRegistrationServlet extends HttpServlet {
         // TODO Auto-generated method stub
         super.doPost(req, resp);
     }
-    
+
 }
