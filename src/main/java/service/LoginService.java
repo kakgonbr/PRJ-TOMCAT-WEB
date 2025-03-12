@@ -24,10 +24,11 @@ public class LoginService {
 						.add("code", code)
 						.add("grant_type", config.Config.GGLoginConfig.GOOGLE_GRANT_TYPE)
 						.build()).execute().returnContent().asString();
+		service.Logging.logger.error("response: " + response);
 		JsonObject jobj= new Gson().fromJson(response, JsonObject.class);
 		String accessToken = jobj.get("access_token").toString().replaceAll("\"", "");
 		return accessToken;
-		
+
 	}
 
 	/* 
