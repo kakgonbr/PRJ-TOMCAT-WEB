@@ -396,13 +396,23 @@ BEGIN
 	),
 	df AS (
     --SELECT s.value AS keyword, COUNT(*) AS DF FROM STRING_SPLIT(@query, ' ') s GROUP BY s.value
-	SELECT keyword, COUNT(DISTINCT id) AS DF FROM (SELECT 
-													id,
-													TRIM(s.value) AS keyword
-													FROM tblProduct
-													CROSS APPLY STRING_SPLIT(LOWER(tblProduct.description), ' ') s
-													GROUP BY tblProduct.id, s.value, tblProduct.description) tbl
-	GROUP BY keyword
+	SELECT keyword, COUNT(DISTINCT id) AS DF 
+    FROM (
+        SELECT 
+            id,
+            TRIM(s.value) AS keyword
+        FROM tblProduct
+        CROSS APPLY STRING_SPLIT(LOWER(tblProduct.description), ' ') s
+        
+        UNION
+        
+        SELECT 
+            id,
+            TRIM(s.value) AS keyword
+        FROM tblProduct
+        CROSS APPLY STRING_SPLIT(LOWER(tblProduct.name), ' ') s
+    ) tbl
+    GROUP BY keyword
 	),
 	tfidf AS (
 		SELECT 
@@ -423,7 +433,7 @@ BEGIN
     --SELECT * FROM STRING_SPLIT((SELECT value FROM #result), ',');
 
 	WITH ItemVector AS (
-		SELECT v.productId, s.value AS tfidf_value, 
+		SELECT v.productId AS id, s.value AS tfidf_value, 
            ROW_NUMBER() OVER (PARTITION BY v.productId ORDER BY (SELECT NULL)) AS pos
 		FROM tblVector v
 		CROSS APPLY STRING_SPLIT(v.vector, ',') s
@@ -526,7 +536,9 @@ VALUES
 (2, 5, 'Reebok Sneakers', 'Durable and comfortable', 3, 'admin_css', 1),
 (3, 7, 'Dishwasher', 'Efficient and modern', NULL, 'admin_js', 1),
 (4, 8, 'Smart TV', '4K Ultra HD', 4, 'test_js', 1),
-(5, 9, 'Bookshelf', 'Modern wooden bookshelf', 5, 'admin_js', 1);
+(5, 9, 'Bookshelf', 'Modern wooden bookshelf', 5, 'admin_js', 1),
+(5, 9, 'FlagShip Phone', 'A phone that is flagship', 5, 'admin_js', 1),
+(5, 9, 'FlagShip Tablet', 'Cool tablet', 5, 'admin_js', 1);
 
 
 INSERT INTO tblProductItem (productId, stock, price)

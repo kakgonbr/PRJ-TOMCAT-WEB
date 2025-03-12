@@ -16,7 +16,12 @@ public class ProductLoader extends HttpServlet {
 
         if (recommendations == null || recommendations.isBlank()) {
             recommendations = "";
+
+            if (user != null) {
+                // try to get the user's preference here
+            }
         }
+
 
         try {
             java.util.List<model.ProductWrapper> products = dao.ProductDAO.ProductFetcher.getRecommendation(recommendations).stream().map(model.ProductWrapper::new).collect(Collectors.toList());
@@ -25,11 +30,11 @@ public class ProductLoader extends HttpServlet {
 
             String json = new com.google.gson.Gson().toJson(products);
 
-            service.Logging.logger.info("Sending back to user {} json {}", user.getId(), json);
+            service.Logging.logger.info("Sending back recommendation json {}", json);
 
             response.getWriter().write(json);
         } catch (java.sql.SQLException e) {
-            service.Logging.logger.warn("FAILED TO GET RECOMMENDATIONS FOR {}, REASON: {}", user.getId(), e.getMessage());
+            service.Logging.logger.warn("FAILED TO GET RECOMMENDATIONS, REASON: {}", e.getMessage());
 
             return;
         }        
