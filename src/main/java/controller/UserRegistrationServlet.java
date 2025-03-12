@@ -19,7 +19,7 @@ public class UserRegistrationServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String code= request.getParameter("code");
-        if(code != null && code.isEmpty())
+        if(code != null && !code.isEmpty())
         {
             String accessToken;
             String id=null;
