@@ -78,8 +78,22 @@ public class AdminStatsServlet extends HttpServlet {
         chartNumPromotions.put("label", "Number of promotions");
         chartNumPromotions.put("labels", dates);
         chartNumPromotions.put("values", statistics.stream().map(model.TblServerStatistics::getPromotionNum).collect(Collectors.toList()));
+
+        Map<String, Object> chartAvgResponse = new HashMap<>();
+        chartAvgResponse.put("for", "chartAvgResponse");
+        chartAvgResponse.put("type", "line");
+        chartAvgResponse.put("label", "Average request response time (ms)");
+        chartAvgResponse.put("labels", dates);
+        chartAvgResponse.put("values", statistics.stream().map(model.TblServerStatistics::getPromotionNum).collect(Collectors.toList()));
+
+        Map<String, Object> chartMaxResponse = new HashMap<>();
+        chartMaxResponse.put("for", "chartMaxResponse");
+        chartMaxResponse.put("type", "line");
+        chartMaxResponse.put("label", "Maximum request response time (ms)");
+        chartMaxResponse.put("labels", dates);
+        chartMaxResponse.put("values", statistics.stream().map(model.TblServerStatistics::getPromotionNum).collect(Collectors.toList()));
         
-        java.util.List<Map<String, Object>> charts = java.util.Arrays.asList(chartTotalMoney, chartNumVisit, chartNumPurchase, chartNumUsers, chartNumProducts, chartNumShops, chartNumPromotions);
+        java.util.List<Map<String, Object>> charts = java.util.Arrays.asList(chartTotalMoney, chartNumVisit, chartNumPurchase, chartNumUsers, chartNumProducts, chartNumShops, chartNumPromotions, chartAvgResponse, chartMaxResponse);
 
         PrintWriter out = response.getWriter();
 
