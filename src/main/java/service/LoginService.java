@@ -15,23 +15,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 public class LoginService {
- 
-	/* 
-	public static String getGoogleToken(String code) throws ClientProtocolException, IOException {
-		String response= Request.Post(config.Config.GGLoginConfig.GOOGLE_LINK_GET_TOKEN).bodyForm(
-			Form.form().add("client_id", config.Config.GGLoginConfig.GOOGLE_CLIENT_ID)
-						.add("client_secret", config.Config.GGLoginConfig.GOOGLE_CLIENT_SECRET)
-						.add("redirect_uri", config.Config.GGLoginConfig.GOOGLE_REDIRECT_URI)
-						.add("code", code)
-						.add("grant_type", config.Config.GGLoginConfig.GOOGLE_GRANT_TYPE)
-						.build()).execute().returnContent().asString();
-		service.Logging.logger.error("response: " + response);
-		JsonObject jobj= new Gson().fromJson(response, JsonObject.class);
-		String accessToken = jobj.get("access_token").toString().replaceAll("\"", "");
-		return accessToken;
-
-	}
-	*/
 
 	
     public static String getGGToken(String code) throws ClientProtocolException,IOException  {
@@ -70,15 +53,7 @@ public class LoginService {
 	public static Map<String,JsonElement> getGGUserInfoJson(final String accessToken) throws ClientProtocolException, IOException {
 		String link = config.Config.GGLoginConfig.GOOGLE_LINK_GET_USER_INFO + accessToken;
 		service.Logging.logger.info("Sending token access request: {}", link);
-		//String response = Request.Get(link).execute().handleResponse(responseHandler);
-<<<<<<< HEAD
 		String response = Request.Get(link).execute().handleResponse(responseHandler);
-=======
-		String response = Request.Get(link).execute().returnContent().asString();
-
-		service.Logging.logger.info("Response received: {}", response);
-
->>>>>>> 16bb7cf1d73f199c9ba5f17a8d6d265cd0e25ea6
 		JsonObject jobj = new Gson().fromJson(response, JsonObject.class);
 		service.Logging.logger.info("id = "+ jobj.asMap().get("id"));
 		service.Logging.logger.info("email = "+ jobj.asMap().get("email"));
