@@ -8,7 +8,7 @@
 
 .chart-container {
     display: grid;
-    grid-template-columns: repeat(1fr, 3);
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     padding: 20px;
 }
