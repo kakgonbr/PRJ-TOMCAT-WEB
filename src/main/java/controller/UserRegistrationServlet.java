@@ -28,7 +28,7 @@ public class UserRegistrationServlet extends HttpServlet {
             try {
                 switch (request.getParameter("method")) {
                     case "gg":
-                        accessToken= service.LoginService.getGGToken(code);
+                        accessToken= service.LoginService.getGoogleToken(code);
                         infoMap = service.LoginService.getGGUserInfoJson(accessToken);
                         id= infoMap.get("id").getAsString();
                         email= infoMap.get("email").getAsString();
