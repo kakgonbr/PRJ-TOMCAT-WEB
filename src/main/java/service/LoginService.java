@@ -23,7 +23,7 @@ public class LoginService {
                                     .add("redirect_uri", config.Config.GGLoginConfig.GOOGLE_REDIRECT_URI)
                                     .add("code", code)
                                     .add("grant_type", config.Config.GGLoginConfig.GOOGLE_GRANT_TYPE)
-						            .build()).execute().handleResponse(responseHandler);
+						            .build()).execute().returnContent().asString();
         
 		if(response==null)
         {
