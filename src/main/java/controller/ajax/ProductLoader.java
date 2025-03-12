@@ -14,7 +14,9 @@ public class ProductLoader extends HttpServlet {
         model.User user = (model.User) session.getAttribute("user");
         String recommendations = (String) request.getAttribute("query");
 
-        if (recommendations == null || recommendations.isBlank()) return;
+        if (recommendations == null || recommendations.isBlank()) {
+            recommendations = "";
+        }
 
         try {
             java.util.List<model.ProductWrapper> products = dao.ProductDAO.ProductFetcher.getRecommendation(recommendations).stream().map(model.ProductWrapper::new).collect(Collectors.toList());

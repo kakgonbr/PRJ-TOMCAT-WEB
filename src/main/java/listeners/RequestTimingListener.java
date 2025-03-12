@@ -3,12 +3,13 @@ package listeners;
 import jakarta.servlet.ServletRequestEvent;
 import jakarta.servlet.ServletRequestListener;
 import jakarta.servlet.annotation.WebListener;
+import jakarta.servlet.http.HttpServletRequest;
 
 @WebListener
 public class RequestTimingListener implements ServletRequestListener {
     @Override
     public void requestInitialized(ServletRequestEvent sre) {
-        service.Logging.logger.info("Request received: {}, from: {}", sre.getServletRequest().getRequestId(), sre.getServletRequest().getRemoteAddr());
+        service.Logging.logger.info("Request received: {}, from: {}, to {}", sre.getServletRequest().getRequestId(), sre.getServletRequest().getRemoteAddr(), ((HttpServletRequest) sre.getServletRequest()).getRequestURI());
 
         sre.getServletRequest().setAttribute("request_time_start", System.currentTimeMillis());
     }

@@ -23,6 +23,37 @@ public class ProductDAO {
             }
         } // public static synchronized model.Product getProduct
 
+        /**
+         * Eagerly fetches most information about a product, used for displaying the product detail screen
+         * @param id
+         * @return
+         * @throws java.sql.SQLException
+         */
+        public static synchronized model.Product getProductDetails(int id) throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                model.Product product = em.find(model.Product.class, id);
+
+                product.getCategoryId();
+                product.getProductImageList();
+                product.getShopId();
+                product.getProductItemList().forEach(model.ProductItem::getProductCustomizationList);
+
+                return product;
+
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
+            }
+        } // public static synchronized model.Product getProductDetails
+
+        // TODO: PAGINATE THIS
+        public static synchronized java.util.List<model.Review> getReviews(int productId) throws java.sql.SQLException {    
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return em.find(model.Product.class, productId).getReviewList();
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
+            }
+        } // public static synchronized java.util.List<model.Review> getReviews
+
         private static final String GET_RECOMMENDATION = "GetRecommendation";
 
         public static synchronized java.util.List<model.Product> getRecommendation(String query)
