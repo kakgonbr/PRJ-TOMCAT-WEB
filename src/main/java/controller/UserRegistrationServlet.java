@@ -51,6 +51,7 @@ public class UserRegistrationServlet extends HttpServlet {
             
             request.setAttribute("email", email);
             request.setAttribute("id", id); // the user needs to send this back to the dopost method to complete registration, potential security risk
+            request.setAttribute("text", "hello");
         }
 
         // send users to the signup screen for aditional information
