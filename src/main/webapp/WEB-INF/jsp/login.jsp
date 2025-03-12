@@ -41,17 +41,17 @@
                         <label for="floatingPassword">Password</label>
                     </div>
                     <div class="d-flex align-items-center justify-content-between my-3">
-                        <form class="form-check">
+                        <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
                             <label class="form-check-label text-muted" for="flexCheckDefault">
                                 Remember me
                             </label>
-                        </form>
+                        </div>
                         <a href="#" class="text-decoration-none">
                             Forget password?
                         </a>
                     </div>
-                    <input type="submit" class="btn btn-primary w-100 my-3" value="Sign in"></input>
+                    <input type="submit" class="btn btn-primary w-100 my-3" value="Sign in">
                 </form> 
                 <div class="d-flex align-items-center my-2">
                     <hr class="flex-grow-1 bg-secondary">
