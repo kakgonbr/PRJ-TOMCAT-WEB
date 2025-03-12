@@ -36,6 +36,7 @@ public class LoginServlet extends HttpServlet {
         if(code==null || code.isEmpty())
         {
             request.getRequestDispatcher(config.Config.JSPMapper.LOGIN_JSP).forward(request, response);
+            return;
         }
         else 
         {
@@ -61,6 +62,8 @@ public class LoginServlet extends HttpServlet {
                     break;
                 //dispatch to home.jsp
             }
+            response.sendRedirect(config.Config.JSPMapper.HOME_JSP);
+            return;
         }
         
     }

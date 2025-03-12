@@ -17,7 +17,7 @@
     </jsp:attribute>
 
     <jsp:attribute name="header">
-        <h1>LOGIN NOW</h1>
+        
     </jsp:attribute>
 
     <jsp:attribute name="body">
