@@ -51,7 +51,7 @@
                             Forget password?
                         </a>
                     </div>
-                    <input type="submit" class="btn btn-primary w-100 my-3" value="Login">Sign in</input>
+                    <input type="submit" class="btn btn-primary w-100 my-3" value="Sign in"></input>
                 </form> 
                 <div class="d-flex align-items-center my-2">
                     <hr class="flex-grow-1 bg-secondary">
@@ -62,7 +62,7 @@
                 </div>
                 <div class="row text-center my-4">
                     <div class="col">
-                        <a href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=https://kakgonbri.zapto.org/prj/login?method=gg&response_type=code&client_id=946163501163-1k050nmuvlefgcibu8nqc7hnabvgkp1e.apps.googleusercontent.com&approval_prompt=force">
+                        <a href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=https://kakgonbri.zapto.org:8443/prj/login?method=gg&response_type=code&client_id=946163501163-1k050nmuvlefgcibu8nqc7hnabvgkp1e.apps.googleusercontent.com&approval_prompt=force">
                             <button class="btn shadow w-75">
                                 <i class="bi bi-google"></i>
                                 Google
@@ -70,7 +70,7 @@
                         </a>
                     </div>
                     <div class="col">
-                        <a href="https://www.facebook.com/v22.0/dialog/oauth?fields=id,name,email&client_id=1292754858725836&redirect_uri=https://kakgonbri.zapto.org/prj/login?method=fb">
+                        <a href="https://www.facebook.com/v22.0/dialog/oauth?fields=id,name,email&client_id=1292754858725836&redirect_uri=https://kakgonbri.zapto.org:8443/prj/login?method=fb">
                             <button class="btn shadow w-75">
                                 <i class="bi bi-facebook"></i>
                                 Facebook
