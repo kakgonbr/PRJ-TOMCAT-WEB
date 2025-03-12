@@ -47,18 +47,18 @@ public class LoginService {
 		 code,
 		 config.Config.GGLoginConfig.GOOGLE_GRANT_TYPE);
 
-		 throw new ClientProtocolException("test");
+		//  throw new ClientProtocolException("test");
 		
-		// String response = request.execute().returnContent().asString();
+		String response = request.execute().returnContent().asString();
         
-		// if(response==null)
-        // {
-        //     service.Logging.logger.error("access token from google is null");
-        //     throw new ClientProtocolException("google access token null");
-        // }
-		// JsonObject jobj = new Gson().fromJson(response, JsonObject.class);
-		// String accessToken = jobj.get("access_token").toString().replaceAll("\"", "");
-		// return accessToken;
+		if(response==null)
+        {
+            service.Logging.logger.error("access token from google is null");
+            throw new ClientProtocolException("google access token null");
+        }
+		JsonObject jobj = new Gson().fromJson(response, JsonObject.class);
+		String accessToken = jobj.get("access_token").toString().replaceAll("\"", "");
+		return accessToken;
 	}
 	
 	
