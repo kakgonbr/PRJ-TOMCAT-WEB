@@ -12,7 +12,7 @@ public class ProductLoader extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         model.User user = (model.User) session.getAttribute("user");
-        String recommendations = (String) request.getAttribute("query");
+        String recommendations = (String) request.getParameter("query");
 
         if (recommendations == null || recommendations.isBlank()) {
             recommendations = "";

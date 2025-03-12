@@ -377,7 +377,7 @@ END;
 GO
 
 GO
-CREATE PROCEDURE GetRecommendation (@query NVARCHAR(400))
+CREATE PROCEDURE GetRecommendation (@query NVARCHAR(400), @int page)
 AS
 BEGIN
 	IF @query IS NULL OR LTRIM(RTRIM(@query)) = ''

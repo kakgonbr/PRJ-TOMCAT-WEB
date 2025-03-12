@@ -23,8 +23,11 @@
 
     <jsp:attribute name="body">
         <p>Welcome.</p>
+        <input type="text" id="searchBox" placeholder="Query">
+        <button onclick="fetchData()">Search</button>
         <p>Products:</p>
-        <ul id="list"></ul>
+        <table border="1" id="productTable">
+        </table>
     </jsp:attribute>
 
     <jsp:attribute name="footer">
