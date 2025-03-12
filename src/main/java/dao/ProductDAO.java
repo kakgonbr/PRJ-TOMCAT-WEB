@@ -59,7 +59,7 @@ public class ProductDAO {
         public static synchronized java.util.List<model.Product> getRecommendation(String query)
                 throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                return em.createStoredProcedureQuery(GET_RECOMMENDATION, model.Product.class).registerStoredProcedureParameter("query", String.class, ParameterMode.IN).setParameter(1, query).getResultList();
+                return em.createStoredProcedureQuery(GET_RECOMMENDATION, model.Product.class).registerStoredProcedureParameter("query", String.class, ParameterMode.IN).setParameter("query", query).getResultList();
             } catch (Exception e) {
                 throw new java.sql.SQLException(e);
             }

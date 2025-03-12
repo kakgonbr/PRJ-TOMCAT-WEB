@@ -443,14 +443,14 @@ BEGIN
 		FROM STRING_SPLIT((SELECT value FROM #result), ',') s
 	),
 	recommendation AS(
-		SELECT TOP 10 iv.id,
+		SELECT iv.id,
 		SUM(CAST(qv.tfidf_value AS FLOAT) * CAST(iv.tfidf_value AS FLOAT)) /
 		(SQRT(SUM(POWER(CAST(iv.tfidf_value AS FLOAT), 2))) * SQRT(SUM(POWER(CAST(qv.tfidf_value AS FLOAT), 2)))) AS similarity
 		FROM ItemVector iv
 		JOIN QueryVector qv ON iv.pos = qv.pos
 		GROUP BY iv.id
 	)
-	SELECT tblProduct.*
+	SELECT TOP 10 tblProduct.*
 	FROM tblProduct
 	JOIN recommendation ON tblProduct.id = recommendation.id
 	ORDER BY recommendation.similarity DESC
