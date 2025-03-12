@@ -31,48 +31,6 @@ public class LoginServlet extends HttpServlet {
                 return;
             }
         }
-
-        //check if login by google or fb
-        //get the code token
-        String code = request.getParameter("code");
-        if(code==null || code.isEmpty())
-        {
-            request.getRequestDispatcher(config.Config.JSPMapper.LOGIN_JSP).forward(request, response);
-            return;
-        }
-        else 
-        {
-            String accessToken;
-            String id;
-            String email; 
-            Map<String, JsonElement> infoMap= null;
-            try {
-                switch (request.getParameter("method")) {
-                    case "gg":
-                        accessToken= service.LoginService.getGoogleToken(code);
-                        service.Logging.logger.error("accessToken = " + accessToken);
-                        infoMap = service.LoginService.getGGUserInfoJson(accessToken);
-                        id= infoMap.get("id").getAsString();
-                        email= infoMap.get("email").getAsString();
-                        break;
-                    case "fb":
-                        accessToken= service.LoginService.getFBToken(code);
-                        infoMap = service.LoginService.getFBUserInfoJson(accessToken);
-                        id= infoMap.get("id").getAsString();
-                        //this email can be null
-                        email= infoMap.get("email").getAsString();
-                        break;
-                    default:
-                        break;
-                    //dispatch to home.jsp
-                }
-                response.sendRedirect(config.Config.JSPMapper.HOME_JSP);
-                return;    
-            } catch (ClientProtocolException e) {
-                service.Logging.logger.error("ClientProtocolException error login service error");
-            }
-            
-        }
         
     }
 
