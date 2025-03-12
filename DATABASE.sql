@@ -377,7 +377,7 @@ END;
 GO
 
 GO
-CREATE PROCEDURE GetRecommendation (@query NVARCHAR(400), @int page)
+CREATE PROCEDURE GetRecommendation (@query NVARCHAR(400), @page int)
 AS
 BEGIN
 	IF @query IS NULL OR LTRIM(RTRIM(@query)) = ''
@@ -445,15 +445,17 @@ BEGIN
 	recommendation AS(
 		SELECT iv.id,
 		SUM(CAST(qv.tfidf_value AS FLOAT) * CAST(iv.tfidf_value AS FLOAT)) /
-		(SQRT(SUM(POWER(CAST(iv.tfidf_value AS FLOAT), 2))) * SQRT(SUM(POWER(CAST(qv.tfidf_value AS FLOAT), 2)))) AS similarity
+		NULLIF((SQRT(SUM(POWER(CAST(iv.tfidf_value AS FLOAT), 2))) * SQRT(SUM(POWER(CAST(qv.tfidf_value AS FLOAT), 2)))), 0) AS similarity
 		FROM ItemVector iv
 		JOIN QueryVector qv ON iv.pos = qv.pos
 		GROUP BY iv.id
 	)
-	SELECT TOP 10 tblProduct.*
+	SELECT tblProduct.*
 	FROM tblProduct
 	JOIN recommendation ON tblProduct.id = recommendation.id
 	ORDER BY recommendation.similarity DESC
+	OFFSET @page * 10 ROWS 
+    FETCH NEXT 10 ROWS ONLY
 
     DROP TABLE #result;
 END;

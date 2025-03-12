@@ -21,19 +21,19 @@ function fetchProducts() {
                 cell.textContent = item.shopId;
                 row.appendChild(cell);
 
-                ent.createElement("td");
+                cell = document.createElement("td");
                 cell.textContent = item.categoryId;
                 row.appendChild(cell);
 
-                ent.createElement("td");
+                cell = document.createElement("td");
                 cell.textContent = item.name;
                 row.appendChild(cell);
 
-                ent.createElement("td");
+                cell = document.createElement("td");
                 cell.textContent = item.description;
                 row.appendChild(cell);
 
-                ent.createElement("td");
+                cell = document.createElement("td");
                 cell.textContent = item.thumbNailId;
                 row.appendChild(cell);
 

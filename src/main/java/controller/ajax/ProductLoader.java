@@ -24,7 +24,7 @@ public class ProductLoader extends HttpServlet {
 
 
         try {
-            java.util.List<model.ProductWrapper> products = dao.ProductDAO.ProductFetcher.getRecommendation(recommendations).stream().map(model.ProductWrapper::new).collect(Collectors.toList());
+            java.util.List<model.ProductWrapper> products = dao.ProductDAO.ProductFetcher.getRecommendation(recommendations, 0).stream().map(model.ProductWrapper::new).collect(Collectors.toList()); // let page be 0 for now
 
             response.setContentType("application/json");
 
