@@ -455,7 +455,9 @@ VALUES
 ('chat_js', 'chat.js'),
 ('admin_js', 'admin.js'),
 ('admin_css', 'admin.css'),
-('chart_js', 'customChart.js');
+('chart_js', 'customChart.js'),
+('userMain_css', 'userMain.css'),
+('login_css', 'login.css');
 
 INSERT INTO tblUser (email, username, phoneNumber, password, persistentCookie, googleId, facebookId, isAdmin)
 VALUES 
