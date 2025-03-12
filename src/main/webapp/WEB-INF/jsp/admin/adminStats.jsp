@@ -62,6 +62,12 @@
             <div class="chart-item">
                 <canvas id="chartNumPromotions" class="adminChart"></canvas>
             </div>
+            <div class="chart-item">
+                <canvas id="chartAvgResponse" class="adminChart"></canvas>
+            </div>
+            <div class="chart-item">
+                <canvas id="chartMaxResponse" class="adminChart"></canvas>
+            </div>
         </div>
 
         <pre id="logContainer"></pre>
