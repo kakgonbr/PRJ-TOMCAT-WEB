@@ -25,12 +25,12 @@ public class LoginService {
                                     .add("grant_type", config.Config.GGLoginConfig.GOOGLE_GRANT_TYPE)
 						            .build()).execute().handleResponse(responseHandler);
         
-		/* if(response==null)
+		if(response==null)
         {
             service.Logging.logger.error("access token from google is null");
             throw new ClientProtocolException("google access token null");
         }
-		*/
+		
 		JsonObject jobj = new Gson().fromJson(response, JsonObject.class);
 		String accessToken = jobj.get("access_token").toString().replaceAll("\"", "");
 		return accessToken;
@@ -45,6 +45,7 @@ public class LoginService {
 		}
 		else
 		{
+			service.Logging.logger.error("response handler error");
 			throw new ClientProtocolException("Unexpected status code: "+status);
 		}
 	};
