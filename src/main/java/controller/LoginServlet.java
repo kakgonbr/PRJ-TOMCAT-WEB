@@ -3,6 +3,8 @@ package controller;
 import java.io.IOException;
 import java.util.Map;
 
+import org.apache.http.client.ClientProtocolException;
+
 import com.google.gson.JsonElement;
 
 import jakarta.servlet.ServletException;
@@ -44,26 +46,31 @@ public class LoginServlet extends HttpServlet {
             String id;
             String email; 
             Map<String, JsonElement> infoMap= null;
-            switch (request.getParameter("method")) {
-                case "gg":
-                    accessToken= service.LoginService.getGGToken(code);
-                    infoMap = service.LoginService.getGGUserInfoJson(accessToken);
-                    id= infoMap.get("id").getAsString();
-                    email= infoMap.get("email").getAsString();
-                    break;
-                case "fb":
-                    accessToken= service.LoginService.getFBToken(code);
-                    infoMap = service.LoginService.getFBUserInfoJson(accessToken);
-                    id= infoMap.get("id").getAsString();
-                    //this email can be null
-                    email= infoMap.get("email").getAsString();
-                    break;
-                default:
-                    break;
-                //dispatch to home.jsp
+            try {
+                switch (request.getParameter("method")) {
+                    case "gg":
+                        accessToken= service.LoginService.getGGToken(code);
+                        infoMap = service.LoginService.getGGUserInfoJson(accessToken);
+                        id= infoMap.get("id").getAsString();
+                        email= infoMap.get("email").getAsString();
+                        break;
+                    case "fb":
+                        accessToken= service.LoginService.getFBToken(code);
+                        infoMap = service.LoginService.getFBUserInfoJson(accessToken);
+                        id= infoMap.get("id").getAsString();
+                        //this email can be null
+                        email= infoMap.get("email").getAsString();
+                        break;
+                    default:
+                        break;
+                    //dispatch to home.jsp
+                }
+                response.sendRedirect(config.Config.JSPMapper.HOME_JSP);
+                return;    
+            } catch (ClientProtocolException e) {
+                service.Logging.logger.error("ClientProtocolException error");
             }
-            response.sendRedirect(config.Config.JSPMapper.HOME_JSP);
-            return;
+            
         }
         
     }
