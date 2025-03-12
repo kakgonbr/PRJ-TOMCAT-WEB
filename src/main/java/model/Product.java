@@ -63,7 +63,7 @@ public class Product implements Serializable {
     @ManyToOne
     private Category categoryId;
     @JoinColumn(name = "availablePromotionId", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Promotion availablePromotionId;
     @JoinColumn(name = "imageStringResourceId", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.EAGER)
