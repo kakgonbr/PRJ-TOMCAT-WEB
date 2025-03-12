@@ -46,7 +46,7 @@ public class LoginServlet extends HttpServlet {
             String id;
             String email; 
             Map<String, JsonElement> infoMap= null;
-            try {
+            
                 switch (request.getParameter("method")) {
                     case "gg":
                         accessToken= service.LoginService.getGGToken(code);
@@ -67,9 +67,7 @@ public class LoginServlet extends HttpServlet {
                 }
                 response.sendRedirect(config.Config.JSPMapper.HOME_JSP);
                 return;    
-            } catch (ClientProtocolException e) {
-                service.Logging.logger.error("ClientProtocolException error");
-            }
+           
             
         }
         
