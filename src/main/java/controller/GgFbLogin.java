@@ -51,7 +51,7 @@ public class GgFbLogin extends HttpServlet {
             } catch (ClientProtocolException e) {
                 service.Logging.logger.error("ClientProtocolException error login service error");
             }
-            
+        service.Logging.logger.info("Received Login credentials: ID: {}, Email: {}", id, email);
         }
     }
 
