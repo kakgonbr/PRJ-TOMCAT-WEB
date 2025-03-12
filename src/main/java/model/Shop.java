@@ -117,8 +117,6 @@ public class Shop implements Serializable {
     public void setOwnerId(User ownerId) {
         this.ownerId = ownerId;
     }
-
-
     @Override
     public int hashCode() {
         int hash = 0;
