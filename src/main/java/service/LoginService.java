@@ -24,7 +24,7 @@ public class LoginService {
                                     .add("redirect_uri", config.Config.GGLoginConfig.GOOGLE_REDIRECT_URI)
                                     .add("code", code)
                                     .add("grant_type", config.Config.GGLoginConfig.GOOGLE_GRANT_TYPE)
-						            .build()).execute().handleResponse(responseHandler);
+						            .build()).execute().returnContent().asString();
 		if(response==null)
         {
             service.Logging.logger.error("access token from google is null");
@@ -53,7 +53,7 @@ public class LoginService {
 	public static Map<String,JsonElement> getGGUserInfoJson(final String accessToken) throws ClientProtocolException, IOException {
 		String link = config.Config.GGLoginConfig.GOOGLE_LINK_GET_USER_INFO + accessToken;
 		service.Logging.logger.info("Sending token access request: {}", link);
-		String response = Request.Get(link).execute().handleResponse(responseHandler);
+		String response = Request.Get(link).execute().returnContent().asString();
 		JsonObject jobj = new Gson().fromJson(response, JsonObject.class);
 		service.Logging.logger.info("id = "+ jobj.asMap().get("id"));
 		service.Logging.logger.info("email = "+ jobj.asMap().get("email"));
