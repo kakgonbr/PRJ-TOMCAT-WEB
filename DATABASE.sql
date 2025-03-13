@@ -497,28 +497,32 @@ select * from tblShop
 /*parent id is for testing -> change when real*/
 INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
 VALUES
-	('fashion','chart_js',NULL),
-	('electronics','chart_js',NULL),
-	('furniture','chart_js',NULL),
-	('cosmestic','chart_js',NULL),
-	('book','chart_js',NULL),
-	('t-shirt','chart_js',15),
-	('vest','chart_js',15),
-	('hoodie','chart_js',15),
-	('shirt','chart_js',15),
-	('jacket','chart_js',15),
-	('coat','chart_js',15),
-	('polo shirt','chart_js',15),
-	('man jean','chart_js',15),
-	('short','chart_js',15),
-	('trouser','chart_js',15);
+	('Fashion','chart_js',NULL),
+	('Electronics','chart_js',NULL),
+	('Furniture','chart_js',NULL),
+	('Cosmestic','chart_js',NULL),
+	('Book','chart_js',NULL),
+	('Man Fashion','chart_js',1), --6
+	('Woman Fashion','chart_js',1), --7
+	('Shoes','chart_js',1), --8
+	('Accessory','chart_js',1), --9
+	('T-Shirt','chart_js',6),
+	('Blazer','chart_js',6),
+	('Hoodie','chart_js',6),
+	('Shirt','chart_js',6),
+	('Jacket','chart_js',6),
+	('Coat','chart_js',6),
+	('Polo Shirt','chart_js',6),
+	('Man Jean','chart_js',6),
+	('Short','chart_js',6),
+	('Trouser','chart_js',6);
 
 INSERT INTO tblVariation (categoryId,name,datatype,unit)
 VALUES 
-	(10,'color','string',NULL),
-	(15,'man clothes size','string',NULL),
-	(17,'shoe size','string',NULL),
-	(16,'woman clothes size');
+	(1,'color','string',NULL),
+	(6,'man clothes size','string',NULL),
+	(8,'shoe size','string',NULL),
+	(7,'woman clothes size');
 
 INSERT INTO tblVariationValue (variationId, value)
 VALUES 
