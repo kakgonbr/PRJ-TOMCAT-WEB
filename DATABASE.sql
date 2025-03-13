@@ -595,5 +595,46 @@ VALUES
     ('Conference Tables', 'chart_js', (select id from tblCategory where name = 'Office')),
     ('Reception Furniture', 'chart_js', (select id from tblCategory where name = 'Office'));
 
+INSERT INTO tblVariation (categoryId,name,datatype,unit)
+ VALUES 
+ 	(1,'color','string',NULL),
+ 	(6,'man clothes size','string',NULL),
+ 	(8,'shoe size','string',NULL),
+ 	(7,'woman clothes size');
+ 
+ INSERT INTO tblVariationValue (variationId, value)
+ VALUES 
+ 	(1 , 'Black'),
+ 	(1 , 'White'),
+ 	(1 , 'Gray'),
+ 	(1 , 'Blue'),
+ 	(1 , 'Red'),
+ 	(1 , 'Beige'),
+ 	(1 , 'Brown'),
+ 	(1 , 'Navy'),
+ 	(1 , 'Pink'),
+ 	(1 , 'Orange'),
+ 	(1 , 'Green'),
+ 	(1 , 'Yellow'),
+ 	(2 , 'XS'),
+ 	(2 , 'S'),
+ 	(2 , 'M'),
+ 	(2 , 'L'),
+ 	(2 , 'XL'),
+ 	(2 , 'XXL'),
+ 	(3 , '35'),
+ 	(3 , '36'),
+ 	(3 , '37'),
+ 	(3 , '38'),
+ 	(3 , '39'),
+ 	(3 , '40'),
+ 	(3 , '41'),
+ 	(3 , '42'),
+ 	(3 , '43'),
+ 	(4 , 'XS'),
+ 	(4 , 'S'),
+ 	(4 , 'M'),
+ 	(4 , 'L'),
+ 	(4 , 'XL');
 
 EXEC ComputeTFIdF
