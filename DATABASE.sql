@@ -387,7 +387,7 @@ BEGIN
 
 	IF @categoryName IS NULL OR LTRIM(RTRIM(@categoryName)) = ''
     BEGIN
-		SET @category = 1
+		SET @category = 0
 	END
 	ELSE
 	BEGIN
@@ -535,7 +535,9 @@ VALUES
 	('Makeup','chart_js',4), -- 21
 	('Haircare','chart_js',4), -- 22
 	('Bodycare','chart_js',4), -- 23
-	('Fragrance','chart_js',4), -- 24
+	('Fragrance','chart_js',4); -- 24
+INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
+VALUES
 	-- skincare
 	('Cleansers', 'chart_js', (select id from tblCategory where name = 'Skincare')),
     ('Face_wash', 'chart_js', (select id from tblCategory where name = 'Skincare')),
@@ -565,8 +567,9 @@ VALUES
     ('Fiction', 'chart_js', (select id from tblCategory where name = 'Book')),
     ('Non_fiction', 'chart_js', (select id from tblCategory where name = 'Book')),
     ('Children', 'chart_js', (select id from tblCategory where name = 'Book')),
-    ('Comics_manga', 'chart_js', (select id from tblCategory where name = 'Book')),
-
+    ('Comics_manga', 'chart_js', (select id from tblCategory where name = 'Book'));
+INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
+VALUES
     -- Fiction subcategories
     ('Fantasy', 'chart_js', (select id from tblCategory where name = 'Fiction')),
     ('Mystery', 'chart_js', (select id from tblCategory where name = 'Fiction')),
@@ -596,8 +599,9 @@ VALUES
     ('Sleeping', 'chart_js', (select id from tblCategory where name = 'Furniture')),
     ('Storage', 'chart_js', (select id from tblCategory where name = 'Furniture')),
     ('Dining', 'chart_js', (select id from tblCategory where name = 'Furniture')),
-    ('Office', 'chart_js', (select id from tblCategory where name = 'Furniture')),
-
+    ('Office', 'chart_js', (select id from tblCategory where name = 'Furniture'));
+INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
+VALUES
     -- seating subcategories
     ('Chairs', 'chart_js', (select id from tblCategory where name = 'Seating')),
     ('Sofas and Couches', 'chart_js', (select id from tblCategory where name = 'Seating')),
@@ -629,7 +633,7 @@ INSERT INTO tblVariation (categoryId,name,datatype,unit)
  	(1,'color','string',NULL),
  	(6,'man clothes size','string',NULL),
  	(8,'shoe size','string',NULL),
- 	(7,'woman clothes size', NULL);
+ 	(7,'woman clothes size', 'string', NULL);
  
  INSERT INTO tblVariationValue (variationId, value)
  VALUES 
