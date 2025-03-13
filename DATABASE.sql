@@ -500,7 +500,7 @@ VALUES
 	('fashion','chart_js',NULL),
 	('electronics','chart_js',NULL),
 	('furniture','chart_js',NULL),
-	('comestic','chart_js',NULL),
+	('cosmestic','chart_js',NULL),
 	('book','chart_js',NULL),
 	('t-shirt','chart_js',15),
 	('vest','chart_js',15),
@@ -512,6 +512,48 @@ VALUES
 	('man jean','chart_js',15),
 	('short','chart_js',15),
 	('trouser','chart_js',15);
+
+INSERT INTO tblVariation (categoryId,name,datatype,unit)
+VALUES 
+	(10,'color','string',NULL),
+	(15,'man clothes size','string',NULL),
+	(17,'shoe size','string',NULL),
+	(16,'woman clothes size');
+
+INSERT INTO tblVariationValue (variationId, value)
+VALUES 
+	(1 , 'Black'),
+	(1 , 'White'),
+	(1 , 'Gray'),
+	(1 , 'Blue'),
+	(1 , 'Red'),
+	(1 , 'Beige'),
+	(1 , 'Brown'),
+	(1 , 'Navy'),
+	(1 , 'Pink'),
+	(1 , 'Orange'),
+	(1 , 'Green'),
+	(1 , 'Yellow'),
+	(2 , 'XS'),
+	(2 , 'S'),
+	(2 , 'M'),
+	(2 , 'L'),
+	(2 , 'XL'),
+	(2 , 'XXL'),
+	(3 , '35'),
+	(3 , '36'),
+	(3 , '37'),
+	(3 , '38'),
+	(3 , '39'),
+	(3 , '40'),
+	(3 , '41'),
+	(3 , '42'),
+	(3 , '43'),
+	(4 , 'XS'),
+	(4 , 'S'),
+	(4 , 'M'),
+	(4 , 'L'),
+	(4 , 'XL');
 
 INSERT INTO tblPromotion (creatorId, name, type, ofAdmin, value, expireDate)
 VALUES
