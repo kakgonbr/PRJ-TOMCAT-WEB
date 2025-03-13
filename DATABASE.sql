@@ -502,16 +502,16 @@ VALUES
 	('furniture','chart_js',NULL),
 	('comestic','chart_js',NULL),
 	('book','chart_js',NULL),
-	('t-shirt','chart_js',15),
-	('vest','chart_js',15),
-	('hoodie','chart_js',15),
-	('shirt','chart_js',15),
-	('jacket','chart_js',15),
-	('coat','chart_js',15),
-	('polo shirt','chart_js',15),
-	('man jean','chart_js',15),
-	('short','chart_js',15),
-	('trouser','chart_js',15);
+	('t-shirt','chart_js',1),
+	('vest','chart_js',1),
+	('hoodie','chart_js',1),
+	('shirt','chart_js',1),
+	('jacket','chart_js',1),
+	('coat','chart_js',1),
+	('polo shirt','chart_js',1),
+	('man jean','chart_js',1),
+	('short','chart_js',1),
+	('trouser','chart_js',1);
 
 INSERT INTO tblPromotion (creatorId, name, type, ofAdmin, value, expireDate)
 VALUES
@@ -582,3 +582,11 @@ VALUES
 (4, 9, 800);
 
 EXEC ComputeTFIdF
+
+SELECT * FROM tblVector
+
+SELECT * FROM tblProduct
+
+SELECT * FROM tblCategory
+
+EXEC GetRecommendation @query='iphone', @page=0
