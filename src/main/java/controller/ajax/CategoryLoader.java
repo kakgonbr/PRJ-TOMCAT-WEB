@@ -19,7 +19,7 @@ public class CategoryLoader extends HttpServlet {
 
             response.getWriter().write(json);
         } catch (java.sql.SQLException e) {
-            service.Logging.logger.warn("FAILED TO GET RECOMMENDATIONS, REASON: {}", e.getMessage());
+            service.Logging.logger.warn("FAILED TO GET FILTERS, REASON: {}", e.getMessage());
 
             return;
         }        
