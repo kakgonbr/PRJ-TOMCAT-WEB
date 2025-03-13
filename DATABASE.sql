@@ -482,54 +482,61 @@ VALUES
 --cosmestics
 INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
 VALUES
-/*	('Skincare','chart_js',4),
+	('Fashion','chart_js',NULL), --1
+	('Electronics','chart_js',NULL), --2
+	('Furniture','chart_js',NULL), --3
+	('Cosmestic','chart_js',NULL), --4
+	('Book','chart_js',NULL), --5
+	('Man Fashion','chart_js',1), --6
+	('Woman Fashion','chart_js',1), --7
+	('Shoes','chart_js',1), --8
+	('Accessory','chart_js',1), --9
+	('T-Shirt','chart_js',6),
+	('Blazer','chart_js',6),
+	('Hoodie','chart_js',6),
+	('Shirt','chart_js',6),
+	('Jacket','chart_js',6),
+	('Coat','chart_js',6),
+	('Polo Shirt','chart_js',6),
+	('Man Jean','chart_js',6),
+	('Short','chart_js',6),
+	('Trouser','chart_js',6),
+	('Skincare','chart_js',4),
 	('Makeup','chart_js',4),
 	('Haircare','chart_js',4),
 	('Bodycare','chart_js',4),
-	('Fragrance','chart_js',4);*/
-
+	('Fragrance','chart_js',4),
 	-- skincare
-	
 	('Cleansers', 'chart_js', (select id from tblCategory where name = 'Skincare')),
     ('Face_wash', 'chart_js', (select id from tblCategory where name = 'Skincare')),
     ('Makeup_remover', 'chart_js', (select id from tblCategory where name = 'Skincare')),
     ('Exfoliators', 'chart_js', (select id from tblCategory where name = 'Skincare')),
-
 	-- makeup 
     ('Foundation', 'chart_js', (select id from tblCategory where name = 'Makeup')),
     ('Concealer', 'chart_js', (select id from tblCategory where name = 'Makeup')),
     ('Powder', 'chart_js', (select id from tblCategory where name = 'Makeup')),
     ('Blush', 'chart_js', (select id from tblCategory where name = 'Makeup')),
-
 	-- Haircare 
     ('Shampoo', 'chart_js', (select id from tblCategory where name = 'Haircare')),
     ('Conditioner', 'chart_js', (select id from tblCategory where name = 'Haircare')),
     ('Dry_shampoo', 'chart_js', (select id from tblCategory where name = 'Haircare')),
     ('Hair oil', 'chart_js', (select id from tblCategory where name = 'Haircare')),
-
 	-- Bodycare 
     ('Body wash', 'chart_js', (select id from tblCategory where name = 'Bodycare')),
     ('Body scrub', 'chart_js', (select id from tblCategory where name = 'Bodycare')),
     ('Body lotion', 'chart_js', (select id from tblCategory where name = 'Bodycare')),
     ('Body butter', 'chart_js', (select id from tblCategory where name = 'Bodycare')),
-
 	-- Fragrance 
     ('Perfume', 'chart_js', (select id from tblCategory where name = 'Fragrance')),
-    ('Eau de toilette', 'chart_js', (select id from tblCategory where name = 'Fragrance')),
-    ('Body mist', 'chart_js', (select id from tblCategory where name = 'Fragrance')),
     ('Essential oil', 'chart_js', (select id from tblCategory where name = 'Fragrance'));
-
-	
-EXEC ComputeTFIdF
 
 	--book
 	INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
-VALUES
-/*
+	VALUES
     ('Fiction', 'chart_js', 5),
     ('Non_fiction', 'chart_js', 5),
     ('Children', 'chart_js', 5),
-    ('Comics_manga', 'chart_js', 5), */
+    ('Comics_manga', 'chart_js', 5), 
 
     -- Fiction subcategories
     ('Fantasy', 'chart_js', (select id from tblCategory where name = 'Fiction')),
@@ -555,14 +562,14 @@ VALUES
     ('Superhero comics', 'chart_js', (select id from tblCategory where name = 'Comics_manga'));
 
 	--furniture
-	insert INTO tblCategory (name, imageStringResourceId, parent_id)
-VALUES
-/*
+	INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
+	VALUES
+
     ('Seating', 'chart_js', 3),
     ('Sleeping', 'chart_js', 3),
     ('Storage', 'chart_js', 3),
     ('Dining', 'chart_js', 3),
-    ('Office', 'chart_js', 3); */
+    ('Office', 'chart_js', 3); 
 
     -- seating subcategories
     ('Chairs', 'chart_js', (select id from tblCategory where name = 'Seating')),
@@ -590,4 +597,5 @@ VALUES
     ('Conference Tables', 'chart_js', (select id from tblCategory where name = 'Office')),
     ('Reception Furniture', 'chart_js', (select id from tblCategory where name = 'Office'));
 
-	delete from tblCategory where id in(84,85,86,87,88,89,90,91,92,93,94,95,96,97,98);
+
+EXEC ComputeTFIdF
