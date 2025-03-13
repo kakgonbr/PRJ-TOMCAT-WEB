@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpSession;
 public class CategoryLoader extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            java.util.List<model.Category> categories = dao.CategoryDAO.CategoryFetcher.getChildCategories(0); 
+            java.util.List<model.CategoryWrapper> categories = dao.CategoryDAO.CategoryFetcher.getChildCategories(0).stream().map(model.CategoryWrapper::new).collect(Collectors.toList()); 
 
             response.setContentType("application/json");
 
