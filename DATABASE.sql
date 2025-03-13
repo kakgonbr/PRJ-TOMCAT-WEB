@@ -519,10 +519,10 @@ VALUES
 
 INSERT INTO tblVariation (categoryId,name,datatype,unit)
 VALUES 
-	(1,'color','string',NULL),
-	(6,'man clothes size','string',NULL),
-	(8,'shoe size','string',NULL),
-	(7,'woman clothes size');
+	(1,'Color','String',NULL),
+	(6,'Man Clothes Size','String',NULL),
+	(8,'Shoe Size','String',NULL),
+	(7,'Woman Clothes Size','String',NULL);
 
 INSERT INTO tblVariationValue (variationId, value)
 VALUES 
