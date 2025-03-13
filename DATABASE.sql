@@ -484,16 +484,6 @@ VALUES
 ('abc3@example.com', 'user33443', '12003', 'user', NULL, NULL, NULL, 0),
 ('abc4@example.com', 'user126543', '56004', 'user', NULL, NULL, NULL, 0);
 
-<<<<<<< HEAD
-/*
-INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
-VALUES
-	('skincare','chart_js',13),
-	('makeup','chart_js',13),
-	('haircare','chart_js',13),
-	('bodycare','chart_js',13),
-	('fragrance','chart_js',13), 
-=======
 
 INSERT INTO tblShop (ownerId, name, address, profileStringResourceId, visible)
 VALUES
@@ -502,16 +492,16 @@ VALUES
 (3, 'Home Essentials', '567 Home Lane', 'admin_js', 1),
 (4, 'Tech Universe', '123 Innovation St', 'test_js', 1),
 (5, 'Fashion Hub', '456 Style Ave', 'admin_css', 1);
-select * from tblShop
+
 
 /*parent id is for testing -> change when real*/
 INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
 VALUES
-	('Fashion','chart_js',NULL),
-	('Electronics','chart_js',NULL),
-	('Furniture','chart_js',NULL),
-	('Cosmestic','chart_js',NULL),
-	('Book','chart_js',NULL),
+	('Fashion','chart_js',NULL), --1
+	('Electronics','chart_js',NULL), --2
+	('Furniture','chart_js',NULL), --3
+	('Cosmestic','chart_js',NULL), --4
+	('Book','chart_js',NULL), --5
 	('Man Fashion','chart_js',1), --6
 	('Woman Fashion','chart_js',1), --7
 	('Shoes','chart_js',1), --8
@@ -525,7 +515,21 @@ VALUES
 	('Polo Shirt','chart_js',6),
 	('Man Jean','chart_js',6),
 	('Short','chart_js',6),
-	('Trouser','chart_js',6);
+	('Trouser','chart_js',6),
+	('skincare','chart_js',4), --20
+	('makeup','chart_js',4), --21
+	('haircare','chart_js',4), --22
+	('bodycare','chart_js',4), --23
+	('fragrance','chart_js',4), --24
+	('cleansers', 'chart_js', 20),
+    ('face_wash', 'chart_js', 20),
+    ('makeup_remover', 'chart_js', 20),
+    ('toners', 'chart_js', 20),
+    ('moisturizers', 'chart_js', 20),
+    ('serums', 'chart_js', 20),
+    ('eye_care', 'chart_js', 20),
+    ('sunscreen', 'chart_js', 20),
+    ('face_masks', 'chart_js', 20) ;
 
 INSERT INTO tblVariation (categoryId,name,datatype,unit)
 VALUES 
@@ -568,19 +572,9 @@ VALUES
 	(4 , 'M'),
 	(4 , 'L'),
 	(4 , 'XL');
->>>>>>> 367fd4206f2a387a28f8d499b628f9e9d062e152
 
 	-- skincare
-	('cleansers', 'chart_js', 36),
-    ('face_wash', 'chart_js', 36),
-    ('makeup_remover', 'chart_js', 36),
-    ('exfoliators', 'chart_js', 36),
-    ('toners', 'chart_js', 36),
-    ('moisturizers', 'chart_js', 36),
-    ('serums', 'chart_js', 36),
-    ('eye_care', 'chart_js', 36),
-    ('sunscreen', 'chart_js', 36),
-    ('face_masks', 'chart_js', 36),
+	
 
 	-- makeup 
     ('foundation', 'chart_js', 37),
@@ -619,83 +613,5 @@ VALUES
     ('body mist', 'chart_js', 40),
     ('essential oil', 'chart_js', 40);
 
-	INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
-VALUES
-    ('fiction', 'chart_js', 13),
-    ('non_fiction', 'chart_js', 13),
-    ('children', 'chart_js', 13),
-    ('comics_manga', 'chart_js', 13),
-    ('education', 'chart_js', 13),
-
-    -- Fiction subcategories
-    ('fantasy', 'chart_js', 94),
-    ('mystery', 'chart_js', 94),
-    ('romance', 'chart_js', 94),
-    ('thriller', 'chart_js', 94),
-    ('historical_fiction', 'chart_js', 94),
-    ('science_fiction', 'chart_js', 94),
-    ('horror', 'chart_js', 94),
-
-    -- Non-Fiction subcategories
-    ('biography', 'chart_js', 21),
-    ('memoir', 'chart_js', 21),
-    ('history', 'chart_js', 21),
-    ('philosophy', 'chart_js', 21),
-    ('politics', 'chart_js', 21),
-
-    -- Children subcategories
-    ('picture_books', 'chart_js', 96),
-    ('early readers', 'chart_js', 96),
-    ('middle grade', 'chart_js', 96),
-    ('young adult', 'chart_js', 96),
-
-    -- Comics & Manga subcategories
-    ('graphic novels', 'chart_js', 23),
-    ('manga', 'chart_js', 23),
-    ('superhero comics', 'chart_js', 23),
-
-    -- Education subcategories
-    ('textbooks', 'chart_js', 98),
-    ('reference books', 'chart_js', 98),
-    ('language learning', 'chart_js', 98);
-	*/
-
-	--furniture
-	INSERT INTO tblCategory(name, imageStringResourceId, parent_id)
-VALUES
-<<<<<<< HEAD
-    ('Seating', 'chart_js', 3),
-    ('Sleeping', 'chart_js', 3),
-    ('Storage', 'chart_js', 3),
-    ('Dining', 'chart_js', 3),
-    ('Office', 'chart_js', 3),
-
-    -- seating subcategories
-    ('Chairs', 'chart_js', 20),
-    ('Sofas and Couches', 'chart_js', 20),
-    ('Ottomans and Footstools:', 'chart_js', 20),
-
-    -- sleeping subcategories
-    ('Beds', 'chart_js', 21),
-    ('Mattresses', 'chart_js', 21),
-    ('Pillows', 'chart_js', 21),
-
-    -- storage subcategories
-    ('Cabinets', 'chart_js', 22),
-    ('Chests', 'chart_js', 22),
-    ('Trunks', 'chart_js', 22),
-=======
-
-    -- dining subcategories
-    ('Benches', 'chart_js', 23),
-    ('Dining Tables', 'chart_js', 23),
-    ('Dining Chairs', 'chart_js', 23),
-
-<<<<<<< HEAD
-    -- Office  subcategories
-    ('Desks', 'chart_js', 24),
-    ('Conference Tables', 'chart_js', 24),
-    ('Reception Furniture', 'chart_js', 24);
-=======
+	
 EXEC ComputeTFIdF
->>>>>>> 367fd4206f2a387a28f8d499b628f9e9d062e152
