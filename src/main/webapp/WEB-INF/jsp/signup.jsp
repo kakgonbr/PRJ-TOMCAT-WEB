@@ -17,6 +17,7 @@
         <p>TODO: COMPLETE THE PAGE.</p>
         <p>email: ${email}</p>
         <p>id: ${id}</p>
+        <p>text test: ${text}</p>
     </jsp:attribute>
 
     <jsp:attribute name="footer">

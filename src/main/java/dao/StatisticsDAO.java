@@ -93,7 +93,7 @@ public final class StatisticsDAO {
         } // public static void addStatistics(Connection connection) throws
           // java.sql.SQLException
         
-        private static final String GET_STATISTICS = "SELECT TOP 10 * FROM tblServerStatistics ORDER BY day DESC";
+        private static final String GET_STATISTICS = "SELECT t.* FROM (SELECT TOP 10 * FROM tblServerStatistics ORDER BY day DESC) AS t ORDER BY t.day ASC;";
 
         public static synchronized java.util.List<model.TblServerStatistics> getStatistics() throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {

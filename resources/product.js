@@ -21,28 +21,24 @@ function fetchProducts() {
                 cell.textContent = item.shopId;
                 row.appendChild(cell);
 
-                ent.createElement("td");
+                cell = document.createElement("td");
                 cell.textContent = item.categoryId;
                 row.appendChild(cell);
 
-                ent.createElement("td");
+                cell = document.createElement("td");
                 cell.textContent = item.name;
                 row.appendChild(cell);
 
-                ent.createElement("td");
+                cell = document.createElement("td");
                 cell.textContent = item.description;
                 row.appendChild(cell);
 
-                ent.createElement("td");
-                cell.textContent = item.thumbNailId;
+                cell = document.createElement("td");
+                cell.textContent = item.thumbnailId;
                 row.appendChild(cell);
 
                 tableBody.appendChild(row);
             });
         })
         .catch(error => console.error("Error fetching data:", error));
-        // let li = document.createElement("li");
-        // li.textContent = item.id + "\n" + item.shopId + "\n" + item.categoryId + "\n" + item.name + "\n" + item.description + "\n" + item.thumbnailId;
-        // listElement.appendChild(li);
-
 }

@@ -377,9 +377,11 @@ END;
 GO
 
 GO
-CREATE PROCEDURE GetRecommendation (@query NVARCHAR(400), @int page)
+CREATE PROCEDURE GetRecommendation (@query NVARCHAR(400), @page int)
 AS
 BEGIN
+	SET NOCOUNT ON;
+
 	IF @query IS NULL OR LTRIM(RTRIM(@query)) = ''
     BEGIN
         SELECT TOP 10 * FROM tblProduct ORDER BY NEWId();
@@ -445,15 +447,18 @@ BEGIN
 	recommendation AS(
 		SELECT iv.id,
 		SUM(CAST(qv.tfidf_value AS FLOAT) * CAST(iv.tfidf_value AS FLOAT)) /
-		(SQRT(SUM(POWER(CAST(iv.tfidf_value AS FLOAT), 2))) * SQRT(SUM(POWER(CAST(qv.tfidf_value AS FLOAT), 2)))) AS similarity
+		NULLIF((SQRT(SUM(POWER(CAST(iv.tfidf_value AS FLOAT), 2))) * SQRT(SUM(POWER(CAST(qv.tfidf_value AS FLOAT), 2)))), 0) AS similarity
 		FROM ItemVector iv
 		JOIN QueryVector qv ON iv.pos = qv.pos
 		GROUP BY iv.id
 	)
-	SELECT TOP 10 tblProduct.*
+	SELECT tblProduct.*
 	FROM tblProduct
 	JOIN recommendation ON tblProduct.id = recommendation.id
+	WHERE recommendation.similarity != 0
 	ORDER BY recommendation.similarity DESC
+	OFFSET @page * 10 ROWS 
+    FETCH NEXT 10 ROWS ONLY
 
     DROP TABLE #result;
 END;
@@ -479,6 +484,7 @@ VALUES
 ('abc3@example.com', 'user33443', '12003', 'user', NULL, NULL, NULL, 0),
 ('abc4@example.com', 'user126543', '56004', 'user', NULL, NULL, NULL, 0);
 
+<<<<<<< HEAD
 /*
 INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
 VALUES
@@ -487,6 +493,82 @@ VALUES
 	('haircare','chart_js',13),
 	('bodycare','chart_js',13),
 	('fragrance','chart_js',13), 
+=======
+
+INSERT INTO tblShop (ownerId, name, address, profileStringResourceId, visible)
+VALUES
+(1, 'Gadget World', '789 Tech Road', 'chart_js', 1),
+(2, 'Sneaker Haven', '321 Fashion Blvd', 'admin_css', 1),
+(3, 'Home Essentials', '567 Home Lane', 'admin_js', 1),
+(4, 'Tech Universe', '123 Innovation St', 'test_js', 1),
+(5, 'Fashion Hub', '456 Style Ave', 'admin_css', 1);
+select * from tblShop
+
+/*parent id is for testing -> change when real*/
+INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
+VALUES
+	('Fashion','chart_js',NULL),
+	('Electronics','chart_js',NULL),
+	('Furniture','chart_js',NULL),
+	('Cosmestic','chart_js',NULL),
+	('Book','chart_js',NULL),
+	('Man Fashion','chart_js',1), --6
+	('Woman Fashion','chart_js',1), --7
+	('Shoes','chart_js',1), --8
+	('Accessory','chart_js',1), --9
+	('T-Shirt','chart_js',6),
+	('Blazer','chart_js',6),
+	('Hoodie','chart_js',6),
+	('Shirt','chart_js',6),
+	('Jacket','chart_js',6),
+	('Coat','chart_js',6),
+	('Polo Shirt','chart_js',6),
+	('Man Jean','chart_js',6),
+	('Short','chart_js',6),
+	('Trouser','chart_js',6);
+
+INSERT INTO tblVariation (categoryId,name,datatype,unit)
+VALUES 
+	(1,'color','string',NULL),
+	(6,'man clothes size','string',NULL),
+	(8,'shoe size','string',NULL),
+	(7,'woman clothes size');
+
+INSERT INTO tblVariationValue (variationId, value)
+VALUES 
+	(1 , 'Black'),
+	(1 , 'White'),
+	(1 , 'Gray'),
+	(1 , 'Blue'),
+	(1 , 'Red'),
+	(1 , 'Beige'),
+	(1 , 'Brown'),
+	(1 , 'Navy'),
+	(1 , 'Pink'),
+	(1 , 'Orange'),
+	(1 , 'Green'),
+	(1 , 'Yellow'),
+	(2 , 'XS'),
+	(2 , 'S'),
+	(2 , 'M'),
+	(2 , 'L'),
+	(2 , 'XL'),
+	(2 , 'XXL'),
+	(3 , '35'),
+	(3 , '36'),
+	(3 , '37'),
+	(3 , '38'),
+	(3 , '39'),
+	(3 , '40'),
+	(3 , '41'),
+	(3 , '42'),
+	(3 , '43'),
+	(4 , 'XS'),
+	(4 , 'S'),
+	(4 , 'M'),
+	(4 , 'L'),
+	(4 , 'XL');
+>>>>>>> 367fd4206f2a387a28f8d499b628f9e9d062e152
 
 	-- skincare
 	('cleansers', 'chart_js', 36),
@@ -581,6 +663,7 @@ VALUES
 	--furniture
 	INSERT INTO tblCategory(name, imageStringResourceId, parent_id)
 VALUES
+<<<<<<< HEAD
     ('Seating', 'chart_js', 3),
     ('Sleeping', 'chart_js', 3),
     ('Storage', 'chart_js', 3),
@@ -601,6 +684,35 @@ VALUES
     ('Cabinets', 'chart_js', 22),
     ('Chests', 'chart_js', 22),
     ('Trunks', 'chart_js', 22),
+=======
+(1, 3, 'Samsung Galaxy S22', 'Flagship Samsung smartphone', 1, 'test_js', 1),
+(1, 4, 'MacBook Pro 14', 'Apple high-end laptop', 2, 'test_js', 1),
+(2, 5, 'Nike Air Max', 'Stylish and comfortable sneakers', 3, 'admin_css', 1),
+(2, 6, 'Leather Handbag', 'Elegant leather handbag', NULL, 'admin_css', 1),
+(3, 7, 'Air Fryer', 'Healthy cooking appliance', NULL, 'admin_js', 1),
+(3, 7, 'Vacuum Cleaner', 'Powerful home cleaning device', NULL, 'admin_js', 1),
+(4, 8, 'PlayStation 5', 'Next-gen gaming console', 4, 'test_js', 1),
+(4, 8, 'Xbox Series X', 'Powerful Microsoft gaming console', 4, 'test_js', 1),
+(5, 9, 'Modern Sofa', 'Comfortable and stylish', 5, 'admin_js', 1),
+(5, 9, 'Wooden Dining Table', 'Elegant and durable', 5, 'admin_js', 1),
+(1, 3, 'iPhone 14 Pro', 'Latest Apple smartphone', 1, 'test_js', 1),
+(1, 5, 'Adidas Ultraboost', 'High-performance running shoes', 3, 'admin_css', 1),
+(3, 7, 'Microwave Oven', 'Efficient and modern', NULL, 'admin_js', 1),
+(4, 8, 'Nintendo Switch', 'Portable gaming console', 4, 'test_js', 1),
+(5, 9, 'Queen Size Bed', 'Luxurious and comfortable', 5, 'admin_js', 1),
+(1, 3, 'Google Pixel 7', 'Latest Google smartphone', 1, 'test_js', 1),
+(2, 5, 'Puma Running Shoes', 'Lightweight and stylish', 3, 'admin_css', 1),
+(3, 7, 'Blender', 'Powerful kitchen appliance', NULL, 'admin_js', 1),
+(4, 8, 'Gaming Laptop', 'High-end gaming performance', 4, 'test_js', 1),
+(5, 9, 'Office Chair', 'Ergonomic and comfortable', 5, 'admin_js', 1),
+(4, 3, 'OnePlus 11', 'Flagship OnePlus smartphone', 1, 'test_js', 1),
+(2, 5, 'Reebok Sneakers', 'Durable and comfortable', 3, 'admin_css', 1),
+(3, 7, 'Dishwasher', 'Efficient and modern', NULL, 'admin_js', 1),
+(4, 8, 'Smart TV', '4K Ultra HD', 4, 'test_js', 1),
+(5, 9, 'Bookshelf', 'Modern wooden bookshelf', 5, 'admin_js', 1),
+(5, 9, 'FlagShip Phone', 'A phone that is flagship, also, gaming', 5, 'admin_js', 1),
+(5, 9, 'FlagShip Tablet', 'Cool tablet', 5, 'admin_js', 1);
+>>>>>>> 367fd4206f2a387a28f8d499b628f9e9d062e152
 
 
     -- dining subcategories
@@ -608,7 +720,11 @@ VALUES
     ('Dining Tables', 'chart_js', 23),
     ('Dining Chairs', 'chart_js', 23),
 
+<<<<<<< HEAD
     -- Office  subcategories
     ('Desks', 'chart_js', 24),
     ('Conference Tables', 'chart_js', 24),
     ('Reception Furniture', 'chart_js', 24);
+=======
+EXEC ComputeTFIdF
+>>>>>>> 367fd4206f2a387a28f8d499b628f9e9d062e152

@@ -59,7 +59,7 @@ public final class Config {
     public static class GGLoginConfig {
         public static final String GOOGLE_CLIENT_ID = System.getenv("GOOGLE_CLIENT_ID");
         public static final String GOOGLE_CLIENT_SECRET = System.getenv("GOOGLE_CLIENT_SECRET");
-        public static final String GOOGLE_REDIRECT_URI = "https://kakgonbri.zapto.org:8443/prj/signup?method=gg";
+        public static final String GOOGLE_REDIRECT_URI = "https://kakgonbri.zapto.org:8443/prj/signup";
         public static final String GOOGLE_GRANT_TYPE = "authorization_code";
         public static final String GOOGLE_LINK_GET_TOKEN = "https://oauth2.googleapis.com/token";
         public static final String GOOGLE_LINK_GET_USER_INFO = "https://www.googleapis.com/oauth2/v1/userinfo?access_token=";
@@ -68,7 +68,7 @@ public final class Config {
     public static class FBLoginConfig {
         public static final String FACEBOOK_CLIENT_ID = System.getenv("FACEBOOK_CLIENT_ID");
         public static final String FACEBOOK_CLIENT_SECRET = System.getenv("FACEBOOK_CLIENT_SECRET");
-        public static final String FACEBOOK_REDIRECT_URI = "https://kakgonbri.zapto.org/prj/login?method=fb";
+        public static final String FACEBOOK_REDIRECT_URI = "https://kakgonbri.zapto.org/prj/signup?method=fb";
         public static final String FACEBOOK_LINK_GET_TOKEN = "https://graph.facebook.com/v22.0/oauth/access_token";
         public static final String FACEBOOK_LINK_GET_USER_INFO = "https://graph.facebook.com/me?fields=id,name,email&access_token=";
     }

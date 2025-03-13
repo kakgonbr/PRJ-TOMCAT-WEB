@@ -40,13 +40,36 @@
             <input type="submit" value="Log today's statistics"/>
         </form>
 
-        <canvas id="chartTotalMoney" class="adminChart"></canvas>
-        <canvas id="chartNumVisit" class="adminChart"></canvas>
-        <canvas id="chartNumPurchase" class="adminChart"></canvas>
-        <canvas id="chartNumUsers" class="adminChart"></canvas>
-        <canvas id="chartNumProducts" class="adminChart"></canvas>
-        <canvas id="chartNumShops" class="adminChart"></canvas>
-        <canvas id="chartNumPromotions" class="adminChart"></canvas>
+        <div class="chart-container">
+            <div class="chart-item">
+                <canvas id="chartTotalMoney" class="adminChart"></canvas>
+            </div>
+            <div class="chart-item">
+                <canvas id="chartNumVisit" class="adminChart"></canvas>
+            </div>
+            <div class="chart-item">
+                <canvas id="chartNumPurchase" class="adminChart"></canvas>
+            </div>
+            <div class="chart-item">
+                <canvas id="chartNumUsers" class="adminChart"></canvas>
+            </div>
+            <div class="chart-item">
+                <canvas id="chartNumProducts" class="adminChart"></canvas>
+            </div>
+            <div class="chart-item">
+                <canvas id="chartNumShops" class="adminChart"></canvas>
+            </div>
+            <div class="chart-item">
+                <canvas id="chartNumPromotions" class="adminChart"></canvas>
+            </div>
+            <div class="chart-item">
+                <canvas id="chartAvgResponse" class="adminChart"></canvas>
+            </div>
+            <div class="chart-item">
+                <canvas id="chartMaxResponse" class="adminChart"></canvas>
+            </div>
+        </div>
+
         <pre id="logContainer"></pre>
     </jsp:attribute>
 
