@@ -552,7 +552,7 @@ VALUES
     -- Comics & Manga subcategories
     ('Graphic novels', 'chart_js', (select id from tblCategory where name = 'Comics_manga')),
     ('Manga', 'chart_js', (select id from tblCategory where name = 'Comics_manga')),
-    ('Superhero comics', 'chart_js', (select id from tblCategory where name = 'Comics_manga'));
+    ('Superhero comics', 'chart_js', (select id from tblCategory where name = 'Comics_manga')),
 
 	--furniture
 
@@ -667,6 +667,20 @@ VALUES
 (4, 9, 800);
 
 EXEC ComputeTFIdF
+
+INSERT INTO tblServerStatistics (day, totalMoneyEarned, userNum, productNum, shopNum, promotionNum, purchaseNum, visitNum, peakSessionNum, averageResponseTime, maxResponseTime)
+VALUES 
+('2025-03-03',  5000, 120,  50,  10,  5,  10,  100, 30,  120, 500),
+('2025-03-04',  1000, 123,  55,  12,  7,  12,  50, 70,  130, 700),
+('2025-03-05',  4500, 127,  60,  18,  7,  17,  60, 70,  190, 490),
+('2025-03-06',  8100, 160,  65,  19,  7,  8,  30, 50,  100, 1280),
+('2025-03-07',  9000, 165,  70,  19,  9,  18,  50, 90,  105, 460),
+('2025-03-08', 6000, 165,  90,  21, 18,  27,  150, 95,   90, 200),
+('2025-03-09', 4000, 210,  90,  29, 19,  7,  200, 100,  85,  410),
+('2025-03-10', 9800, 300,  160,  36, 26,  35,  200, 110,  80,  400),
+('2025-03-11', 3400, 310,  200,  38, 28,  60,  50, 180,  55,  800),
+('2025-03-12', 6000, 350, 210,  39, 28,  55,  170, 130,  70,  380);
+
 
 SELECT * FROM tblVector
 
