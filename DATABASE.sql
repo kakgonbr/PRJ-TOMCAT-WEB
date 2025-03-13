@@ -377,11 +377,9 @@ END;
 GO
 
 GO
-CREATE PROCEDURE GetRecommendation (@query NVARCHAR(400), @page int)
+CREATE PROCEDURE GetRecommendation (@query NVARCHAR(400), @int page)
 AS
 BEGIN
-	SET NOCOUNT ON;
-
 	IF @query IS NULL OR LTRIM(RTRIM(@query)) = ''
     BEGIN
         SELECT TOP 10 * FROM tblProduct ORDER BY NEWId();
@@ -447,18 +445,15 @@ BEGIN
 	recommendation AS(
 		SELECT iv.id,
 		SUM(CAST(qv.tfidf_value AS FLOAT) * CAST(iv.tfidf_value AS FLOAT)) /
-		NULLIF((SQRT(SUM(POWER(CAST(iv.tfidf_value AS FLOAT), 2))) * SQRT(SUM(POWER(CAST(qv.tfidf_value AS FLOAT), 2)))), 0) AS similarity
+		(SQRT(SUM(POWER(CAST(iv.tfidf_value AS FLOAT), 2))) * SQRT(SUM(POWER(CAST(qv.tfidf_value AS FLOAT), 2)))) AS similarity
 		FROM ItemVector iv
 		JOIN QueryVector qv ON iv.pos = qv.pos
 		GROUP BY iv.id
 	)
-	SELECT tblProduct.*
+	SELECT TOP 10 tblProduct.*
 	FROM tblProduct
 	JOIN recommendation ON tblProduct.id = recommendation.id
-	WHERE recommendation.similarity != 0
 	ORDER BY recommendation.similarity DESC
-	OFFSET @page * 10 ROWS 
-    FETCH NEXT 10 ROWS ONLY
 
     DROP TABLE #result;
 END;
@@ -484,134 +479,115 @@ VALUES
 ('abc3@example.com', 'user33443', '12003', 'user', NULL, NULL, NULL, 0),
 ('abc4@example.com', 'user126543', '56004', 'user', NULL, NULL, NULL, 0);
 
-
-INSERT INTO tblShop (ownerId, name, address, profileStringResourceId, visible)
-VALUES
-(1, 'Gadget World', '789 Tech Road', 'chart_js', 1),
-(2, 'Sneaker Haven', '321 Fashion Blvd', 'admin_css', 1),
-(3, 'Home Essentials', '567 Home Lane', 'admin_js', 1),
-(4, 'Tech Universe', '123 Innovation St', 'test_js', 1),
-(5, 'Fashion Hub', '456 Style Ave', 'admin_css', 1);
-
-
-/*parent id is for testing -> change when real*/
+--cosmestics
 INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
 VALUES
-	('Fashion','chart_js',NULL), --1
-	('Electronics','chart_js',NULL), --2
-	('Furniture','chart_js',NULL), --3
-	('Cosmestic','chart_js',NULL), --4
-	('Book','chart_js',NULL), --5
-	('Man Fashion','chart_js',1), --6
-	('Woman Fashion','chart_js',1), --7
-	('Shoes','chart_js',1), --8
-	('Accessory','chart_js',1), --9
-	('T-Shirt','chart_js',6),
-	('Blazer','chart_js',6),
-	('Hoodie','chart_js',6),
-	('Shirt','chart_js',6),
-	('Jacket','chart_js',6),
-	('Coat','chart_js',6),
-	('Polo Shirt','chart_js',6),
-	('Man Jean','chart_js',6),
-	('Short','chart_js',6),
-	('Trouser','chart_js',6),
-	('skincare','chart_js',4), --20
-	('makeup','chart_js',4), --21
-	('haircare','chart_js',4), --22
-	('bodycare','chart_js',4), --23
-	('fragrance','chart_js',4), --24
-	('cleansers', 'chart_js', 20),
-    ('face_wash', 'chart_js', 20),
-    ('makeup_remover', 'chart_js', 20),
-    ('toners', 'chart_js', 20),
-    ('moisturizers', 'chart_js', 20),
-    ('serums', 'chart_js', 20),
-    ('eye_care', 'chart_js', 20),
-    ('sunscreen', 'chart_js', 20),
-    ('face_masks', 'chart_js', 20) ;
-
-INSERT INTO tblVariation (categoryId,name,datatype,unit)
-VALUES 
-	(1,'Color','String',NULL),
-	(6,'Man Clothes Size','String',NULL),
-	(8,'Shoe Size','String',NULL),
-	(7,'Woman Clothes Size','String',NULL);
-
-INSERT INTO tblVariationValue (variationId, value)
-VALUES 
-	(1 , 'Black'),
-	(1 , 'White'),
-	(1 , 'Gray'),
-	(1 , 'Blue'),
-	(1 , 'Red'),
-	(1 , 'Beige'),
-	(1 , 'Brown'),
-	(1 , 'Navy'),
-	(1 , 'Pink'),
-	(1 , 'Orange'),
-	(1 , 'Green'),
-	(1 , 'Yellow'),
-	(2 , 'XS'),
-	(2 , 'S'),
-	(2 , 'M'),
-	(2 , 'L'),
-	(2 , 'XL'),
-	(2 , 'XXL'),
-	(3 , '35'),
-	(3 , '36'),
-	(3 , '37'),
-	(3 , '38'),
-	(3 , '39'),
-	(3 , '40'),
-	(3 , '41'),
-	(3 , '42'),
-	(3 , '43'),
-	(4 , 'XS'),
-	(4 , 'S'),
-	(4 , 'M'),
-	(4 , 'L'),
-	(4 , 'XL');
+/*	('Skincare','chart_js',4),
+	('Makeup','chart_js',4),
+	('Haircare','chart_js',4),
+	('Bodycare','chart_js',4),
+	('Fragrance','chart_js',4);*/
 
 	-- skincare
 	
+	('Cleansers', 'chart_js', (select id from tblCategory where name = 'Skincare')),
+    ('Face_wash', 'chart_js', (select id from tblCategory where name = 'Skincare')),
+    ('Makeup_remover', 'chart_js', (select id from tblCategory where name = 'Skincare')),
+    ('Exfoliators', 'chart_js', (select id from tblCategory where name = 'Skincare')),
 
 	-- makeup 
-    ('foundation', 'chart_js', 37),
-    ('concealer', 'chart_js', 37),
-    ('powder', 'chart_js', 37),
-    ('blush', 'chart_js', 37),
-    ('contour', 'chart_js', 37),
-    ('highlighter', 'chart_js', 37),
-    ('lipstick', 'chart_js', 37),
-    ('lip gloss', 'chart_js', 37),
-    ('lip liner', 'chart_js', 37),
-    ('eyeshadow', 'chart_js', 37),
-    ('eyeliner', 'chart_js', 37),
+    ('Foundation', 'chart_js', (select id from tblCategory where name = 'Makeup')),
+    ('Concealer', 'chart_js', (select id from tblCategory where name = 'Makeup')),
+    ('Powder', 'chart_js', (select id from tblCategory where name = 'Makeup')),
+    ('Blush', 'chart_js', (select id from tblCategory where name = 'Makeup')),
 
 	-- Haircare 
-    ('shampoo', 'chart_js', 38),
-    ('conditioner', 'chart_js', 38),
-    ('dry_shampoo', 'chart_js', 38),
-    ('hair oil', 'chart_js', 38),
-    ('hair mask', 'chart_js', 38),
-    ('hair treatment', 'chart_js', 38),
-    ('heat protectant', 'chart_js', 38),
-    ('hair spray', 'chart_js', 38),
+    ('Shampoo', 'chart_js', (select id from tblCategory where name = 'Haircare')),
+    ('Conditioner', 'chart_js', (select id from tblCategory where name = 'Haircare')),
+    ('Dry_shampoo', 'chart_js', (select id from tblCategory where name = 'Haircare')),
+    ('Hair oil', 'chart_js', (select id from tblCategory where name = 'Haircare')),
 
 	-- Bodycare 
-    ('body wash', 'chart_js', 39),
-    ('body scrub', 'chart_js', 39),
-    ('body lotion', 'chart_js', 39),
-    ('body butter', 'chart_js', 39),
-    ('hand cream', 'chart_js', 39),
-    ('foot cream', 'chart_js', 39),
+    ('Body wash', 'chart_js', (select id from tblCategory where name = 'Bodycare')),
+    ('Body scrub', 'chart_js', (select id from tblCategory where name = 'Bodycare')),
+    ('Body lotion', 'chart_js', (select id from tblCategory where name = 'Bodycare')),
+    ('Body butter', 'chart_js', (select id from tblCategory where name = 'Bodycare')),
 
 	-- Fragrance 
-    ('perfume', 'chart_js', 40),
-    ('eau de toilette', 'chart_js', 40),
-    ('body mist', 'chart_js', 40),
-    ('essential oil', 'chart_js', 40);
+    ('Perfume', 'chart_js', (select id from tblCategory where name = 'Fragrance')),
+    ('Eau de toilette', 'chart_js', (select id from tblCategory where name = 'Fragrance')),
+    ('Body mist', 'chart_js', (select id from tblCategory where name = 'Fragrance')),
+    ('Essential oil', 'chart_js', (select id from tblCategory where name = 'Fragrance'));
 
 	
 EXEC ComputeTFIdF
+
+	--book
+	INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
+VALUES
+/*
+    ('Fiction', 'chart_js', 5),
+    ('Non_fiction', 'chart_js', 5),
+    ('Children', 'chart_js', 5),
+    ('Comics_manga', 'chart_js', 5), */
+
+    -- Fiction subcategories
+    ('Fantasy', 'chart_js', (select id from tblCategory where name = 'Fiction')),
+    ('Mystery', 'chart_js', (select id from tblCategory where name = 'Fiction')),
+    ('Romance', 'chart_js', (select id from tblCategory where name = 'Fiction')),
+    ('Thriller', 'chart_js', (select id from tblCategory where name = 'Fiction')),
+
+    -- Non-Fiction subcategories
+    ('Biography', 'chart_js', (select id from tblCategory where name = 'Non_fiction')),
+    ('Memoir', 'chart_js', (select id from tblCategory where name = 'Non_fiction')),
+    ('History', 'chart_js', (select id from tblCategory where name = 'Non_fiction')),
+    ('Philosophy', 'chart_js', (select id from tblCategory where name = 'Non_fiction')),
+
+    -- Children subcategories
+    ('Picture_books', 'chart_js', (select id from tblCategory where name = 'Children')),
+    ('Early readers', 'chart_js', (select id from tblCategory where name = 'Children')),
+    ('Middle grade', 'chart_js', (select id from tblCategory where name = 'Children')),
+    ('Young adult', 'chart_js', (select id from tblCategory where name = 'Children')),
+
+    -- Comics & Manga subcategories
+    ('Graphic novels', 'chart_js', (select id from tblCategory where name = 'Comics_manga')),
+    ('Manga', 'chart_js', (select id from tblCategory where name = 'Comics_manga')),
+    ('Superhero comics', 'chart_js', (select id from tblCategory where name = 'Comics_manga'));
+
+	--furniture
+	insert INTO tblCategory (name, imageStringResourceId, parent_id)
+VALUES
+/*
+    ('Seating', 'chart_js', 3),
+    ('Sleeping', 'chart_js', 3),
+    ('Storage', 'chart_js', 3),
+    ('Dining', 'chart_js', 3),
+    ('Office', 'chart_js', 3); */
+
+    -- seating subcategories
+    ('Chairs', 'chart_js', (select id from tblCategory where name = 'Seating')),
+    ('Sofas and Couches', 'chart_js', (select id from tblCategory where name = 'Seating')),
+    ('Ottomans and Footstools:', 'chart_js', (select id from tblCategory where name = 'Seating')),
+
+    -- sleeping subcategories
+    ('Beds', 'chart_js', (select id from tblCategory where name = 'Sleeping')),
+    ('Mattresses', 'chart_js', (select id from tblCategory where name = 'Sleeping')),
+    ('Pillows', 'chart_js', (select id from tblCategory where name = 'Sleeping')),
+
+    -- storage subcategories
+    ('Cabinets', 'chart_js', (select id from tblCategory where name = 'Storage')),
+    ('Chests', 'chart_js', (select id from tblCategory where name = 'Storage')),
+    ('Trunks', 'chart_js', (select id from tblCategory where name = 'Storage')),
+
+
+    -- dining subcategories
+    ('Benches', 'chart_js', (select id from tblCategory where name = 'Dining')),
+    ('Dining Tables', 'chart_js', (select id from tblCategory where name = 'Dining')),
+    ('Dining Chairs', 'chart_js', (select id from tblCategory where name = 'Dining')),
+
+    -- Office  subcategories
+    ('Desks', 'chart_js', (select id from tblCategory where name = 'Office')),
+    ('Conference Tables', 'chart_js', (select id from tblCategory where name = 'Office')),
+    ('Reception Furniture', 'chart_js', (select id from tblCategory where name = 'Office'));
+
+	delete from tblCategory where id in(84,85,86,87,88,89,90,91,92,93,94,95,96,97,98);
