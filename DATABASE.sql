@@ -377,9 +377,11 @@ END;
 GO
 
 GO
-CREATE PROCEDURE GetRecommendation (@query NVARCHAR(400), @int page)
+CREATE PROCEDURE GetRecommendation (@query NVARCHAR(400), @page int)
 AS
 BEGIN
+	SET NOCOUNT ON;
+
 	IF @query IS NULL OR LTRIM(RTRIM(@query)) = ''
     BEGIN
         SELECT TOP 10 * FROM tblProduct ORDER BY NEWId();
@@ -445,15 +447,18 @@ BEGIN
 	recommendation AS(
 		SELECT iv.id,
 		SUM(CAST(qv.tfidf_value AS FLOAT) * CAST(iv.tfidf_value AS FLOAT)) /
-		(SQRT(SUM(POWER(CAST(iv.tfidf_value AS FLOAT), 2))) * SQRT(SUM(POWER(CAST(qv.tfidf_value AS FLOAT), 2)))) AS similarity
+		NULLIF((SQRT(SUM(POWER(CAST(iv.tfidf_value AS FLOAT), 2))) * SQRT(SUM(POWER(CAST(qv.tfidf_value AS FLOAT), 2)))), 0) AS similarity
 		FROM ItemVector iv
 		JOIN QueryVector qv ON iv.pos = qv.pos
 		GROUP BY iv.id
 	)
-	SELECT TOP 10 tblProduct.*
+	SELECT tblProduct.*
 	FROM tblProduct
 	JOIN recommendation ON tblProduct.id = recommendation.id
+	WHERE recommendation.similarity != 0
 	ORDER BY recommendation.similarity DESC
+	OFFSET @page * 10 ROWS 
+    FETCH NEXT 10 ROWS ONLY
 
     DROP TABLE #result;
 END;
@@ -527,15 +532,15 @@ VALUES
     ('Body butter', 'chart_js', (select id from tblCategory where name = 'Bodycare')),
 	-- Fragrance 
     ('Perfume', 'chart_js', (select id from tblCategory where name = 'Fragrance')),
-    ('Essential oil', 'chart_js', (select id from tblCategory where name = 'Fragrance'));
+    ('Eau de toilette', 'chart_js', (select id from tblCategory where name = 'Fragrance')),
+    ('Body mist', 'chart_js', (select id from tblCategory where name = 'Fragrance')),
+    ('Essential oil', 'chart_js', (select id from tblCategory where name = 'Fragrance')),
 
 	--book
-	INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
-	VALUES
-    ('Fiction', 'chart_js', 5),
-    ('Non_fiction', 'chart_js', 5),
-    ('Children', 'chart_js', 5),
-    ('Comics_manga', 'chart_js', 5), 
+    ('Fiction', 'chart_js', (select id from tblCategory where name = 'Book')),
+    ('Non_fiction', 'chart_js', (select id from tblCategory where name = 'Book')),
+    ('Children', 'chart_js', (select id from tblCategory where name = 'Book')),
+    ('Comics_manga', 'chart_js', (select id from tblCategory where name = 'Book')),
 
     -- Fiction subcategories
     ('Fantasy', 'chart_js', (select id from tblCategory where name = 'Fiction')),
@@ -558,16 +563,15 @@ VALUES
     -- Comics & Manga subcategories
     ('Graphic novels', 'chart_js', (select id from tblCategory where name = 'Comics_manga')),
     ('Manga', 'chart_js', (select id from tblCategory where name = 'Comics_manga')),
-    ('Superhero comics', 'chart_js', (select id from tblCategory where name = 'Comics_manga'));
+    ('Superhero comics', 'chart_js', (select id from tblCategory where name = 'Comics_manga')),
 
 	--furniture
-	INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
-	VALUES
-    ('Seating', 'chart_js', 3),
-    ('Sleeping', 'chart_js', 3),
-    ('Storage', 'chart_js', 3),
-    ('Dining', 'chart_js', 3),
-    ('Office', 'chart_js', 3), 
+
+    ('Seating', 'chart_js', (select id from tblCategory where name = 'Furniture')),
+    ('Sleeping', 'chart_js', (select id from tblCategory where name = 'Furniture')),
+    ('Storage', 'chart_js', (select id from tblCategory where name = 'Furniture')),
+    ('Dining', 'chart_js', (select id from tblCategory where name = 'Furniture')),
+    ('Office', 'chart_js', (select id from tblCategory where name = 'Furniture')),
 
     -- seating subcategories
     ('Chairs', 'chart_js', (select id from tblCategory where name = 'Seating')),
@@ -595,46 +599,104 @@ VALUES
     ('Conference Tables', 'chart_js', (select id from tblCategory where name = 'Office')),
     ('Reception Furniture', 'chart_js', (select id from tblCategory where name = 'Office'));
 
-INSERT INTO tblVariation (categoryId,name,datatype,unit)
- VALUES 
- 	(1,'color','string',NULL),
- 	(6,'man clothes size','string',NULL),
- 	(8,'shoe size','string',NULL),
- 	(7,'woman clothes size');
- 
- INSERT INTO tblVariationValue (variationId, value)
- VALUES 
- 	(1 , 'Black'),
- 	(1 , 'White'),
- 	(1 , 'Gray'),
- 	(1 , 'Blue'),
- 	(1 , 'Red'),
- 	(1 , 'Beige'),
- 	(1 , 'Brown'),
- 	(1 , 'Navy'),
- 	(1 , 'Pink'),
- 	(1 , 'Orange'),
- 	(1 , 'Green'),
- 	(1 , 'Yellow'),
- 	(2 , 'XS'),
- 	(2 , 'S'),
- 	(2 , 'M'),
- 	(2 , 'L'),
- 	(2 , 'XL'),
- 	(2 , 'XXL'),
- 	(3 , '35'),
- 	(3 , '36'),
- 	(3 , '37'),
- 	(3 , '38'),
- 	(3 , '39'),
- 	(3 , '40'),
- 	(3 , '41'),
- 	(3 , '42'),
- 	(3 , '43'),
- 	(4 , 'XS'),
- 	(4 , 'S'),
- 	(4 , 'M'),
- 	(4 , 'L'),
- 	(4 , 'XL');
+
+INSERT INTO tblShop (ownerId, name, address, profileStringResourceId, visible)
+VALUES
+(1, 'Gadget World', '789 Tech Road', 'chart_js', 1),
+(2, 'Sneaker Haven', '321 Fashion Blvd', 'admin_css', 1),
+(3, 'Home Essentials', '567 Home Lane', 'admin_js', 1),
+(4, 'Tech Universe', '123 Innovation St', 'test_js', 1),
+(5, 'Fashion Hub', '456 Style Ave', 'admin_css', 1);
+
+-- Understand that being in here means that the promotion will be active
+INSERT INTO tblPromotion (creatorId, name, type, ofAdmin, value, expireDate)
+VALUES
+(1, 'Black Friday Sale', 0, 0, 15, '2025-11-29'),
+(3, 'New Year Offer', 1, 0, 75000, '2025-12-31'),
+(2, 'Buy 1 Get 1', 0, 1, 50, '2025-12-31'),
+(4, 'Summer Discount', 0, 0, 20, '2025-06-30'),
+(5, 'Winter Clearance', 1, 1, 10000, '2025-12-15');
+
+-- TODO: Match the category id here
+INSERT INTO tblProduct (shopId, categoryId, name, description, availablePromotionId, imageStringResourceId, status)
+VALUES
+(1, 3, 'Samsung Galaxy S22', 'Flagship Samsung smartphone', 1, 'test_js', 1),
+(1, 4, 'MacBook Pro 14', 'Apple high-end laptop', 2, 'test_js', 1),
+(2, 5, 'Nike Air Max', 'Stylish and comfortable sneakers', 3, 'admin_css', 1),
+(2, 6, 'Leather Handbag', 'Elegant leather handbag', NULL, 'admin_css', 1),
+(3, 7, 'Air Fryer', 'Healthy cooking appliance', NULL, 'admin_js', 1),
+(3, 7, 'Vacuum Cleaner', 'Powerful home cleaning device', NULL, 'admin_js', 1),
+(4, 8, 'PlayStation 5', 'Next-gen gaming console', 4, 'test_js', 1),
+(4, 8, 'Xbox Series X', 'Powerful Microsoft gaming console', 4, 'test_js', 1),
+(5, 9, 'Modern Sofa', 'Comfortable and stylish', 5, 'admin_js', 1),
+(5, 9, 'Wooden Dining Table', 'Elegant and durable', 5, 'admin_js', 1),
+(1, 3, 'iPhone 14 Pro', 'Latest Apple smartphone', 1, 'test_js', 1),
+(1, 5, 'Adidas Ultraboost', 'High-performance running shoes', 3, 'admin_css', 1),
+(3, 7, 'Microwave Oven', 'Efficient and modern', NULL, 'admin_js', 1),
+(4, 8, 'Nintendo Switch', 'Portable gaming console', 4, 'test_js', 1),
+(5, 9, 'Queen Size Bed', 'Luxurious and comfortable', 5, 'admin_js', 1),
+(1, 3, 'Google Pixel 7', 'Latest Google smartphone', 1, 'test_js', 1),
+(2, 5, 'Puma Running Shoes', 'Lightweight and stylish', 3, 'admin_css', 1),
+(3, 7, 'Blender', 'Powerful kitchen appliance', NULL, 'admin_js', 1),
+(4, 8, 'Gaming Laptop', 'High-end gaming performance', 4, 'test_js', 1),
+(5, 9, 'Office Chair', 'Ergonomic and comfortable', 5, 'admin_js', 1),
+(4, 3, 'OnePlus 11', 'Flagship OnePlus smartphone', 1, 'test_js', 1),
+(2, 5, 'Reebok Sneakers', 'Durable and comfortable', 3, 'admin_css', 1),
+(3, 7, 'Dishwasher', 'Efficient and modern', NULL, 'admin_js', 1),
+(4, 8, 'Smart TV', '4K Ultra HD', 4, 'test_js', 1),
+(5, 9, 'Bookshelf', 'Modern wooden bookshelf', 5, 'admin_js', 1),
+(5, 9, 'FlagShip Phone', 'A phone that is flagship, also, gaming', 5, 'admin_js', 1),
+(5, 9, 'FlagShip Tablet', 'Cool tablet', 5, 'admin_js', 1);
+
+
+INSERT INTO tblProductItem (productId, stock, price)
+VALUES
+(5, 12, 1100),
+(6, 8, 2000),
+(7, 30, 250),
+(8, 15, 180),
+(9, 10, 300),
+(10, 5, 500),
+(11, 25, 1300),
+(12, 20, 220),
+(13, 18, 400),
+(14, 10, 450),
+(15, 8, 550),
+(16, 12, 350),
+(17, 5, 700),
+(18, 6, 600),
+(19, 7, 1200),
+(20, 4, 1500),
+(21, 15, 750),
+(22, 20, 300),
+(23, 10, 850),
+(24, 5, 1800),
+(25, 8, 950),
+(1, 12, 500),
+(2, 18, 650),
+(3, 6, 1400),
+(4, 9, 800);
 
 EXEC ComputeTFIdF
+
+INSERT INTO tblServerStatistics (day, totalMoneyEarned, userNum, productNum, shopNum, promotionNum, purchaseNum, visitNum, peakSessionNum, averageResponseTime, maxResponseTime)
+VALUES 
+('2025-03-03',  5000, 120,  50,  10,  5,  10,  100, 30,  120, 500),
+('2025-03-04',  1000, 123,  55,  12,  7,  12,  50, 70,  130, 700),
+('2025-03-05',  4500, 127,  60,  18,  7,  17,  60, 70,  190, 490),
+('2025-03-06',  8100, 160,  65,  19,  7,  8,  30, 50,  100, 1280),
+('2025-03-07',  9000, 165,  70,  19,  9,  18,  50, 90,  105, 460),
+('2025-03-08', 6000, 165,  90,  21, 18,  27,  150, 95,   90, 200),
+('2025-03-09', 4000, 210,  90,  29, 19,  7,  200, 100,  85,  410),
+('2025-03-10', 9800, 300,  160,  36, 26,  35,  200, 110,  80,  400),
+('2025-03-11', 3400, 310,  200,  38, 28,  60,  50, 180,  55,  800),
+('2025-03-12', 6000, 350, 210,  39, 28,  55,  170, 130,  70,  380);
+
+
+SELECT * FROM tblVector
+
+SELECT * FROM tblProduct
+
+SELECT * FROM tblCategory
+
+EXEC GetRecommendation @query='iphone', @page=0
