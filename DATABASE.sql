@@ -484,6 +484,16 @@ VALUES
 ('abc3@example.com', 'user33443', '12003', 'user', NULL, NULL, NULL, 0),
 ('abc4@example.com', 'user126543', '56004', 'user', NULL, NULL, NULL, 0);
 
+<<<<<<< HEAD
+/*
+INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
+VALUES
+	('skincare','chart_js',13),
+	('makeup','chart_js',13),
+	('haircare','chart_js',13),
+	('bodycare','chart_js',13),
+	('fragrance','chart_js',13), 
+=======
 
 INSERT INTO tblShop (ownerId, name, address, profileStringResourceId, visible)
 VALUES
@@ -558,73 +568,134 @@ VALUES
 	(4 , 'M'),
 	(4 , 'L'),
 	(4 , 'XL');
+>>>>>>> 367fd4206f2a387a28f8d499b628f9e9d062e152
 
-INSERT INTO tblPromotion (creatorId, name, type, ofAdmin, value, expireDate)
+	-- skincare
+	('cleansers', 'chart_js', 36),
+    ('face_wash', 'chart_js', 36),
+    ('makeup_remover', 'chart_js', 36),
+    ('exfoliators', 'chart_js', 36),
+    ('toners', 'chart_js', 36),
+    ('moisturizers', 'chart_js', 36),
+    ('serums', 'chart_js', 36),
+    ('eye_care', 'chart_js', 36),
+    ('sunscreen', 'chart_js', 36),
+    ('face_masks', 'chart_js', 36),
+
+	-- makeup 
+    ('foundation', 'chart_js', 37),
+    ('concealer', 'chart_js', 37),
+    ('powder', 'chart_js', 37),
+    ('blush', 'chart_js', 37),
+    ('contour', 'chart_js', 37),
+    ('highlighter', 'chart_js', 37),
+    ('lipstick', 'chart_js', 37),
+    ('lip gloss', 'chart_js', 37),
+    ('lip liner', 'chart_js', 37),
+    ('eyeshadow', 'chart_js', 37),
+    ('eyeliner', 'chart_js', 37),
+
+	-- Haircare 
+    ('shampoo', 'chart_js', 38),
+    ('conditioner', 'chart_js', 38),
+    ('dry_shampoo', 'chart_js', 38),
+    ('hair oil', 'chart_js', 38),
+    ('hair mask', 'chart_js', 38),
+    ('hair treatment', 'chart_js', 38),
+    ('heat protectant', 'chart_js', 38),
+    ('hair spray', 'chart_js', 38),
+
+	-- Bodycare 
+    ('body wash', 'chart_js', 39),
+    ('body scrub', 'chart_js', 39),
+    ('body lotion', 'chart_js', 39),
+    ('body butter', 'chart_js', 39),
+    ('hand cream', 'chart_js', 39),
+    ('foot cream', 'chart_js', 39),
+
+	-- Fragrance 
+    ('perfume', 'chart_js', 40),
+    ('eau de toilette', 'chart_js', 40),
+    ('body mist', 'chart_js', 40),
+    ('essential oil', 'chart_js', 40);
+
+	INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
 VALUES
-(1, 'Black Friday Sale', 0, 0, 15, '2025-11-29'),
-(3, 'New Year Offer', 1, 0, 75000, '2025-12-31'),
-(2, 'Buy 1 Get 1', 0, 1, 50, '2025-12-31'),
-(4, 'Summer Discount', 0, 0, 20, '2025-06-30'),
-(5, 'Winter Clearance', 1, 1, 10000, '2025-12-15');
+    ('fiction', 'chart_js', 13),
+    ('non_fiction', 'chart_js', 13),
+    ('children', 'chart_js', 13),
+    ('comics_manga', 'chart_js', 13),
+    ('education', 'chart_js', 13),
 
+    -- Fiction subcategories
+    ('fantasy', 'chart_js', 94),
+    ('mystery', 'chart_js', 94),
+    ('romance', 'chart_js', 94),
+    ('thriller', 'chart_js', 94),
+    ('historical_fiction', 'chart_js', 94),
+    ('science_fiction', 'chart_js', 94),
+    ('horror', 'chart_js', 94),
 
-INSERT INTO tblProduct (shopId, categoryId, name, description, availablePromotionId, imageStringResourceId, status)
+    -- Non-Fiction subcategories
+    ('biography', 'chart_js', 21),
+    ('memoir', 'chart_js', 21),
+    ('history', 'chart_js', 21),
+    ('philosophy', 'chart_js', 21),
+    ('politics', 'chart_js', 21),
+
+    -- Children subcategories
+    ('picture_books', 'chart_js', 96),
+    ('early readers', 'chart_js', 96),
+    ('middle grade', 'chart_js', 96),
+    ('young adult', 'chart_js', 96),
+
+    -- Comics & Manga subcategories
+    ('graphic novels', 'chart_js', 23),
+    ('manga', 'chart_js', 23),
+    ('superhero comics', 'chart_js', 23),
+
+    -- Education subcategories
+    ('textbooks', 'chart_js', 98),
+    ('reference books', 'chart_js', 98),
+    ('language learning', 'chart_js', 98);
+	*/
+
+	--furniture
+	INSERT INTO tblCategory(name, imageStringResourceId, parent_id)
 VALUES
-(1, 3, 'Samsung Galaxy S22', 'Flagship Samsung smartphone', 1, 'test_js', 1),
-(1, 4, 'MacBook Pro 14', 'Apple high-end laptop', 2, 'test_js', 1),
-(2, 5, 'Nike Air Max', 'Stylish and comfortable sneakers', 3, 'admin_css', 1),
-(2, 6, 'Leather Handbag', 'Elegant leather handbag', NULL, 'admin_css', 1),
-(3, 7, 'Air Fryer', 'Healthy cooking appliance', NULL, 'admin_js', 1),
-(3, 7, 'Vacuum Cleaner', 'Powerful home cleaning device', NULL, 'admin_js', 1),
-(4, 8, 'PlayStation 5', 'Next-gen gaming console', 4, 'test_js', 1),
-(4, 8, 'Xbox Series X', 'Powerful Microsoft gaming console', 4, 'test_js', 1),
-(5, 9, 'Modern Sofa', 'Comfortable and stylish', 5, 'admin_js', 1),
-(5, 9, 'Wooden Dining Table', 'Elegant and durable', 5, 'admin_js', 1),
-(1, 3, 'iPhone 14 Pro', 'Latest Apple smartphone', 1, 'test_js', 1),
-(1, 5, 'Adidas Ultraboost', 'High-performance running shoes', 3, 'admin_css', 1),
-(3, 7, 'Microwave Oven', 'Efficient and modern', NULL, 'admin_js', 1),
-(4, 8, 'Nintendo Switch', 'Portable gaming console', 4, 'test_js', 1),
-(5, 9, 'Queen Size Bed', 'Luxurious and comfortable', 5, 'admin_js', 1),
-(1, 3, 'Google Pixel 7', 'Latest Google smartphone', 1, 'test_js', 1),
-(2, 5, 'Puma Running Shoes', 'Lightweight and stylish', 3, 'admin_css', 1),
-(3, 7, 'Blender', 'Powerful kitchen appliance', NULL, 'admin_js', 1),
-(4, 8, 'Gaming Laptop', 'High-end gaming performance', 4, 'test_js', 1),
-(5, 9, 'Office Chair', 'Ergonomic and comfortable', 5, 'admin_js', 1),
-(4, 3, 'OnePlus 11', 'Flagship OnePlus smartphone', 1, 'test_js', 1),
-(2, 5, 'Reebok Sneakers', 'Durable and comfortable', 3, 'admin_css', 1),
-(3, 7, 'Dishwasher', 'Efficient and modern', NULL, 'admin_js', 1),
-(4, 8, 'Smart TV', '4K Ultra HD', 4, 'test_js', 1),
-(5, 9, 'Bookshelf', 'Modern wooden bookshelf', 5, 'admin_js', 1),
-(5, 9, 'FlagShip Phone', 'A phone that is flagship, also, gaming', 5, 'admin_js', 1),
-(5, 9, 'FlagShip Tablet', 'Cool tablet', 5, 'admin_js', 1);
+<<<<<<< HEAD
+    ('Seating', 'chart_js', 3),
+    ('Sleeping', 'chart_js', 3),
+    ('Storage', 'chart_js', 3),
+    ('Dining', 'chart_js', 3),
+    ('Office', 'chart_js', 3),
 
+    -- seating subcategories
+    ('Chairs', 'chart_js', 20),
+    ('Sofas and Couches', 'chart_js', 20),
+    ('Ottomans and Footstools:', 'chart_js', 20),
 
-INSERT INTO tblProductItem (productId, stock, price)
-VALUES
-(5, 12, 1100),
-(6, 8, 2000),
-(7, 30, 250),
-(8, 15, 180),
-(9, 10, 300),
-(10, 5, 500),
-(11, 25, 1300),
-(12, 20, 220),
-(13, 18, 400),
-(14, 10, 450),
-(15, 8, 550),
-(16, 12, 350),
-(17, 5, 700),
-(18, 6, 600),
-(19, 7, 1200),
-(20, 4, 1500),
-(21, 15, 750),
-(22, 20, 300),
-(23, 10, 850),
-(24, 5, 1800),
-(25, 8, 950),
-(1, 12, 500),
-(2, 18, 650),
-(3, 6, 1400),
-(4, 9, 800);
+    -- sleeping subcategories
+    ('Beds', 'chart_js', 21),
+    ('Mattresses', 'chart_js', 21),
+    ('Pillows', 'chart_js', 21),
 
+    -- storage subcategories
+    ('Cabinets', 'chart_js', 22),
+    ('Chests', 'chart_js', 22),
+    ('Trunks', 'chart_js', 22),
+=======
+
+    -- dining subcategories
+    ('Benches', 'chart_js', 23),
+    ('Dining Tables', 'chart_js', 23),
+    ('Dining Chairs', 'chart_js', 23),
+
+<<<<<<< HEAD
+    -- Office  subcategories
+    ('Desks', 'chart_js', 24),
+    ('Conference Tables', 'chart_js', 24),
+    ('Reception Furniture', 'chart_js', 24);
+=======
 EXEC ComputeTFIdF
+>>>>>>> 367fd4206f2a387a28f8d499b628f9e9d062e152
