@@ -5,16 +5,16 @@ function fetchCategory() {
             let container = document.getElementById("categoryFilter");
             container.innerHTML = "";
 
-            data.forEach((text, index) => {
+            data.forEach((filter, index) => {
                 let label = document.createElement("label");
                 let radio = document.createElement("input");
                 radio.type = "radio";
                 radio.name = "filter";
-                radio.value = text;
+                radio.value = filter.name;
                 if (index === 0) radio.checked = true;
 
                 label.appendChild(radio);
-                label.appendChild(document.createTextNode(" " + text));
+                label.appendChild(document.createTextNode(" " + filter.name));
                 container.appendChild(label);
                 container.appendChild(document.createElement("br"));
             });
