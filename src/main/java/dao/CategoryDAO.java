@@ -10,7 +10,7 @@ import model.Category;
 public class CategoryDAO {
     
     public static class CategoryFetcher {
-        public static final String GET_CHILD_CATEGORY = "WITH category AS (SELECT id FROM tblCategory WHERE id = ?1 UNION ALL SELECT c.id FROM tblCategory c JOIN category ch ON c.parent_id = ch.id)"; // Recursive CTE, get the current category AND ALL subcategories
+        public static final String GET_CHILD_CATEGORY = "WITH category AS (SELECT id FROM tblCategory WHERE id = ?1 UNION ALL SELECT c.id FROM tblCategory c JOIN category ch ON c.parent_id = ch.id) SELECT * FROM category"; // Recursive CTE, get the current category AND ALL subcategories
 
         public static synchronized List<Category> getChildCategories(int parent) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
