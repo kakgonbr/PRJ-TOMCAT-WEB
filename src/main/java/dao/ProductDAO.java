@@ -60,18 +60,24 @@ public class ProductDAO {
         private static final String GET_RECOMMENDATION = "GetRecommendation";
 
         @SuppressWarnings("unchecked")
-        public static synchronized java.util.List<model.Product> getRecommendation(String query, int page)
+        public static synchronized java.util.List<model.Product> getRecommendation(String query, int page, String category)
                 throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 return em.createStoredProcedureQuery(GET_RECOMMENDATION, model.Product.class)
                         .registerStoredProcedureParameter("query", String.class, ParameterMode.IN)
                         .registerStoredProcedureParameter("page", Integer.class, ParameterMode.IN)
-                        .setParameter("query", query).setParameter("page", page).getResultList();
+                        .registerStoredProcedureParameter("categoryName", String.class, ParameterMode.IN)
+                        .setParameter("query", query).setParameter("page", page).setParameter("categoryName", category)
+                        .getResultList();
 
             } catch (Exception e) {
                 throw new java.sql.SQLException(e);
             }
         } // public static synchronized java.util.List<Product> getRecommendation
+
+        public static synchronized java.util.List<model.Product> getRecommendation(String query, int page) throws java.sql.SQLException {
+            return getRecommendation(query, page, "");
+        }
 
         private static final String GET_CUSTOMIZATIONS = "SELECT tblProductCustomization.* FROM tblProductCustomization INNER JOIN tblProductItem ON productItemId = tblProductItem.id WHERE tblProductItem.productId = ?1";
 

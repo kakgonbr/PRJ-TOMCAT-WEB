@@ -94,7 +94,7 @@ CREATE TABLE tblShop
 
 CREATE TABLE tblCategory
 (
-	id int PRIMARY KEY IDENTITY(1, 1),
+	id int PRIMARY KEY IDENTITY(0, 1),
 	name nvarchar(30),
 	imageStringResourceId varchar(30),
 	parent_id int
@@ -377,14 +377,32 @@ END;
 GO
 
 GO
-CREATE PROCEDURE GetRecommendation (@query NVARCHAR(400), @page int)
+CREATE PROCEDURE GetRecommendation (@query NVARCHAR(400), @page int, @categoryName varchar(300))
 AS
 BEGIN
 	SET NOCOUNT ON;
 
+	DECLARE @category int;
+    
+
+	IF @categoryName IS NULL OR LTRIM(RTRIM(@categoryName)) = ''
+    BEGIN
+		SET @category = 1
+	END
+	ELSE
+	BEGIN
+		SELECT @category = id FROM tblCategory WHERE name = @categoryName;
+	END
+
 	IF @query IS NULL OR LTRIM(RTRIM(@query)) = ''
     BEGIN
-        SELECT TOP 10 * FROM tblProduct ORDER BY NEWId();
+		WITH category AS (
+        SELECT id FROM tblCategory WHERE id = @category
+        UNION ALL
+        SELECT c.id FROM tblCategory c
+        JOIN category ch ON c.parent_id = ch.id
+		)
+        SELECT TOP 10 * FROM tblProduct WHERE tblProduct.categoryId IN (SELECT id FROM category) ORDER BY NEWId();
         RETURN;
     END
 
@@ -451,13 +469,19 @@ BEGIN
 		FROM ItemVector iv
 		JOIN QueryVector qv ON iv.pos = qv.pos
 		GROUP BY iv.id
-	)
+	),
+	category AS (
+        SELECT id FROM tblCategory WHERE id = @category
+        UNION ALL
+        SELECT c.id FROM tblCategory c
+        JOIN category ch ON c.parent_id = ch.id
+    )
 	SELECT tblProduct.*
 	FROM tblProduct
 	JOIN recommendation ON tblProduct.id = recommendation.id
-	WHERE recommendation.similarity != 0
+	WHERE recommendation.similarity != 0 AND tblProduct.categoryId IN (SELECT id FROM category)
 	ORDER BY recommendation.similarity DESC
-	OFFSET @page * 10 ROWS 
+	OFFSET @page * 10 ROWS
     FETCH NEXT 10 ROWS ONLY
 
     DROP TABLE #result;
@@ -487,30 +511,31 @@ VALUES
 --cosmestics
 INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
 VALUES
-	('Fashion','chart_js',NULL), --1
-	('Electronics','chart_js',NULL), --2
-	('Furniture','chart_js',NULL), --3
-	('Cosmestic','chart_js',NULL), --4
-	('Book','chart_js',NULL), --5
+	('All', 'chart_js', NULL), -- 0
+	('Fashion','chart_js',0), --1
+	('Electronics','chart_js',0), --2
+	('Furniture','chart_js',0), --3
+	('Cosmestic','chart_js',0), --4
+	('Book','chart_js',0), --5
 	('Man Fashion','chart_js',1), --6
 	('Woman Fashion','chart_js',1), --7
 	('Shoes','chart_js',1), --8
 	('Accessory','chart_js',1), --9
-	('T-Shirt','chart_js',6),
-	('Blazer','chart_js',6),
-	('Hoodie','chart_js',6),
-	('Shirt','chart_js',6),
-	('Jacket','chart_js',6),
-	('Coat','chart_js',6),
-	('Polo Shirt','chart_js',6),
-	('Man Jean','chart_js',6),
-	('Short','chart_js',6),
-	('Trouser','chart_js',6),
-	('Skincare','chart_js',4),
-	('Makeup','chart_js',4),
-	('Haircare','chart_js',4),
-	('Bodycare','chart_js',4),
-	('Fragrance','chart_js',4),
+	('T-Shirt','chart_js',6), -- 10
+	('Blazer','chart_js',6), -- 11
+	('Hoodie','chart_js',6), -- 12
+	('Shirt','chart_js',6), -- 13
+	('Jacket','chart_js',6), -- 14
+	('Coat','chart_js',6), -- 15
+	('Polo Shirt','chart_js',6), -- 16
+	('Man Jean','chart_js',6), -- 17
+	('Short','chart_js',6), -- 18
+	('Trouser','chart_js',6), -- 19
+	('Skincare','chart_js',4), -- 20
+	('Makeup','chart_js',4), -- 21
+	('Haircare','chart_js',4), -- 22
+	('Bodycare','chart_js',4), -- 23
+	('Fragrance','chart_js',4), -- 24
 	-- skincare
 	('Cleansers', 'chart_js', (select id from tblCategory where name = 'Skincare')),
     ('Face_wash', 'chart_js', (select id from tblCategory where name = 'Skincare')),
@@ -692,12 +717,3 @@ VALUES
 ('2025-03-10', 9800, 300,  160,  36, 26,  35,  200, 110,  80,  400),
 ('2025-03-11', 3400, 310,  200,  38, 28,  60,  50, 180,  55,  800),
 ('2025-03-12', 6000, 350, 210,  39, 28,  55,  170, 130,  70,  380);
-
-
-SELECT * FROM tblVector
-
-SELECT * FROM tblProduct
-
-SELECT * FROM tblCategory
-
-EXEC GetRecommendation @query='iphone', @page=0
