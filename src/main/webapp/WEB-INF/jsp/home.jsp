@@ -9,6 +9,7 @@
         <t:resources/>
 
         <script src="${pageContext.request.contextPath}/resources/product_js"></script>
+        <script src="${pageContext.request.contextPath}/resources/filter_js"></script>
         
         <script>
             var contextPath = "${pageContext.request.contextPath}";
