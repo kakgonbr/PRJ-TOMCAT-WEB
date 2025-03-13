@@ -498,7 +498,8 @@ VALUES
 ('product_js', 'product.js'),
 ('chart_js', 'customChart.js'),
 ('userMain_css', 'userMain.css'),
-('login_css', 'login.css');
+('login_css', 'login.css'),
+('filter_js', 'filter.js');
 
 INSERT INTO tblUser (email, username, phoneNumber, password, persistentCookie, googleId, facebookId, isAdmin)
 VALUES 

@@ -1,6 +1,6 @@
 function fetchProducts() {
     let query = document.getElementById("searchBox").value;
-    var url = new URL("https://" + location.host + "/" + contextPath + "/ajax/products");
+    var url = new URL("https://" + location.host + contextPath + "/ajax/products");
     let filter;
     try {
         filter = document.querySelector('input[name="filter"]:checked').value;
