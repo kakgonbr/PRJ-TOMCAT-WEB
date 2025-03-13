@@ -377,11 +377,9 @@ END;
 GO
 
 GO
-CREATE PROCEDURE GetRecommendation (@query NVARCHAR(400), @page int)
+CREATE PROCEDURE GetRecommendation (@query NVARCHAR(400), @int page)
 AS
 BEGIN
-	SET NOCOUNT ON;
-
 	IF @query IS NULL OR LTRIM(RTRIM(@query)) = ''
     BEGIN
         SELECT TOP 10 * FROM tblProduct ORDER BY NEWId();
@@ -447,18 +445,15 @@ BEGIN
 	recommendation AS(
 		SELECT iv.id,
 		SUM(CAST(qv.tfidf_value AS FLOAT) * CAST(iv.tfidf_value AS FLOAT)) /
-		NULLIF((SQRT(SUM(POWER(CAST(iv.tfidf_value AS FLOAT), 2))) * SQRT(SUM(POWER(CAST(qv.tfidf_value AS FLOAT), 2)))), 0) AS similarity
+		(SQRT(SUM(POWER(CAST(iv.tfidf_value AS FLOAT), 2))) * SQRT(SUM(POWER(CAST(qv.tfidf_value AS FLOAT), 2)))) AS similarity
 		FROM ItemVector iv
 		JOIN QueryVector qv ON iv.pos = qv.pos
 		GROUP BY iv.id
 	)
-	SELECT tblProduct.*
+	SELECT TOP 10 tblProduct.*
 	FROM tblProduct
 	JOIN recommendation ON tblProduct.id = recommendation.id
-	WHERE recommendation.similarity != 0
 	ORDER BY recommendation.similarity DESC
-	OFFSET @page * 10 ROWS 
-    FETCH NEXT 10 ROWS ONLY
 
     DROP TABLE #result;
 END;
@@ -484,186 +479,79 @@ VALUES
 ('abc3@example.com', 'user33443', '12003', 'user', NULL, NULL, NULL, 0),
 ('abc4@example.com', 'user126543', '56004', 'user', NULL, NULL, NULL, 0);
 
-<<<<<<< HEAD
-/*
+--cosmestics
 INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
 VALUES
-	('skincare','chart_js',13),
-	('makeup','chart_js',13),
-	('haircare','chart_js',13),
-	('bodycare','chart_js',13),
-	('fragrance','chart_js',13), 
-=======
-
-INSERT INTO tblShop (ownerId, name, address, profileStringResourceId, visible)
-VALUES
-(1, 'Gadget World', '789 Tech Road', 'chart_js', 1),
-(2, 'Sneaker Haven', '321 Fashion Blvd', 'admin_css', 1),
-(3, 'Home Essentials', '567 Home Lane', 'admin_js', 1),
-(4, 'Tech Universe', '123 Innovation St', 'test_js', 1),
-(5, 'Fashion Hub', '456 Style Ave', 'admin_css', 1);
-select * from tblShop
-
-/*parent id is for testing -> change when real*/
-INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
-VALUES
-	('Fashion','chart_js',NULL),
-	('Electronics','chart_js',NULL),
-	('Furniture','chart_js',NULL),
-	('Cosmestic','chart_js',NULL),
-	('Book','chart_js',NULL),
-	('Man Fashion','chart_js',1), --6
-	('Woman Fashion','chart_js',1), --7
-	('Shoes','chart_js',1), --8
-	('Accessory','chart_js',1), --9
-	('T-Shirt','chart_js',6),
-	('Blazer','chart_js',6),
-	('Hoodie','chart_js',6),
-	('Shirt','chart_js',6),
-	('Jacket','chart_js',6),
-	('Coat','chart_js',6),
-	('Polo Shirt','chart_js',6),
-	('Man Jean','chart_js',6),
-	('Short','chart_js',6),
-	('Trouser','chart_js',6);
-
-INSERT INTO tblVariation (categoryId,name,datatype,unit)
-VALUES 
-	(1,'color','string',NULL),
-	(6,'man clothes size','string',NULL),
-	(8,'shoe size','string',NULL),
-	(7,'woman clothes size');
-
-INSERT INTO tblVariationValue (variationId, value)
-VALUES 
-	(1 , 'Black'),
-	(1 , 'White'),
-	(1 , 'Gray'),
-	(1 , 'Blue'),
-	(1 , 'Red'),
-	(1 , 'Beige'),
-	(1 , 'Brown'),
-	(1 , 'Navy'),
-	(1 , 'Pink'),
-	(1 , 'Orange'),
-	(1 , 'Green'),
-	(1 , 'Yellow'),
-	(2 , 'XS'),
-	(2 , 'S'),
-	(2 , 'M'),
-	(2 , 'L'),
-	(2 , 'XL'),
-	(2 , 'XXL'),
-	(3 , '35'),
-	(3 , '36'),
-	(3 , '37'),
-	(3 , '38'),
-	(3 , '39'),
-	(3 , '40'),
-	(3 , '41'),
-	(3 , '42'),
-	(3 , '43'),
-	(4 , 'XS'),
-	(4 , 'S'),
-	(4 , 'M'),
-	(4 , 'L'),
-	(4 , 'XL');
->>>>>>> 367fd4206f2a387a28f8d499b628f9e9d062e152
+	('Skincare','chart_js',4),
+	('Makeup','chart_js',4),
+	('Haircare','chart_js',4),
+	('Bodycare','chart_js',4),
+	('Fragrance','chart_js',4), 
 
 	-- skincare
-	('cleansers', 'chart_js', 36),
-    ('face_wash', 'chart_js', 36),
-    ('makeup_remover', 'chart_js', 36),
-    ('exfoliators', 'chart_js', 36),
-    ('toners', 'chart_js', 36),
-    ('moisturizers', 'chart_js', 36),
-    ('serums', 'chart_js', 36),
-    ('eye_care', 'chart_js', 36),
-    ('sunscreen', 'chart_js', 36),
-    ('face_masks', 'chart_js', 36),
+	('Cleansers', 'chart_js', (select id from tblCategory where name = "Skincare")),
+    ('Face_wash', 'chart_js', (select id from tblCategory where name = "Skincare")),
+    ('Makeup_remover', 'chart_js', (select id from tblCategory where name = "Skincare")),
+    ('Exfoliators', 'chart_js', (select id from tblCategory where name = "Skincare")),
 
 	-- makeup 
-    ('foundation', 'chart_js', 37),
-    ('concealer', 'chart_js', 37),
-    ('powder', 'chart_js', 37),
-    ('blush', 'chart_js', 37),
-    ('contour', 'chart_js', 37),
-    ('highlighter', 'chart_js', 37),
-    ('lipstick', 'chart_js', 37),
-    ('lip gloss', 'chart_js', 37),
-    ('lip liner', 'chart_js', 37),
-    ('eyeshadow', 'chart_js', 37),
-    ('eyeliner', 'chart_js', 37),
+    ('Foundation', 'chart_js', (select id from tblCategory where name = "Makeup")),
+    ('Concealer', 'chart_js', (select id from tblCategory where name = "Makeup")),
+    ('Powder', 'chart_js', (select id from tblCategory where name = "Makeup")),
+    ('Blush', 'chart_js', (select id from tblCategory where name = "Makeup")),
 
 	-- Haircare 
-    ('shampoo', 'chart_js', 38),
-    ('conditioner', 'chart_js', 38),
-    ('dry_shampoo', 'chart_js', 38),
-    ('hair oil', 'chart_js', 38),
-    ('hair mask', 'chart_js', 38),
-    ('hair treatment', 'chart_js', 38),
-    ('heat protectant', 'chart_js', 38),
-    ('hair spray', 'chart_js', 38),
+    ('Shampoo', 'chart_js', (select id from tblCategory where name = "Haircare")),
+    ('Conditioner', 'chart_js', (select id from tblCategory where name = "Haircare")),
+    ('Dry_shampoo', 'chart_js', (select id from tblCategory where name = "Haircare")),
+    ('Hair oil', 'chart_js', (select id from tblCategory where name = "Haircare")),
 
 	-- Bodycare 
-    ('body wash', 'chart_js', 39),
-    ('body scrub', 'chart_js', 39),
-    ('body lotion', 'chart_js', 39),
-    ('body butter', 'chart_js', 39),
-    ('hand cream', 'chart_js', 39),
-    ('foot cream', 'chart_js', 39),
+    ('Body wash', 'chart_js', (select id from tblCategory where name = "Bodycare")),
+    ('Body scrub', 'chart_js', (select id from tblCategory where name = "Bodycare")),
+    ('Body lotion', 'chart_js', (select id from tblCategory where name = "Bodycare")),
+    ('Body butter', 'chart_js', (select id from tblCategory where name = "Bodycare")),
 
 	-- Fragrance 
-    ('perfume', 'chart_js', 40),
-    ('eau de toilette', 'chart_js', 40),
-    ('body mist', 'chart_js', 40),
-    ('essential oil', 'chart_js', 40);
+    ('Perfume', 'chart_js', (select id from tblCategory where name = "Fragrance")),
+    ('Eau de toilette', 'chart_js', (select id from tblCategory where name = "Fragrance")),
+    ('Body mist', 'chart_js', (select id from tblCategory where name = "Fragrance")),
+    ('Essential oil', 'chart_js', (select id from tblCategory where name = "Fragrance"));
 
+	--book
 	INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
 VALUES
-    ('fiction', 'chart_js', 13),
-    ('non_fiction', 'chart_js', 13),
-    ('children', 'chart_js', 13),
-    ('comics_manga', 'chart_js', 13),
-    ('education', 'chart_js', 13),
+    ('Fiction', 'chart_js', 5),
+    ('Non_fiction', 'chart_js', 5),
+    ('Children', 'chart_js', 5),
+    ('Comics_manga', 'chart_js', 5),
 
     -- Fiction subcategories
-    ('fantasy', 'chart_js', 94),
-    ('mystery', 'chart_js', 94),
-    ('romance', 'chart_js', 94),
-    ('thriller', 'chart_js', 94),
-    ('historical_fiction', 'chart_js', 94),
-    ('science_fiction', 'chart_js', 94),
-    ('horror', 'chart_js', 94),
+    ('Fantasy', 'chart_js', (select id from tblCategory where name = "Fiction")),
+    ('Mystery', 'chart_js', (select id from tblCategory where name = "Fiction")),
+    ('Romance', 'chart_js', (select id from tblCategory where name = "Fiction")),
+    ('Thriller', 'chart_js', (select id from tblCategory where name = "Fiction")),
 
     -- Non-Fiction subcategories
-    ('biography', 'chart_js', 21),
-    ('memoir', 'chart_js', 21),
-    ('history', 'chart_js', 21),
-    ('philosophy', 'chart_js', 21),
-    ('politics', 'chart_js', 21),
+    ('Biography', 'chart_js', (select id from tblCategory where name = "Non_fiction")),
+    ('Memoir', 'chart_js', (select id from tblCategory where name = "Non_fiction")),
+    ('History', 'chart_js', (select id from tblCategory where name = "Non_fiction")),
+    ('Philosophy', 'chart_js', (select id from tblCategory where name = "Non_fiction")),
 
     -- Children subcategories
-    ('picture_books', 'chart_js', 96),
-    ('early readers', 'chart_js', 96),
-    ('middle grade', 'chart_js', 96),
-    ('young adult', 'chart_js', 96),
+    ('Picture_books', 'chart_js', (select id from tblCategory where name = "Children")),
+    ('Early readers', 'chart_js', (select id from tblCategory where name = "Children")),
+    ('Middle grade', 'chart_js', (select id from tblCategory where name = "Children")),
+    ('Young adult', 'chart_js', (select id from tblCategory where name = "Children")),
 
     -- Comics & Manga subcategories
-    ('graphic novels', 'chart_js', 23),
-    ('manga', 'chart_js', 23),
-    ('superhero comics', 'chart_js', 23),
-
-    -- Education subcategories
-    ('textbooks', 'chart_js', 98),
-    ('reference books', 'chart_js', 98),
-    ('language learning', 'chart_js', 98);
-	*/
+    ('Graphic novels', 'chart_js', (select id from tblCategory where name = "Comics_manga")),
+    ('Manga', 'chart_js', (select id from tblCategory where name = "Comics_manga")),
+    ('Superhero comics', 'chart_js', (select id from tblCategory where name = "Comics_manga"));
 
 	--furniture
-	INSERT INTO tblCategory(name, imageStringResourceId, parent_id)
+	insert INTO tblCategory (name, imageStringResourceId, parent_id)
 VALUES
-<<<<<<< HEAD
     ('Seating', 'chart_js', 3),
     ('Sleeping', 'chart_js', 3),
     ('Storage', 'chart_js', 3),
@@ -671,60 +559,27 @@ VALUES
     ('Office', 'chart_js', 3),
 
     -- seating subcategories
-    ('Chairs', 'chart_js', 20),
-    ('Sofas and Couches', 'chart_js', 20),
-    ('Ottomans and Footstools:', 'chart_js', 20),
+    ('Chairs', 'chart_js', (select id from tblCategory where name = "Seating")),
+    ('Sofas and Couches', 'chart_js', (select id from tblCategory where name = "Seating")),
+    ('Ottomans and Footstools:', 'chart_js', (select id from tblCategory where name = "Seating")),
 
     -- sleeping subcategories
-    ('Beds', 'chart_js', 21),
-    ('Mattresses', 'chart_js', 21),
-    ('Pillows', 'chart_js', 21),
+    ('Beds', 'chart_js', (select id from tblCategory where name = "Sleeping")),
+    ('Mattresses', 'chart_js', (select id from tblCategory where name = "Sleeping")),
+    ('Pillows', 'chart_js', (select id from tblCategory where name = "Sleeping")),
 
     -- storage subcategories
-    ('Cabinets', 'chart_js', 22),
-    ('Chests', 'chart_js', 22),
-    ('Trunks', 'chart_js', 22),
-=======
-(1, 3, 'Samsung Galaxy S22', 'Flagship Samsung smartphone', 1, 'test_js', 1),
-(1, 4, 'MacBook Pro 14', 'Apple high-end laptop', 2, 'test_js', 1),
-(2, 5, 'Nike Air Max', 'Stylish and comfortable sneakers', 3, 'admin_css', 1),
-(2, 6, 'Leather Handbag', 'Elegant leather handbag', NULL, 'admin_css', 1),
-(3, 7, 'Air Fryer', 'Healthy cooking appliance', NULL, 'admin_js', 1),
-(3, 7, 'Vacuum Cleaner', 'Powerful home cleaning device', NULL, 'admin_js', 1),
-(4, 8, 'PlayStation 5', 'Next-gen gaming console', 4, 'test_js', 1),
-(4, 8, 'Xbox Series X', 'Powerful Microsoft gaming console', 4, 'test_js', 1),
-(5, 9, 'Modern Sofa', 'Comfortable and stylish', 5, 'admin_js', 1),
-(5, 9, 'Wooden Dining Table', 'Elegant and durable', 5, 'admin_js', 1),
-(1, 3, 'iPhone 14 Pro', 'Latest Apple smartphone', 1, 'test_js', 1),
-(1, 5, 'Adidas Ultraboost', 'High-performance running shoes', 3, 'admin_css', 1),
-(3, 7, 'Microwave Oven', 'Efficient and modern', NULL, 'admin_js', 1),
-(4, 8, 'Nintendo Switch', 'Portable gaming console', 4, 'test_js', 1),
-(5, 9, 'Queen Size Bed', 'Luxurious and comfortable', 5, 'admin_js', 1),
-(1, 3, 'Google Pixel 7', 'Latest Google smartphone', 1, 'test_js', 1),
-(2, 5, 'Puma Running Shoes', 'Lightweight and stylish', 3, 'admin_css', 1),
-(3, 7, 'Blender', 'Powerful kitchen appliance', NULL, 'admin_js', 1),
-(4, 8, 'Gaming Laptop', 'High-end gaming performance', 4, 'test_js', 1),
-(5, 9, 'Office Chair', 'Ergonomic and comfortable', 5, 'admin_js', 1),
-(4, 3, 'OnePlus 11', 'Flagship OnePlus smartphone', 1, 'test_js', 1),
-(2, 5, 'Reebok Sneakers', 'Durable and comfortable', 3, 'admin_css', 1),
-(3, 7, 'Dishwasher', 'Efficient and modern', NULL, 'admin_js', 1),
-(4, 8, 'Smart TV', '4K Ultra HD', 4, 'test_js', 1),
-(5, 9, 'Bookshelf', 'Modern wooden bookshelf', 5, 'admin_js', 1),
-(5, 9, 'FlagShip Phone', 'A phone that is flagship, also, gaming', 5, 'admin_js', 1),
-(5, 9, 'FlagShip Tablet', 'Cool tablet', 5, 'admin_js', 1);
->>>>>>> 367fd4206f2a387a28f8d499b628f9e9d062e152
+    ('Cabinets', 'chart_js', (select id from tblCategory where name = "Storage")),
+    ('Chests', 'chart_js', (select id from tblCategory where name = "Storage")),
+    ('Trunks', 'chart_js', (select id from tblCategory where name = "Storage")),
 
 
     -- dining subcategories
-    ('Benches', 'chart_js', 23),
-    ('Dining Tables', 'chart_js', 23),
-    ('Dining Chairs', 'chart_js', 23),
+    ('Benches', 'chart_js', (select id from tblCategory where name = "Dining")),
+    ('Dining Tables', 'chart_js', (select id from tblCategory where name = "Dining")),
+    ('Dining Chairs', 'chart_js', (select id from tblCategory where name = "Dining")),
 
-<<<<<<< HEAD
     -- Office  subcategories
-    ('Desks', 'chart_js', 24),
-    ('Conference Tables', 'chart_js', 24),
-    ('Reception Furniture', 'chart_js', 24);
-=======
-EXEC ComputeTFIdF
->>>>>>> 367fd4206f2a387a28f8d499b628f9e9d062e152
+    ('Desks', 'chart_js', (select id from tblCategory where name = "Office")),
+    ('Conference Tables', 'chart_js', (select id from tblCategory where name = "Office")),
+    ('Reception Furniture', 'chart_js', (select id from tblCategory where name = "Office"));
