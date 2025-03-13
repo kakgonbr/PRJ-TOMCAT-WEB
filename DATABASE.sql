@@ -527,6 +527,7 @@ VALUES
 	('Short','chart_js',6),
 	('Trouser','chart_js',6);
 
+
 INSERT INTO tblVariation (categoryId,name,datatype,unit)
 VALUES 
 	(1,'color','string',NULL),
@@ -697,5 +698,18 @@ VALUES
     ('Conference Tables', 'chart_js', 24),
     ('Reception Furniture', 'chart_js', 24);
 =======
+
+--electronics
+INSERT INTO tblCategory (name, imageStringResourceId, parent_id) VALUES
+('smartphones', 'chart_js', (select id from tblCategory where name = 'Electronics')),
+('laptops', 'chart_js', (select id from tblCategory where name = 'Electronics')),
+('tablets', 'chart_js', (select id from tblCategory where name = 'Electronics')),
+('cameras', 'chart_js', (select id from tblCategory where name = 'Electronics')),
+('televisions', 'chart_js', (select id from tblCategory where name = 'Electronics')),
+('audio device', 'chart_js', (select id from tblCategory where name = 'Electronics'));
+
+
+
+
 EXEC ComputeTFIdF
 >>>>>>> 367fd4206f2a387a28f8d499b628f9e9d062e152
