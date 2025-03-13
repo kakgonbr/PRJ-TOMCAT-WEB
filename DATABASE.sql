@@ -508,7 +508,7 @@ VALUES
 ('abc3@example.com', 'user33443', '12003', 'user', NULL, NULL, NULL, 0),
 ('abc4@example.com', 'user126543', '56004', 'user', NULL, NULL, NULL, 0);
 
---cosmestics
+--cosmestics and fashion
 INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
 VALUES
 	('All', 'chart_js', NULL), -- 0
@@ -540,7 +540,6 @@ VALUES
 	('Cleansers', 'chart_js', (select id from tblCategory where name = 'Skincare')),
     ('Face_wash', 'chart_js', (select id from tblCategory where name = 'Skincare')),
     ('Makeup_remover', 'chart_js', (select id from tblCategory where name = 'Skincare')),
-    ('Exfoliators', 'chart_js', (select id from tblCategory where name = 'Skincare')),
 	-- makeup 
     ('Foundation', 'chart_js', (select id from tblCategory where name = 'Makeup')),
     ('Concealer', 'chart_js', (select id from tblCategory where name = 'Makeup')),
@@ -624,6 +623,48 @@ VALUES
     ('Desks', 'chart_js', (select id from tblCategory where name = 'Office')),
     ('Conference Tables', 'chart_js', (select id from tblCategory where name = 'Office')),
     ('Reception Furniture', 'chart_js', (select id from tblCategory where name = 'Office'));
+
+INSERT INTO tblVariation (categoryId,name,datatype,unit)
+ VALUES 
+ 	(1,'color','string',NULL),
+ 	(6,'man clothes size','string',NULL),
+ 	(8,'shoe size','string',NULL),
+ 	(7,'woman clothes size');
+ 
+ INSERT INTO tblVariationValue (variationId, value)
+ VALUES 
+ 	(1 , 'Black'),
+ 	(1 , 'White'),
+ 	(1 , 'Gray'),
+ 	(1 , 'Blue'),
+ 	(1 , 'Red'),
+ 	(1 , 'Beige'),
+ 	(1 , 'Brown'),
+ 	(1 , 'Navy'),
+ 	(1 , 'Pink'),
+ 	(1 , 'Orange'),
+ 	(1 , 'Green'),
+ 	(1 , 'Yellow'),
+ 	(2 , 'XS'),
+ 	(2 , 'S'),
+ 	(2 , 'M'),
+ 	(2 , 'L'),
+ 	(2 , 'XL'),
+ 	(2 , 'XXL'),
+ 	(3 , '35'),
+ 	(3 , '36'),
+ 	(3 , '37'),
+ 	(3 , '38'),
+ 	(3 , '39'),
+ 	(3 , '40'),
+ 	(3 , '41'),
+ 	(3 , '42'),
+ 	(3 , '43'),
+ 	(4 , 'XS'),
+ 	(4 , 'S'),
+ 	(4 , 'M'),
+ 	(4 , 'L'),
+ 	(4 , 'XL');
 
 
 INSERT INTO tblShop (ownerId, name, address, profileStringResourceId, visible)
