@@ -685,35 +685,6 @@ VALUES
     ('Chests', 'chart_js', 22),
     ('Trunks', 'chart_js', 22),
 =======
-(1, 3, 'Samsung Galaxy S22', 'Flagship Samsung smartphone', 1, 'test_js', 1),
-(1, 4, 'MacBook Pro 14', 'Apple high-end laptop', 2, 'test_js', 1),
-(2, 5, 'Nike Air Max', 'Stylish and comfortable sneakers', 3, 'admin_css', 1),
-(2, 6, 'Leather Handbag', 'Elegant leather handbag', NULL, 'admin_css', 1),
-(3, 7, 'Air Fryer', 'Healthy cooking appliance', NULL, 'admin_js', 1),
-(3, 7, 'Vacuum Cleaner', 'Powerful home cleaning device', NULL, 'admin_js', 1),
-(4, 8, 'PlayStation 5', 'Next-gen gaming console', 4, 'test_js', 1),
-(4, 8, 'Xbox Series X', 'Powerful Microsoft gaming console', 4, 'test_js', 1),
-(5, 9, 'Modern Sofa', 'Comfortable and stylish', 5, 'admin_js', 1),
-(5, 9, 'Wooden Dining Table', 'Elegant and durable', 5, 'admin_js', 1),
-(1, 3, 'iPhone 14 Pro', 'Latest Apple smartphone', 1, 'test_js', 1),
-(1, 5, 'Adidas Ultraboost', 'High-performance running shoes', 3, 'admin_css', 1),
-(3, 7, 'Microwave Oven', 'Efficient and modern', NULL, 'admin_js', 1),
-(4, 8, 'Nintendo Switch', 'Portable gaming console', 4, 'test_js', 1),
-(5, 9, 'Queen Size Bed', 'Luxurious and comfortable', 5, 'admin_js', 1),
-(1, 3, 'Google Pixel 7', 'Latest Google smartphone', 1, 'test_js', 1),
-(2, 5, 'Puma Running Shoes', 'Lightweight and stylish', 3, 'admin_css', 1),
-(3, 7, 'Blender', 'Powerful kitchen appliance', NULL, 'admin_js', 1),
-(4, 8, 'Gaming Laptop', 'High-end gaming performance', 4, 'test_js', 1),
-(5, 9, 'Office Chair', 'Ergonomic and comfortable', 5, 'admin_js', 1),
-(4, 3, 'OnePlus 11', 'Flagship OnePlus smartphone', 1, 'test_js', 1),
-(2, 5, 'Reebok Sneakers', 'Durable and comfortable', 3, 'admin_css', 1),
-(3, 7, 'Dishwasher', 'Efficient and modern', NULL, 'admin_js', 1),
-(4, 8, 'Smart TV', '4K Ultra HD', 4, 'test_js', 1),
-(5, 9, 'Bookshelf', 'Modern wooden bookshelf', 5, 'admin_js', 1),
-(5, 9, 'FlagShip Phone', 'A phone that is flagship, also, gaming', 5, 'admin_js', 1),
-(5, 9, 'FlagShip Tablet', 'Cool tablet', 5, 'admin_js', 1);
->>>>>>> 367fd4206f2a387a28f8d499b628f9e9d062e152
-
 
     -- dining subcategories
     ('Benches', 'chart_js', 23),
