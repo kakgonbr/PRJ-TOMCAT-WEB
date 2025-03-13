@@ -479,7 +479,7 @@ VALUES
 ('abc3@example.com', 'user33443', '12003', 'user', NULL, NULL, NULL, 0),
 ('abc4@example.com', 'user126543', '56004', 'user', NULL, NULL, NULL, 0);
 
---cosmestics
+--cosmestics and fashion
 INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
 VALUES
 	('Fashion','chart_js',NULL), --1
@@ -510,7 +510,6 @@ VALUES
 	('Cleansers', 'chart_js', (select id from tblCategory where name = 'Skincare')),
     ('Face_wash', 'chart_js', (select id from tblCategory where name = 'Skincare')),
     ('Makeup_remover', 'chart_js', (select id from tblCategory where name = 'Skincare')),
-    ('Exfoliators', 'chart_js', (select id from tblCategory where name = 'Skincare')),
 	-- makeup 
     ('Foundation', 'chart_js', (select id from tblCategory where name = 'Makeup')),
     ('Concealer', 'chart_js', (select id from tblCategory where name = 'Makeup')),
@@ -564,12 +563,11 @@ VALUES
 	--furniture
 	INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
 	VALUES
-
     ('Seating', 'chart_js', 3),
     ('Sleeping', 'chart_js', 3),
     ('Storage', 'chart_js', 3),
     ('Dining', 'chart_js', 3),
-    ('Office', 'chart_js', 3); 
+    ('Office', 'chart_js', 3), 
 
     -- seating subcategories
     ('Chairs', 'chart_js', (select id from tblCategory where name = 'Seating')),
