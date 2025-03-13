@@ -13,6 +13,7 @@ public class ProductLoader extends HttpServlet {
         HttpSession session = request.getSession();
         model.User user = (model.User) session.getAttribute("user");
         String recommendations = (String) request.getParameter("query");
+        String category = (String) request.getParameter("category");
 
         if (recommendations == null || recommendations.isBlank()) {
             recommendations = "";
@@ -22,10 +23,14 @@ public class ProductLoader extends HttpServlet {
             }
         }
 
+        if (category == null) {
+            category = "";
+        }
+
         service.Logging.logger.info("Getting recommendations for query '{}'", recommendations);
 
         try {
-            java.util.List<model.ProductWrapper> products = dao.ProductDAO.ProductFetcher.getRecommendation(recommendations, 0).stream().map(model.ProductWrapper::new).collect(Collectors.toList()); // let page be 0 for now
+            java.util.List<model.ProductWrapper> products = dao.ProductDAO.ProductFetcher.getRecommendation(recommendations, 0, category).stream().map(model.ProductWrapper::new).collect(Collectors.toList()); // let page be 0 for now
 
             response.setContentType("application/json");
 

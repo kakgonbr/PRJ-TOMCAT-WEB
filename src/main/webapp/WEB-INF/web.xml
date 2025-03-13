@@ -104,6 +104,10 @@
         <servlet-name>UserRegistrationServlet</servlet-name>
         <servlet-class>controller.UserRegistrationServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>n_CategoryLoader</servlet-name>
+        <servlet-class>controller.ajax.n_CategoryLoader</servlet-class>
+    </servlet>
     <!-- SERVLET MAPPINGS -->
     <!-- TEMPLATE:
     <servlet-mapping>
@@ -186,6 +190,10 @@
     <servlet-mapping>
         <servlet-name>UserRegistrationServlet</servlet-name>
         <url-pattern>/signup</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>n_CategoryLoader</servlet-name>
+        <url-pattern>/ajax/category</url-pattern>
     </servlet-mapping>
 
     <!-- FILTER DECLARATIONS -->
