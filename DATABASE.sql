@@ -487,38 +487,50 @@ VALUES
 --cosmestics
 INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
 VALUES
-	('Skincare','chart_js',NULL),
-	('Makeup','chart_js',NULL),
-	('Haircare','chart_js',NULL),
-	('Bodycare','chart_js',NULL),
-	('Fragrance','chart_js',NULL),
-	('Book','chart_js',NULL),
-	('Furniture','chart_js',NULL),
-
+	('Fashion','chart_js',NULL), --1
+	('Electronics','chart_js',NULL), --2
+	('Furniture','chart_js',NULL), --3
+	('Cosmestic','chart_js',NULL), --4
+	('Book','chart_js',NULL), --5
+	('Man Fashion','chart_js',1), --6
+	('Woman Fashion','chart_js',1), --7
+	('Shoes','chart_js',1), --8
+	('Accessory','chart_js',1), --9
+	('T-Shirt','chart_js',6),
+	('Blazer','chart_js',6),
+	('Hoodie','chart_js',6),
+	('Shirt','chart_js',6),
+	('Jacket','chart_js',6),
+	('Coat','chart_js',6),
+	('Polo Shirt','chart_js',6),
+	('Man Jean','chart_js',6),
+	('Short','chart_js',6),
+	('Trouser','chart_js',6),
+	('Skincare','chart_js',4),
+	('Makeup','chart_js',4),
+	('Haircare','chart_js',4),
+	('Bodycare','chart_js',4),
+	('Fragrance','chart_js',4),
 	-- skincare
 	('Cleansers', 'chart_js', (select id from tblCategory where name = 'Skincare')),
     ('Face_wash', 'chart_js', (select id from tblCategory where name = 'Skincare')),
     ('Makeup_remover', 'chart_js', (select id from tblCategory where name = 'Skincare')),
     ('Exfoliators', 'chart_js', (select id from tblCategory where name = 'Skincare')),
-
 	-- makeup 
     ('Foundation', 'chart_js', (select id from tblCategory where name = 'Makeup')),
     ('Concealer', 'chart_js', (select id from tblCategory where name = 'Makeup')),
     ('Powder', 'chart_js', (select id from tblCategory where name = 'Makeup')),
     ('Blush', 'chart_js', (select id from tblCategory where name = 'Makeup')),
-
 	-- Haircare 
     ('Shampoo', 'chart_js', (select id from tblCategory where name = 'Haircare')),
     ('Conditioner', 'chart_js', (select id from tblCategory where name = 'Haircare')),
     ('Dry_shampoo', 'chart_js', (select id from tblCategory where name = 'Haircare')),
     ('Hair oil', 'chart_js', (select id from tblCategory where name = 'Haircare')),
-
 	-- Bodycare 
     ('Body wash', 'chart_js', (select id from tblCategory where name = 'Bodycare')),
     ('Body scrub', 'chart_js', (select id from tblCategory where name = 'Bodycare')),
     ('Body lotion', 'chart_js', (select id from tblCategory where name = 'Bodycare')),
     ('Body butter', 'chart_js', (select id from tblCategory where name = 'Bodycare')),
-
 	-- Fragrance 
     ('Perfume', 'chart_js', (select id from tblCategory where name = 'Fragrance')),
     ('Eau de toilette', 'chart_js', (select id from tblCategory where name = 'Fragrance')),
