@@ -34,27 +34,25 @@
             <th>Path</th>
         </tr>
         <c:forEach var="resource" items="${resources}" varStatus="status">
-            <c:if test="${status.index >= start && status.index < end}">
-                <tr>
-                    <td>${resource.id}</td>
-                    <td>${resource.systemPath}</td>
-                    <td>
-                        <form action="${pageContext.request.contextPath}/admin/cp" method="get">
-                            <input type="hidden" name="systemPath" value="${resource.systemPath}">
-                            <input type="hidden" name="table" value="resources">
-                            <input type="hidden" name="action" value="edit">
-                            <input type="hidden" name="id" value="${resource.id}">
-                            <button type="submit">Edit</button>
-                        </form>
-                        <form action="${pageContext.request.contextPath}/admin/cp" method="get">
-                            <input type="hidden" name="table" value="resources">
-                            <input type="hidden" name="action" value="delete">
-                            <input type="hidden" name="id" value="${resource.id}">
-                            <button type="submit">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-            </c:if>
+            <tr>
+                <td>${resource.id}</td>
+                <td>${resource.systemPath}</td>
+                <td>
+                    <form action="${pageContext.request.contextPath}/admin/cp" method="get">
+                        <input type="hidden" name="systemPath" value="${resource.systemPath}">
+                        <input type="hidden" name="table" value="resources">
+                        <input type="hidden" name="action" value="edit">
+                        <input type="hidden" name="id" value="${resource.id}">
+                        <button type="submit">Edit</button>
+                    </form>
+                    <form action="${pageContext.request.contextPath}/admin/cp" method="get">
+                        <input type="hidden" name="table" value="resources">
+                        <input type="hidden" name="action" value="delete">
+                        <input type="hidden" name="id" value="${resource.id}">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
         </c:forEach>
     </table>
         
