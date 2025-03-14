@@ -35,7 +35,7 @@
             <table border="1" cellpadding="5">
                 <caption>
                     <h2>
-                        Editing Resource ID ${product.id}
+                        Editing Resource ID ${resource.id}
                     </h2>
                 </caption>
                 <c:if test="${resource != null}">
@@ -44,7 +44,7 @@
                 <tr>
                     <th>System Path:</th>
                     <td>
-                        <input type="text" name="price" size="45" value="<c:out value='${resource.systemPath}' />" />
+                        <input type="text" name="systemPath" size="45" value="<c:out value='${resource.systemPath}' />" />
                     </td>
                 </tr>
                 <tr>

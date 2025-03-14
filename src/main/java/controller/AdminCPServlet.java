@@ -48,6 +48,9 @@ public class AdminCPServlet extends HttpServlet {
         try {
             model.dto.ResourceDTO resourceDTO = new model.dto.ResourceDTO();
             BeanUtils.populate(resourceDTO, request.getParameterMap());
+
+            service.Logging.logger.info("Persisting resource {}, {}", resourceDTO.getId(), resourceDTO.getSystemPath());
+
             service.AdminService.DatabaseEditService.persistResourceDTO(resourceDTO);
         } catch (java.sql.SQLException | IllegalAccessException | InvocationTargetException e) {
             service.Logging.logger.error("PERSISTING FAILED, REASON: {}", e.getMessage());
