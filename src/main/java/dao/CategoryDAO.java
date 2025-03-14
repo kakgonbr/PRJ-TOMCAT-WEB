@@ -45,7 +45,7 @@ public class CategoryDAO {
 
         public static synchronized Category getTopCategory() throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                Category category = em.createNamedQuery("Category.findById", Category.class).getSingleResult();
+                Category category = em.createNamedQuery("Category.findById", Category.class).setParameter("id", 0).getSingleResult();
 
                 initCategory(category);
                 
