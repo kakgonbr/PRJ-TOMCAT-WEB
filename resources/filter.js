@@ -11,7 +11,15 @@ function fetchCategory() {
 
 function createCategoryElement(category) {
     let li = document.createElement("li");
-    li.textContent = category.name;
+    let label = document.createElement("label");
+    let radio = document.createElement("input");
+    radio.type = "radio";
+    radio.name = "filter";
+    radio.value = category.name;
+
+    label.appendChild(radio);
+    label.appendChild(document.createTextNode(" " + category.name));
+    li.textContent = label;
 
     if (category.children && category.children.length > 0) {
         let ul = document.createElement("ul");
