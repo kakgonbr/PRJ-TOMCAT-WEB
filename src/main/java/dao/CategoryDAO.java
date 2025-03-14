@@ -24,11 +24,11 @@ public class CategoryDAO {
 
         public static synchronized List<Category> getAllCategories() throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                java.util.stream.Stream<Category> stream = em.createNamedQuery("Category.findAll").getResultStream();
+                java.util.List<Category> categories = em.createNamedQuery("Category.findAll").getResultList();
 
-                stream.forEach(Category::getCategoryList);
+                categories.forEach(Category::getCategoryList);
 
-                return stream.toList();
+                return categories;
             } catch (Exception e) {
                 throw new java.sql.SQLException(e);
             }
