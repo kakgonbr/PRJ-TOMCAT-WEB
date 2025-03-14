@@ -3,6 +3,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <t:genericpage title="Admin Control Panel">
     <jsp:attribute name="head">
@@ -26,7 +27,7 @@
     </jsp:attribute>
 
     <jsp:attribute name="body">
-        <h2>Product List</h2>
+        <h2>Resource List</h2>
         <table border="1">
 
         <tr>
