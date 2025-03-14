@@ -539,97 +539,6 @@ VALUES
 	('Fragrance','chart_js',4); -- 24
 INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
 VALUES
-<<<<<<< HEAD
-/*	('Skincare','chart_js',4),
-	('Makeup','chart_js',4),
-	('Haircare','chart_js',4),
-	('Bodycare','chart_js',4),
-	('Fragrance','chart_js',4);*/
-	('skincare','chart_js',13),
-	('makeup','chart_js',13),
-	('haircare','chart_js',13),
-	('bodycare','chart_js',13),
-	('fragrance','chart_js',13), 
-=======
-
-INSERT INTO tblShop (ownerId, name, address, profileStringResourceId, visible)
-VALUES
-(1, 'Gadget World', '789 Tech Road', 'chart_js', 1),
-(2, 'Sneaker Haven', '321 Fashion Blvd', 'admin_css', 1),
-(3, 'Home Essentials', '567 Home Lane', 'admin_js', 1),
-(4, 'Tech Universe', '123 Innovation St', 'test_js', 1),
-(5, 'Fashion Hub', '456 Style Ave', 'admin_css', 1);
-select * from tblShop
-
-/*parent id is for testing -> change when real*/
-INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
-VALUES
-	('Fashion','chart_js',NULL),
-	('Electronics','chart_js',NULL),
-	('Furniture','chart_js',NULL),
-	('Cosmestic','chart_js',NULL),
-	('Book','chart_js',NULL),
-	('Man Fashion','chart_js',1), --6
-	('Woman Fashion','chart_js',1), --7
-	('Shoes','chart_js',1), --8
-	('Accessory','chart_js',1), --9
-	('T-Shirt','chart_js',6),
-	('Blazer','chart_js',6),
-	('Hoodie','chart_js',6),
-	('Shirt','chart_js',6),
-	('Jacket','chart_js',6),
-	('Coat','chart_js',6),
-	('Polo Shirt','chart_js',6),
-	('Man Jean','chart_js',6),
-	('Short','chart_js',6),
-	('Trouser','chart_js',6);
-
-
-INSERT INTO tblVariation (categoryId,name,datatype,unit)
-VALUES 
-	(1,'color','string',NULL),
-	(6,'man clothes size','string',NULL),
-	(8,'shoe size','string',NULL),
-	(7,'woman clothes size');
-
-INSERT INTO tblVariationValue (variationId, value)
-VALUES 
-	(1 , 'Black'),
-	(1 , 'White'),
-	(1 , 'Gray'),
-	(1 , 'Blue'),
-	(1 , 'Red'),
-	(1 , 'Beige'),
-	(1 , 'Brown'),
-	(1 , 'Navy'),
-	(1 , 'Pink'),
-	(1 , 'Orange'),
-	(1 , 'Green'),
-	(1 , 'Yellow'),
-	(2 , 'XS'),
-	(2 , 'S'),
-	(2 , 'M'),
-	(2 , 'L'),
-	(2 , 'XL'),
-	(2 , 'XXL'),
-	(3 , '35'),
-	(3 , '36'),
-	(3 , '37'),
-	(3 , '38'),
-	(3 , '39'),
-	(3 , '40'),
-	(3 , '41'),
-	(3 , '42'),
-	(3 , '43'),
-	(4 , 'XS'),
-	(4 , 'S'),
-	(4 , 'M'),
-	(4 , 'L'),
-	(4 , 'XL');
->>>>>>> 367fd4206f2a387a28f8d499b628f9e9d062e152
-
-=======
->>>>>>> 7de2fe7de5f57b2b7e3f9b509e823a88a42a6335
 	-- skincare
 	('Cleansers', 'chart_js', (select id from tblCategory where name = 'Skincare')),
     ('Face_wash', 'chart_js', (select id from tblCategory where name = 'Skincare')),
@@ -654,7 +563,6 @@ VALUES
     ('Eau de toilette', 'chart_js', (select id from tblCategory where name = 'Fragrance')),
     ('Body mist', 'chart_js', (select id from tblCategory where name = 'Fragrance')),
     ('Essential oil', 'chart_js', (select id from tblCategory where name = 'Fragrance')),
-
 	--book
     ('Fiction', 'chart_js', (select id from tblCategory where name = 'Book')),
     ('Non_fiction', 'chart_js', (select id from tblCategory where name = 'Book')),
@@ -686,7 +594,6 @@ VALUES
     ('Superhero comics', 'chart_js', (select id from tblCategory where name = 'Comics_manga')),
 
 	--furniture
-
     ('Seating', 'chart_js', (select id from tblCategory where name = 'Furniture')),
     ('Sleeping', 'chart_js', (select id from tblCategory where name = 'Furniture')),
     ('Storage', 'chart_js', (select id from tblCategory where name = 'Furniture')),
@@ -720,12 +627,6 @@ VALUES
     ('Conference Tables', 'chart_js', (select id from tblCategory where name = 'Office')),
     ('Reception Furniture', 'chart_js', (select id from tblCategory where name = 'Office'));
 
-<<<<<<< HEAD
-	delete from tblCategory where id in(84,85,86,87,88,89,90,91,92,93,94,95,96,97,98);
-    ('Desks', 'chart_js', 24),
-    ('Conference Tables', 'chart_js', 24),
-    ('Reception Furniture', 'chart_js', 24);
-=======
 
 --electronics
 INSERT INTO tblCategory (name, imageStringResourceId, parent_id) VALUES
@@ -741,7 +642,7 @@ INSERT INTO tblCategory (name, imageStringResourceId, parent_id) VALUES
 
 EXEC ComputeTFIdF
 
-=======
+
 INSERT INTO tblVariation (categoryId,name,datatype,unit)
  VALUES 
  	(1,'color','string',NULL),
@@ -876,4 +777,3 @@ VALUES
 ('2025-03-10', 9800, 300,  160,  36, 26,  35,  200, 110,  80,  400),
 ('2025-03-11', 3400, 310,  200,  38, 28,  60,  50, 180,  55,  800),
 ('2025-03-12', 6000, 350, 210,  39, 28,  55,  170, 130,  70,  380);
->>>>>>> 7de2fe7de5f57b2b7e3f9b509e823a88a42a6335
