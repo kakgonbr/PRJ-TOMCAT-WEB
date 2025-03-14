@@ -50,7 +50,6 @@ public class ResourceDAO {
         }
     }
 
-    @Transactional
     public static synchronized void editMapping(model.ResourceMap map) throws java.sql.SQLException {
         try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
             EntityTransaction et = em.getTransaction();
@@ -61,8 +60,6 @@ public class ResourceDAO {
                 model.ResourceMap dbMap = em.find(model.ResourceMap.class, map.getId());
 
                 dbMap.setSystemPath(map.getSystemPath());
-
-                em.merge(map);
 
                 et.commit();
             } catch (Exception e) {
