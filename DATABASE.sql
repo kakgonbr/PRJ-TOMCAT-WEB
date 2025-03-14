@@ -627,7 +627,6 @@ VALUES
     ('Conference Tables', 'chart_js', (select id from tblCategory where name = 'Office')),
     ('Reception Furniture', 'chart_js', (select id from tblCategory where name = 'Office'));
 
-
 --electronics
 INSERT INTO tblCategory (name, imageStringResourceId, parent_id) VALUES
 ('smartphones', 'chart_js', (select id from tblCategory where name = 'Electronics')),
@@ -636,11 +635,6 @@ INSERT INTO tblCategory (name, imageStringResourceId, parent_id) VALUES
 ('cameras', 'chart_js', (select id from tblCategory where name = 'Electronics')),
 ('televisions', 'chart_js', (select id from tblCategory where name = 'Electronics')),
 ('audio device', 'chart_js', (select id from tblCategory where name = 'Electronics'));
-
-
-
-
-EXEC ComputeTFIdF
 
 
 INSERT INTO tblVariation (categoryId,name,datatype,unit)
@@ -777,3 +771,7 @@ VALUES
 ('2025-03-10', 9800, 300,  160,  36, 26,  35,  200, 110,  80,  400),
 ('2025-03-11', 3400, 310,  200,  38, 28,  60,  50, 180,  55,  800),
 ('2025-03-12', 6000, 350, 210,  39, 28,  55,  170, 130,  70,  380);
+
+SELECT * FROM tblProduct
+
+SELECT * FROM tblVector
