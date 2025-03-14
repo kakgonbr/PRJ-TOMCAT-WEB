@@ -19,19 +19,19 @@ public final class Config {
     }
 
     public static final class JSPMapper {
-        public static final String LOGIN_JSP = "WEB-INF/jsp/login.jsp";
-        public static final String HOME_JSP = "WEB-INF/jsp/home.jsp";
-        public static final String MAINTENANCE_JSP = "WEB-INF/jsp/maintenance.jsp";
-        public static final String ERROR_JSP = "WEB-INF/jsp/error.jsp";
-        public static final String CHAT_JSP = "WEB-INF/jsp/chat.jsp";
-        public static final String PAYMENT_RETURN_JSP = "WEB-INF/jsp/return.jsp";
-        public static final String PAYMENT_PAY_JSP = "WEB-INF/jsp/pay.jsp";
-        public static final String LOG_JSP = "WEB-INF/jsp/log.jsp";
-        public static final String SIGNUP_JSP = "WEB-INF/jsp/signup.jsp";
-        public static final String ADMIN_CONTROL_PANEL = "WEB-INF/jsp/adminControlPanel.jsp";
-        public static final String ADMIN_EDIT = "WEB-INF/jsp/resourceEdit.jsp";
+        public static final String LOGIN_JSP = "/WEB-INF/jsp/login.jsp";
+        public static final String HOME_JSP = "/WEB-INF/jsp/home.jsp";
+        public static final String MAINTENANCE_JSP = "/WEB-INF/jsp/maintenance.jsp";
+        public static final String ERROR_JSP = "/WEB-INF/jsp/error.jsp";
+        public static final String CHAT_JSP = "/WEB-INF/jsp/chat.jsp";
+        public static final String PAYMENT_RETURN_JSP = "/WEB-INF/jsp/return.jsp";
+        public static final String PAYMENT_PAY_JSP = "/WEB-INF/jsp/pay.jsp";
+        public static final String LOG_JSP = "/WEB-INF/jsp/log.jsp";
+        public static final String SIGNUP_JSP = "/WEB-INF/jsp/signup.jsp";
+        public static final String ADMIN_CONTROL_PANEL = "/WEB-INF/jsp/adminControlPanel.jsp";
+        public static final String ADMIN_EDIT = "/WEB-INF/jsp/resourceEdit.jsp";
 
-        public static final String PRIVILEGED_ADMIN_JSP = "WEB-INF/jsp/admin/adminStats.jsp";
+        public static final String PRIVILEGED_ADMIN_JSP = "/WEB-INF/jsp/admin/adminStats.jsp";
     }
 
     public static final class CookieMapper {

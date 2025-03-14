@@ -17,14 +17,6 @@ public class AdminCPServlet extends HttpServlet {
         String action = request.getParameter("action");
         int id;
 
-        try {
-            id = Integer.parseInt(request.getParameter("id"));
-        } catch (NumberFormatException | NullPointerException e){
-            service.Logging.logger.warn("ID PARAMETER IS MALFORMED OR IS MISSING");
-
-            return;
-        }
-
         if (table == null || table.isEmpty()) {
 
             try {
@@ -37,6 +29,15 @@ public class AdminCPServlet extends HttpServlet {
 
             return;
         }
+
+        try {
+            id = Integer.parseInt(request.getParameter("id"));
+        } catch (NumberFormatException | NullPointerException e){
+            service.Logging.logger.warn("ID PARAMETER IS MALFORMED OR IS MISSING");
+
+            return;
+        }
+
 
         if (action == null || action.isEmpty()) {
             service.Logging.logger.warn("ACTION PARAMETER IS MALFORMED OR IS MISSING");
