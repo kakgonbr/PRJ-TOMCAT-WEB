@@ -24,7 +24,7 @@ public class CategoryDAO {
 
         public static synchronized List<Category> getAllCategories() throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                java.util.List<Category> categories = em.createNamedQuery("Category.findAll").getResultList();
+                java.util.List<Category> categories = em.createNamedQuery("Category.findAll", Category.class).getResultList();
 
                 categories.forEach(Category::getCategoryList);
 
@@ -33,6 +33,27 @@ public class CategoryDAO {
                 throw new java.sql.SQLException(e);
             }
         } // public static synchronized List<Category> getAllCategories
+
+        // recursive!!!
+        private static synchronized void initCategory(Category category) {
+            if (category == null) return;
+
+            for (Category subCategory : category.getCategoryList()) {
+                initCategory(subCategory);
+            }
+        }
+
+        public static synchronized Category getTopCategory() throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                Category category = em.createNamedQuery("Category.findById", Category.class).getSingleResult();
+
+                initCategory(category);
+                
+                return category;
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
+            }
+        } // public static synchronized Category getTopCategory
         
         public static synchronized Category getCategoryDetails(int id) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {

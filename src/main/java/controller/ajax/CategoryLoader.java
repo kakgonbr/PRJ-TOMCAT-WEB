@@ -16,12 +16,14 @@ public class CategoryLoader extends HttpServlet {
         try {
             // TODO, SEND BACK A HIEARCHY OF CATEGORY INSTEAD
             // Really inefficient
-            java.util.List<model.CategoryWrapper> categories = dao.CategoryDAO.CategoryFetcher.getAllCategories().stream().map(model.CategoryWrapper::new).collect(Collectors.toList()); 
+            // java.util.List<model.CategoryWrapper> categories = dao.CategoryDAO.CategoryFetcher.getAllCategories().stream().map(model.CategoryWrapper::new).collect(Collectors.toList()); 
+
+            model.CategoryWrapper wrapper = new model.CategoryWrapper(dao.CategoryDAO.CategoryFetcher.getTopCategory());
 
 
             response.setContentType("application/json");
 
-            String json = new com.google.gson.Gson().toJson(categories);
+            String json = new com.google.gson.Gson().toJson(wrapper);
 
             response.getWriter().write(json);
         } catch (java.sql.SQLException e) {
