@@ -14,7 +14,6 @@ public class CategoryLoader extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            // TODO, SEND BACK A HIEARCHY OF CATEGORY INSTEAD
             // Really inefficient
             // java.util.List<model.CategoryWrapper> categories = dao.CategoryDAO.CategoryFetcher.getAllCategories().stream().map(model.CategoryWrapper::new).collect(Collectors.toList()); 
 

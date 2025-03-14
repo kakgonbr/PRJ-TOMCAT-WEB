@@ -108,6 +108,12 @@
         <servlet-name>n_CategoryLoader</servlet-name>
         <servlet-class>controller.ajax.CategoryLoader</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>n_AdminCPServlet</servlet-name>
+        <servlet-class>controller.AdminCPServlet</servlet-class>
+    </servlet>
+
+
     <!-- SERVLET MAPPINGS -->
     <!-- TEMPLATE:
     <servlet-mapping>
@@ -194,6 +200,10 @@
     <servlet-mapping>
         <servlet-name>n_CategoryLoader</servlet-name>
         <url-pattern>/ajax/category</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>n_AdminCPServlet</servlet-name>
+        <url-pattern>/admin/cp</url-pattern>
     </servlet-mapping>
 
     <!-- FILTER DECLARATIONS -->

@@ -63,6 +63,7 @@ public final class UserDAO {
                     dbUser.setDisplayName(user.getDisplayName());
                     dbUser.setProfileStringResourceId(user.getProfileStringResourceId());
                     dbUser.setBio(user.getBio());
+                    dbUser.setStatus(user.isStatus());
 
                     et.commit();
 

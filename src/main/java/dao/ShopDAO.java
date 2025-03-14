@@ -53,13 +53,14 @@ public class ShopDAO {
 
                     Shop dbShop = em.find(Shop.class, shop.getId());
 
-                    if (dbShop != null) {
-                        dbShop.setName(shop.getName());
-                        dbShop.setAddress(shop.getAddress());
-                        dbShop.setVisible(shop.getVisible());
-                        dbShop.setProfileStringResourceId(shop.getProfileStringResourceId());
-                        dbShop.setOwnerId(shop.getOwnerId());
-                    }
+                    // @NgyenKhoi in the case of it being null, intentionally throw an exception for it
+                    // if (dbShop != null) {
+                    dbShop.setName(shop.getName());
+                    dbShop.setAddress(shop.getAddress());
+                    dbShop.setVisible(shop.getVisible());
+                    dbShop.setProfileStringResourceId(shop.getProfileStringResourceId());
+                    dbShop.setOwnerId(shop.getOwnerId());
+                    // }
 
                     et.commit();
 

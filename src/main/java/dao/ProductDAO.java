@@ -161,9 +161,6 @@ public class ProductDAO {
                     dbProduct.setDescription(product.getDescription());
                     dbProduct.setImageStringResourceId(product.getImageStringResourceId());
                     dbProduct.setName(product.getName());
-                    dbProduct.setProductImageList(product.getProductImageList());
-                    dbProduct.setProductItemList(product.getProductItemList());
-                    dbProduct.setReviewList(product.getReviewList());
                     dbProduct.setShopId(product.getShopId());
                     dbProduct.setStatus(product.isStatus());
 
