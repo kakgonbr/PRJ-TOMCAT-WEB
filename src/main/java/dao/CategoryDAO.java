@@ -21,6 +21,18 @@ public class CategoryDAO {
                 throw new java.sql.SQLException(e);
             } 
         }
+
+        public static synchronized List<Category> getAllCategories() throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                java.util.stream.Stream<Category> stream = em.createNamedQuery("Category.findAll").getResultStream();
+
+                stream.forEach(Category::getCategoryList);
+
+                return stream.toList();
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
+            }
+        } // public static synchronized List<Category> getAllCategories
         
         public static synchronized Category getCategoryDetails(int id) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
@@ -35,7 +47,7 @@ public class CategoryDAO {
             catch (Exception e) {
                 throw new java.sql.SQLException(e);
             } 
-        }
+        } // public static synchronized Category getCategoryDetails
         
     }
 }
