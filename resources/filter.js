@@ -19,7 +19,7 @@ function createCategoryElement(category) {
 
     label.appendChild(radio);
     label.appendChild(document.createTextNode(" " + category.name));
-    li.textContent = label;
+    li.appendChild(label);
 
     if (category.children && category.children.length > 0) {
         let ul = document.createElement("ul");
