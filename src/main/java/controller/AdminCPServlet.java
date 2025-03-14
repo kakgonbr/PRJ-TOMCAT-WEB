@@ -16,6 +16,7 @@ public class AdminCPServlet extends HttpServlet {
         String table = request.getParameter("table");
         String action = request.getParameter("action");
         int id;
+        String idString = request.getParameter("id");
 
         if (table == null || table.isEmpty()) {
 
@@ -26,14 +27,6 @@ public class AdminCPServlet extends HttpServlet {
             }
             
             request.getRequestDispatcher(config.Config.JSPMapper.ADMIN_CONTROL_PANEL).forward(request, response);
-
-            return;
-        }
-
-        try {
-            id = Integer.parseInt(request.getParameter("id"));
-        } catch (NumberFormatException | NullPointerException e){
-            service.Logging.logger.warn("ID PARAMETER IS MALFORMED OR IS MISSING");
 
             return;
         }
