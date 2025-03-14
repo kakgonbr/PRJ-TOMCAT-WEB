@@ -4,7 +4,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<jsp:useBean id="resource" class="service.AdminService.DatabaseEditService.ResourceDTO" scope="request"/>
+<jsp:useBean id="resource" class="model.dto.ResourceDTO" scope="request"/>
 <jsp:setProperty name="resource" property="*"/>
 <%-- Serialize the object into a json string, send it to the servlet to turn into an object and send it here. --%>
 

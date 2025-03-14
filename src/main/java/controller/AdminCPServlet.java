@@ -46,7 +46,7 @@ public class AdminCPServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // TODO: TEMPORARY CODE, REPLACE LATER
         try {
-            service.AdminService.DatabaseEditService.ResourceDTO resourceDTO = new service.AdminService.DatabaseEditService.ResourceDTO();
+            model.dto.ResourceDTO resourceDTO = new model.dto.ResourceDTO();
             BeanUtils.populate(resourceDTO, request.getParameterMap());
             service.AdminService.DatabaseEditService.persistResourceDTO(resourceDTO);
         } catch (java.sql.SQLException | IllegalAccessException | InvocationTargetException e) {
