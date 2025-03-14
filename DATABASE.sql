@@ -537,20 +537,6 @@ VALUES
 	('Haircare','chart_js',4), -- 22
 	('Bodycare','chart_js',4), -- 23
 	('Fragrance','chart_js',4); -- 24
-INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
-VALUES
-<<<<<<< HEAD
-/*	('Skincare','chart_js',4),
-	('Makeup','chart_js',4),
-	('Haircare','chart_js',4),
-	('Bodycare','chart_js',4),
-	('Fragrance','chart_js',4);*/
-	('skincare','chart_js',13),
-	('makeup','chart_js',13),
-	('haircare','chart_js',13),
-	('bodycare','chart_js',13),
-	('fragrance','chart_js',13), 
-=======
 
 INSERT INTO tblShop (ownerId, name, address, profileStringResourceId, visible)
 VALUES
@@ -559,38 +545,13 @@ VALUES
 (3, 'Home Essentials', '567 Home Lane', 'admin_js', 1),
 (4, 'Tech Universe', '123 Innovation St', 'test_js', 1),
 (5, 'Fashion Hub', '456 Style Ave', 'admin_css', 1);
-select * from tblShop
-
-/*parent id is for testing -> change when real*/
-INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
-VALUES
-	('Fashion','chart_js',NULL),
-	('Electronics','chart_js',NULL),
-	('Furniture','chart_js',NULL),
-	('Cosmestic','chart_js',NULL),
-	('Book','chart_js',NULL),
-	('Man Fashion','chart_js',1), --6
-	('Woman Fashion','chart_js',1), --7
-	('Shoes','chart_js',1), --8
-	('Accessory','chart_js',1), --9
-	('T-Shirt','chart_js',6),
-	('Blazer','chart_js',6),
-	('Hoodie','chart_js',6),
-	('Shirt','chart_js',6),
-	('Jacket','chart_js',6),
-	('Coat','chart_js',6),
-	('Polo Shirt','chart_js',6),
-	('Man Jean','chart_js',6),
-	('Short','chart_js',6),
-	('Trouser','chart_js',6);
-
 
 INSERT INTO tblVariation (categoryId,name,datatype,unit)
 VALUES 
 	(1,'color','string',NULL),
 	(6,'man clothes size','string',NULL),
 	(8,'shoe size','string',NULL),
-	(7,'woman clothes size');
+	(7,'woman clothes size', 'string', NULL);
 
 INSERT INTO tblVariationValue (variationId, value)
 VALUES 
@@ -626,10 +587,10 @@ VALUES
 	(4 , 'M'),
 	(4 , 'L'),
 	(4 , 'XL');
->>>>>>> 367fd4206f2a387a28f8d499b628f9e9d062e152
 
-=======
->>>>>>> 7de2fe7de5f57b2b7e3f9b509e823a88a42a6335
+
+INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
+VALUES
 	-- skincare
 	('Cleansers', 'chart_js', (select id from tblCategory where name = 'Skincare')),
     ('Face_wash', 'chart_js', (select id from tblCategory where name = 'Skincare')),
@@ -720,13 +681,6 @@ VALUES
     ('Conference Tables', 'chart_js', (select id from tblCategory where name = 'Office')),
     ('Reception Furniture', 'chart_js', (select id from tblCategory where name = 'Office'));
 
-<<<<<<< HEAD
-	delete from tblCategory where id in(84,85,86,87,88,89,90,91,92,93,94,95,96,97,98);
-    ('Desks', 'chart_js', 24),
-    ('Conference Tables', 'chart_js', 24),
-    ('Reception Furniture', 'chart_js', 24);
-=======
-
 --electronics
 INSERT INTO tblCategory (name, imageStringResourceId, parent_id) VALUES
 ('smartphones', 'chart_js', (select id from tblCategory where name = 'Electronics')),
@@ -737,11 +691,6 @@ INSERT INTO tblCategory (name, imageStringResourceId, parent_id) VALUES
 ('audio device', 'chart_js', (select id from tblCategory where name = 'Electronics'));
 
 
-
-
-EXEC ComputeTFIdF
-
-=======
 INSERT INTO tblVariation (categoryId,name,datatype,unit)
  VALUES 
  	(1,'color','string',NULL),
@@ -876,4 +825,7 @@ VALUES
 ('2025-03-10', 9800, 300,  160,  36, 26,  35,  200, 110,  80,  400),
 ('2025-03-11', 3400, 310,  200,  38, 28,  60,  50, 180,  55,  800),
 ('2025-03-12', 6000, 350, 210,  39, 28,  55,  170, 130,  70,  380);
->>>>>>> 7de2fe7de5f57b2b7e3f9b509e823a88a42a6335
+
+SELECT * FROM tblProduct
+
+SELECT * FROM tblVector
