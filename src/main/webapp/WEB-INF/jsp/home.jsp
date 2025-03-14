@@ -9,10 +9,12 @@
         <t:resources/>
 
         <script src="${pageContext.request.contextPath}/resources/product_js"></script>
+        <script src="${pageContext.request.contextPath}/resources/filter_js"></script>
         
         <script>
             var contextPath = "${pageContext.request.contextPath}";
-            window.onload = fetchProducts;
+            document.addEventListener("DOMContentLoaded", fetchProducts);
+            document.addEventListener("DOMContentLoaded", fetchCategory);
         </script>
 
     </jsp:attribute>
@@ -23,6 +25,7 @@
 
     <jsp:attribute name="body">
         <p>Welcome.</p>
+        <div id="categoryFilter"></div>
         <input type="text" id="searchBox" placeholder="Query">
         <button onclick="fetchProducts()">Search</button>
         <p>Products:</p>

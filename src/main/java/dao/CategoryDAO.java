@@ -10,20 +10,65 @@ import model.Category;
 public class CategoryDAO {
     
     public static class CategoryFetcher {
+        public static final String GET_CHILD_CATEGORY = "WITH category AS (SELECT tblCategory.* FROM tblCategory WHERE id = ?1 UNION ALL SELECT c.* FROM tblCategory c JOIN category ch ON c.parent_id = ch.id) SELECT * FROM category"; // Recursive CTE, get the current category AND ALL subcategories
 
-        public static final String GET_CHILD_CATEGORY = "SELECT *\r\n" + //
-                        "FROM tblCategory c\r\n" + //
-                        "WHERE c.parent_id = ?1";
-
-        public static synchronized List<Category> getChildCategories(int categoryId) throws java.sql.SQLException {
+        public static synchronized List<Category> getChildCategories(int parent) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                Query query = em.createNativeQuery(GET_CHILD_CATEGORY, Category.class).setParameter(1, categoryId);
+                Query query = em.createNativeQuery(GET_CHILD_CATEGORY, Category.class).setParameter(1, parent);
                 return query.getResultList();
             }
             catch (Exception e) {
                 throw new java.sql.SQLException(e);
             } 
         }
+
+        public static synchronized List<Category> getAllCategories() throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                java.util.List<Category> categories = em.createNamedQuery("Category.findAll", Category.class).getResultList();
+
+                categories.forEach(Category::getCategoryList);
+
+                return categories;
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
+            }
+        } // public static synchronized List<Category> getAllCategories
+
+        // recursive!!!
+        private static synchronized void initCategory(Category category) {
+            if (category == null) return;
+
+            for (Category subCategory : category.getCategoryList()) {
+                initCategory(subCategory);
+            }
+        }
+
+        public static synchronized Category getTopCategory() throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                Category category = em.createNamedQuery("Category.findById", Category.class).setParameter("id", 0).getSingleResult();
+
+                initCategory(category);
+                
+                return category;
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
+            }
+        } // public static synchronized Category getTopCategory
+        
+        public static synchronized Category getCategoryDetails(int id) throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                Category category = em.find(Category.class, id);
+
+                // tell jpa to fetch stuff
+                category.getImageStringResourceId();
+                
+                
+                return category;
+            }
+            catch (Exception e) {
+                throw new java.sql.SQLException(e);
+            } 
+        } // public static synchronized Category getCategoryDetails
         
     }
 }

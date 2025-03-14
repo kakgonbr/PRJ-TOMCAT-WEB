@@ -94,7 +94,7 @@ CREATE TABLE tblShop
 
 CREATE TABLE tblCategory
 (
-	id int PRIMARY KEY IDENTITY(1, 1),
+	id int PRIMARY KEY IDENTITY(0, 1),
 	name nvarchar(30),
 	imageStringResourceId varchar(30),
 	parent_id int
@@ -377,12 +377,32 @@ END;
 GO
 
 GO
-CREATE PROCEDURE GetRecommendation (@query NVARCHAR(400), @int page)
+CREATE PROCEDURE GetRecommendation (@query NVARCHAR(400), @page int, @categoryName varchar(300))
 AS
 BEGIN
+	SET NOCOUNT ON;
+
+	DECLARE @category int;
+    
+
+	IF @categoryName IS NULL OR LTRIM(RTRIM(@categoryName)) = ''
+    BEGIN
+		SET @category = 0
+	END
+	ELSE
+	BEGIN
+		SELECT @category = id FROM tblCategory WHERE name = @categoryName;
+	END
+
 	IF @query IS NULL OR LTRIM(RTRIM(@query)) = ''
     BEGIN
-        SELECT TOP 10 * FROM tblProduct ORDER BY NEWId();
+		WITH category AS (
+        SELECT id FROM tblCategory WHERE id = @category
+        UNION ALL
+        SELECT c.id FROM tblCategory c
+        JOIN category ch ON c.parent_id = ch.id
+		)
+        SELECT TOP 10 * FROM tblProduct WHERE tblProduct.categoryId IN (SELECT id FROM category) ORDER BY NEWId();
         RETURN;
     END
 
@@ -445,15 +465,24 @@ BEGIN
 	recommendation AS(
 		SELECT iv.id,
 		SUM(CAST(qv.tfidf_value AS FLOAT) * CAST(iv.tfidf_value AS FLOAT)) /
-		(SQRT(SUM(POWER(CAST(iv.tfidf_value AS FLOAT), 2))) * SQRT(SUM(POWER(CAST(qv.tfidf_value AS FLOAT), 2)))) AS similarity
+		NULLIF((SQRT(SUM(POWER(CAST(iv.tfidf_value AS FLOAT), 2))) * SQRT(SUM(POWER(CAST(qv.tfidf_value AS FLOAT), 2)))), 0) AS similarity
 		FROM ItemVector iv
 		JOIN QueryVector qv ON iv.pos = qv.pos
 		GROUP BY iv.id
-	)
-	SELECT TOP 10 tblProduct.*
+	),
+	category AS (
+        SELECT id FROM tblCategory WHERE id = @category
+        UNION ALL
+        SELECT c.id FROM tblCategory c
+        JOIN category ch ON c.parent_id = ch.id
+    )
+	SELECT tblProduct.*
 	FROM tblProduct
 	JOIN recommendation ON tblProduct.id = recommendation.id
+	WHERE recommendation.similarity != 0 AND tblProduct.categoryId IN (SELECT id FROM category)
 	ORDER BY recommendation.similarity DESC
+	OFFSET @page * 10 ROWS
+    FETCH NEXT 10 ROWS ONLY
 
     DROP TABLE #result;
 END;
@@ -469,7 +498,8 @@ VALUES
 ('product_js', 'product.js'),
 ('chart_js', 'customChart.js'),
 ('userMain_css', 'userMain.css'),
-('login_css', 'login.css');
+('login_css', 'login.css'),
+('filter_js', 'filter.js');
 
 INSERT INTO tblUser (email, username, phoneNumber, password, persistentCookie, googleId, facebookId, isAdmin)
 VALUES 
@@ -479,9 +509,37 @@ VALUES
 ('abc3@example.com', 'user33443', '12003', 'user', NULL, NULL, NULL, 0),
 ('abc4@example.com', 'user126543', '56004', 'user', NULL, NULL, NULL, 0);
 
---cosmestics
+--cosmestics and fashion
 INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
 VALUES
+	('All', 'chart_js', NULL), -- 0
+	('Fashion','chart_js',0), --1
+	('Electronics','chart_js',0), --2
+	('Furniture','chart_js',0), --3
+	('Cosmestic','chart_js',0), --4
+	('Book','chart_js',0), --5
+	('Man Fashion','chart_js',1), --6
+	('Woman Fashion','chart_js',1), --7
+	('Shoes','chart_js',1), --8
+	('Accessory','chart_js',1), --9
+	('T-Shirt','chart_js',6), -- 10
+	('Blazer','chart_js',6), -- 11
+	('Hoodie','chart_js',6), -- 12
+	('Shirt','chart_js',6), -- 13
+	('Jacket','chart_js',6), -- 14
+	('Coat','chart_js',6), -- 15
+	('Polo Shirt','chart_js',6), -- 16
+	('Man Jean','chart_js',6), -- 17
+	('Short','chart_js',6), -- 18
+	('Trouser','chart_js',6), -- 19
+	('Skincare','chart_js',4), -- 20
+	('Makeup','chart_js',4), -- 21
+	('Haircare','chart_js',4), -- 22
+	('Bodycare','chart_js',4), -- 23
+	('Fragrance','chart_js',4); -- 24
+INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
+VALUES
+<<<<<<< HEAD
 /*	('Skincare','chart_js',4),
 	('Makeup','chart_js',4),
 	('Haircare','chart_js',4),
@@ -570,45 +628,40 @@ VALUES
 	(4 , 'XL');
 >>>>>>> 367fd4206f2a387a28f8d499b628f9e9d062e152
 
+=======
+>>>>>>> 7de2fe7de5f57b2b7e3f9b509e823a88a42a6335
 	-- skincare
 	('Cleansers', 'chart_js', (select id from tblCategory where name = 'Skincare')),
     ('Face_wash', 'chart_js', (select id from tblCategory where name = 'Skincare')),
     ('Makeup_remover', 'chart_js', (select id from tblCategory where name = 'Skincare')),
-    ('Exfoliators', 'chart_js', (select id from tblCategory where name = 'Skincare')),
-
 	-- makeup 
     ('Foundation', 'chart_js', (select id from tblCategory where name = 'Makeup')),
     ('Concealer', 'chart_js', (select id from tblCategory where name = 'Makeup')),
     ('Powder', 'chart_js', (select id from tblCategory where name = 'Makeup')),
     ('Blush', 'chart_js', (select id from tblCategory where name = 'Makeup')),
-
 	-- Haircare 
     ('Shampoo', 'chart_js', (select id from tblCategory where name = 'Haircare')),
     ('Conditioner', 'chart_js', (select id from tblCategory where name = 'Haircare')),
     ('Dry_shampoo', 'chart_js', (select id from tblCategory where name = 'Haircare')),
     ('Hair oil', 'chart_js', (select id from tblCategory where name = 'Haircare')),
-
 	-- Bodycare 
     ('Body wash', 'chart_js', (select id from tblCategory where name = 'Bodycare')),
     ('Body scrub', 'chart_js', (select id from tblCategory where name = 'Bodycare')),
     ('Body lotion', 'chart_js', (select id from tblCategory where name = 'Bodycare')),
     ('Body butter', 'chart_js', (select id from tblCategory where name = 'Bodycare')),
-
 	-- Fragrance 
     ('Perfume', 'chart_js', (select id from tblCategory where name = 'Fragrance')),
     ('Eau de toilette', 'chart_js', (select id from tblCategory where name = 'Fragrance')),
     ('Body mist', 'chart_js', (select id from tblCategory where name = 'Fragrance')),
-    ('Essential oil', 'chart_js', (select id from tblCategory where name = 'Fragrance'));
+    ('Essential oil', 'chart_js', (select id from tblCategory where name = 'Fragrance')),
 
 	--book
-	INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
+    ('Fiction', 'chart_js', (select id from tblCategory where name = 'Book')),
+    ('Non_fiction', 'chart_js', (select id from tblCategory where name = 'Book')),
+    ('Children', 'chart_js', (select id from tblCategory where name = 'Book')),
+    ('Comics_manga', 'chart_js', (select id from tblCategory where name = 'Book'));
+INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
 VALUES
-/*
-    ('Fiction', 'chart_js', 5),
-    ('Non_fiction', 'chart_js', 5),
-    ('Children', 'chart_js', 5),
-    ('Comics_manga', 'chart_js', 5), */
-
     -- Fiction subcategories
     ('Fantasy', 'chart_js', (select id from tblCategory where name = 'Fiction')),
     ('Mystery', 'chart_js', (select id from tblCategory where name = 'Fiction')),
@@ -630,18 +683,17 @@ VALUES
     -- Comics & Manga subcategories
     ('Graphic novels', 'chart_js', (select id from tblCategory where name = 'Comics_manga')),
     ('Manga', 'chart_js', (select id from tblCategory where name = 'Comics_manga')),
-    ('Superhero comics', 'chart_js', (select id from tblCategory where name = 'Comics_manga'));
+    ('Superhero comics', 'chart_js', (select id from tblCategory where name = 'Comics_manga')),
 
 	--furniture
-	insert INTO tblCategory (name, imageStringResourceId, parent_id)
-VALUES
-/*
-    ('Seating', 'chart_js', 3),
-    ('Sleeping', 'chart_js', 3),
-    ('Storage', 'chart_js', 3),
-    ('Dining', 'chart_js', 3),
-    ('Office', 'chart_js', 3); */
 
+    ('Seating', 'chart_js', (select id from tblCategory where name = 'Furniture')),
+    ('Sleeping', 'chart_js', (select id from tblCategory where name = 'Furniture')),
+    ('Storage', 'chart_js', (select id from tblCategory where name = 'Furniture')),
+    ('Dining', 'chart_js', (select id from tblCategory where name = 'Furniture')),
+    ('Office', 'chart_js', (select id from tblCategory where name = 'Furniture'));
+INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
+VALUES
     -- seating subcategories
     ('Chairs', 'chart_js', (select id from tblCategory where name = 'Seating')),
     ('Sofas and Couches', 'chart_js', (select id from tblCategory where name = 'Seating')),
@@ -668,6 +720,7 @@ VALUES
     ('Conference Tables', 'chart_js', (select id from tblCategory where name = 'Office')),
     ('Reception Furniture', 'chart_js', (select id from tblCategory where name = 'Office'));
 
+<<<<<<< HEAD
 	delete from tblCategory where id in(84,85,86,87,88,89,90,91,92,93,94,95,96,97,98);
     ('Desks', 'chart_js', 24),
     ('Conference Tables', 'chart_js', 24),
@@ -688,3 +741,139 @@ INSERT INTO tblCategory (name, imageStringResourceId, parent_id) VALUES
 
 EXEC ComputeTFIdF
 
+=======
+INSERT INTO tblVariation (categoryId,name,datatype,unit)
+ VALUES 
+ 	(1,'color','string',NULL),
+ 	(6,'man clothes size','string',NULL),
+ 	(8,'shoe size','string',NULL),
+ 	(7,'woman clothes size', 'string', NULL);
+ 
+ INSERT INTO tblVariationValue (variationId, value)
+ VALUES 
+ 	(1 , 'Black'),
+ 	(1 , 'White'),
+ 	(1 , 'Gray'),
+ 	(1 , 'Blue'),
+ 	(1 , 'Red'),
+ 	(1 , 'Beige'),
+ 	(1 , 'Brown'),
+ 	(1 , 'Navy'),
+ 	(1 , 'Pink'),
+ 	(1 , 'Orange'),
+ 	(1 , 'Green'),
+ 	(1 , 'Yellow'),
+ 	(2 , 'XS'),
+ 	(2 , 'S'),
+ 	(2 , 'M'),
+ 	(2 , 'L'),
+ 	(2 , 'XL'),
+ 	(2 , 'XXL'),
+ 	(3 , '35'),
+ 	(3 , '36'),
+ 	(3 , '37'),
+ 	(3 , '38'),
+ 	(3 , '39'),
+ 	(3 , '40'),
+ 	(3 , '41'),
+ 	(3 , '42'),
+ 	(3 , '43'),
+ 	(4 , 'XS'),
+ 	(4 , 'S'),
+ 	(4 , 'M'),
+ 	(4 , 'L'),
+ 	(4 , 'XL');
+
+
+INSERT INTO tblShop (ownerId, name, address, profileStringResourceId, visible)
+VALUES
+(1, 'Gadget World', '789 Tech Road', 'chart_js', 1),
+(2, 'Sneaker Haven', '321 Fashion Blvd', 'admin_css', 1),
+(3, 'Home Essentials', '567 Home Lane', 'admin_js', 1),
+(4, 'Tech Universe', '123 Innovation St', 'test_js', 1),
+(5, 'Fashion Hub', '456 Style Ave', 'admin_css', 1);
+
+-- Understand that being in here means that the promotion will be active
+INSERT INTO tblPromotion (creatorId, name, type, ofAdmin, value, expireDate)
+VALUES
+(1, 'Black Friday Sale', 0, 0, 15, '2025-11-29'),
+(3, 'New Year Offer', 1, 0, 75000, '2025-12-31'),
+(2, 'Buy 1 Get 1', 0, 1, 50, '2025-12-31'),
+(4, 'Summer Discount', 0, 0, 20, '2025-06-30'),
+(5, 'Winter Clearance', 1, 1, 10000, '2025-12-15');
+
+-- TODO: Match the category id here
+INSERT INTO tblProduct (shopId, categoryId, name, description, availablePromotionId, imageStringResourceId, status)
+VALUES
+(1, 3, 'Samsung Galaxy S22', 'Flagship Samsung smartphone', 1, 'test_js', 1),
+(1, 4, 'MacBook Pro 14', 'Apple high-end laptop', 2, 'test_js', 1),
+(2, 5, 'Nike Air Max', 'Stylish and comfortable sneakers', 3, 'admin_css', 1),
+(2, 6, 'Leather Handbag', 'Elegant leather handbag', NULL, 'admin_css', 1),
+(3, 7, 'Air Fryer', 'Healthy cooking appliance', NULL, 'admin_js', 1),
+(3, 7, 'Vacuum Cleaner', 'Powerful home cleaning device', NULL, 'admin_js', 1),
+(4, 8, 'PlayStation 5', 'Next-gen gaming console', 4, 'test_js', 1),
+(4, 8, 'Xbox Series X', 'Powerful Microsoft gaming console', 4, 'test_js', 1),
+(5, 9, 'Modern Sofa', 'Comfortable and stylish', 5, 'admin_js', 1),
+(5, 9, 'Wooden Dining Table', 'Elegant and durable', 5, 'admin_js', 1),
+(1, 3, 'iPhone 14 Pro', 'Latest Apple smartphone', 1, 'test_js', 1),
+(1, 5, 'Adidas Ultraboost', 'High-performance running shoes', 3, 'admin_css', 1),
+(3, 7, 'Microwave Oven', 'Efficient and modern', NULL, 'admin_js', 1),
+(4, 8, 'Nintendo Switch', 'Portable gaming console', 4, 'test_js', 1),
+(5, 9, 'Queen Size Bed', 'Luxurious and comfortable', 5, 'admin_js', 1),
+(1, 3, 'Google Pixel 7', 'Latest Google smartphone', 1, 'test_js', 1),
+(2, 5, 'Puma Running Shoes', 'Lightweight and stylish', 3, 'admin_css', 1),
+(3, 7, 'Blender', 'Powerful kitchen appliance', NULL, 'admin_js', 1),
+(4, 8, 'Gaming Laptop', 'High-end gaming performance', 4, 'test_js', 1),
+(5, 9, 'Office Chair', 'Ergonomic and comfortable', 5, 'admin_js', 1),
+(4, 3, 'OnePlus 11', 'Flagship OnePlus smartphone', 1, 'test_js', 1),
+(2, 5, 'Reebok Sneakers', 'Durable and comfortable', 3, 'admin_css', 1),
+(3, 7, 'Dishwasher', 'Efficient and modern', NULL, 'admin_js', 1),
+(4, 8, 'Smart TV', '4K Ultra HD', 4, 'test_js', 1),
+(5, 9, 'Bookshelf', 'Modern wooden bookshelf', 5, 'admin_js', 1),
+(5, 9, 'FlagShip Phone', 'A phone that is flagship, also, gaming', 5, 'admin_js', 1),
+(5, 9, 'FlagShip Tablet', 'Cool tablet', 5, 'admin_js', 1);
+
+
+INSERT INTO tblProductItem (productId, stock, price)
+VALUES
+(5, 12, 1100),
+(6, 8, 2000),
+(7, 30, 250),
+(8, 15, 180),
+(9, 10, 300),
+(10, 5, 500),
+(11, 25, 1300),
+(12, 20, 220),
+(13, 18, 400),
+(14, 10, 450),
+(15, 8, 550),
+(16, 12, 350),
+(17, 5, 700),
+(18, 6, 600),
+(19, 7, 1200),
+(20, 4, 1500),
+(21, 15, 750),
+(22, 20, 300),
+(23, 10, 850),
+(24, 5, 1800),
+(25, 8, 950),
+(1, 12, 500),
+(2, 18, 650),
+(3, 6, 1400),
+(4, 9, 800);
+
+EXEC ComputeTFIdF
+
+INSERT INTO tblServerStatistics (day, totalMoneyEarned, userNum, productNum, shopNum, promotionNum, purchaseNum, visitNum, peakSessionNum, averageResponseTime, maxResponseTime)
+VALUES 
+('2025-03-03',  5000, 120,  50,  10,  5,  10,  100, 30,  120, 500),
+('2025-03-04',  1000, 123,  55,  12,  7,  12,  50, 70,  130, 700),
+('2025-03-05',  4500, 127,  60,  18,  7,  17,  60, 70,  190, 490),
+('2025-03-06',  8100, 160,  65,  19,  7,  8,  30, 50,  100, 1280),
+('2025-03-07',  9000, 165,  70,  19,  9,  18,  50, 90,  105, 460),
+('2025-03-08', 6000, 165,  90,  21, 18,  27,  150, 95,   90, 200),
+('2025-03-09', 4000, 210,  90,  29, 19,  7,  200, 100,  85,  410),
+('2025-03-10', 9800, 300,  160,  36, 26,  35,  200, 110,  80,  400),
+('2025-03-11', 3400, 310,  200,  38, 28,  60,  50, 180,  55,  800),
+('2025-03-12', 6000, 350, 210,  39, 28,  55,  170, 130,  70,  380);
+>>>>>>> 7de2fe7de5f57b2b7e3f9b509e823a88a42a6335

@@ -1,11 +1,22 @@
 function fetchProducts() {
     let query = document.getElementById("searchBox").value;
-    let url = contextPath + "/ajax/products"
+    var url = new URL("https://" + location.host + contextPath + "/ajax/products");
+    let filter;
+    try {
+        filter = document.querySelector('input[name="filter"]:checked').value;
+    } catch (e) {
+        filter = 'All';
+    }
     if (query) {
-        url += "?query=" + encodeURIComponent(query);
+        url.searchParams.append('query', encodeURIComponent(query));
+        // url += "?query=" + encodeURIComponent(query);
     }
 
-    fetch(url)
+    if (filter) {
+        url.searchParams.append('category', filter)
+    }
+
+    fetch(url.toString())
         .then(response => response.json())
         .then(data => {
             let tableBody = document.getElementById("productTable");
