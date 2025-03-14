@@ -2,6 +2,7 @@ package dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.transaction.Transactional;
 
 /**
  * Get and make mappings of resources to system path. Note that the systemPath
@@ -49,6 +50,7 @@ public class ResourceDAO {
         }
     }
 
+    @Transactional
     public static synchronized void editMapping(model.ResourceMap map) throws java.sql.SQLException {
         try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
             EntityTransaction et = em.getTransaction();
@@ -60,7 +62,7 @@ public class ResourceDAO {
 
                 dbMap.setSystemPath(map.getSystemPath());
 
-                em.persist(map);
+                em.merge(map);
 
                 et.commit();
             } catch (Exception e) {
