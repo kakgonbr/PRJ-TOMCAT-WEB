@@ -28,8 +28,8 @@ public final class Config {
         public static final String PAYMENT_PAY_JSP = "/WEB-INF/jsp/pay.jsp";
         public static final String LOG_JSP = "/WEB-INF/jsp/log.jsp";
         public static final String SIGNUP_JSP = "/WEB-INF/jsp/signup.jsp";
-        public static final String ADMIN_CONTROL_PANEL = "/WEB-INF/jsp/adminControlPanel.jsp";
-        public static final String ADMIN_EDIT = "/WEB-INF/jsp/resourceEdit.jsp";
+        public static final String ADMIN_CONTROL_PANEL = "/WEB-INF/jsp/admin/adminControlPanel.jsp";
+        public static final String ADMIN_EDIT = "/WEB-INF/jsp/admin/resourceEdit.jsp";
 
         public static final String PRIVILEGED_ADMIN_JSP = "/WEB-INF/jsp/admin/adminStats.jsp";
     }
