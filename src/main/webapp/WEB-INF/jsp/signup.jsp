@@ -11,8 +11,21 @@
     </jsp:attribute>
 
     <jsp:attribute name="header">
+    <%-- TODO: Add informative error messages telling the user accepted formats --%>
         <c:if test="${error == 'db'}">
-            <h1>AN ERROR OCCURRED!</h1>
+            <h1>A DATABASE OCCURRED!</h1>
+        </c:if>
+        <c:if test="${error == 'username'}">
+            <h1>USERNAME!</h1>
+        </c:if>
+        <c:if test="${error == 'email'}">
+            <h1>EMAIl!</h1>
+        </c:if>
+        <c:if test="${error == 'password'}">
+            <h1>PASSWORD!</h1>
+        </c:if>
+        <c:if test="${error == 'phoneNumber'}">
+            <h1>PHONENUMBER!</h1>
         </c:if>
         <h1>Sign up</h1>
     </jsp:attribute>
@@ -21,10 +34,10 @@
         <form action="${pageContext.request.contextPath}/signup" method="POST">
             <input type="hidden" name="googleId" value="${googleId}">
             <label>Username:</label>
-            <input type="text" name="email" value="${param.email}">
+            <input type="text" name="email" value="${email}">
             <label>Email:</label>
             <c:if test="${googleId == null}">
-                <input type="text" name="email" value="${param.email}">
+                <input type="text" name="email" value="${email}">
             </c:if>
             <c:if test="${googleId != null}">
                 <input type="text" name="email" value="${param.email}" disabled>

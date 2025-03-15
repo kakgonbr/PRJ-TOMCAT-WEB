@@ -129,6 +129,7 @@ public class UserRegistrationServlet extends HttpServlet {
             
             return;
         }
+        // Should the email, username and phonenumber be individually checked with the database for uniqueness???????
 
         try {
             model.User user = new model.User();
