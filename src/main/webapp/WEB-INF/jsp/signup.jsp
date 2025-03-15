@@ -5,7 +5,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<t:genericpage title="TEMPLATE">
+<t:genericpage title="Sign Up">
     <jsp:attribute name="head">
         <t:resources/>
     </jsp:attribute>
@@ -34,7 +34,7 @@
         <form action="${pageContext.request.contextPath}/signup" method="POST">
             <input type="hidden" name="googleId" value="${googleId}">
             <label>Username:</label>
-            <input type="text" name="email" value="${email}">
+            <input type="text" name="username" value="${email}">
             <label>Email:</label>
             <c:if test="${googleId == null}">
                 <input type="text" name="email" value="${email}">
