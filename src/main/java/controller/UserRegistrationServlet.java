@@ -125,6 +125,10 @@ public class UserRegistrationServlet extends HttpServlet {
             return;
         }
 
+        if (phoneNumber.startsWith("0")) {
+            phoneNumber = "+84" + phoneNumber.substring(1);
+        }
+
         if (password == null || !misc.Utils.Validator.password(password)) {
             request.setAttribute("error", "password");
 
