@@ -14,7 +14,7 @@ public class UserDTO implements java.io.Serializable {
     private String displayName;
     private String bio;
     private Boolean isAdmin;
-    private BigDecimal credit;
+    private Long credit;
     private String profileStringResourceId;
     private Boolean status;
     
@@ -23,7 +23,7 @@ public class UserDTO implements java.io.Serializable {
 
     public UserDTO(model.User user) {
         setBio(user.getBio());
-        setCredit(user.getCredit());
+        setCredit(user.getCredit() == null ? null : user.getCredit().longValue());
         setDisplayName(user.getDisplayName());
         setEmail(user.getEmail());
         setFacebookId(user.getFacebookId());
@@ -51,7 +51,7 @@ public class UserDTO implements java.io.Serializable {
         user.setDisplayName(displayName);
         user.setBio(bio);
         user.setIsAdmin(isAdmin);
-        user.setCredit(credit);
+        user.setCredit(BigDecimal.valueOf(credit));
         user.setProfileStringResourceId(new model.ResourceMap(profileStringResourceId));
         user.setStatus(status);
 
@@ -102,7 +102,7 @@ public class UserDTO implements java.io.Serializable {
         return isAdmin;
     }
 
-    public BigDecimal getCredit() {
+    public Long getCredit() {
         return credit;
     }
 
@@ -158,7 +158,7 @@ public class UserDTO implements java.io.Serializable {
         this.isAdmin = isAdmin;
     }
 
-    public void setCredit(BigDecimal credit) {
+    public void setCredit(Long credit) {
         this.credit = credit;
     }
 

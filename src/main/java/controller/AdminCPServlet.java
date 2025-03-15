@@ -31,16 +31,6 @@ public class AdminCPServlet extends HttpServlet {
                 return value;
             }
         }, String.class);
-
-        org.apache.commons.beanutils.ConvertUtils.register(new org.apache.commons.beanutils.Converter() {
-            @Override
-            public Object convert(Class type, Object value) {
-                if (value == null || "".equals(value)) {
-                    return null;
-                }
-                return BigDecimal.valueOf(Long.parseLong(value.toString()));
-            }
-        }, BigDecimal.class);
     }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
