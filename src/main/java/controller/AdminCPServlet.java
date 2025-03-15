@@ -105,22 +105,24 @@ public class AdminCPServlet extends HttpServlet {
                     service.AdminService.DatabaseEditService.persistResourceDTO(resourceDTO);
                 break;
                 case "shops":
-                model.dto.ShopDTO shopDTO = new model.dto.ShopDTO();
-                BeanUtils.populate(shopDTO, request.getParameterMap());
+                    model.dto.ShopDTO shopDTO = new model.dto.ShopDTO();
+                    BeanUtils.populate(shopDTO, request.getParameterMap());
 
-                service.AdminService.DatabaseEditService.persistShopDTO(shopDTO);
+                    service.AdminService.DatabaseEditService.persistShopDTO(shopDTO);
                 break;
-                case "users":
-                model.dto.UserDTO userDTO = new model.dto.UserDTO();
-                BeanUtils.populate(userDTO, request.getParameterMap());
+                    case "users":
+                    model.dto.UserDTO userDTO = new model.dto.UserDTO();
+                    BeanUtils.populate(userDTO, request.getParameterMap());
 
-                service.AdminService.DatabaseEditService.persistUserDTO(userDTO);
+                    service.AdminService.DatabaseEditService.persistUserDTO(userDTO);
                 break;
                 case "products":
-                model.dto.ProductDTO productDTO = new model.dto.ProductDTO();
-                BeanUtils.populate(productDTO, request.getParameterMap());
+                    model.dto.ProductDTO productDTO = new model.dto.ProductDTO();
+                    BeanUtils.populate(productDTO, request.getParameterMap());
 
-                service.AdminService.DatabaseEditService.persistProductDTO(productDTO);
+                    service.Logging.logger.info("shop ID {}", productDTO.getShopId());
+
+                    service.AdminService.DatabaseEditService.persistProductDTO(productDTO);
                 break;
             }
         } catch (java.sql.SQLException | IllegalAccessException | InvocationTargetException e) {
