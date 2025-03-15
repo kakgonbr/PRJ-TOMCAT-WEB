@@ -34,13 +34,13 @@
         <form action="${pageContext.request.contextPath}/signup" method="POST">
             <input type="hidden" name="googleId" value="${googleId}">
             <label>Username:</label>
-            <input type="text" name="username" value="${email}">
+            <input type="text" name="username" value="${param.username}">
             <label>Email:</label>
             <c:if test="${googleId == null}">
-                <input type="text" name="email" value="${email}">
+                <input type="text" name="email" value="${param.email}">
             </c:if>
             <c:if test="${googleId != null}">
-                <input type="text" name="email" value="${param.email}" disabled>
+                <input type="text" name="email" value="${email}" disabled>
             </c:if>
             <label>Phone Number:</label>
             <input type="text" name="phoneNumber" value="${param.phoneNumber}">
