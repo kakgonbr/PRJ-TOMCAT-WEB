@@ -31,7 +31,8 @@ public class ProductDTO implements java.io.Serializable {
         product.setDescription(description);
         // DANGER: NOT GETTING REFERENCE USING THE ENTITY MANAGER HERE, MAKE SURE THIS DOESN'T SCREW UP ANYTHING
         product.setCategoryId(new model.Category(getCategoryId()));
-        product.setAvailablePromotionId(new model.Promotion(getAvailablePromotionId()));
+        product.setAvailablePromotionId(availablePromotionId == null ? null : new model.Promotion(availablePromotionId));
+        product.setShopId(new model.Shop(shopId));
         product.setImageStringResourceId(new model.ResourceMap(getImageStringResourceId()));
         product.setStatus(status);
 

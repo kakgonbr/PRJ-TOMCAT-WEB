@@ -120,7 +120,7 @@ public class AdminCPServlet extends HttpServlet {
                     model.dto.ProductDTO productDTO = new model.dto.ProductDTO();
                     BeanUtils.populate(productDTO, request.getParameterMap());
 
-                    service.Logging.logger.info("shop ID {}", productDTO.getShopId());
+                    service.Logging.logger.info("promo id {}", productDTO.getAvailablePromotionId());
 
                     service.AdminService.DatabaseEditService.persistProductDTO(productDTO);
                 break;
