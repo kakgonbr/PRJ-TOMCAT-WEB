@@ -96,6 +96,9 @@ public class UserRegistrationServlet extends HttpServlet {
         String phoneNumber = request.getParameter("phoneNumber");
         String password = request.getParameter("password");
 
+        request.setAttribute("googleId", googleId);
+        request.setAttribute("email", email);
+
         // validations!!!!!!1
         
         if (username == null || !misc.Utils.Validator.username(username)) {
