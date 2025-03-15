@@ -1,5 +1,5 @@
 function fetchData() {
-    fetch(contextPath + "/ajax/admin")
+    fetch(contextPath + "/ajax/admin/table")
         .then(response => response.json())
         .then(data => populateTables(data))
         .catch(error => console.error("Error fetching data:", error));
