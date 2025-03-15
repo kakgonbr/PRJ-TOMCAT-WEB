@@ -148,6 +148,7 @@ public class UserRegistrationServlet extends HttpServlet {
             user.setPassword(password);
             user.setGoogleId(googleId); // In the database, this doesn't need to be unique, because for every id ther eis only 1 corresponding email.
             user.setStatus(true);
+            user.setIsAdmin(false);
 
             dao.UserDAO.UserManager.createUser(user);
         } catch (java.sql.SQLException e) {
