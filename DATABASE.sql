@@ -16,7 +16,7 @@ CREATE TABLE tblUser
 	facebookId varchar(255),
 	isAdmin bit DEFAULT 0,
 	credit money,
-	status bit,
+	status bit NOT NULL DEFAULT 0,
 
 	displayName nvarchar(50),
 	profileStringResourceId varchar(30),
@@ -774,5 +774,6 @@ VALUES
 ('2025-03-12', 6000, 350, 210,  39, 28,  55,  170, 130,  70,  380);
 
 SELECT * FROM tblProduct
+
 
 SELECT * FROM tblVector

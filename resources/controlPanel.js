@@ -20,7 +20,7 @@ function fetchData() {
 // make sure the order of the serialized objects match the tables'
 function populateTables(data) {
     data.forEach(table => {
-        let tbody = document.querySelector(`#${table.name} tbody`);
+        let tbody = document.querySelector(`#${table.name}`);
         if (!tbody) return;
         
         tbody.innerHTML = "";
