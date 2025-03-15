@@ -127,6 +127,6 @@ public class AdminCPServlet extends HttpServlet {
             service.Logging.logger.error("PERSISTING FAILED, REASON: {}", e.getMessage());
         }
 
-        response.sendRedirect(request.getServletContext() + "/admin/cp");
+        response.sendRedirect(request.getContextPath() + "/admin/cp");
     }
 }

@@ -78,6 +78,12 @@
                     </td>
                 </tr>
                 <tr>
+                    <th>Status:</th>
+                    <td>
+                        <input type="text" name="status" size="45" value="<c:out value='${product.status}' />" />
+                    </td>
+                </tr>
+                <tr>
                     <td colspan="2" align="center">
                         <input type="submit" value="Save" />
                     </td>

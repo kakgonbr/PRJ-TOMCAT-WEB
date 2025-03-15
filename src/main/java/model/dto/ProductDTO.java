@@ -8,6 +8,7 @@ public class ProductDTO implements java.io.Serializable {
     private Integer availablePromotionId;
     private String imageStringResourceId;
     private Integer shopId;
+    private Boolean status;
 
     public ProductDTO() {}
 
@@ -19,6 +20,7 @@ public class ProductDTO implements java.io.Serializable {
         setImageStringResourceId(product.getImageStringResourceId().getId());
         setName(product.getName());
         setShopId(product.getShopId().getId());
+        setStatus(product.isStatus());
     }
 
     public model.Product toProduct() {
@@ -31,8 +33,17 @@ public class ProductDTO implements java.io.Serializable {
         product.setCategoryId(new model.Category(getCategoryId()));
         product.setAvailablePromotionId(new model.Promotion(getAvailablePromotionId()));
         product.setImageStringResourceId(new model.ResourceMap(getImageStringResourceId()));
+        product.setStatus(status);
 
         return product;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    public Boolean getStatus() {
+        return status;
     }
 
     public void setAvailablePromotionId(Integer availablePromotionId) {
