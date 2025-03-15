@@ -137,7 +137,7 @@ public class UserRegistrationServlet extends HttpServlet {
 
             user.setEmail(email);
             user.setUsername(username);
-            user.setPhoneNumber(phoneNumber);
+            user.setPhoneNumber(phoneNumber.replaceAll("\\s+", ""));
             user.setPassword(password);
             user.setGoogleId(googleId); // In the database, this doesn't need to be unique, because for every id ther eis only 1 corresponding email.
             user.setStatus(true);
