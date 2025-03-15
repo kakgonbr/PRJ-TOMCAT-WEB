@@ -63,7 +63,7 @@
         </div>
 
         <div class="table-container">
-            <h2>Resource List</h2>
+            <h2>Product List</h2>
             <table border="1">
                 <thead>
                     <tr>
@@ -83,7 +83,7 @@
         </div>
         
         <div class="table-container">
-            <h2>Resource List</h2>
+            <h2>User List</h2>
             <table border="1">
                 <thead>
                     <tr>
@@ -110,7 +110,7 @@
         </div>
 
         <div class="table-container">
-            <h2>Resource List</h2>
+            <h2>Shop List</h2>
             <table border="1">
                 <thead>
                     <tr>
@@ -128,7 +128,7 @@
         </div>
 
         <div class="table-container">
-            <h2>Resource List</h2>
+            <h2>Promotion List</h2>
             <table border="1">
                 <thead>
                     <tr>

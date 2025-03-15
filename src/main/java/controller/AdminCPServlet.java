@@ -86,16 +86,47 @@ public class AdminCPServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO: TEMPORARY CODE, REPLACE LATER
+        String table = request.getParameter("table");
+
+        if (table == null || table.isEmpty()) {
+            // TODO: ADD ERROR REPORT
+            response.sendRedirect(request.getServletContext() + "/admin/cp");
+            return;
+        }
+
         try {
-            model.dto.ResourceDTO resourceDTO = new model.dto.ResourceDTO();
-            BeanUtils.populate(resourceDTO, request.getParameterMap());
+            service.Logging.logger.info("Trying to persist DTO of table {}", table);
 
-            service.Logging.logger.info("Persisting resource {}, {}", resourceDTO.getId(), resourceDTO.getSystemPath());
+            switch (table) {
+                case "resources":
+                    model.dto.ResourceDTO resourceDTO = new model.dto.ResourceDTO();
+                    BeanUtils.populate(resourceDTO, request.getParameterMap());
 
-            service.AdminService.DatabaseEditService.persistResourceDTO(resourceDTO);
+                    service.AdminService.DatabaseEditService.persistResourceDTO(resourceDTO);
+                break;
+                case "shops":
+                model.dto.ShopDTO shopDTO = new model.dto.ShopDTO();
+                BeanUtils.populate(shopDTO, request.getParameterMap());
+
+                service.AdminService.DatabaseEditService.persistShopDTO(shopDTO);
+                break;
+                case "users":
+                model.dto.UserDTO userDTO = new model.dto.UserDTO();
+                BeanUtils.populate(userDTO, request.getParameterMap());
+
+                service.AdminService.DatabaseEditService.persistUserDTO(userDTO);
+                break;
+                case "products":
+                model.dto.ProductDTO productDTO = new model.dto.ProductDTO();
+                BeanUtils.populate(productDTO, request.getParameterMap());
+
+                service.AdminService.DatabaseEditService.persistProductDTO(productDTO);
+                break;
+            }
         } catch (java.sql.SQLException | IllegalAccessException | InvocationTargetException e) {
             service.Logging.logger.error("PERSISTING FAILED, REASON: {}", e.getMessage());
         }
+
+        response.sendRedirect(request.getServletContext() + "/admin/cp");
     }
 }

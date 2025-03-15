@@ -31,7 +31,7 @@
 
     <jsp:attribute name="body">
         <div align="center">
-        <form action="${pageContext.request.contextPath}/admin/cp?table=resources&action=edit" method="post">
+        <form action="${pageContext.request.contextPath}/admin/cp?table=resources" method="post">
             <table border="1" cellpadding="5">
                 <caption>
                     <h2>

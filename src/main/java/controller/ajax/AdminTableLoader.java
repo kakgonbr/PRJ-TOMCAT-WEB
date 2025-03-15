@@ -1,7 +1,7 @@
 package controller.ajax;
 
 import java.io.IOException;
-import java.util.stream.Collectors;
+import com.google.gson.GsonBuilder;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,7 +13,7 @@ public class AdminTableLoader extends HttpServlet {
         try {
             response.setContentType("application/json");
 
-            String json = new com.google.gson.Gson().toJson(service.AdminService.DatabaseEditService.getDTOs());
+            String json = new GsonBuilder().serializeNulls().create().toJson(service.AdminService.DatabaseEditService.getDTOs());
 
             response.getWriter().write(json);
         } catch (java.sql.SQLException e) {

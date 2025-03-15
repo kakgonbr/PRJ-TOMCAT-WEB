@@ -153,6 +153,10 @@ public class AdminService {
 
         public static java.util.List<java.util.Map<String, Object>> getDTOs() throws java.sql.SQLException {
             
+            java.util.Map<String, Object> resources = new java.util.HashMap<>();
+            resources.put("name", "resources");
+            resources.put("records", getResourceDTOs());
+
             java.util.Map<String, Object> products = new java.util.HashMap<>();
             products.put("name", "products");
             products.put("records", getProductDTOs());
