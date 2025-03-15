@@ -12,7 +12,7 @@ public class ProductDTO implements java.io.Serializable {
     public ProductDTO() {}
 
     public ProductDTO(model.Product product) {
-        setAvailablePromotionId(product.getAvailablePromotionId().getId());
+        setAvailablePromotionId(product.getAvailablePromotionId() == null ? null : product.getAvailablePromotionId().getId());
         setCategoryId(product.getCategoryId().getId());
         setDescription(product.getDescription());
         setId(product.getId());
