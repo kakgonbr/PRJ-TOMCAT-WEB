@@ -70,7 +70,7 @@ public class UserRegistrationServlet extends HttpServlet {
             idToEmail.put(id, email);
             
             request.setAttribute("email", email);
-            request.setAttribute("id", id); // the user needs to send this back to the dopost method to complete
+            request.setAttribute("googleId", id); // the user needs to send this back to the dopost method to complete
                                                  // registration, potential security risk
         }
 
