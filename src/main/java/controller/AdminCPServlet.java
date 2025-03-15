@@ -2,9 +2,8 @@ package controller;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-
+import java.math.BigDecimal;
 import org.apache.commons.beanutils.BeanUtils;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,7 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class AdminCPServlet extends HttpServlet {
     static {
-        // for relationships that can be null, use this to convert empty strings into null Integer
+        // for relationships that can be null, use this to convert empty strings into null keys
         org.apache.commons.beanutils.ConvertUtils.register(new org.apache.commons.beanutils.Converter() {
             @Override
             public Object convert(Class type, Object value) {
@@ -22,6 +21,26 @@ public class AdminCPServlet extends HttpServlet {
                 return Integer.valueOf(value.toString());
             }
         }, Integer.class);
+        
+        org.apache.commons.beanutils.ConvertUtils.register(new org.apache.commons.beanutils.Converter() {
+            @Override
+            public Object convert(Class type, Object value) {
+                if (value == null || "".equals(value)) {
+                    return null;
+                }
+                return value;
+            }
+        }, String.class);
+
+        org.apache.commons.beanutils.ConvertUtils.register(new org.apache.commons.beanutils.Converter() {
+            @Override
+            public Object convert(Class type, Object value) {
+                if (value == null || "".equals(value)) {
+                    return null;
+                }
+                return BigDecimal.valueOf(Long.parseLong(value.toString()));
+            }
+        }, BigDecimal.class);
     }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
