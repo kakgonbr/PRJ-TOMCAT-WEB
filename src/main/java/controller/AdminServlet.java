@@ -36,6 +36,9 @@ public class AdminServlet extends HttpServlet {
             case "logStatistics":
                 logStatistics();
             break;
+            case "calculateTFIDF":
+                calculateTFIDF();
+            break;
         }
 
         doGet(request, response);
@@ -46,6 +49,16 @@ public class AdminServlet extends HttpServlet {
             dao.StatisticsDAO.SystemStatisticsManager.addStatistics();
         } catch (java.sql.SQLException e) {
             service.Logging.logger.warn("Statistics Job failed, reason: {}", e.getMessage());
+            
+            return;
+        }
+    }
+
+    private static void calculateTFIDF() {
+        try {
+            dao.ProductDAO.TFIDF.computeTFIDF();
+        } catch (java.sql.SQLException e) {
+            service.Logging.logger.warn("TFIDF Job failed, reason: {}", e.getMessage());
             
             return;
         }

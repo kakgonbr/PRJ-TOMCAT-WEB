@@ -1,24 +1,24 @@
-<%-- POSSIBLE REQUEST ATTRIBUTES:  products (list), resources (list) --%>
-<%-- POSSIBLE REQUEST PARAMETERS:  --%>
+<%-- POSSIBLE REQUEST ATTRIBUTES: --%>
+<%-- POSSIBLE REQUEST PARAMETERS: --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <t:genericpage title="Admin Control Panel">
     <jsp:attribute name="head">
-        <t:resources/>
+        <t:resources />
+
+        <script src="${pageContext.request.contextPath}/resources/cp_js"></script>
 
         <script>
             var contextPath = "${pageContext.request.contextPath}";
+            document.addEventListener("DOMContentLoaded", function () {
+                fetchData();
+            });
         </script>
-        
 
-        <%-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script src="${pageContext.request.contextPath}/resources/chart_js"></script>
-        <script src="${pageContext.request.contextPath}/resources/admin_js"></script>
-        <script src="${pageContext.request.contextPath}/resources/log_js"></script> --%>
-        
+
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/admin_css">
     </jsp:attribute>
 
@@ -27,82 +27,196 @@
     </jsp:attribute>
 
     <jsp:attribute name="body">
-        <h2>Resource List</h2>
-        <table border="1">
+        <div>
+            <h2>Quick Actions</h2>
+            <form action="${pageContext.request.contextPath}/admin" method="POST">
+                <input type="hidden" name="action" value="enableMaintenance" />
+                <input type="submit" value="Enable Maintenance" />
+            </form>
+            <form action="${pageContext.request.contextPath}/admin" method="POST">
+                <input type="hidden" name="action" value="disableMaintenance" />
+                <input type="submit" value="Disable Maintenance" />
+            </form>
+            <form action="${pageContext.request.contextPath}/admin" method="POST">
+                <input type="hidden" name="action" value="logStatistics" />
+                <input type="submit" value="Log today's statistics" />
+            </form>
+            <form action="${pageContext.request.contextPath}/admin" method="POST">
+                <input type="hidden" name="action" value="calculateTFIDF" />
+                <input type="submit" value="Calculate TFIDF" />
+            </form>
+        </div>
 
-        <tr>
-            <th>ID</th>
-            <th>Path</th>
-        </tr>
-        <c:forEach var="resource" items="${resources}" varStatus="status">
-            <tr>
-                <td>${resource.id}</td>
-                <td>${resource.systemPath}</td>
-                <td>
-                    <form action="${pageContext.request.contextPath}/admin/cp" method="get">
-                        <input type="hidden" name="systemPath" value="${resource.systemPath}">
-                        <input type="hidden" name="table" value="resources">
-                        <input type="hidden" name="action" value="edit">
-                        <input type="hidden" name="id" value="${resource.id}">
-                        <button type="submit">Edit</button>
-                    </form>
-                    <form action="${pageContext.request.contextPath}/admin/cp" method="get">
-                        <input type="hidden" name="table" value="resources">
-                        <input type="hidden" name="action" value="delete">
-                        <input type="hidden" name="id" value="${resource.id}">
-                        <button type="submit">Delete</button>
-                    </form>
-                </td>
-            </tr>
-        </c:forEach>
-    </table>
+        <div class="table-container">
+            <h2>Resource List</h2>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Path</th>
+                    </tr>
+                </thead>
+                <tbody class="data-body" id="resources">
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-container">
+            <h2>Resource List</h2>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Category ID</th>
+                        <th>Available Promotion ID</th>
+                        <th>Image Resource ID</th>
+                        <th>Shop ID</th>
+                    </tr>
+                </thead>
+                <tbody class="data-body" id="products">
+
+                </tbody>
+            </table>
+        </div>
         
+        <div class="table-container">
+            <h2>Resource List</h2>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Email</th>
+                        <th>Username</th>
+                        <th>Phonenumber</th>
+                        <th>Password</th>
+                        <th>Persistent Cookie</th>
+                        <th>Google ID</th>
+                        <th>Facebook ID</th>
+                        <th>Display Name</th>
+                        <th>Bio</th>
+                        <th>Is Admin</th>
+                        <th>Credit</th>
+                        <th>Profile String Resource ID</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody class="data-body" id="users">
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-container">
+            <h2>Resource List</h2>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Is Visible</th>
+                        <th>Owner ID</th>
+                    </tr>
+                </thead>
+                <tbody class="data-body" id="shops">
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-container">
+            <h2>Resource List</h2>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Value</th>
+                        <th>ExpireDate</th>
+                        <th>Type</th>
+                        <th>Is Of Admin</th>
+                        <th>Creation Date</th>
+                        <th>Creator ID</th>
+                    </tr>
+                </thead>
+                <tbody class="data-body" id="promotions">
+
+                </tbody>
+            </table>
+        </div>
+
     </jsp:attribute>
 
     <jsp:attribute name="footer">
-        <t:footer/>
+        <t:footer />
     </jsp:attribute>
 </t:genericpage>
 
-<%-- POSSIBLE DESTINATIONS:  ${pageContext.request.contextPath}/admin/cp?table=products&action=edit&id=1--%>
+<%-- POSSIBLE DESTINATIONS:
+    ${pageContext.request.contextPath}/admin/cp?table=products&action=edit&id=1--%>
+    <%-- <c:forEach var="resource" items="${resources}" varStatus="status">
+        <tr>
+            <td>${resource.id}</td>
+            <td>${resource.systemPath}</td>
+            <td>
+                <form action="${pageContext.request.contextPath}/admin/cp" method="get">
+                    <input type="hidden" name="systemPath" value="${resource.systemPath}">
+                    <input type="hidden" name="table" value="resources">
+                    <input type="hidden" name="action" value="edit">
+                    <input type="hidden" name="id" value="${resource.id}">
+                    <button type="submit">Edit</button>
+                </form>
+                <form action="${pageContext.request.contextPath}/admin/cp" method="get">
+                    <input type="hidden" name="table" value="resources">
+                    <input type="hidden" name="action" value="delete">
+                    <input type="hidden" name="id" value="${resource.id}">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </c:forEach> --%>
+
         <%-- <table border="1">
 
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Description</th>
-            <th>CategoryId</th>
-            <th>availablePromotionId</th>
-            <th>imageStringResourceId</th>
-            <th>shopId</th>
-        </tr>
-        <c:forEach var="product" items="${products}" varStatus="status">
-            <c:if test="${status.index >= start && status.index < end}">
-                <tr>
-                    <td>${product.id}</td>
-                    <td>${product.name}</td>
-                    <td>${product.price}</td>
-                    <td>${product.description}</td>
-                    <td>${product.categoryId}</td>
-                    <td>${product.availablePromotionId}</td>
-                    <td>${product.imageStringResourceId}</td>
-                    <td>${product.shopId}</td>
-                    <td>
-                        <form action="${pageContext.request.contextPath}/admin/cp" method="get">
-                            <input type="hidden" name="table" value="products">
-                            <input type="hidden" name="action" value="edit">
-                            <input type="hidden" name="id" value="${product.id}">
-                            <button type="submit">Edit</button>
-                        </form>
-                        <form action="${pageContext.request.contextPath}/admin/cp" method="get">
-                            <input type="hidden" name="table" value="products">
-                            <input type="hidden" name="action" value="delete">
-                            <input type="hidden" name="id" value="${product.id}">
-                            <button type="submit">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-            </c:if>
-        </c:forEach>
-    </table> --%>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Description</th>
+                <th>CategoryId</th>
+                <th>availablePromotionId</th>
+                <th>imageStringResourceId</th>
+                <th>shopId</th>
+            </tr>
+            <c:forEach var="product" items="${products}" varStatus="status">
+                <c:if test="${status.index >= start && status.index < end}">
+                    <tr>
+                        <td>${product.id}</td>
+                        <td>${product.name}</td>
+                        <td>${product.price}</td>
+                        <td>${product.description}</td>
+                        <td>${product.categoryId}</td>
+                        <td>${product.availablePromotionId}</td>
+                        <td>${product.imageStringResourceId}</td>
+                        <td>${product.shopId}</td>
+                        <td>
+                            <form action="${pageContext.request.contextPath}/admin/cp" method="get">
+                                <input type="hidden" name="table" value="products">
+                                <input type="hidden" name="action" value="edit">
+                                <input type="hidden" name="id" value="${product.id}">
+                                <button type="submit">Edit</button>
+                            </form>
+                            <form action="${pageContext.request.contextPath}/admin/cp" method="get">
+                                <input type="hidden" name="table" value="products">
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="id" value="${product.id}">
+                                <button type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                </c:if>
+            </c:forEach>
+            </table> --%>

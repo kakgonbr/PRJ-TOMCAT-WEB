@@ -1,9 +1,9 @@
 package model.dto;
 
 public  class ShopDTO implements java.io.Serializable {
+    private Integer id;
     private String name;
     private String address;
-    private Integer id;
     private Boolean visible;
     private Integer ownerId;
 

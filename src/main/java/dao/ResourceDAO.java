@@ -70,5 +70,25 @@ public class ResourceDAO {
                 throw new java.sql.SQLException(e);
             }
         }
-    }
+    } // public static synchronized void editMapping
+
+    public static synchronized void deleteMapping(String id) throws java.sql.SQLException {
+        try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+            EntityTransaction et = em.getTransaction();
+
+            try {
+                et.begin();
+
+                em.remove(em.find(model.ResourceMap.class, id));
+
+                et.commit();
+            } catch (Exception e) {
+                if (et.isActive()) {
+                    et.rollback();
+                }
+
+                throw new java.sql.SQLException(e);
+            }
+        }
+    } // public static synchronized void editMapping
 }

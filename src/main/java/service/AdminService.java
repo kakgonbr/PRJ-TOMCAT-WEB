@@ -111,23 +111,65 @@ public class AdminService {
         }
 
         public static void persistProductDTO(ProductDTO productDTO) throws java.sql.SQLException {
+            if (productDTO.getId() == null) {
+                dao.ProductDAO.ProductManager.addProduct(productDTO.toProduct());
+                return;
+            }
+
             dao.ProductDAO.ProductManager.editProduct(productDTO.toProduct());
         }
 
         public static void persistShopDTO(ShopDTO shopDTO) throws java.sql.SQLException {
+            if (shopDTO.getId() == null) {
+                dao.ShopDAO.ShopManager.createShop(shopDTO.toShop());
+                return;
+            }
+
             dao.ShopDAO.ShopManager.updateShop(shopDTO.toShop());
         }
 
         public static void persistUserDTO(UserDTO userDTO) throws java.sql.SQLException {
+            if (userDTO.getId() == null) {
+                dao.UserDAO.UserManager.createUser(userDTO.toUser());
+                return;
+            }
+            
             dao.UserDAO.UserManager.updateUser(userDTO.toUser());
         }
 
         public static void persistResourceDTO(ResourceDTO resourceDTO) throws java.sql.SQLException {
+            if (resourceDTO.getId() == null) {
+                dao.ResourceDAO.addMapping(resourceDTO.getId(), resourceDTO.getSystemPath());
+
+                return;
+            }
+
             dao.ResourceDAO.editMapping(resourceDTO.toResourceMap());
         }
 
         public static void persistPromotionDTO(PromotionDTO promotionDTO) throws java.sql.SQLException {
             // TODO: IMPLEMENT
+        }
+
+        public static java.util.List<java.util.Map<String, Object>> getDTOs() throws java.sql.SQLException {
+            
+            java.util.Map<String, Object> products = new java.util.HashMap<>();
+            products.put("name", "products");
+            products.put("records", getProductDTOs());
+
+            java.util.Map<String, Object> shops = new java.util.HashMap<>();
+            shops.put("name", "shops");
+            shops.put("records", getShopDTOs());
+
+            java.util.Map<String, Object> users = new java.util.HashMap<>();
+            users.put("name", "users");
+            users.put("records", getUserDTOs());
+
+            // java.util.Map<String, Object> promotions = new java.util.HashMap<>();
+            // promotions.put("name", "promotions");
+            // promotions.put("records", getPromotionDTOs());
+
+            return java.util.Arrays.asList(products, shops, users);
         }
     }
 }

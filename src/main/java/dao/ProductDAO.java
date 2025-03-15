@@ -175,6 +175,28 @@ public class ProductDAO {
             }
         } // public static synchronized void editProduct
 
+        private static String MARK_PRODUCT_DELETE = "UPDATE tblProduct SET status = 0 WHERE id = ?1";
+
+        public static synchronized void deleteProduct(int productId) throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                EntityTransaction et = em.getTransaction();
+
+                try {
+                    et.begin();
+
+                    em.createNativeQuery(MARK_PRODUCT_DELETE).setParameter(0, productId);
+
+                    et.commit();
+                } catch (Exception e) {
+                    if (et.isActive()) {
+                        et.rollback();
+                    }
+
+                    throw new java.sql.SQLException(e);
+                }
+            }
+        } // public static synchronized void deleteProduct
+
         public static synchronized void addCustomizations(int productId,
                 java.util.List<model.ProductCustomization> customizations) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {

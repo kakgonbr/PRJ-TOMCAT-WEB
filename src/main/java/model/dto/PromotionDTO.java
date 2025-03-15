@@ -3,10 +3,10 @@ package model.dto;
 import java.util.Date;
 
 public class PromotionDTO implements java.io.Serializable {
+    private Integer id;
     private String name;
     private int value;
     private Date expireDate;
-    private Integer id;
     private Boolean type;
     private Boolean ofAdmin;
     private Date creationDate;

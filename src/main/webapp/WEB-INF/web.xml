@@ -98,7 +98,7 @@
     </servlet>
     <servlet>
         <servlet-name>n_AdminStatsServlet</servlet-name>
-        <servlet-class>controller.AdminStatsServlet</servlet-class>
+        <servlet-class>controller.ajax.AdminStatsServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>UserRegistrationServlet</servlet-name>
@@ -107,6 +107,10 @@
     <servlet>
         <servlet-name>n_CategoryLoader</servlet-name>
         <servlet-class>controller.ajax.CategoryLoader</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>n_AdminTableLoader</servlet-name>
+        <servlet-class>controller.ajax.AdminTableLoader</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>n_AdminCPServlet</servlet-name>
@@ -191,7 +195,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>n_AdminStatsServlet</servlet-name>
-        <url-pattern>/admin/data</url-pattern>
+        <url-pattern>/ajax/admin/data</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UserRegistrationServlet</servlet-name>
@@ -200,6 +204,10 @@
     <servlet-mapping>
         <servlet-name>n_CategoryLoader</servlet-name>
         <url-pattern>/ajax/category</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>n_AdminTableLoader</servlet-name>
+        <url-pattern>/ajax/admin/table</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>n_AdminCPServlet</servlet-name>

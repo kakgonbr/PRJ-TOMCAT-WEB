@@ -29,7 +29,11 @@ public final class Config {
         public static final String LOG_JSP = "/WEB-INF/jsp/log.jsp";
         public static final String SIGNUP_JSP = "/WEB-INF/jsp/signup.jsp";
         public static final String ADMIN_CONTROL_PANEL = "/WEB-INF/jsp/admin/adminControlPanel.jsp";
-        public static final String ADMIN_EDIT = "/WEB-INF/jsp/admin/resourceEdit.jsp";
+        public static final String ADMIN_EDIT_RESOURCE = "/WEB-INF/jsp/admin/resourceEdit.jsp";
+        public static final String ADMIN_EDIT_PRODUCT = "/WEB-INF/jsp/admin/productEdit.jsp";
+        public static final String ADMIN_EDIT_USER = "/WEB-INF/jsp/admin/userEdit.jsp";
+        public static final String ADMIN_EDIT_SHOP = "/WEB-INF/jsp/admin/shopEdit.jsp";
+        public static final String ADMIN_EDIT_PROMOTION = "/WEB-INF/jsp/admin/promotionEdit.jsp";
 
         public static final String PRIVILEGED_ADMIN_JSP = "/WEB-INF/jsp/admin/adminStats.jsp";
     }

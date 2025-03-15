@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function fetchChartData() {
-    fetch(contextPath + "/admin/data")
+    fetch(contextPath + "/ajax/admin/data")
         .then(response => response.json())
         .then(data => {
             data.forEach(chart => {
