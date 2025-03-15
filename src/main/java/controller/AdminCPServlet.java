@@ -11,6 +11,18 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class AdminCPServlet extends HttpServlet {
+    static {
+        // for relationships that can be null, use this to convert empty strings into null Integer
+        org.apache.commons.beanutils.ConvertUtils.register(new org.apache.commons.beanutils.Converter() {
+            @Override
+            public Object convert(Class type, Object value) {
+                if (value == null || "".equals(value)) {
+                    return null;
+                }
+                return Integer.valueOf(value.toString());
+            }
+        }, Integer.class);
+    }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String table = request.getParameter("table");
@@ -120,7 +132,7 @@ public class AdminCPServlet extends HttpServlet {
                     model.dto.ProductDTO productDTO = new model.dto.ProductDTO();
                     BeanUtils.populate(productDTO, request.getParameterMap());
 
-                    service.Logging.logger.info("promo id {}", productDTO.getAvailablePromotionId());
+                    // service.Logging.logger.info("promo id {}", productDTO.getAvailablePromotionId());
 
                     service.AdminService.DatabaseEditService.persistProductDTO(productDTO);
                 break;
