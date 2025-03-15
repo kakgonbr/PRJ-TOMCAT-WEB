@@ -114,6 +114,14 @@ public class UserRegistrationServlet extends HttpServlet {
             return;
         }
 
+        if (phoneNumber == null || !misc.Utils.Validator.phoneNumber(phoneNumber)) {
+            request.setAttribute("error", "phoneNumber");
+
+            request.getRequestDispatcher(config.Config.JSPMapper.SIGNUP_JSP).forward(request, response);
+            
+            return;
+        }
+
         if (password == null || !misc.Utils.Validator.password(password)) {
             request.setAttribute("error", "password");
 
@@ -122,13 +130,6 @@ public class UserRegistrationServlet extends HttpServlet {
             return;
         }
 
-        if (phoneNumber == null || !misc.Utils.Validator.phoneNumber(phoneNumber)) {
-            request.setAttribute("error", "phoneNumber");
-
-            request.getRequestDispatcher(config.Config.JSPMapper.SIGNUP_JSP).forward(request, response);
-            
-            return;
-        }
         // Should the email, username and phonenumber be individually checked with the database for uniqueness???????
 
         try {
@@ -139,6 +140,7 @@ public class UserRegistrationServlet extends HttpServlet {
             user.setPhoneNumber(phoneNumber);
             user.setPassword(password);
             user.setGoogleId(googleId); // In the database, this doesn't need to be unique, because for every id ther eis only 1 corresponding email.
+            user.setStatus(true);
 
             dao.UserDAO.UserManager.createUser(user);
         } catch (java.sql.SQLException e) {
