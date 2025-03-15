@@ -53,7 +53,7 @@ public class Utils {
          * @return
          */
         public static boolean username(String username) {
-            return java.util.regex.Pattern.compile("^[\\w_-]{8,32}", java.util.regex.Pattern.CASE_INSENSITIVE).matcher(username).find();
+            return java.util.regex.Pattern.compile("^[\\w_-]{8,32}$", java.util.regex.Pattern.CASE_INSENSITIVE).matcher(username).find();
         }
     }
 }
