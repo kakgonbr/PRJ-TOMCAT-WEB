@@ -51,7 +51,7 @@ public class UserDTO implements java.io.Serializable {
         user.setDisplayName(displayName);
         user.setBio(bio);
         user.setIsAdmin(isAdmin);
-        user.setCredit(BigDecimal.valueOf(credit));
+        user.setCredit(credit == null ? null : BigDecimal.valueOf(credit));
         user.setProfileStringResourceId(profileStringResourceId == null ? null : new model.ResourceMap(profileStringResourceId));
         user.setStatus(status);
 
