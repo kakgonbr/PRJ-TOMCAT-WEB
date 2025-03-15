@@ -33,7 +33,13 @@ function populateTables(data) {
                 cell.textContent = value;
             });
 
-            let params = new URLSearchParams(item);
+            let params = new URLSearchParams();
+            Object.entries(item).forEach(([key, value]) => {
+                if (value !== null && value !== undefined && value !== "null") {
+                    params.append(key, value);
+                }
+            });
+            
             params.append("action", "edit");
             params.append("table", table.name);
 
