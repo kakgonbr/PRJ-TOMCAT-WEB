@@ -33,7 +33,7 @@ public class UserDTO implements java.io.Serializable {
         setPassword(user.getPassword());
         setPersistentCookie(user.getPersistentCookie());
         setPhoneNumber(user.getPhoneNumber());
-        setProfileStringResourceId(user.getProfileStringResourceId().getId());
+        setProfileStringResourceId(user.getProfileStringResourceId() == null ? null : user.getProfileStringResourceId().getId());
         setStatus(user.isStatus());
         setUsername(user.getUsername());
     }
