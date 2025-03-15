@@ -173,7 +173,7 @@ public class AdminService {
             // promotions.put("name", "promotions");
             // promotions.put("records", getPromotionDTOs());
 
-            return java.util.Arrays.asList(products, shops, users);
+            return java.util.Arrays.asList(resources, products, shops, users);
         }
     }
 }
