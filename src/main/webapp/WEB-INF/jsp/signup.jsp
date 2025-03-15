@@ -36,10 +36,10 @@
             <label>Username:</label>
             <input type="text" name="username" value="${param.username}">
             <label>Email:</label>
-            <c:if test="${googleId == null}">
+            <c:if test="${googleId == null || googleId == ''}">
                 <input type="text" name="email" value="${param.email}">
             </c:if>
-            <c:if test="${googleId != null}">
+            <c:if test="${googleId != null && googleId != ''}">
                 <input type="text" name="email" value="${email}" disabled>
             </c:if>
             <label>Phone Number:</label>

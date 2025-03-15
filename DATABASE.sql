@@ -16,7 +16,7 @@ CREATE TABLE tblUser
 	facebookId varchar(255),
 	isAdmin bit DEFAULT 0,
 	credit money,
-	status bit NOT NULL DEFAULT 0,
+	status bit NOT NULL DEFAULT 1,
 
 	displayName nvarchar(50),
 	profileStringResourceId varchar(30),
