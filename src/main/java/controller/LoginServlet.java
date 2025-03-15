@@ -32,8 +32,7 @@ public class LoginServlet extends HttpServlet {
             }
         }
 
-        request.getRequestDispatcher(config.Config.JSPMapper.LOGIN_JSP).forward(request, response);
-        
+        request.getRequestDispatcher(config.Config.JSPMapper.LOGIN_JSP).forward(request, response);   
     }
 
     /**

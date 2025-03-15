@@ -2,6 +2,8 @@ package dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.NoResultException;
+
 import java.sql.SQLException;
 
 import model.User;
@@ -123,7 +125,8 @@ public final class UserDAO {
         public static synchronized model.User getUserFromUsername(String username)
                 throws SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                return em.createNamedQuery("User.findByUsername", model.User.class).setParameter("username", username).getSingleResult();
+                return em.createNamedQuery("User.findByUsername", model.User.class).setParameter("username", username)
+                        .getSingleResult();
             } catch (Exception e) {
                 throw new java.sql.SQLException(e);
             }
@@ -131,7 +134,8 @@ public final class UserDAO {
 
         public static synchronized model.User getUser(String cookie) throws SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                return em.createNamedQuery("User.findByPersistentCookie", model.User.class).setParameter("persistentCookie", cookie).getSingleResult();
+                return em.createNamedQuery("User.findByPersistentCookie", model.User.class)
+                        .setParameter("persistentCookie", cookie).getSingleResult();
             } catch (Exception e) {
                 throw new java.sql.SQLException(e);
             }
@@ -155,6 +159,19 @@ public final class UserDAO {
                 throw new java.sql.SQLException(e);
             }
         } // public static synchronized model.User getUser
+
+        private static final String GET_USER_WITH_GOOGLE = "SELECT * FROM tblUser WHERE googleId = ?1 AND email = ?2";
+
+        public static synchronized model.User getUserFromGoogle(String id, String email) throws SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return (User) em.createNativeQuery(GET_USER_WITH_GOOGLE, User.class).setParameter(1, id)
+                        .setParameter(2, email).getSingleResult();
+            } catch (NoResultException e) {
+                return null;
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
+            }
+        }
 
         public static synchronized java.util.List<model.User> getUsers()
                 throws java.sql.SQLException {
