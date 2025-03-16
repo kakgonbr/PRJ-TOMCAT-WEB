@@ -110,7 +110,7 @@
                         </ul>
                     </li>
                 </c:if>
-                <c:if test="${user == null}">
+                <c:if test="${user == null || user == ''}">
                     <li>
                         <a href="${pageContext.request.contextPath}/login" class="btn btn-default">Log In</a>
                     </li>
