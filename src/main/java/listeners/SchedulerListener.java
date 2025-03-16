@@ -15,6 +15,7 @@ public class SchedulerListener implements ServletContextListener {
 
         scheduler.scheduleAtFixedRate(new service.StatisticsJob(), 24 - java.time.LocalDateTime.now().getHour(), 24, TimeUnit.HOURS);
         scheduler.scheduleAtFixedRate(new service.TFIDFJob(), 24 - java.time.LocalDateTime.now().getHour(), 24, TimeUnit.HOURS);
+        scheduler.scheduleAtFixedRate(new service.FileCleanupJob(), 24 - java.time.LocalDateTime.now().getHour(), 24, TimeUnit.HOURS);
     }
 
     @Override

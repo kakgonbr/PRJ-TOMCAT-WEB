@@ -20,7 +20,7 @@
     </jsp:attribute>
 
     <jsp:attribute name="header">
-        <h1>Home</h1>
+        <t:nav search="true" mainNav="true" user="true" activePage="home"/>
     </jsp:attribute>
 
     <jsp:attribute name="body">
