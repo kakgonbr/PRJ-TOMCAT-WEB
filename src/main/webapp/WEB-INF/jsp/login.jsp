@@ -70,7 +70,7 @@
                 <div class="col">
                     <a
                         href="https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=https://kakgonbri.zapto.org:8443/prj/signup&prompt=select_account&response_type=code&client_id=691274987273-s4ooisq489ch7bp9ib1ttvp6cuhf1u96.apps.googleusercontent.com&scope=https://www.googleapis.com/auth/userinfo.email&access_type=offline">
-                        <button class="btn shadow w-75">
+                        <button class="btn shadow w-75 custom-outline-button">
                             <i class="bi bi-google"></i>
                             Google
                         </button>
@@ -79,7 +79,7 @@
                 <div class="col">
                     <a
                         href="https://www.facebook.com/v22.0/dialog/oauth?fields=id,name,email&client_id=1292754858725836&redirect_uri=https://kakgonbri.zapto.org:8443/prj/signup?method=fb">
-                        <button class="btn shadow w-75">
+                        <button class="btn shadow w-75 custom-outline-button">
                             <i class="bi bi-facebook"></i>
                             Facebook
                         </button>
