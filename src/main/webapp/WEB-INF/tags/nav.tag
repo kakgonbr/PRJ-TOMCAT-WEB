@@ -90,7 +90,7 @@
                         </form>
                     </li>
                 </c:if>
-                <c:if test="${user != null}">
+                <c:if test="${user != null && user != ''}">
                     <li class="nav-item dropdown">
                         <!-- add user name here -->
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
