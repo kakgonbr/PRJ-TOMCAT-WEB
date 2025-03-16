@@ -501,6 +501,7 @@ GO
 
 INSERT INTO tblResourceMap
 VALUES
+('main_css', 'main.css'),
 ('main_js', 'main.js'),
 ('test_js', 'test.js'),
 ('chat_js', 'chat.js'),
