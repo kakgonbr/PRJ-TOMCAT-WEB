@@ -34,6 +34,8 @@ public class LoginServlet extends HttpServlet {
             }
         }
 
+        session = request.getSession(false);
+
         if (session != null && user != null) {
             redirect(request, response, user.getIsAdmin());
             return;
