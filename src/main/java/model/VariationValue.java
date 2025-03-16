@@ -46,6 +46,8 @@ public class VariationValue implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Column(name = "status")
+    private Boolean status;
     @JoinColumn(name = "variationId", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.EAGER)
     private Variation variationId;

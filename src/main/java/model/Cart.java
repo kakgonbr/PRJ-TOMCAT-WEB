@@ -41,6 +41,8 @@ public class Cart implements Serializable {
     @NotNull
     @Column(name = "id")
     private Integer id;
+    @Column(name = "status")
+    private Boolean status;
     @JoinColumn(name = "userId", referencedColumnName = "id")
     @ManyToOne
     private User userId;

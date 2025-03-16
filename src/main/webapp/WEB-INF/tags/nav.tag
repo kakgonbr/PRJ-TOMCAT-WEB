@@ -112,7 +112,7 @@
                 </c:if>
                 <c:if test="${user == null || user == ''}">
                     <li>
-                        <a href="${pageContext.request.contextPath}/login" class="btn shadow w-75 custom-outline-button">Log In</a>
+                        <a href="${pageContext.request.contextPath}/login" class="btn shadow custom-outline-button">Log In</a>
                     </li>
                 </c:if>
             </ul>

@@ -198,7 +198,7 @@ CREATE TABLE tblCart
 	CONSTRAINT fk_cart_user FOREIGN KEY (userId) REFERENCES tblUser(id)
 )
 
-ALTER TABLE tblVariation
+ALTER TABLE tblCart
 ADD status bit;
 
 
