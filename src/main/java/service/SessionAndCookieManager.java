@@ -27,7 +27,7 @@ public final class SessionAndCookieManager {
     /**
      *
      */
-    public static void createSession(User user, jakarta.servlet.http.HttpSession session, boolean rememberMe) throws java.sql.SQLException {
+    public static String createSession(User user, jakarta.servlet.http.HttpSession session, boolean rememberMe) throws java.sql.SQLException {
         session.setAttribute("user", user);
 
         if (rememberMe) {
@@ -41,7 +41,7 @@ public final class SessionAndCookieManager {
 
                     dao.UserDAO.UserManager.updateCookie(user.getId(), cookie);
                     
-                    return;
+                    return cookie;
                 } catch (java.sql.SQLException e) {
                     service.Logging.logger.warn("Failed to genereate UUID for session {}, retries remaining: {}, reason: {}", session.getId(), config.Config.CookieMapper.UUID_RETRY - i, e.getMessage());
                 }
@@ -49,5 +49,7 @@ public final class SessionAndCookieManager {
 
             throw new java.sql.SQLException("Could not insert a new cookie for session {}", session.getId());
         }
+
+        return null;
     }
 }

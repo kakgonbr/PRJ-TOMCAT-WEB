@@ -1,13 +1,8 @@
 package controller;
 
 import java.io.IOException;
-import java.util.Map;
-
-import org.apache.http.client.ClientProtocolException;
-
-import com.google.gson.JsonElement;
-
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -52,7 +47,9 @@ public class LoginServlet extends HttpServlet {
                 throw new java.sql.SQLException("Failed to retreive user");
             }
 
-            service.SessionAndCookieManager.createSession(user, request.getSession(), rememberMe);
+            String cookie = service.SessionAndCookieManager.createSession(user, request.getSession(), rememberMe);
+
+            response.addCookie(new Cookie(config.Config.CookieMapper.REMEMBER_ME_COOKIE, cookie));
         } catch (java.sql.SQLException e) {
             service.Logging.logger.warn("Log in failed for request {}, tried: {} and {}. Reason: {}", request.getRequestId(), userOrEmail, password, e.getMessage());
 
