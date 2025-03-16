@@ -35,10 +35,14 @@ public final class SessionAndCookieManager {
                 // user.setCookie(java.util.UUID.randomUUID().toString());
                 String cookie = java.util.UUID.randomUUID().toString();
                 try {
+                    if (!dao.UserDAO.UserFetcher.checkCookie(cookie)) {
+                        throw new java.sql.SQLException("COOKIE ALREADY EXISTS: " + cookie);
+                    }
+
                     dao.UserDAO.UserManager.updateCookie(user.getId(), cookie);
                     
                     return;
-                } catch (java.sql.SQLIntegrityConstraintViolationException e) {
+                } catch (java.sql.SQLException e) {
                     service.Logging.logger.warn("Failed to genereate UUID for session {}, retries remaining: {}, reason: {}", session.getId(), config.Config.CookieMapper.UUID_RETRY - i, e.getMessage());
                 }
             }

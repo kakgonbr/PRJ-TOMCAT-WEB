@@ -215,7 +215,7 @@ public final class UserDAO {
         // make sure phone number is in the correct format
         public static synchronized boolean checkPhonenumber(String phonenumber) throws SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                em.createNativeQuery(CHECK_USERNAME, model.User.class).setParameter(1, phonenumber).getSingleResult();
+                em.createNativeQuery(CHECK_PHONENUMBER, model.User.class).setParameter(1, phonenumber).getSingleResult();
             } catch (NoResultException e) {
                 return true;
             } catch (Exception e) {
@@ -229,7 +229,7 @@ public final class UserDAO {
 
         public static synchronized boolean checkCookie(String cookie) throws SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                em.createNativeQuery(CHECK_USERNAME, model.User.class).setParameter(1, cookie).getSingleResult();
+                em.createNativeQuery(CHECK_COOKIE, model.User.class).setParameter(1, cookie).getSingleResult();
             } catch (NoResultException e) {
                 return true;
             } catch (Exception e) {

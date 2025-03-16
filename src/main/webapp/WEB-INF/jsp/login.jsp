@@ -42,7 +42,7 @@
                     </div>
                     <div class="d-flex align-items-center justify-content-between my-3">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="rememberMe" value="false" id="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" name="rememberMe" value="true" id="flexCheckDefault">
                             <label class="form-check-label text-muted" for="flexCheckDefault">
                                 Remember me
                             </label>
