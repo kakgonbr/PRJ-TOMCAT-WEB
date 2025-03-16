@@ -3,7 +3,7 @@ function setTheme(mode = 'system') {
     const sysMode = window.matchMedia(
         '(prefers-color-scheme: light)'
     ).matches;
-    const useSystem = mode === 'system';
+    const useSystem = mode === 'system' && !userMode;
     const modeChosen = useSystem
         ? 'system'
         : mode === 'dark' || mode === 'light'
