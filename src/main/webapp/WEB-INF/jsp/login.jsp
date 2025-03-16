@@ -22,14 +22,14 @@
 
     <jsp:attribute name="body">
         <main class="container-fluid d-flex justify-content-evenly mt-5 p-5"
-            style="background-color: var(--bs-custom-login-bg) !important">
+            style="background-color: var(--bs-custom-background-focus) !important">
             <!--login-->
             <div style="width: 35%;">
                 <img src="/c92e82f5e4f84cfebcff1dcd1bb52135.png" alt="shop_logo"
                     style="width: 100%;">
             </div>
             <!--form-->
-            <div class="shadow rounded input-group-lg p-5" id="formLogin">
+            <div class="shadow rounded input-group-lg p-5" style="background-color: var(--bs-custom-content-focus) !important" id="formLogin">
                 <div class="mb-5">
                     <h2 class="text-center">Login to your account</h2>
                 </div>
@@ -59,7 +59,6 @@
                     </div>
                     <input type="submit" class="btn btn-primary w-100 my-3" value="Sign in">
                 </form>
-            </div>
             <div class="d-flex align-items-center my-2">
                 <hr class="flex-grow-1 bg-secondary">
                 <span class="mx-2 fs-6 text-muted">

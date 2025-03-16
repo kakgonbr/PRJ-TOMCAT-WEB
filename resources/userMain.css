@@ -1,14 +1,14 @@
 :root,
 [data-bs-theme="light"] {
-    --bs-custom-login-bg: var(--bs-blue-200);
+    --bs-custom-background-focus: #90CAF9;
 
-    --bs-custom-login-form-bg: var(--bs-white);
+    --bs-custom-content-focus: #FFFFFF;
 }
 
 [data-bs-theme="dark"] {
-    --bs-custom-login-bg: var(--bs-blue-600);
+    --bs-custom-background-focus: #1976D2;
 
-    --bs-custom-login-form-bg: var(--bs-gray-600);
+    --bs-custom-content-focus: #757575;
 }
 
 .fs-0 {
