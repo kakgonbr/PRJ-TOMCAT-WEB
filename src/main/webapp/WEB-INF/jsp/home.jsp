@@ -13,14 +13,14 @@
         
         <script>
             var contextPath = "${pageContext.request.contextPath}";
-            document.addEventListener("DOMContentLoaded", fetchProducts);
             document.addEventListener("DOMContentLoaded", fetchCategory);
+            document.addEventListener("DOMContentLoaded", fetchProducts);
         </script>
 
     </jsp:attribute>
 
     <jsp:attribute name="header">
-        <t:nav search="true" mainNav="true" user="${sessionScope.user}" activePage="home"/>
+        <t:nav search="true" mainNav="true" user="${sessionScope.user.name}" activePage="home"/>
     </jsp:attribute>
 
     <jsp:attribute name="body">

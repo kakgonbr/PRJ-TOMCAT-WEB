@@ -16,25 +16,38 @@ public class LoginServlet extends HttpServlet {
      *
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         jakarta.servlet.http.HttpSession session = request.getSession(false);
+        String action = request.getParameter("action");
 
-        if (session != null) {
-            model.User user = (model.User) session.getAttribute("user");
-            if (user != null) {
-                redirect(request, response, user.getIsAdmin());
-                return;
+        model.User user = null;
+        if (session != null && (user = (model.User) session.getAttribute("user")) != null && action != null
+                && action.equals("logout")) {
+            try {
+                session.invalidate();
+
+                dao.UserDAO.UserManager.deleteCookie(user.getId());
+            } catch (java.sql.SQLException e) {
+                service.Logging.logger.info("Failed to delete cookie for user {}, reason: {}", user.getId(),
+                        e.getMessage());
             }
         }
 
-        request.getRequestDispatcher(config.Config.JSPMapper.LOGIN_JSP).forward(request, response);   
+        if (session != null && user != null) {
+            redirect(request, response, user.getIsAdmin());
+            return;
+        }
+
+        request.getRequestDispatcher(config.Config.JSPMapper.LOGIN_JSP).forward(request, response);
     }
 
     /**
      *
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String userOrEmail = request.getParameter("userOrEmail");
         String password = request.getParameter("password");
         boolean rememberMe = Boolean.parseBoolean(request.getParameter("rememberMe"));
@@ -57,7 +70,8 @@ public class LoginServlet extends HttpServlet {
 
             response.addCookie(toBeAdded);
         } catch (java.sql.SQLException e) {
-            service.Logging.logger.warn("Log in failed for request {}, tried: {} and {}. Reason: {}", request.getRequestId(), userOrEmail, password, e.getMessage());
+            service.Logging.logger.warn("Log in failed for request {}, tried: {} and {}. Reason: {}",
+                    request.getRequestId(), userOrEmail, password, e.getMessage());
 
             request.setAttribute("reason", "invalid");
 
@@ -68,12 +82,14 @@ public class LoginServlet extends HttpServlet {
 
         service.Logging.logger.info("User logged in: {}", user.getUsername());
 
-        // request.getRequestDispatcher(config.Config.JSPMapper.HOME_JSP).forward(request, response);
+        // request.getRequestDispatcher(config.Config.JSPMapper.HOME_JSP).forward(request,
+        // response);
 
         redirect(request, response, user.getIsAdmin());
     }
 
-    private static void redirect(HttpServletRequest request, HttpServletResponse response, boolean isAdmin) throws ServletException, IOException {
+    private static void redirect(HttpServletRequest request, HttpServletResponse response, boolean isAdmin)
+            throws ServletException, IOException {
         if (!isAdmin) {
             response.sendRedirect(request.getContextPath() + "/home");
             return;
@@ -83,4 +99,3 @@ public class LoginServlet extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/admin");
     }
 }
-
