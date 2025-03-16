@@ -3,53 +3,21 @@ package dao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import java.sql.SQLException;
-import model.CartItem;
-import model.ProductItem;
+import java.util.List;
+import model.Cart;
+import service.DatabaseConnection;
 
 public final class CartDAO {
 
-    public static final class CartRetriever {
-
-        public static synchronized model.Cart getCart(int userID) throws SQLException {
-            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                return em.createNamedQuery("Cart.findById", model.Cart.class).setParameter("userID", userID)
-                        .getSingleResult();
-            } catch (Exception e) {
-                throw new java.sql.SQLException(e);
-            }
-        }
-
-        public static synchronized java.util.List<model.Cart> getCarts()
-                throws java.sql.SQLException {
-            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                return em.createNamedQuery("Cart.findAll", model.Cart.class).getResultList();
-            } catch (Exception e) {
-                throw new java.sql.SQLException(e);
-            }
-        }
-    }
-
-    public static final class CartPaymentProcessor {
-
-        public CartPaymentProcessor() {
-        }
-    }
-
     public static final class CartManager {
 
-        public static synchronized boolean addProduct(ProductItem productItem, int quantity) throws SQLException {
+        public static synchronized void createCart(Cart cart) throws SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 EntityTransaction et = em.getTransaction();
-
                 try {
                     et.begin();
-                    CartItem cartItem = new CartItem();
-                    cartItem.setProductItemId(productItem);
-                    cartItem.setQuantity(quantity);
-                    cartItem.setStatus(true);
-                    em.persist(cartItem);
+                    em.persist(cart);
                     et.commit();
-                    return true;
                 } catch (Exception e) {
                     if (et.isActive()) {
                         et.rollback();
@@ -59,32 +27,57 @@ public final class CartDAO {
             }
         }
 
-        public static synchronized boolean changeCount(int index, int quantity) throws SQLException {
+        private static final String DELETE_CART = "UPDATE tblCart SET status = 0 WHERE id = ?1";
+
+        public static synchronized void deleteCart(int id) throws SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                em.createNativeQuery(DELETE_CART).setParameter(1, id).executeUpdate();
+            } catch (Exception e) {
+                throw new SQLException(e);
+            }
+        }
+
+        public static synchronized void updateCart(Cart cart) throws SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 EntityTransaction et = em.getTransaction();
-
                 try {
                     et.begin();
-                    CartItem cartItem = em.find(CartItem.class, index);
-                    if (cartItem != null) {
-                        if (quantity > 0) {
-                            cartItem.setQuantity(quantity);
-                            em.merge(cartItem);
-                        } else {
-                            em.remove(cartItem);
-                        }
-                        et.commit();
-                        return true;
-                    }
-                    return false;
+
+                    Cart dbCart = em.find(Cart.class, cart.getId());
+
+                    dbCart.setUserId(cart.getUserId());
+                    dbCart.setCartItemList(cart.getCartItemList());
+
+                    et.commit();
                 } catch (Exception e) {
                     if (et.isActive()) {
                         et.rollback();
                     }
                     throw new SQLException(e);
                 }
+            }
+        }
+
+    }
+
+    public static final class CartFetcher {
+
+        public static synchronized Cart getCart(int id) throws SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return em.createNamedQuery("Cart.findById", Cart.class)
+                        .setParameter("id", id)
+                        .getSingleResult();
+            } catch (Exception e) {
+                throw new SQLException(e);
+            }
+        }
+
+        public static synchronized List<Cart> getCarts() throws SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return em.createNamedQuery("Cart.findAll", Cart.class).getResultList();
+            } catch (Exception e) {
+                throw new SQLException(e);
             }
         }
     }
-
 }

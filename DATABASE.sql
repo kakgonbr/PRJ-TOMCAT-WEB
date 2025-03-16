@@ -115,6 +115,9 @@ CREATE TABLE tblVariation
 	CONSTRAINT fk_variation_category FOREIGN KEY (categoryId) REFERENCES tblCategory(id)
 )
 
+ALTER TABLE tblVariation
+ADD status bit;
+
 CREATE TABLE tblVariationValue
 (
 	id int PRIMARY KEY IDENTITY(1, 1),
@@ -123,6 +126,9 @@ CREATE TABLE tblVariationValue
 
 	constraint fk_variationvalue_variation foreign key (variationId) references tblVariation(id)
 )
+
+ALTER TABLE tblVariationValue
+ADD status bit;
 
 CREATE TABLE tblProduct
 (
@@ -191,6 +197,10 @@ CREATE TABLE tblCart
 
 	CONSTRAINT fk_cart_user FOREIGN KEY (userId) REFERENCES tblUser(id)
 )
+
+ALTER TABLE tblVariation
+ADD status bit;
+
 
 CREATE TABLE tblCartItem
 (
