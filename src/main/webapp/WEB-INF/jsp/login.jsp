@@ -42,7 +42,7 @@
                     </div>
                     <div class="d-flex align-items-center justify-content-between my-3">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" name="rememberMe" value="false" id="flexCheckDefault">
                             <label class="form-check-label text-muted" for="flexCheckDefault">
                                 Remember me
                             </label>
@@ -80,7 +80,7 @@
                 </div>
                 <div class="d-flex align-items-center justify-content-center">
                     <p class="text-muted my-0 mx-3">Don't have an account?</p>
-                    <a href="#" class="text-decoration-none">
+                    <a href="${pageContext.request.contextPath}/signup" class="text-decoration-none">
                         Create an account
                     </a>
                 </div>

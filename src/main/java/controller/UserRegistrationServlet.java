@@ -129,6 +129,8 @@ public class UserRegistrationServlet extends HttpServlet {
             phoneNumber = "+84" + phoneNumber.substring(1);
         }
 
+        phoneNumber = phoneNumber.replaceAll("\\s+", "");
+
         if (password == null || !misc.Utils.Validator.password(password)) {
             request.setAttribute("error", "password");
 
@@ -138,13 +140,40 @@ public class UserRegistrationServlet extends HttpServlet {
         }
 
         // Should the email, username and phonenumber be individually checked with the database for uniqueness???????
+        // yes,,,,,,,,,,,,,,,,
+
 
         try {
+            if (!dao.UserDAO.UserFetcher.checkUserName(username)) {
+                request.setAttribute("taken", "username");
+    
+                request.getRequestDispatcher(config.Config.JSPMapper.SIGNUP_JSP).forward(request, response);
+                
+                return;
+            }
+            
+            if (!dao.UserDAO.UserFetcher.checkEmail(email)) {
+                request.setAttribute("taken", "email");
+    
+                request.getRequestDispatcher(config.Config.JSPMapper.SIGNUP_JSP).forward(request, response);
+                
+                return;
+            }
+
+            if (!dao.UserDAO.UserFetcher.checkPhonenumber(phoneNumber)) {
+                request.setAttribute("taken", "phoneNumber");
+    
+                request.getRequestDispatcher(config.Config.JSPMapper.SIGNUP_JSP).forward(request, response);
+                
+                return;
+            }
+    
+
             model.User user = new model.User();
 
             user.setEmail(email);
             user.setUsername(username);
-            user.setPhoneNumber(phoneNumber.replaceAll("\\s+", ""));
+            user.setPhoneNumber(phoneNumber);
             user.setPassword(password);
             user.setGoogleId(googleId); // In the database, this doesn't need to be unique, because for every id ther eis only 1 corresponding email.
             user.setStatus(true);

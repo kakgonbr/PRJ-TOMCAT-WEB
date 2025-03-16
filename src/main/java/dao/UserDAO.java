@@ -181,5 +181,62 @@ public final class UserDAO {
                 throw new java.sql.SQLException(e);
             }
         } // public static synchronized java.util.List<model.User> getUsers
+
+        private static final String CHECK_USERNAME = "SELECT * FROM tblUser WHERE username = ?1";
+
+        public static synchronized boolean checkUserName(String username) throws SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                em.createNativeQuery(CHECK_USERNAME, model.User.class).setParameter(1, username).getSingleResult();
+            } catch (NoResultException e) {
+                return true;
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
+            }
+
+            return false;
+        } // public static synchronized boolean checkUserName
+
+        private static final String CHECK_EMAIL = "SELECT * FROM tblUser WHERE email = ?1";
+
+        public static synchronized boolean checkEmail(String email) throws SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                em.createNativeQuery(CHECK_EMAIL, model.User.class).setParameter(1, email).getSingleResult();
+            } catch (NoResultException e) {
+                return true;
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
+            }
+
+            return false;
+        }
+
+        private static final String CHECK_PHONENUMBER = "SELECT * FROM tblUser WHERE phoneNumber = ?1";
+
+        // make sure phone number is in the correct format
+        public static synchronized boolean checkPhonenumber(String phonenumber) throws SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                em.createNativeQuery(CHECK_USERNAME, model.User.class).setParameter(1, phonenumber).getSingleResult();
+            } catch (NoResultException e) {
+                return true;
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
+            }
+
+            return false;
+        }
+
+        private static final String CHECK_COOKIE = "SELECT * FROM tblUser WHERE persistentCookie = ?1";
+
+        public static synchronized boolean checkCookie(String cookie) throws SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                em.createNativeQuery(CHECK_USERNAME, model.User.class).setParameter(1, cookie).getSingleResult();
+            } catch (NoResultException e) {
+                return true;
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
+            }
+
+            return false;
+        }
     } // public static final class UserFetcher
 }

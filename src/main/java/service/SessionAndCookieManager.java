@@ -3,8 +3,9 @@ package service;
 import model.User;
 
 public final class SessionAndCookieManager {
-    public static boolean createSessionFromCookie(jakarta.servlet.http.HttpSession session, jakarta.servlet.http.HttpServletRequest request) {
+    public static boolean createSessionFromCookie(jakarta.servlet.http.HttpServletRequest request) {
         jakarta.servlet.http.Cookie[] cookies = request.getCookies();
+        jakarta.servlet.http.HttpSession session = null;
 
         for (final jakarta.servlet.http.Cookie cookie : cookies) {
             if (cookie.getName().equals(config.Config.CookieMapper.REMEMBER_ME_COOKIE)) {

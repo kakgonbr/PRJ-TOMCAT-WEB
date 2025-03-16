@@ -1,5 +1,5 @@
-<%-- POSSIBLE REQUEST ATTRIBUTES:  email, id--%>
-<%-- POSSIBLE REQUEST PARAMETERS:  --%>
+<%-- POSSIBLE REQUEST ATTRIBUTES:  email, id, error, taken --%>
+<%-- POSSIBLE REQUEST PARAMETERS:  username, email, phoneNumber, password--%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
@@ -13,7 +13,7 @@
     <jsp:attribute name="header">
     <%-- TODO: Add informative error messages telling the user accepted formats --%>
         <c:if test="${error == 'db'}">
-            <h1>A DATABASE OCCURRED!</h1>
+            <h1>A DATABASE ERROR OCCURRED!</h1>
         </c:if>
         <c:if test="${error == 'username'}">
             <h1>USERNAME!</h1>
@@ -26,6 +26,15 @@
         </c:if>
         <c:if test="${error == 'phoneNumber'}">
             <h1>PHONENUMBER!</h1>
+        </c:if>
+        <c:if test="${taken == 'username'}">
+            <h1>USERNAME IS TAKEN!</h1>
+        </c:if>
+        <c:if test="${taken == 'email'}">
+            <h1>EMAIL IS TAKEN!</h1>
+        </c:if>
+        <c:if test="${taken == 'phoneNumber'}">
+            <h1>PHONE NUMBER IS TAKEN!</h1>
         </c:if>
         <h1>Sign up</h1>
     </jsp:attribute>
