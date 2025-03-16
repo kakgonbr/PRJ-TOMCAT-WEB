@@ -11,9 +11,11 @@ public final class SessionAndCookieManager {
             if (cookie.getName().equals(config.Config.CookieMapper.REMEMBER_ME_COOKIE)) {
                 try {
                     model.User user = dao.UserDAO.UserFetcher.getUser(cookie.getValue());
-
+                    
                     session = request.getSession();
                     session.setAttribute("user", user);
+                    
+                    service.Logging.logger.info("Logged {} in with cookie {}", user.getUsername(), cookie);
 
                     return true;
                 } catch (java.sql.SQLException e) {

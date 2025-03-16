@@ -17,7 +17,7 @@
     </jsp:attribute>
 
     <jsp:attribute name="header">
-        
+        <t:nav />
     </jsp:attribute>
 
     <jsp:attribute name="body">
