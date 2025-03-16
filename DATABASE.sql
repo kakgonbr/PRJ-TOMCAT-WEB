@@ -75,6 +75,7 @@ CREATE TABLE tblPromotion
 	value int NOT NULL,
 	creationDate DATE DEFAULT GETDATE(),
 	expireDate DATE NOT NULL,
+	status bit,
 
 	CONSTRAINT fk_promo_creator FOREIGN KEY (creatorId) REFERENCES tblUser(id)
 )
