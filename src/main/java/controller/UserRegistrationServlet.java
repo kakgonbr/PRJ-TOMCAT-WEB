@@ -61,7 +61,7 @@ public class UserRegistrationServlet extends HttpServlet {
             if (user != null) {
                 request.getSession().setAttribute("user", user);
 
-                request.getRequestDispatcher(request.getContextPath() + "/login"); // delegate to login servlet
+                response.sendRedirect(request.getContextPath() + "/login");
 
                 return;
             }
