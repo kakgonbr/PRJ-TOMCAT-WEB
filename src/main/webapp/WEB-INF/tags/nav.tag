@@ -93,7 +93,7 @@
                         <!-- add user name here -->
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
                             role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            ${}
+                            ${user}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end"
                             aria-labelledby="navbarDropdown">
@@ -106,6 +106,11 @@
                                 <a class="dropdown-item" href="#">Logout</a>
                             </li>
                         </ul>
+                    </li>
+                </c:if>
+                <c:if test="${user == null}">
+                    <li>
+                        <a href="${pageContext.request.contextPath}/login" class="btn btn-default">Log In</a>
                     </li>
                 </c:if>
             </ul>
