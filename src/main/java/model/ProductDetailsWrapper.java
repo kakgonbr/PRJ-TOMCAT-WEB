@@ -30,13 +30,13 @@ public class ProductDetailsWrapper implements java.io.Serializable {
 
         try {
             setProductCustomizations(product.getProductItemList().stream().map(ProductItem::getProductCustomizationList).map(l -> l.get(0)).map(ProductCustomizationWrapper::new).toList());
+            if (productCustomizations.size() != 0) {
+                setCustomizationName(productCustomizations.get(0).getName());
+            }
         } catch (IndexOutOfBoundsException e) {
             // No way this happens. For each product item there must be one customization. The database doesn't really reflect this, but it's a little too late for change
         }
 
-        if (productCustomizations.size() != 0) {
-            setCustomizationName(productCustomizations.get(0).getName());
-        }
     }
 
     public Integer getId() {
