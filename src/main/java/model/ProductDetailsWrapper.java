@@ -27,7 +27,11 @@ public class ProductDetailsWrapper implements java.io.Serializable {
         setThumbnail(product.getImageStringResourceId().getId());
         setProductImages(product.getProductImageList().stream().map(ProductImage::getImageStringResourceId).map(ResourceMap::getId).toList());
         // product item and product customization are one to one
-        setProductCustomizations(product.getProductItemList().stream().map(ProductItem::getProductCustomizationList).map(l -> l.get(0)).map(ProductCustomizationWrapper::new).toList());
+        var customizationMap = product.getProductItemList().stream().map(ProductItem::getProductCustomizationList).toList();
+
+        if (customizationMap.size() != 0) { // realistically, there should always be atleast 1 customization per product item,
+            setProductCustomizations(customizationMap.stream().map(l -> l.get(0)).map(ProductCustomizationWrapper::new).toList());
+        }
 
         if (productCustomizations.size() != 0) {
             setCustomizationName(productCustomizations.get(0).getName());

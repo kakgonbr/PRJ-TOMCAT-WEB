@@ -1,5 +1,7 @@
 package dao;
 
+import org.hibernate.Hibernate;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.ParameterMode;
@@ -36,12 +38,17 @@ public class ProductDAO {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 model.Product product = em.find(model.Product.class, id);
 
-                product.getCategoryId();
-                service.Logging.logger.info(product.getProductImageList());
-                product.getShopId();
-                product.getProductItemList().forEach(model.ProductItem::getProductCustomizationList);
-                product.getProductItemList().stream().map(model.ProductItem::getProductCustomizationList).forEach(service.Logging.logger::info);
-
+                // product.getCategoryId();
+                // service.Logging.logger.info(product.getProductImageList());
+                // product.getShopId();
+                // product.getProductItemList().forEach(model.ProductItem::getProductCustomizationList);
+                // product.getProductItemList().stream().map(model.ProductItem::getProductCustomizationList).forEach(service.Logging.logger::info);
+                Hibernate.initialize(product.getCategoryId());
+                Hibernate.initialize(product.getProductImageList());
+                Hibernate.initialize(product.getShopId());
+                Hibernate.initialize(product.getProductItemList());
+                product.getProductItemList().stream().map(model.ProductItem::getProductCustomizationList).forEach(Hibernate::initialize);
+                
                 return product;
 
             } catch (Exception e) {
