@@ -17,7 +17,7 @@
         <c:if test="${error != null || error != ''}">
             <h2>ERROR!!!!!!!!!!!!!!!!</h2>
         </c:if>
-        <c:if test="${product != null && (error == null || error = '')}">
+        <c:if test="${product != null && (error == null || error == '')}">
             <ul>
                 <li>ID: ${product.id}</li>
                 <li>Shop: 
