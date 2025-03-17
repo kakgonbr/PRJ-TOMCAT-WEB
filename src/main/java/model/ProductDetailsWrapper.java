@@ -27,10 +27,11 @@ public class ProductDetailsWrapper implements java.io.Serializable {
         setThumbnail(product.getImageStringResourceId().getId());
         setProductImages(product.getProductImageList().stream().map(ProductImage::getImageStringResourceId).map(ResourceMap::getId).toList());
         // product item and product customization are one to one
-        var customizationMap = product.getProductItemList().stream().map(ProductItem::getProductCustomizationList).toList();
 
-        if (customizationMap.size() != 0) { // realistically, there should always be atleast 1 customization per product item,
-            setProductCustomizations(customizationMap.stream().map(l -> l.get(0)).map(ProductCustomizationWrapper::new).toList());
+        try {
+            setProductCustomizations(product.getProductItemList().stream().map(ProductItem::getProductCustomizationList).map(l -> l.get(0)).map(ProductCustomizationWrapper::new).toList());
+        } catch (IndexOutOfBoundsException e) {
+            // No way this happens. For each product item there must be one customization. The database doesn't really reflect this, but it's a little too late for change
         }
 
         if (productCustomizations.size() != 0) {

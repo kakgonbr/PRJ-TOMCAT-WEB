@@ -35,16 +35,18 @@
                 </li>
                 <li>Name: ${product.name}</li>
                 <li>Descriptipn: ${product.description}</li>
-                <li>Promotion
-                    <ul>
-                        <li>ID: ${product.promotion.id}</li>
-                        <li>Name: ${product.promotion.name}</li>
-                        <li>Value: ${product.promotion.value}</li>
-                        <li>Expire: ${product.promotion.expireDate}</li>
-                        <li>Type: ${product.promotion.type}</li>
-                        <li>Computed: ${product.promotion.type ? '- ${product.promotion.value} VND' : '- ${product.promotion.value} %'}</li>
-                    </ul>
-                </li>
+                <c:if test="${product.promotion != null}">
+                    <li>Promotion
+                        <ul>
+                            <li>ID: ${product.promotion.id}</li>
+                            <li>Name: ${product.promotion.name}</li>
+                            <li>Value: ${product.promotion.value}</li>
+                            <li>Expire: ${product.promotion.expireDate}</li>
+                            <li>Type: ${product.promotion.type}</li>
+                            <li>Computed: ${product.promotion.type ? '- ${product.promotion.value} VND' : '- ${product.promotion.value} %'}</li>
+                        </ul>
+                    </li>
+                </c:if>
                 <li>Thumbnail: <img src="${pageContext.request.contextPath}/resources/${product.shop.profileResource}" alt=""></li>
                 <li>Images:
                     <ul>
@@ -53,21 +55,23 @@
                         </c:forEach>
                     </ul>
                 </li>
-                <li>Customization: ${product.customizationName}
-                    <ul>
-                        <c:forEach var="customization" items="${product.productCustomizations}">
-                            <li>ID: ${customization.id}
-                                <ul>
-                                    <li>Name: ${customization.name}</li>
-                                    <li>Stock: ${customization.stock}</li>
-                                    <li>Price: ${customization.price}</li>
-                                    <li>Value: ${customization.value}</li>
-                                    <li>Unit: ${customization.unit}</li>
-                                </ul>
-                            </li>
-                        </c:forEach>
-                    </ul>
-                </li>
+                <c:if test="${not empty product.productCustomizations}">
+                    <li>Customization: ${product.customizationName}
+                        <ul>
+                            <c:forEach var="customization" items="${product.productCustomizations}">
+                                <li>ID: ${customization.id}
+                                    <ul>
+                                        <li>Name: ${customization.name}</li>
+                                        <li>Stock: ${customization.stock}</li>
+                                        <li>Price: ${customization.price}</li>
+                                        <li>Value: ${customization.value}</li>
+                                        <li>Unit: ${customization.unit}</li>
+                                    </ul>
+                                </li>
+                            </c:forEach>
+                        </ul>
+                    </li>
+                </c:if>
             </ul>
         </c:if>
     </jsp:attribute>
