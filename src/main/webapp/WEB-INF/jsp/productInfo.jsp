@@ -14,7 +14,7 @@
     </jsp:attribute>
 
     <jsp:attribute name="body">
-        <c:if test="${error != null}">
+        <c:if test="${error == 'true'}">
             <h2>ERROR!!!!!!!!!!!!!!!!</h2>
         </c:if>
         <c:if test="${product != null && (error == null || error == '')}">
