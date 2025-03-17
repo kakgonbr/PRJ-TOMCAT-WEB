@@ -1,9 +1,9 @@
-function setTheme(mode = 'system') {
+function setTheme(mode = 'auto') {
     const userMode = localStorage.getItem('bs-theme');
     const sysMode = window.matchMedia(
         '(prefers-color-scheme: light)'
     ).matches;
-    const useSystem = mode === 'system' && !userMode;
+    const useSystem = mode === 'system' || (!userMode && mode === 'auto');
     const modeChosen = useSystem
         ? 'system'
         : mode === 'dark' || mode === 'light'
