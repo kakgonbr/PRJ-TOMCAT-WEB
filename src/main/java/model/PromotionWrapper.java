@@ -12,6 +12,7 @@ public class PromotionWrapper implements java.io.Serializable {
     public PromotionWrapper(Promotion promotion) {
         setId(promotion.getId());
         setName(promotion.getName());
+        setValue(promotion.getValue());
         setExpireDate(promotion.getExpireDate().toLocalDate().format(config.Config.Time.outputFormatDate));
         setType(promotion.getType());
     }
