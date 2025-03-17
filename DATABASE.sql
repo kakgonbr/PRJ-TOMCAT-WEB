@@ -501,6 +501,7 @@ GO
 
 INSERT INTO tblResourceMap
 VALUES
+('test_png', 'test.png'),
 ('main_css', 'main.css'),
 ('main_js', 'main.js'),
 ('test_js', 'test.js'),
@@ -515,13 +516,13 @@ VALUES
 ('cp_js', 'controlPanel.js'),
 ('filter_js', 'filter.js');
 
-INSERT INTO tblUser (email, username, phoneNumber, password, persistentCookie, googleId, facebookId, isAdmin)
+INSERT INTO tblUser (email, username, phoneNumber, password, persistentCookie, googleId, facebookId, isAdmin, profileStringResourceId)
 VALUES 
-('abc@example.com', 'user', '00000', 'user', NULL, NULL, NULL, 0),
-('abc1@example.com', 'admin', '00001', 'admin', NULL, NULL, NULL, 1),
-('abc2@example.com', 'user123', '05602', 'user', NULL, NULL, NULL, 0),
-('abc3@example.com', 'user33443', '12003', 'user', NULL, NULL, NULL, 0),
-('abc4@example.com', 'user126543', '56004', 'user', NULL, NULL, NULL, 0);
+('abc@example.com', 'user', '00000', 'user', NULL, NULL, NULL, 0, 'test_png'),
+('abc1@example.com', 'admin', '00001', 'admin', NULL, NULL, NULL, 1, 'test_png'),
+('abc2@example.com', 'user123', '05602', 'user', NULL, NULL, NULL, 0, 'test_png'),
+('abc3@example.com', 'user33443', '12003', 'user', NULL, NULL, NULL, 0, 'test_png'),
+('abc4@example.com', 'user126543', '56004', 'user', NULL, NULL, NULL, 0, 'test_png');
 
 --cosmestics and fashion
 INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
@@ -696,11 +697,11 @@ INSERT INTO tblVariation (categoryId,name,datatype,unit)
 
 INSERT INTO tblShop (ownerId, name, address, profileStringResourceId, visible)
 VALUES
-(1, 'Gadget World', '789 Tech Road', 'chart_js', 1),
-(2, 'Sneaker Haven', '321 Fashion Blvd', 'admin_css', 1),
-(3, 'Home Essentials', '567 Home Lane', 'admin_js', 1),
-(4, 'Tech Universe', '123 Innovation St', 'test_js', 1),
-(5, 'Fashion Hub', '456 Style Ave', 'admin_css', 1);
+(1, 'Gadget World', '789 Tech Road', 'test_png', 1),
+(2, 'Sneaker Haven', '321 Fashion Blvd', 'test_png', 1),
+(3, 'Home Essentials', '567 Home Lane', 'test_png', 1),
+(4, 'Tech Universe', '123 Innovation St', 'test_png', 1),
+(5, 'Fashion Hub', '456 Style Ave', 'test_png', 1);
 
 -- Understand that being in here means that the promotion will be active
 INSERT INTO tblPromotion (creatorId, name, type, ofAdmin, value, expireDate)
@@ -714,33 +715,33 @@ VALUES
 -- TODO: Match the category id here
 INSERT INTO tblProduct (shopId, categoryId, name, description, availablePromotionId, imageStringResourceId, status)
 VALUES
-(1, 3, 'Samsung Galaxy S22', 'Flagship Samsung smartphone', 1, 'test_js', 1),
-(1, 4, 'MacBook Pro 14', 'Apple high-end laptop', 2, 'test_js', 1),
-(2, 5, 'Nike Air Max', 'Stylish and comfortable sneakers', 3, 'admin_css', 1),
-(2, 6, 'Leather Handbag', 'Elegant leather handbag', NULL, 'admin_css', 1),
-(3, 7, 'Air Fryer', 'Healthy cooking appliance', NULL, 'admin_js', 1),
-(3, 7, 'Vacuum Cleaner', 'Powerful home cleaning device', NULL, 'admin_js', 1),
-(4, 8, 'PlayStation 5', 'Next-gen gaming console', 4, 'test_js', 1),
-(4, 8, 'Xbox Series X', 'Powerful Microsoft gaming console', 4, 'test_js', 1),
-(5, 9, 'Modern Sofa', 'Comfortable and stylish', 5, 'admin_js', 1),
-(5, 9, 'Wooden Dining Table', 'Elegant and durable', 5, 'admin_js', 1),
-(1, 3, 'iPhone 14 Pro', 'Latest Apple smartphone', 1, 'test_js', 1),
-(1, 5, 'Adidas Ultraboost', 'High-performance running shoes', 3, 'admin_css', 1),
-(3, 7, 'Microwave Oven', 'Efficient and modern', NULL, 'admin_js', 1),
-(4, 8, 'Nintendo Switch', 'Portable gaming console', 4, 'test_js', 1),
-(5, 9, 'Queen Size Bed', 'Luxurious and comfortable', 5, 'admin_js', 1),
-(1, 3, 'Google Pixel 7', 'Latest Google smartphone', 1, 'test_js', 1),
-(2, 5, 'Puma Running Shoes', 'Lightweight and stylish', 3, 'admin_css', 1),
-(3, 7, 'Blender', 'Powerful kitchen appliance', NULL, 'admin_js', 1),
-(4, 8, 'Gaming Laptop', 'High-end gaming performance', 4, 'test_js', 1),
-(5, 9, 'Office Chair', 'Ergonomic and comfortable', 5, 'admin_js', 1),
-(4, 3, 'OnePlus 11', 'Flagship OnePlus smartphone', 1, 'test_js', 1),
-(2, 5, 'Reebok Sneakers', 'Durable and comfortable', 3, 'admin_css', 1),
-(3, 7, 'Dishwasher', 'Efficient and modern', NULL, 'admin_js', 1),
-(4, 8, 'Smart TV', '4K Ultra HD', 4, 'test_js', 1),
-(5, 9, 'Bookshelf', 'Modern wooden bookshelf', 5, 'admin_js', 1),
-(5, 9, 'FlagShip Phone', 'A phone that is flagship, also, gaming', 5, 'admin_js', 1),
-(5, 9, 'FlagShip Tablet', 'Cool tablet', 5, 'admin_js', 1);
+(1, 3, 'Samsung Galaxy S22', 'Flagship Samsung smartphone', 1, 'test_png', 1),
+(1, 4, 'MacBook Pro 14', 'Apple high-end laptop', 2, 'test_png', 1),
+(2, 5, 'Nike Air Max', 'Stylish and comfortable sneakers', 3, 'test_png', 1),
+(2, 6, 'Leather Handbag', 'Elegant leather handbag', NULL, 'test_png', 1),
+(3, 7, 'Air Fryer', 'Healthy cooking appliance', NULL, 'test_png', 1),
+(3, 7, 'Vacuum Cleaner', 'Powerful home cleaning device', NULL, 'test_png', 1),
+(4, 8, 'PlayStation 5', 'Next-gen gaming console', 4, 'test_png', 1),
+(4, 8, 'Xbox Series X', 'Powerful Microsoft gaming console', 4, 'test_png', 1),
+(5, 9, 'Modern Sofa', 'Comfortable and stylish', 5, 'test_png', 1),
+(5, 9, 'Wooden Dining Table', 'Elegant and durable', 5, 'test_png', 1),
+(1, 3, 'iPhone 14 Pro', 'Latest Apple smartphone', 1, 'test_png', 1),
+(1, 5, 'Adidas Ultraboost', 'High-performance running shoes', 3, 'test_png', 1),
+(3, 7, 'Microwave Oven', 'Efficient and modern', NULL, 'test_png', 1),
+(4, 8, 'Nintendo Switch', 'Portable gaming console', 4, 'test_png', 1),
+(5, 9, 'Queen Size Bed', 'Luxurious and comfortable', 5, 'test_png', 1),
+(1, 3, 'Google Pixel 7', 'Latest Google smartphone', 1, 'test_png', 1),
+(2, 5, 'Puma Running Shoes', 'Lightweight and stylish', 3, 'test_png', 1),
+(3, 7, 'Blender', 'Powerful kitchen appliance', NULL, 'test_png', 1),
+(4, 8, 'Gaming Laptop', 'High-end gaming performance', 4, 'test_png', 1),
+(5, 9, 'Office Chair', 'Ergonomic and comfortable', 5, 'test_png', 1),
+(4, 3, 'OnePlus 11', 'Flagship OnePlus smartphone', 1, 'test_png', 1),
+(2, 5, 'Reebok Sneakers', 'Durable and comfortable', 3, 'test_png', 1),
+(3, 7, 'Dishwasher', 'Efficient and modern', NULL, 'test_png', 1),
+(4, 8, 'Smart TV', '4K Ultra HD', 4, 'test_png', 1),
+(5, 9, 'Bookshelf', 'Modern wooden bookshelf', 5, 'test_png', 1),
+(5, 9, 'FlagShip Phone', 'A phone that is flagship, also, gaming', 5, 'test_png', 1),
+(5, 9, 'FlagShip Tablet', 'Cool tablet', 5, 'test_png', 1);
 
 
 INSERT INTO tblProductItem (productId, stock, price)

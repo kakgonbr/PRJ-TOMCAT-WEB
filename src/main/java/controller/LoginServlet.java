@@ -62,15 +62,16 @@ public class LoginServlet extends HttpServlet {
                 throw new java.sql.SQLException("Failed to retreive user");
             }
 
-            String cookie = service.SessionAndCookieManager.createSession(user, request.getSession(), rememberMe);
-
-            Cookie toBeAdded = new Cookie(config.Config.CookieMapper.REMEMBER_ME_COOKIE, cookie);
-
-            toBeAdded.setSecure(true);
-            toBeAdded.setHttpOnly(true);
-            toBeAdded.setMaxAge(604800); // 1 week
-
-            response.addCookie(toBeAdded);
+            if (rememberMe) {
+                String cookie = service.SessionAndCookieManager.createCookie(user, request.getSession());
+                Cookie toBeAdded = new Cookie(config.Config.CookieMapper.REMEMBER_ME_COOKIE, cookie);
+    
+                toBeAdded.setSecure(true);
+                toBeAdded.setHttpOnly(true);
+                toBeAdded.setMaxAge(604800); // 1 week
+    
+                response.addCookie(toBeAdded);
+            }
         } catch (java.sql.SQLException e) {
             service.Logging.logger.warn("Log in failed for request {}, tried: {} and {}. Reason: {}",
                     request.getRequestId(), userOrEmail, password, e.getMessage());

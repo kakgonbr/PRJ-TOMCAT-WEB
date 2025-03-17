@@ -6,7 +6,7 @@ public class ProductWrapper {
     private Integer categoryId;
     private String name;
     private String description;
-    private Integer promotionId;
+    private PromotionWrapper promotion;
     private String thumbnailId;
 
     public ProductWrapper() {}
@@ -17,7 +17,7 @@ public class ProductWrapper {
         setCategoryId(product.getCategoryId().getId());
         setName(product.getName());
         setDescription(product.getDescription());
-        setPromotionId(product.getAvailablePromotionId() == null ? null : product.getAvailablePromotionId().getId());
+        setPromotion(product.getAvailablePromotionId() == null ? null : new PromotionWrapper(product.getAvailablePromotionId()));
         setThumbnailId(product.getImageStringResourceId().getId());
     }
 
@@ -37,9 +37,10 @@ public class ProductWrapper {
         return name;
     }
 
-    public Integer getPromotionId() {
-        return promotionId;
+    public PromotionWrapper getPromotion() {
+        return promotion;
     }
+
 
     public Integer getShopId() {
         return shopId;
@@ -65,8 +66,8 @@ public class ProductWrapper {
         this.name = name;
     }
 
-    public void setPromotionId(Integer promotionId) {
-        this.promotionId = promotionId;
+    public void setPromotion(PromotionWrapper promotion) {
+        this.promotion = promotion;
     }
 
     public void setShopId(Integer shopId) {
@@ -75,15 +76,5 @@ public class ProductWrapper {
 
     public void setThumbnailId(String thumbnailId) {
         this.thumbnailId = thumbnailId;
-    }
-
-    public static ProductOld fromResultSet(java.sql.ResultSet rs) throws java.sql.SQLException {
-        return new ProductOld(rs.getInt("id"),
-        rs.getInt("shopId"),
-        rs.getInt("categoryId"),
-        rs.getString("name"),
-        rs.getString("description"),
-        rs.getInt("promotionId"),
-        rs.getString("thumbnailId"));
     }
 }

@@ -37,7 +37,11 @@ function fetchProducts() {
                 row.appendChild(cell);
 
                 cell = document.createElement("td");
-                cell.textContent = item.name;
+                let link = document.createElement("a");
+                link.href = contextPath + "/product?productId=" + item.id; // Set the URL
+                link.textContent = item.name; // Set the link text
+                cell.appendChild(link);
+                // cell.textContent = item.name;
                 row.appendChild(cell);
 
                 cell = document.createElement("td");

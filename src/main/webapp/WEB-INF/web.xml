@@ -116,6 +116,10 @@
         <servlet-name>n_AdminCPServlet</servlet-name>
         <servlet-class>controller.AdminCPServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>n_ProductServlet</servlet-name>
+        <servlet-class>controller.ProductServlet</servlet-class>
+    </servlet>
 
 
     <!-- SERVLET MAPPINGS -->
@@ -212,6 +216,10 @@
     <servlet-mapping>
         <servlet-name>n_AdminCPServlet</servlet-name>
         <url-pattern>/admin/cp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>n_ProductServlet</servlet-name>
+        <url-pattern>/product</url-pattern>
     </servlet-mapping>
 
     <!-- FILTER DECLARATIONS -->

@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 /**
  * For now, this is only used to display a list of filters
  */
-public class CategoryWrapper {
+public class CategoryWrapper implements java.io.Serializable {
     private int id;
     private String name;
     // private int parent;
