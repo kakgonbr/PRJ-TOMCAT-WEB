@@ -44,11 +44,12 @@ public class ProductDAO {
                 // product.getProductItemList().forEach(model.ProductItem::getProductCustomizationList);
                 // product.getProductItemList().stream().map(model.ProductItem::getProductCustomizationList).forEach(service.Logging.logger::info);
                 Hibernate.initialize(product.getCategoryId());
+                Hibernate.initialize(product.getAvailablePromotionId());
                 Hibernate.initialize(product.getProductImageList());
                 Hibernate.initialize(product.getShopId());
                 Hibernate.initialize(product.getProductItemList());
                 product.getProductItemList().stream().map(model.ProductItem::getProductCustomizationList).forEach(Hibernate::initialize);
-                
+
                 return product;
 
             } catch (Exception e) {
