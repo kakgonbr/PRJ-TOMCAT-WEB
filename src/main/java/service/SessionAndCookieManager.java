@@ -7,6 +7,8 @@ public final class SessionAndCookieManager {
         jakarta.servlet.http.Cookie[] cookies = request.getCookies();
         jakarta.servlet.http.HttpSession session = null;
 
+        if (cookies == null) return false;
+
         for (final jakarta.servlet.http.Cookie cookie : cookies) {
             if (cookie.getName().equals(config.Config.CookieMapper.REMEMBER_ME_COOKIE)) {
                 try {
