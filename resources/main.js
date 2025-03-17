@@ -23,7 +23,7 @@ function setTheme(mode = 'auto') {
     document
         .querySelectorAll('.button-switch-theme')
         .forEach((e) => e.classList.remove('active'));
-    document.getElementById("button-theme-" + mode).classList.add('active');
+    document.getElementById("button-theme-" + modeChosen).classList.add('active');
 }
 
 function startupTheme() {
