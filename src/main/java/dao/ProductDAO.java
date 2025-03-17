@@ -37,7 +37,7 @@ public class ProductDAO {
                 model.Product product = em.find(model.Product.class, id);
 
                 product.getCategoryId();
-                product.getProductImageList();
+                service.Logging.logger.info(product.getProductImageList());
                 product.getShopId();
                 product.getProductItemList().forEach(model.ProductItem::getProductCustomizationList);
 
