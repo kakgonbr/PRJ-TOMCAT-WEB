@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class ProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String productId = request.getParameter("productId");
+    String productId = request.getParameter("productId");
 
         try {
             request.setAttribute("product", new model.ProductDetailsWrapper(dao.ProductDAO.ProductFetcher.getProductDetails(Integer.parseInt(productId))));

@@ -14,7 +14,7 @@
     </jsp:attribute>
 
     <jsp:attribute name="body">
-        <c:if test="${error != null && error != ''}">
+        <c:if test="${error != null}">
             <h2>ERROR!!!!!!!!!!!!!!!!</h2>
         </c:if>
         <c:if test="${product != null && (error == null || error == '')}">
@@ -43,7 +43,14 @@
                             <li>Value: ${product.promotion.value}</li>
                             <li>Expire: ${product.promotion.expireDate}</li>
                             <li>Type: ${product.promotion.type}</li>
-                            <li>Computed: ${product.promotion.type ? '- ${product.promotion.value} VND' : '- ${product.promotion.value} %'}</li>
+                            <c:choose>
+                                <c:when test="${product.promotion.type}">
+                                    <li>Computed: - ${product.promotion.value} VND</li>
+                                </c:when>
+                                <c:otherwise>
+                                     <li>Computed: - ${product.promotion.value} %</li>
+                                </c:otherwise>
+                            </c:choose>
                         </ul>
                     </li>
                 </c:if>
