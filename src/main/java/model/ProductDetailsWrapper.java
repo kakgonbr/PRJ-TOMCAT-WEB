@@ -23,7 +23,7 @@ public class ProductDetailsWrapper implements java.io.Serializable {
         setCategory(new CategoryWrapper(product.getCategoryId(), false));
         setName(product.getName());
         setDescription(product.getDescription());
-        setPromotion(new PromotionWrapper(product.getAvailablePromotionId()));
+        setPromotion(product.getAvailablePromotionId() == null ? null : new PromotionWrapper(product.getAvailablePromotionId()));
         setThumbnail(product.getImageStringResourceId().getId());
         setProductImages(product.getProductImageList().stream().map(ProductImage::getImageStringResourceId).map(ResourceMap::getId).toList());
         // product item and product customization are one to one
