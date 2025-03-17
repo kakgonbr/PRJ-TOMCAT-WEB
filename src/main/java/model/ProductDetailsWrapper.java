@@ -20,7 +20,7 @@ public class ProductDetailsWrapper implements java.io.Serializable {
     public ProductDetailsWrapper(Product product) {
         setId(product.getId());
         setShop(new ShopWrapper(product.getShopId()));
-        setCategory(new CategoryWrapper(product.getCategoryId()));
+        setCategory(new CategoryWrapper(product.getCategoryId(), false));
         setName(product.getName());
         setDescription(product.getDescription());
         setPromotion(new PromotionWrapper(product.getAvailablePromotionId()));

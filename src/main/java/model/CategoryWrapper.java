@@ -12,6 +12,12 @@ public class CategoryWrapper implements java.io.Serializable {
     private java.util.List<CategoryWrapper> children;
 
     public CategoryWrapper() {}
+
+    public CategoryWrapper(Category category, boolean hack) { // what a hack!
+        setId(category.getId());
+        setName(category.getName());
+        // setParent(category.getParentId() == null ? null : category.getParentId().getId());
+    }
     
     public CategoryWrapper(Category category) {
         setId(category.getId());
