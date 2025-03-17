@@ -40,7 +40,7 @@ public class ProductDAO {
                 service.Logging.logger.info(product.getProductImageList());
                 product.getShopId();
                 product.getProductItemList().forEach(model.ProductItem::getProductCustomizationList);
-                product.getProductItemList().forEach(service.Logging.logger::info);
+                product.getProductItemList().stream().map(model.ProductItem::getProductCustomizationList).forEach(service.Logging.logger::info);
 
                 return product;
 
