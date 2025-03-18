@@ -12,6 +12,7 @@
 </li>
 <li>Children:
     <c:if test="${not empty node.children}">
+    Not empty
         <ul>
             <c:forEach var="child" items="${node.children}">
                 <t:categoryTree node="${child}"/>
