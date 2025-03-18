@@ -665,7 +665,7 @@ INSERT INTO tblVariation (categoryId,name,datatype,unit)
 INSERT INTO tblVariation (categoryId, name, datatype, unit)
 VALUES
     ((SELECT id FROM tblCategory WHERE name = 'Cosmestic'), 'Brand', 'string', NULL),
-	((SELECT id FROM tblCategory WHERE name = 'Cosmetic'), 'Volume', 'integer', 'ml'),
+	((SELECT id FROM tblCategory WHERE name = 'Cosmestic'), 'Volume', 'integer', 'ml'),
 
 	((SELECT id FROM tblCategory WHERE name = 'Skincare'), 'Skin Type', 'string', NULL);
 	((SELECT id FROM tblCategory WHERE name = 'Skincare'), 'Function', 'string', NULL);
@@ -1130,3 +1130,344 @@ SELECT * FROM tblProduct
 
 
 SELECT * FROM tblVector
+
+
+INSERT INTO tblUser (email, username, phoneNumber, password, persistentCookie, googleId, facebookId, isAdmin, profileStringResourceId)
+VALUES 
+('abc6@example.com', 'user2340', '34534', 'user', NULL, NULL, NULL, 0, 'test_png'),
+('abc7@example.com', 'user4560', '85453', 'user', NULL, NULL, NULL, 0, 'test_png'),
+('abc9@example.com', 'user5444', '45345', 'user', NULL, NULL, NULL, 0, 'test_png'),
+('abc10@example.com', 'user9654', '45334', 'user', NULL, NULL, NULL, 0, 'test_png');
+
+
+INSERT INTO tblShop (ownerId, name, address, profileStringResourceId, visible)
+VALUES
+(7, 'MB Cosmestic', N'154 Lac Long Quan, Thanh Khe, Da Nang', 'test_png', 1),
+(8, 'DFG Furniture', N'23 Hai Phong, Thanh Khe, Da Nang', 'test_png', 1),
+(9, 'Lovely Cosmestic', N'154 Thanh Hoa, Thanh Khe, Da Nang', 'test_png', 1),
+(10, 'BNG Cosmestic', N'154 Au Co, Lien Chieu, Da Nang', 'test_png', 1);
+
+ --cosmetic
+INSERT INTO tblVariation (categoryId, name, datatype, unit)
+VALUES
+    ((SELECT id FROM tblCategory WHERE name = 'Cosmestic'), 'brand', 'string', NULL),
+	((SELECT id FROM tblCategory WHERE name = 'Cosmestic'), 'volume', 'integer', 'ml'),
+
+	((SELECT id FROM tblCategory WHERE name = 'Skincare'), 'skin type', 'string', NULL),
+
+	((SELECT id FROM tblCategory WHERE name = 'Makeup'), 'finish & texture', 'string', NULL),
+
+	((SELECT id FROM tblCategory WHERE name = 'Haircare'), 'hair type', 'string', NULL),
+	((SELECT id FROM tblCategory WHERE name = 'Haircare'), 'form', 'string', NULL),
+
+	((SELECT id FROM tblCategory WHERE name = 'Bodycare'), 'absorption rate', 'string', NULL),
+
+	((SELECT id FROM tblCategory WHERE name = 'Fragrance'), 'fragrance notes', 'string', NULL);
+
+	INSERT INTO tblVariationValue (variationId, value)
+VALUES 
+    -- brand
+    ((select id from tblVariation where name = 'brand' and categoryId = (select id from tblCategory where name = 'Cosmestic')), 'mistine'), 
+    ((select id from tblVariation where name = 'brand' and categoryId = (select id from tblCategory where name = 'Cosmestic')), 'maybelline'), 
+    ((select id from tblVariation where name = 'brand' and categoryId = (select id from tblCategory where name = 'Cosmestic')), 'mac'), 
+    ((select id from tblVariation where name = 'brand' and categoryId = (select id from tblCategory where name = 'Cosmestic')), 'estée lauder'),
+
+    -- volume (ml)
+    ((select id from tblVariation where name = 'volume' and categoryId = (select id from tblCategory where name = 'Cosmestic')), '10ml'),
+    ((select id from tblVariation where name = 'volume' and categoryId = (select id from tblCategory where name = 'Cosmestic')), '15ml'),
+    ((select id from tblVariation where name = 'volume' and categoryId = (select id from tblCategory where name = 'Cosmestic')), '30ml'),
+
+    -- skin type
+    ((select id from tblVariation where name = 'skin type' and categoryId = (select id from tblCategory where name = 'Skincare')), 'oily'),
+    ((select id from tblVariation where name = 'skin type' and categoryId = (select id from tblCategory where name = 'Skincare')), 'dry'),
+    ((select id from tblVariation where name = 'skin type' and categoryId = (select id from tblCategory where name = 'Skincare')), 'combo'),
+    ((select id from tblVariation where name = 'skin type' and categoryId = (select id from tblCategory where name = 'Skincare')), 'sensitive'),
+
+    -- finish & texture
+    ((select id from tblVariation where name = 'finish & texture' and categoryId = (select id from tblCategory where name = 'Makeup')), 'matte'),
+    ((select id from tblVariation where name = 'finish & texture' and categoryId = (select id from tblCategory where name = 'Makeup')), 'dewy'),
+    ((select id from tblVariation where name = 'finish & texture' and categoryId = (select id from tblCategory where name = 'Makeup')), 'satin'),
+
+    -- hair type
+    ((select id from tblVariation where name = 'hair type' and categoryId = (select id from tblCategory where name = 'Haircare')), 'thin'),
+    ((select id from tblVariation where name = 'hair type' and categoryId = (select id from tblCategory where name = 'Haircare')), 'thick'),
+    ((select id from tblVariation where name = 'hair type' and categoryId = (select id from tblCategory where name = 'Haircare')), 'damaged'),
+
+    -- absorption rate
+    ((select id from tblVariation where name = 'absorption rate' and categoryId = (select id from tblCategory where name = 'Bodycare')), 'fast absorb'),
+    ((select id from tblVariation where name = 'absorption rate' and categoryId = (select id from tblCategory where name = 'Bodycare')), 'deep moist'),
+
+    -- fragrance notes
+    ((select id from tblVariation where name = 'fragrance notes' and categoryId = (select id from tblCategory where name = 'Fragrance')), 'floral'),
+    ((select id from tblVariation where name = 'fragrance notes' and categoryId = (select id from tblCategory where name = 'Fragrance')), 'woody'),
+    ((select id from tblVariation where name = 'fragrance notes' and categoryId = (select id from tblCategory where name = 'Fragrance')), 'musky');
+
+	INSERT INTO tblProduct (shopId, categoryId, name, description, availablePromotionId, imageStringResourceId, status)
+VALUES
+    -- Skincare Products
+    (7, (SELECT id FROM tblCategory WHERE name = 'Cleansers'), 'Gentle Cleanser', 'Removes dirt and oil', NULL, 'test_png', 1),
+    (7, (SELECT id FROM tblCategory WHERE name = 'Face_wash'), 'Foaming Face Wash', 'Deep cleansing', NULL, 'test_png', 1),
+    (7, (SELECT id FROM tblCategory WHERE name = 'Makeup_remover'), 'Micellar Water', 'Removes makeup easily', NULL, 'test_png', 1),
+
+    -- Makeup Products
+    (9, (SELECT id FROM tblCategory WHERE name = 'Foundation'), 'Liquid Foundation', 'Provides smooth coverage', NULL, 'test_png', 1),
+    (9, (SELECT id FROM tblCategory WHERE name = 'Concealer'), 'Full Coverage Concealer', 'Covers dark circles', NULL, 'test_png', 1),
+    (9, (SELECT id FROM tblCategory WHERE name = 'Powder'), 'Matte Setting Powder', 'Long-lasting oil control', NULL, 'test_png', 1),
+    (9, (SELECT id FROM tblCategory WHERE name = 'Blush'), 'Rosy Blush', 'Adds natural color', NULL, 'test_png', 1),
+
+    -- Haircare Products
+    (7, (SELECT id FROM tblCategory WHERE name = 'Shampoo'), 'Anti-Dandruff Shampoo', 'Fights dandruff', NULL, 'test_png', 1),
+    (7, (SELECT id FROM tblCategory WHERE name = 'Conditioner'), 'Hydrating Conditioner', 'Softens hair', NULL, 'test_png', 1),
+    (7, (SELECT id FROM tblCategory WHERE name = 'Dry_shampoo'), 'Volumizing Dry Shampoo', 'Absorbs oil', NULL, 'test_png', 1),
+    (7, (SELECT id FROM tblCategory WHERE name = 'Hair oil'), 'Argan Hair Oil', 'Strengthens hair', NULL, 'test_png', 1),
+
+    -- Bodycare Products
+    (9, (SELECT id FROM tblCategory WHERE name = 'Body wash'), 'Moisturizing Body Wash', 'Nourishes skin', NULL, 'test_png', 1),
+    (9, (SELECT id FROM tblCategory WHERE name = 'Body scrub'), 'Exfoliating Scrub', 'Removes dead skin cells', NULL, 'test_png', 1),
+    (9, (SELECT id FROM tblCategory WHERE name = 'Body lotion'), 'Hydrating Lotion', 'Softens skin', NULL, 'test_png', 1),
+    (9, (SELECT id FROM tblCategory WHERE name = 'Body butter'), 'Shea Body Butter', 'Intensive hydration', NULL, 'test_png', 1),
+
+    -- Fragrance Products
+    (9, (SELECT id FROM tblCategory WHERE name = 'Perfume'), 'Luxury Perfume', 'Long-lasting scent', NULL, 'test_png', 1),
+    (9, (SELECT id FROM tblCategory WHERE name = 'Eau de toilette'), 'Fresh Eau de Toilette', 'Light and refreshing', NULL, 'test_png', 1),
+    (9, (SELECT id FROM tblCategory WHERE name = 'Body mist'), 'Floral Body Mist', 'Delicate fragrance', NULL, 'test_png', 1),
+    (9, (SELECT id FROM tblCategory WHERE name = 'Essential oil'), 'Lavender Essential Oil', 'Relaxing aroma', NULL, 'test_png', 1);
+
+	INSERT INTO tblProductItem (productId, stock, price)
+VALUES
+    -- Skincare Products
+    (25, 20, 120),
+	(25, 17, 180),
+    (26, 15, 150),
+    (27, 25, 180),
+
+    -- Makeup Products
+    (28, 18, 300),
+    (29, 22, 250),
+    (30, 20, 220),
+	(30, 43, 112),
+	(30, 11, 167),
+    (31, 16, 280),
+
+    -- Haircare Products
+    (32, 30, 180),
+    (33, 28, 200),
+    (34, 25, 230),
+    (35, 12, 350),
+
+    -- Bodycare Products
+    (36, 15, 160),
+    (37, 18, 200),
+    (38, 22, 180),
+    (39, 10, 300),
+
+    -- Fragrance Products
+    (40, 8, 1200),
+    (41, 12, 800),
+    (42, 20, 400),
+    (43, 14, 500);
+
+	INSERT INTO tblProductCustomization (productItemId, variationValueId)
+VALUES 
+    -- Skincare Products
+    (39, (SELECT id FROM tblVariationValue WHERE value = 'sensitive')),
+	(40, (SELECT id FROM tblVariationValue WHERE value = 'dry')),
+    (41, (SELECT id FROM tblVariationValue WHERE value = 'oily')),
+    (42, (SELECT id FROM tblVariationValue WHERE value = 'dry')),
+
+    -- Makeup Products
+    (43, (SELECT id FROM tblVariationValue WHERE value = 'matte')),
+    (44, (SELECT id FROM tblVariationValue WHERE value = 'dewy')),
+    (45, (SELECT id FROM tblVariationValue WHERE value = 'satin')),
+	(46, (SELECT id FROM tblVariationValue WHERE value = 'matte')),
+	(47, (SELECT id FROM tblVariationValue WHERE value = 'dewy')),
+    (48, (SELECT id FROM tblVariationValue WHERE value = 'satin')),
+
+    -- Haircare Products
+    (49, (SELECT id FROM tblVariationValue WHERE value = 'damaged')),
+    (50, (SELECT id FROM tblVariationValue WHERE value = 'thick')),
+    (51, (SELECT id FROM tblVariationValue WHERE value = 'thick')),
+    (52, (SELECT id FROM tblVariationValue WHERE value = 'thin')),
+
+    -- Bodycare Products
+    (53, (SELECT id FROM tblVariationValue WHERE value = 'fast absorb')),
+    (54, (SELECT id FROM tblVariationValue WHERE value = '10ml')),
+    (55, (SELECT id FROM tblVariationValue WHERE value = 'estée lauder')),
+    (56, (SELECT id FROM tblVariationValue WHERE value = 'deep moist')),
+
+    -- Fragrance Products
+    (57, (SELECT id FROM tblVariationValue WHERE value = 'floral')),
+    (57, (SELECT id FROM tblVariationValue WHERE value = 'woody')),
+    (59, (SELECT id FROM tblVariationValue WHERE value = '30ml')),
+    (60, (SELECT id FROM tblVariationValue WHERE value = 'musky'));
+
+--furniture
+INSERT INTO tblVariation (categoryId, name, datatype, unit)
+VALUES
+	--furniture
+	((SELECT id FROM tblCategory WHERE name = 'Furniture'), 'Material', 'string', NULL),
+    ((SELECT id FROM tblCategory WHERE name = 'Furniture'), 'Style', 'string', NULL),
+    ((SELECT id FROM tblCategory WHERE name = 'Furniture'), 'Size', 'string', NULL),
+
+	-- Seating 
+	((SELECT id FROM tblCategory WHERE name = 'Seating'), 'Cushion Type', 'string', NULL),
+    
+    -- Sleeping 
+    ((SELECT id FROM tblCategory WHERE name = 'Sleeping'), 'Mattress Type', 'string', NULL),
+    
+    -- Storage
+    ((SELECT id FROM tblCategory WHERE name = 'Storage'), 'Capacity', 'integer', 'liters'),
+
+    -- Dining 
+    ((SELECT id FROM tblCategory WHERE name = 'Dining'), 'Shape', 'string', NULL),
+
+    -- Office 
+    ((SELECT id FROM tblCategory WHERE name = 'Office'), 'Adjustability', 'string', NULL);
+
+
+	INSERT INTO tblVariationValue (variationId, value)
+VALUES 
+    -- Material
+    ((SELECT id FROM tblVariation WHERE name = 'Material' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Furniture')), 'Metal'),
+    ((SELECT id FROM tblVariation WHERE name = 'Material' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Furniture')), 'Plastic'),
+    ((SELECT id FROM tblVariation WHERE name = 'Material' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Furniture')), 'Glass'),
+
+    -- Style 
+    ((SELECT id FROM tblVariation WHERE name = 'Style' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Furniture')), 'Industrial'),
+    ((SELECT id FROM tblVariation WHERE name = 'Style' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Furniture')), 'Minimalist'),
+    ((SELECT id FROM tblVariation WHERE name = 'Style' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Furniture')), 'Rustic'),
+
+    -- Size 
+    ((SELECT id FROM tblVariation WHERE name = 'Size' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Furniture')), 'Small'),
+    ((SELECT id FROM tblVariation WHERE name = 'Size' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Furniture')), 'Medium'),
+    ((SELECT id FROM tblVariation WHERE name = 'Size' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Furniture')), 'Large'),
+
+    -- Cushion Type
+    ((SELECT id FROM tblVariation WHERE name = 'Cushion Type' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Seating')), 'Feather'),
+    ((SELECT id FROM tblVariation WHERE name = 'Cushion Type' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Seating')), 'Polyester'),
+
+    -- Mattress Type
+    ((SELECT id FROM tblVariation WHERE name = 'Mattress Type' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Sleeping')), 'Hybrid'),
+    ((SELECT id FROM tblVariation WHERE name = 'Mattress Type' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Sleeping')), 'Innerspring'),
+    ((SELECT id FROM tblVariation WHERE name = 'Mattress Type' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Sleeping')), 'Latex'),
+
+    -- Capacity (Storage)
+    ((SELECT id FROM tblVariation WHERE name = 'Capacity' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Storage')), '50'),
+    ((SELECT id FROM tblVariation WHERE name = 'Capacity' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Storage')), '100'),
+    ((SELECT id FROM tblVariation WHERE name = 'Capacity' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Storage')), '200'),
+
+    -- Shape (Dining)
+    ((SELECT id FROM tblVariation WHERE name = 'Shape' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Dining')), 'Square'),
+    ((SELECT id FROM tblVariation WHERE name = 'Shape' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Dining')), 'Oval'),
+
+    -- Adjustability (Office)
+    ((SELECT id FROM tblVariation WHERE name = 'Adjustability' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Office')), 'Fixed'),
+    ((SELECT id FROM tblVariation WHERE name = 'Adjustability' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Office')), 'Height'),
+    ((SELECT id FROM tblVariation WHERE name = 'Adjustability' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Office')), 'Tilt');
+
+	INSERT INTO tblProduct (shopId, categoryId, name, description, availablePromotionId, imageStringResourceId, status)
+VALUES
+    -- Seating Products
+    (8, (SELECT id FROM tblCategory WHERE name = 'Chairs'), 'Ergonomic Office Chair', 'Comfortable for long hours', NULL, 'test_png', 1),
+    (8, (SELECT id FROM tblCategory WHERE name = 'Sofas and Couches'), 'Luxury Leather Sofa', 'Spacious and stylish', NULL, 'test_png', 1),
+    (8, (SELECT id FROM tblCategory WHERE name = 'Ottomans and Footstools'), 'Velvet Ottoman', 'Multi-purpose seating', NULL, 'test_png', 1),
+
+    -- Sleeping Products
+    (8, (SELECT id FROM tblCategory WHERE name = 'Beds'), 'King Size Bed', 'Solid wood frame', NULL, 'test_png', 1),
+    (8, (SELECT id FROM tblCategory WHERE name = 'Mattresses'), 'Memory Foam Mattress', 'Pressure-relieving comfort', NULL, 'test_png', 1),
+    (8, (SELECT id FROM tblCategory WHERE name = 'Pillows'), 'Cooling Gel Pillow', 'Optimal neck support', NULL, 'test_png', 1),
+
+    -- Storage Products
+    (8, (SELECT id FROM tblCategory WHERE name = 'Cabinets'), 'Modern Storage Cabinet', 'Ample storage space', NULL, 'test_png', 1),
+    (8, (SELECT id FROM tblCategory WHERE name = 'Chests'), 'Antique Wooden Chest', 'Classic and durable', NULL, 'test_png', 1),
+    (8, (SELECT id FROM tblCategory WHERE name = 'Trunks'), 'Vintage Travel Trunk', 'Rustic decorative piece', NULL, 'test_png', 1),
+
+    -- Dining Products
+    (8, (SELECT id FROM tblCategory WHERE name = 'Benches'), 'Farmhouse Dining Bench', 'Rustic wooden finish', NULL, 'test_png', 1),
+    (8, (SELECT id FROM tblCategory WHERE name = 'Dining Tables'), 'Extendable Dining Table', 'Seats up to 8 people', NULL, 'test_png', 1),
+    (8, (SELECT id FROM tblCategory WHERE name = 'Dining Chairs'), 'Upholstered Dining Chair', 'Elegant design', NULL, 'test_png', 1),
+
+    -- Office Products
+    (8, (SELECT id FROM tblCategory WHERE name = 'Desks'), 'Standing Desk', 'Adjustable height', NULL, 'test_png', 1),
+    (8, (SELECT id FROM tblCategory WHERE name = 'Conference Tables'), 'Executive Conference Table', 'Spacious and modern', NULL, 'test_png', 1),
+    (8, (SELECT id FROM tblCategory WHERE name = 'Reception Furniture'), 'Lobby Reception Desk', 'Professional and sleek', NULL, 'test_png', 1);
+
+
+	INSERT INTO tblProductItem (productId, stock, price)
+VALUES
+
+
+    -- Seating Products
+    ((SELECT id FROM tblProduct WHERE name = 'Ergonomic Office Chair'), 10, 2500),
+    ((SELECT id FROM tblProduct WHERE name = 'Luxury Leather Sofa'), 5, 8500),
+    ((SELECT id FROM tblProduct WHERE name = 'Velvet Ottoman'), 12, 1800),
+	((SELECT id FROM tblProduct WHERE name = 'Velvet Ottoman'), 54, 1655),
+
+    -- Sleeping Products
+    ((SELECT id FROM tblProduct WHERE name = 'King Size Bed'), 6, 7500),
+    ((SELECT id FROM tblProduct WHERE name = 'Memory Foam Mattress'), 8, 4200),
+    ((SELECT id FROM tblProduct WHERE name = 'Cooling Gel Pillow'), 20, 800),
+
+    -- Storage Products
+    ((SELECT id FROM tblProduct WHERE name = 'Modern Storage Cabinet'), 15, 3200),
+    ((SELECT id FROM tblProduct WHERE name = 'Antique Wooden Chest'), 10, 5000),
+    ((SELECT id FROM tblProduct WHERE name = 'Vintage Travel Trunk'), 8, 4500),
+
+    -- Dining Products
+    ((SELECT id FROM tblProduct WHERE name = 'Farmhouse Dining Bench'), 10, 2800),
+    ((SELECT id FROM tblProduct WHERE name = 'Extendable Dining Table'), 5, 6500),
+    ((SELECT id FROM tblProduct WHERE name = 'Upholstered Dining Chair'), 12, 2200),
+
+    -- Office Products
+    ((SELECT id FROM tblProduct WHERE name = 'Standing Desk'), 10, 4800),
+    ((SELECT id FROM tblProduct WHERE name = 'Executive Conference Table'), 3, 9000),
+    ((SELECT id FROM tblProduct WHERE name = 'Lobby Reception Desk'), 4, 11000),
+	((SELECT id FROM tblProduct WHERE name = 'Lobby Reception Desk'), 322, 5456);
+
+	INSERT INTO tblProductCustomization (productItemId, variationValueId)
+VALUES
+    -- Seating Products
+    (61, 
+     (SELECT id FROM tblVariationValue WHERE value = 'Polyester')),
+    (62, 
+     (SELECT id FROM tblVariationValue WHERE value = 'Feather')),
+    (63, 
+     (SELECT id FROM tblVariationValue WHERE value = 'Rustic')),
+
+
+
+    -- Sleeping Products
+    (64, 
+     (SELECT id FROM tblVariationValue WHERE value = 'Large')),
+    (65, 
+     (SELECT id FROM tblVariationValue WHERE value = 'Hybrid')),
+    (66, 
+     (SELECT id FROM tblVariationValue WHERE value = 'Latex')),
+
+    -- Storage Products
+    (67, 
+     (SELECT id FROM tblVariationValue WHERE value = '100')),
+    (68, 
+     (SELECT id FROM tblVariationValue WHERE value = '50')),
+    (69, 
+     (SELECT id FROM tblVariationValue WHERE value = '200')),
+
+    -- Dining Products
+    (70, 
+     (SELECT id FROM tblVariationValue WHERE value = 'Industrial')),
+    (71, 
+     (SELECT id FROM tblVariationValue WHERE value = 'Oval')),
+    (72, 
+     (SELECT id FROM tblVariationValue WHERE value = 'Minimalist')),
+
+    -- Office Products
+    (73, 
+     (SELECT id FROM tblVariationValue WHERE value = 'Height')),
+    (74, 
+     (SELECT id FROM tblVariationValue WHERE value = 'Fixed')),
+	(75, 
+     (SELECT id FROM tblVariationValue WHERE value = 'Tilt')),
+	(63, 
+     (SELECT id FROM tblVariationValue WHERE value = 'Minimalist')),
+    (75, 
+     (SELECT id FROM tblVariationValue WHERE value = 'Fixed'));
