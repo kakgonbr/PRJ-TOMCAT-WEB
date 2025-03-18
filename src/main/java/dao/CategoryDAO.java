@@ -32,21 +32,24 @@ public class CategoryDAO {
             }
         }
 
-        public static synchronized List<Category> getCategoryHierarchy() throws java.sql.SQLException {
-            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                java.util.List<Category> categories = em.createNamedQuery("Category.findAll", Category.class).getResultList();
+        // public static synchronized List<Category> getCategoryHierarchy() throws java.sql.SQLException {
+        //     try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+        //         java.util.List<Category> categories = em.createNamedQuery("Category.findAll", Category.class).getResultList();
 
-                categories.forEach(Category::getCategoryList);
+        //         categories.forEach(Category::getCategoryList);
 
-                return categories;
-            } catch (Exception e) {
-                throw new java.sql.SQLException(e);
-            }
-        } // public static synchronized List<Category> getCategoryHierarchy
+        //         return categories;
+        //     } catch (Exception e) {
+        //         throw new java.sql.SQLException(e);
+        //     }
+        // } // public static synchronized List<Category> getCategoryHierarchy
 
         // recursive!!!
         private static synchronized void initCategory(Category category) {
             if (category == null) return;
+
+            // make sure entity manager is still active
+            Hibernate.initialize(category.getCategoryList());
 
             for (Category subCategory : category.getCategoryList()) {
                 initCategory(subCategory);
@@ -71,7 +74,7 @@ public class CategoryDAO {
 
                 // tell jpa to fetch stuff
                 Hibernate.initialize(category.getImageStringResourceId());
-                Hibernate.initialize(category.getCategoryList());
+                initCategory(category);
                 
                 return category;
             }
