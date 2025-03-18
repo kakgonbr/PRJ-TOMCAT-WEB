@@ -48,7 +48,7 @@ public class ProductLoader extends HttpServlet {
 
             String json = new com.google.gson.Gson().toJson(products);
 
-            service.Logging.logger.info("Sending back recommendation json {}", json);
+            service.Logging.logger.info("Sending back json {}", json);
 
             response.getWriter().write(json);
         } catch (java.sql.SQLException e) {

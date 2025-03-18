@@ -14,7 +14,7 @@
         
         <script>
             var contextPath = "${pageContext.request.contextPath}";
-            var shop = "${param.shopId}"
+            var shopId = "${param.shopId}"
             document.addEventListener("DOMContentLoaded", fetchCategory);
             document.addEventListener("DOMContentLoaded", fetchByShop);
         </script>
