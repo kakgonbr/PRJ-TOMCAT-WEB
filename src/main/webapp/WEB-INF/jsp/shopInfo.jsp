@@ -1,10 +1,11 @@
-<%-- POSSIBLE REQUEST ATTRIBUTES:  --%>
+<%-- POSSIBLE REQUEST ATTRIBUTES:  shop (model.ShopWrapper) --%>
 <%-- POSSIBLE REQUEST PARAMETERS:  --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<t:genericpage title="Home">
+<t:genericpage title="TEMPLATE">
     <jsp:attribute name="head">
         <t:resources/>
 
@@ -16,7 +17,6 @@
             document.addEventListener("DOMContentLoaded", fetchCategory);
             document.addEventListener("DOMContentLoaded", fetchByQueryAndCategory);
         </script>
-
     </jsp:attribute>
 
     <jsp:attribute name="header">
@@ -24,13 +24,18 @@
     </jsp:attribute>
 
     <jsp:attribute name="body">
-        <p>Welcome.</p>
-        <div id="categoryFilter"></div>
-        <input type="text" id="searchBox" placeholder="Query">
-        <button onclick="fetchByQueryAndCategory()">Search</button>
-        <p>Products:</p>
-        <table border="1" id="productTable">
-        </table>
+        <c:if test="${shop != null}">
+            <ul>Shop:
+                <li>ID: ${shop.id}</li>
+                <li>Name: ${shop.name}</li>
+                <li>Profile: <img src="${pageContext.request.contextPath}/resources/${shop.profileResource}" alt=""></li>
+            </ul>
+            <div id="categoryFilter"></div>
+            <button onclick="fetchByShop()">Apply Filter</button>
+            <p>Products:</p>
+            <table border="1" id="productTable">
+            </table>
+        </c:if>
     </jsp:attribute>
 
     <jsp:attribute name="footer">

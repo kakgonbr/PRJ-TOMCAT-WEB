@@ -43,10 +43,10 @@ public class ProductDAO {
                 // product.getShopId();
                 // product.getProductItemList().forEach(model.ProductItem::getProductCustomizationList);
                 // product.getProductItemList().stream().map(model.ProductItem::getProductCustomizationList).forEach(service.Logging.logger::info);
-                Hibernate.initialize(product.getCategoryId());
-                Hibernate.initialize(product.getAvailablePromotionId());
+                // Hibernate.initialize(product.getCategoryId());
+                // Hibernate.initialize(product.getAvailablePromotionId());
                 Hibernate.initialize(product.getProductImageList());
-                Hibernate.initialize(product.getShopId());
+                // Hibernate.initialize(product.getShopId());
                 Hibernate.initialize(product.getProductItemList());
                 product.getProductItemList().stream().map(model.ProductItem::getProductCustomizationList).forEach(Hibernate::initialize);
 
@@ -56,6 +56,28 @@ public class ProductDAO {
                 throw new java.sql.SQLException(e);
             }
         } // public static synchronized model.Product getProductDetails
+
+        private static final String GET_PRODUCTS_FROM_SHOP = "SELECT * FROM tblProduct WHERE shopId = ?1";
+
+        public static synchronized java.util.List<model.Product> getShopProducts(int shopId) throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return em.createNativeQuery(GET_PRODUCTS_FROM_SHOP, model.Product.class)
+                        .setParameter(1, shopId).getResultList();
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
+            }
+        }
+
+        private static final String GET_PRODUCTS_BY_CATEGORY = "SELECT * FROM tblProduct WHERE categoryId = ?1";
+
+        public static synchronized java.util.List<model.Product> getCategoryProducts(int category) throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return em.createNativeQuery(GET_PRODUCTS_BY_CATEGORY, model.Product.class)
+                        .setParameter(1, category).getResultList();
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
+            }
+        }
 
         // TODO: PAGINATE THIS
         public static synchronized java.util.List<model.Review> getReviews(int productId) throws java.sql.SQLException {

@@ -2,6 +2,8 @@ package dao;
 
 import java.util.List;
 
+import org.hibernate.Hibernate;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Query;
@@ -68,7 +70,7 @@ public class CategoryDAO {
                 Category category = em.find(Category.class, id);
 
                 // tell jpa to fetch stuff
-                category.getImageStringResourceId();
+                Hibernate.initialize(category.getImageStringResourceId());
                 
                 
                 return category;

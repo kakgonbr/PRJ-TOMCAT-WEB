@@ -9,28 +9,40 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 public class ProductLoader extends HttpServlet {
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         HttpSession session = request.getSession();
         model.User user = (model.User) session.getAttribute("user");
-        String recommendations = (String) request.getParameter("query");
-        String category = (String) request.getParameter("category");
-
-        if (recommendations == null || recommendations.isBlank()) {
-            recommendations = "";
-
-            if (user != null) {
-                // try to get the user's preference here
-            }
-        }
-
-        if (category == null) {
-            category = "";
-        }
-
-        service.Logging.logger.info("Getting recommendations for query '{}'", recommendations);
+        String recommendations = request.getParameter("query");
+        String category = request.getParameter("category");
+        String shopId = request.getParameter("shopId");
 
         try {
-            java.util.List<model.ProductWrapper> products = dao.ProductDAO.ProductFetcher.getRecommendation(recommendations, 0, category).stream().map(model.ProductWrapper::new).collect(Collectors.toList()); // let page be 0 for now
+            if (recommendations == null || recommendations.isBlank()) {
+                recommendations = "";
+
+                if (user != null) {
+                    // try to get the user's preference here
+                }
+            }
+
+            if (category == null) {
+                category = "";
+            }
+            java.util.List<model.ProductWrapper> products;
+
+            if (shopId == null || shopId.isEmpty()) {
+                service.Logging.logger.info("Getting recommendations for query '{}'", recommendations);
+
+                products = dao.ProductDAO.ProductFetcher
+                        .getRecommendation(recommendations, 0, category).stream().map(model.ProductWrapper::new)
+                        .collect(Collectors.toList()); // let page be 0 for now
+
+            } else {
+                service.Logging.logger.info("Getting shop products for shop {}", shopId);
+
+                products = dao.ProductDAO.ProductFetcher.getShopProducts(Integer.parseInt(shopId)).stream().map(model.ProductWrapper::new).collect(Collectors.toList());
+            }
 
             response.setContentType("application/json");
 
@@ -43,7 +55,7 @@ public class ProductLoader extends HttpServlet {
             service.Logging.logger.warn("FAILED TO GET RECOMMENDATIONS, REASON: {}", e.getMessage());
 
             return;
-        }        
+        }
     }
 
     @Override

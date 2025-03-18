@@ -60,7 +60,7 @@ public class Product implements Serializable {
     @Column(name = "id")
     private Integer id;
     @JoinColumn(name = "categoryId", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Category categoryId;
     @JoinColumn(name = "availablePromotionId", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.EAGER)
@@ -69,7 +69,7 @@ public class Product implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     private ResourceMap imageStringResourceId;
     @JoinColumn(name = "shopId", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Shop shopId;
     @Column(name = "status")
     private Boolean status;

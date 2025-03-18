@@ -120,6 +120,15 @@
         <servlet-name>n_ProductServlet</servlet-name>
         <servlet-class>controller.ProductServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>n_ShopServlet</servlet-name>
+        <servlet-class>controller.ShopServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>n_CategoryServlet</servlet-name>
+        <servlet-class>controller.CategoryServlet</servlet-class>
+    </servlet>
+
 
 
     <!-- SERVLET MAPPINGS -->
@@ -220,6 +229,14 @@
     <servlet-mapping>
         <servlet-name>n_ProductServlet</servlet-name>
         <url-pattern>/product</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>n_ShopServlet</servlet-name>
+        <url-pattern>/shop</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>n_CategoryServlet</servlet-name>
+        <url-pattern>/category</url-pattern>
     </servlet-mapping>
 
     <!-- FILTER DECLARATIONS -->

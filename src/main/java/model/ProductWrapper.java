@@ -2,27 +2,41 @@ package model;
 
 public class ProductWrapper {
     private Integer id;
-    private Integer shopId;
-    private Integer categoryId;
+    private ShopWrapper shop;
+    private CategoryWrapper category;
     private String name;
     private String description;
     private PromotionWrapper promotion;
-    private String thumbnailId;
+    private String thumbnail;
 
     public ProductWrapper() {}
 
     public ProductWrapper(Product product) {
         setId(product.getId());
-        setShopId(product.getShopId().getId());
-        setCategoryId(product.getCategoryId().getId());
+        // setShopId(product.getShopId().getId());
+        // setCategoryId(product.getCategoryId().getId());
+        setShop(new ShopWrapper(product.getShopId()));
+        setCategory(new CategoryWrapper(product.getCategoryId()));
         setName(product.getName());
         setDescription(product.getDescription());
         setPromotion(product.getAvailablePromotionId() == null ? null : new PromotionWrapper(product.getAvailablePromotionId()));
-        setThumbnailId(product.getImageStringResourceId().getId());
+        setThumbnail(product.getImageStringResourceId().getId());
     }
 
-    public Integer getCategoryId() {
-        return categoryId;
+    public ShopWrapper getShop() {
+        return shop;
+    }
+
+    public void setShop(ShopWrapper shopId) {
+        this.shop = shopId;
+    }
+
+    public CategoryWrapper getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryWrapper categoryId) {
+        this.category = categoryId;
     }
 
     public String getDescription() {
@@ -41,18 +55,10 @@ public class ProductWrapper {
         return promotion;
     }
 
-
-    public Integer getShopId() {
-        return shopId;
-    }
-
-    public String getThumbnailId() {
-        return thumbnailId;
+    public String getThumbnail() {
+        return thumbnail;
     }
     
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
-    }
 
     public void setDescription(String description) {
         this.description = description;
@@ -70,11 +76,7 @@ public class ProductWrapper {
         this.promotion = promotion;
     }
 
-    public void setShopId(Integer shopId) {
-        this.shopId = shopId;
-    }
-
-    public void setThumbnailId(String thumbnailId) {
-        this.thumbnailId = thumbnailId;
+    public void setThumbnail(String thumbnailId) {
+        this.thumbnail = thumbnailId;
     }
 }
