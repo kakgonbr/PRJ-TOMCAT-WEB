@@ -90,7 +90,7 @@
                         </form>
                     </li>
                 </c:if>
-                <c:if test="${user != null}">
+                <c:if test="${user != null && user != ''}">
                     <li class="nav-item dropdown">
                         <!-- add user name here -->
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
@@ -105,14 +105,14 @@
                                 <hr class="dropdown-divider" />
                             </li>
                             <li>
-                                <a class="dropdown-item" href="#">Logout</a>
+                                <a class="dropdown-item" href="${pageContext.request.contextPath}/login?action=logout">Logout</a>
                             </li>
                         </ul>
                     </li>
                 </c:if>
-                <c:if test="${user == null}">
+                <c:if test="${user == null || user == ''}">
                     <li>
-                        <a href="${pageContext.request.contextPath}/login" class="btn btn-default">Log In</a>
+                        <a href="${pageContext.request.contextPath}/login" class="btn shadow custom-outline-button">Log In</a>
                     </li>
                 </c:if>
             </ul>

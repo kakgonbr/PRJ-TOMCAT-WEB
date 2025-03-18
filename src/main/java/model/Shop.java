@@ -7,6 +7,7 @@ package model;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -58,10 +59,10 @@ public class Shop implements Serializable {
     @OneToMany(mappedBy = "shopId")
     private List<Product> productList;
     @JoinColumn(name = "profileStringResourceId", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private ResourceMap profileStringResourceId;
     @JoinColumn(name = "ownerId", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private User ownerId;
 
     public Shop() {

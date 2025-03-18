@@ -1,9 +1,9 @@
-function setTheme(mode = 'system') {
+function setTheme(mode = 'auto') {
     const userMode = localStorage.getItem('bs-theme');
     const sysMode = window.matchMedia(
         '(prefers-color-scheme: light)'
     ).matches;
-    const useSystem = mode === 'system';
+    const useSystem = mode === 'system' || (!userMode && mode === 'auto');
     const modeChosen = useSystem
         ? 'system'
         : mode === 'dark' || mode === 'light'
@@ -23,7 +23,7 @@ function setTheme(mode = 'system') {
     document
         .querySelectorAll('.button-switch-theme')
         .forEach((e) => e.classList.remove('active'));
-    document.getElementById("button-theme-" + mode).classList.add('active');
+    document.getElementById("button-theme-" + modeChosen).classList.add('active');
 }
 
 function startupTheme() {

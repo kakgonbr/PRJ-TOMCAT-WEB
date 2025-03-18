@@ -115,6 +115,9 @@ CREATE TABLE tblVariation
 	CONSTRAINT fk_variation_category FOREIGN KEY (categoryId) REFERENCES tblCategory(id)
 )
 
+ALTER TABLE tblVariation
+ADD status bit;
+
 CREATE TABLE tblVariationValue
 (
 	id int PRIMARY KEY IDENTITY(1, 1),
@@ -123,6 +126,9 @@ CREATE TABLE tblVariationValue
 
 	constraint fk_variationvalue_variation foreign key (variationId) references tblVariation(id)
 )
+
+ALTER TABLE tblVariationValue
+ADD status bit;
 
 CREATE TABLE tblProduct
 (
@@ -191,6 +197,10 @@ CREATE TABLE tblCart
 
 	CONSTRAINT fk_cart_user FOREIGN KEY (userId) REFERENCES tblUser(id)
 )
+
+ALTER TABLE tblCart
+ADD status bit;
+
 
 CREATE TABLE tblCartItem
 (
@@ -491,6 +501,8 @@ GO
 
 INSERT INTO tblResourceMap
 VALUES
+('test_png', 'test.png'),
+('main_css', 'main.css'),
 ('main_js', 'main.js'),
 ('test_js', 'test.js'),
 ('chat_js', 'chat.js'),
@@ -504,140 +516,140 @@ VALUES
 ('cp_js', 'controlPanel.js'),
 ('filter_js', 'filter.js');
 
-INSERT INTO tblUser (email, username, phoneNumber, password, persistentCookie, googleId, facebookId, isAdmin)
+INSERT INTO tblUser (email, username, phoneNumber, password, persistentCookie, googleId, facebookId, isAdmin, profileStringResourceId)
 VALUES 
-('abc@example.com', 'user', '00000', 'user', NULL, NULL, NULL, 0),
-('abc1@example.com', 'admin', '00001', 'admin', NULL, NULL, NULL, 1),
-('abc2@example.com', 'user123', '05602', 'user', NULL, NULL, NULL, 0),
-('abc3@example.com', 'user33443', '12003', 'user', NULL, NULL, NULL, 0),
-('abc4@example.com', 'user126543', '56004', 'user', NULL, NULL, NULL, 0);
+('abc@example.com', 'user', '00000', 'user', NULL, NULL, NULL, 0, 'test_png'),
+('abc1@example.com', 'admin', '00001', 'admin', NULL, NULL, NULL, 1, 'test_png'),
+('abc2@example.com', 'user123', '05602', 'user', NULL, NULL, NULL, 0, 'test_png'),
+('abc3@example.com', 'user33443', '12003', 'user', NULL, NULL, NULL, 0, 'test_png'),
+('abc4@example.com', 'user126543', '56004', 'user', NULL, NULL, NULL, 0, 'test_png');
 
 --cosmestics and fashion
 INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
 VALUES
-	('All', 'chart_js', NULL), -- 0
-	('Fashion','chart_js',0), --1
-	('Electronics','chart_js',0), --2
-	('Furniture','chart_js',0), --3
-	('Cosmestic','chart_js',0), --4
-	('Book','chart_js',0), --5
-	('Man Fashion','chart_js',1), --6
-	('Woman Fashion','chart_js',1), --7
-	('Shoes','chart_js',1), --8
-	('Accessory','chart_js',1), --9
-	('T-Shirt','chart_js',6), -- 10
-	('Blazer','chart_js',6), -- 11
-	('Hoodie','chart_js',6), -- 12
-	('Shirt','chart_js',6), -- 13
-	('Jacket','chart_js',6), -- 14
-	('Coat','chart_js',6), -- 15
-	('Polo Shirt','chart_js',6), -- 16
-	('Man Jean','chart_js',6), -- 17
-	('Short','chart_js',6), -- 18
-	('Trouser','chart_js',6), -- 19
-	('Skincare','chart_js',4), -- 20
-	('Makeup','chart_js',4), -- 21
-	('Haircare','chart_js',4), -- 22
-	('Bodycare','chart_js',4), -- 23
-	('Fragrance','chart_js',4); -- 24
+	('All', 'test_png', NULL), -- 0
+	('Fashion','test_png',0), --1
+	('Electronics','test_png',0), --2
+	('Furniture','test_png',0), --3
+	('Cosmestic','test_png',0), --4
+	('Book','test_png',0), --5
+	('Man Fashion','test_png',1), --6
+	('Woman Fashion','test_png',1), --7
+	('Shoes','test_png',1), --8
+	('Accessory','test_png',1), --9
+	('T-Shirt','test_png',6), -- 10
+	('Blazer','test_png',6), -- 11
+	('Hoodie','test_png',6), -- 12
+	('Shirt','test_png',6), -- 13
+	('Jacket','test_png',6), -- 14
+	('Coat','test_png',6), -- 15
+	('Polo Shirt','test_png',6), -- 16
+	('Man Jean','test_png',6), -- 17
+	('Short','test_png',6), -- 18
+	('Trouser','test_png',6), -- 19
+	('Skincare','test_png',4), -- 20
+	('Makeup','test_png',4), -- 21
+	('Haircare','test_png',4), -- 22
+	('Bodycare','test_png',4), -- 23
+	('Fragrance','test_png',4); -- 24
 INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
 VALUES
 	-- skincare
-	('Cleansers', 'chart_js', (select id from tblCategory where name = 'Skincare')),
-    ('Face_wash', 'chart_js', (select id from tblCategory where name = 'Skincare')),
-    ('Makeup_remover', 'chart_js', (select id from tblCategory where name = 'Skincare')),
+	('Cleansers', 'test_png', (select id from tblCategory where name = 'Skincare')),
+    ('Face_wash', 'test_png', (select id from tblCategory where name = 'Skincare')),
+    ('Makeup_remover', 'test_png', (select id from tblCategory where name = 'Skincare')),
 	-- makeup 
-    ('Foundation', 'chart_js', (select id from tblCategory where name = 'Makeup')),
-    ('Concealer', 'chart_js', (select id from tblCategory where name = 'Makeup')),
-    ('Powder', 'chart_js', (select id from tblCategory where name = 'Makeup')),
-    ('Blush', 'chart_js', (select id from tblCategory where name = 'Makeup')),
+    ('Foundation', 'test_png', (select id from tblCategory where name = 'Makeup')),
+    ('Concealer', 'test_png', (select id from tblCategory where name = 'Makeup')),
+    ('Powder', 'test_png', (select id from tblCategory where name = 'Makeup')),
+    ('Blush', 'test_png', (select id from tblCategory where name = 'Makeup')),
 	-- Haircare 
-    ('Shampoo', 'chart_js', (select id from tblCategory where name = 'Haircare')),
-    ('Conditioner', 'chart_js', (select id from tblCategory where name = 'Haircare')),
-    ('Dry_shampoo', 'chart_js', (select id from tblCategory where name = 'Haircare')),
-    ('Hair oil', 'chart_js', (select id from tblCategory where name = 'Haircare')),
+    ('Shampoo', 'test_png', (select id from tblCategory where name = 'Haircare')),
+    ('Conditioner', 'test_png', (select id from tblCategory where name = 'Haircare')),
+    ('Dry_shampoo', 'test_png', (select id from tblCategory where name = 'Haircare')),
+    ('Hair oil', 'test_png', (select id from tblCategory where name = 'Haircare')),
 	-- Bodycare 
-    ('Body wash', 'chart_js', (select id from tblCategory where name = 'Bodycare')),
-    ('Body scrub', 'chart_js', (select id from tblCategory where name = 'Bodycare')),
-    ('Body lotion', 'chart_js', (select id from tblCategory where name = 'Bodycare')),
-    ('Body butter', 'chart_js', (select id from tblCategory where name = 'Bodycare')),
+    ('Body wash', 'test_png', (select id from tblCategory where name = 'Bodycare')),
+    ('Body scrub', 'test_png', (select id from tblCategory where name = 'Bodycare')),
+    ('Body lotion', 'test_png', (select id from tblCategory where name = 'Bodycare')),
+    ('Body butter', 'test_png', (select id from tblCategory where name = 'Bodycare')),
 	-- Fragrance 
-    ('Perfume', 'chart_js', (select id from tblCategory where name = 'Fragrance')),
-    ('Eau de toilette', 'chart_js', (select id from tblCategory where name = 'Fragrance')),
-    ('Body mist', 'chart_js', (select id from tblCategory where name = 'Fragrance')),
-    ('Essential oil', 'chart_js', (select id from tblCategory where name = 'Fragrance')),
+    ('Perfume', 'test_png', (select id from tblCategory where name = 'Fragrance')),
+    ('Eau de toilette', 'test_png', (select id from tblCategory where name = 'Fragrance')),
+    ('Body mist', 'test_png', (select id from tblCategory where name = 'Fragrance')),
+    ('Essential oil', 'test_png', (select id from tblCategory where name = 'Fragrance')),
 	--book
-    ('Fiction', 'chart_js', (select id from tblCategory where name = 'Book')),
-    ('Non_fiction', 'chart_js', (select id from tblCategory where name = 'Book')),
-    ('Children', 'chart_js', (select id from tblCategory where name = 'Book')),
-    ('Comics_manga', 'chart_js', (select id from tblCategory where name = 'Book'));
+    ('Fiction', 'test_png', (select id from tblCategory where name = 'Book')),
+    ('Non_fiction', 'test_png', (select id from tblCategory where name = 'Book')),
+    ('Children', 'test_png', (select id from tblCategory where name = 'Book')),
+    ('Comics_manga', 'test_png', (select id from tblCategory where name = 'Book'));
 INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
 VALUES
     -- Fiction subcategories
-    ('Fantasy', 'chart_js', (select id from tblCategory where name = 'Fiction')),
-    ('Mystery', 'chart_js', (select id from tblCategory where name = 'Fiction')),
-    ('Romance', 'chart_js', (select id from tblCategory where name = 'Fiction')),
-    ('Thriller', 'chart_js', (select id from tblCategory where name = 'Fiction')),
+    ('Fantasy', 'test_png', (select id from tblCategory where name = 'Fiction')),
+    ('Mystery', 'test_png', (select id from tblCategory where name = 'Fiction')),
+    ('Romance', 'test_png', (select id from tblCategory where name = 'Fiction')),
+    ('Thriller', 'test_png', (select id from tblCategory where name = 'Fiction')),
 
     -- Non-Fiction subcategories
-    ('Biography', 'chart_js', (select id from tblCategory where name = 'Non_fiction')),
-    ('Memoir', 'chart_js', (select id from tblCategory where name = 'Non_fiction')),
-    ('History', 'chart_js', (select id from tblCategory where name = 'Non_fiction')),
-    ('Philosophy', 'chart_js', (select id from tblCategory where name = 'Non_fiction')),
+    ('Biography', 'test_png', (select id from tblCategory where name = 'Non_fiction')),
+    ('Memoir', 'test_png', (select id from tblCategory where name = 'Non_fiction')),
+    ('History', 'test_png', (select id from tblCategory where name = 'Non_fiction')),
+    ('Philosophy', 'test_png', (select id from tblCategory where name = 'Non_fiction')),
 
     -- Children subcategories
-    ('Picture_books', 'chart_js', (select id from tblCategory where name = 'Children')),
-    ('Early readers', 'chart_js', (select id from tblCategory where name = 'Children')),
-    ('Middle grade', 'chart_js', (select id from tblCategory where name = 'Children')),
-    ('Young adult', 'chart_js', (select id from tblCategory where name = 'Children')),
+    ('Picture_books', 'test_png', (select id from tblCategory where name = 'Children')),
+    ('Early readers', 'test_png', (select id from tblCategory where name = 'Children')),
+    ('Middle grade', 'test_png', (select id from tblCategory where name = 'Children')),
+    ('Young adult', 'test_png', (select id from tblCategory where name = 'Children')),
 
     -- Comics & Manga subcategories
-    ('Graphic novels', 'chart_js', (select id from tblCategory where name = 'Comics_manga')),
-    ('Manga', 'chart_js', (select id from tblCategory where name = 'Comics_manga')),
-    ('Superhero comics', 'chart_js', (select id from tblCategory where name = 'Comics_manga')),
+    ('Graphic novels', 'test_png', (select id from tblCategory where name = 'Comics_manga')),
+    ('Manga', 'test_png', (select id from tblCategory where name = 'Comics_manga')),
+    ('Superhero comics', 'test_png', (select id from tblCategory where name = 'Comics_manga')),
 
 	--furniture
-    ('Seating', 'chart_js', (select id from tblCategory where name = 'Furniture')),
-    ('Sleeping', 'chart_js', (select id from tblCategory where name = 'Furniture')),
-    ('Storage', 'chart_js', (select id from tblCategory where name = 'Furniture')),
-    ('Dining', 'chart_js', (select id from tblCategory where name = 'Furniture')),
-    ('Office', 'chart_js', (select id from tblCategory where name = 'Furniture'));
+    ('Seating', 'test_png', (select id from tblCategory where name = 'Furniture')),
+    ('Sleeping', 'test_png', (select id from tblCategory where name = 'Furniture')),
+    ('Storage', 'test_png', (select id from tblCategory where name = 'Furniture')),
+    ('Dining', 'test_png', (select id from tblCategory where name = 'Furniture')),
+    ('Office', 'test_png', (select id from tblCategory where name = 'Furniture'));
 INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
 VALUES
     -- seating subcategories
-    ('Chairs', 'chart_js', (select id from tblCategory where name = 'Seating')),
-    ('Sofas and Couches', 'chart_js', (select id from tblCategory where name = 'Seating')),
-    ('Ottomans and Footstools:', 'chart_js', (select id from tblCategory where name = 'Seating')),
+    ('Chairs', 'test_png', (select id from tblCategory where name = 'Seating')),
+    ('Sofas and Couches', 'test_png', (select id from tblCategory where name = 'Seating')),
+    ('Ottomans and Footstools:', 'test_png', (select id from tblCategory where name = 'Seating')),
 
     -- sleeping subcategories
-    ('Beds', 'chart_js', (select id from tblCategory where name = 'Sleeping')),
-    ('Mattresses', 'chart_js', (select id from tblCategory where name = 'Sleeping')),
-    ('Pillows', 'chart_js', (select id from tblCategory where name = 'Sleeping')),
+    ('Beds', 'test_png', (select id from tblCategory where name = 'Sleeping')),
+    ('Mattresses', 'test_png', (select id from tblCategory where name = 'Sleeping')),
+    ('Pillows', 'test_png', (select id from tblCategory where name = 'Sleeping')),
 
     -- storage subcategories
-    ('Cabinets', 'chart_js', (select id from tblCategory where name = 'Storage')),
-    ('Chests', 'chart_js', (select id from tblCategory where name = 'Storage')),
-    ('Trunks', 'chart_js', (select id from tblCategory where name = 'Storage')),
+    ('Cabinets', 'test_png', (select id from tblCategory where name = 'Storage')),
+    ('Chests', 'test_png', (select id from tblCategory where name = 'Storage')),
+    ('Trunks', 'test_png', (select id from tblCategory where name = 'Storage')),
 
 
     -- dining subcategories
-    ('Benches', 'chart_js', (select id from tblCategory where name = 'Dining')),
-    ('Dining Tables', 'chart_js', (select id from tblCategory where name = 'Dining')),
-    ('Dining Chairs', 'chart_js', (select id from tblCategory where name = 'Dining')),
+    ('Benches', 'test_png', (select id from tblCategory where name = 'Dining')),
+    ('Dining Tables', 'test_png', (select id from tblCategory where name = 'Dining')),
+    ('Dining Chairs', 'test_png', (select id from tblCategory where name = 'Dining')),
 
     -- Office  subcategories
-    ('Desks', 'chart_js', (select id from tblCategory where name = 'Office')),
-    ('Conference Tables', 'chart_js', (select id from tblCategory where name = 'Office')),
-    ('Reception Furniture', 'chart_js', (select id from tblCategory where name = 'Office'));
+    ('Desks', 'test_png', (select id from tblCategory where name = 'Office')),
+    ('Conference Tables', 'test_png', (select id from tblCategory where name = 'Office')),
+    ('Reception Furniture', 'test_png', (select id from tblCategory where name = 'Office'));
 
 --electronics
 INSERT INTO tblCategory (name, imageStringResourceId, parent_id) VALUES
-('smartphones', 'chart_js', (select id from tblCategory where name = 'Electronics')),
-('laptops', 'chart_js', (select id from tblCategory where name = 'Electronics')),
-('tablets', 'chart_js', (select id from tblCategory where name = 'Electronics')),
-('cameras', 'chart_js', (select id from tblCategory where name = 'Electronics')),
-('televisions', 'chart_js', (select id from tblCategory where name = 'Electronics')),
-('audio device', 'chart_js', (select id from tblCategory where name = 'Electronics'));
+('smartphones', 'test_png', (select id from tblCategory where name = 'Electronics')),
+('laptops', 'test_png', (select id from tblCategory where name = 'Electronics')),
+('tablets', 'test_png', (select id from tblCategory where name = 'Electronics')),
+('cameras', 'test_png', (select id from tblCategory where name = 'Electronics')),
+('televisions', 'test_png', (select id from tblCategory where name = 'Electronics')),
+('audio device', 'test_png', (select id from tblCategory where name = 'Electronics'));
 
 
 INSERT INTO tblVariation (categoryId,name,datatype,unit)
@@ -685,11 +697,11 @@ INSERT INTO tblVariation (categoryId,name,datatype,unit)
 
 INSERT INTO tblShop (ownerId, name, address, profileStringResourceId, visible)
 VALUES
-(1, 'Gadget World', '789 Tech Road', 'chart_js', 1),
-(2, 'Sneaker Haven', '321 Fashion Blvd', 'admin_css', 1),
-(3, 'Home Essentials', '567 Home Lane', 'admin_js', 1),
-(4, 'Tech Universe', '123 Innovation St', 'test_js', 1),
-(5, 'Fashion Hub', '456 Style Ave', 'admin_css', 1);
+(1, 'Gadget World', '789 Tech Road', 'test_png', 1),
+(2, 'Sneaker Haven', '321 Fashion Blvd', 'test_png', 1),
+(3, 'Home Essentials', '567 Home Lane', 'test_png', 1),
+(4, 'Tech Universe', '123 Innovation St', 'test_png', 1),
+(5, 'Fashion Hub', '456 Style Ave', 'test_png', 1);
 
 -- Understand that being in here means that the promotion will be active
 INSERT INTO tblPromotion (creatorId, name, type, ofAdmin, value, expireDate)
@@ -703,33 +715,33 @@ VALUES
 -- TODO: Match the category id here
 INSERT INTO tblProduct (shopId, categoryId, name, description, availablePromotionId, imageStringResourceId, status)
 VALUES
-(1, 3, 'Samsung Galaxy S22', 'Flagship Samsung smartphone', 1, 'test_js', 1),
-(1, 4, 'MacBook Pro 14', 'Apple high-end laptop', 2, 'test_js', 1),
-(2, 5, 'Nike Air Max', 'Stylish and comfortable sneakers', 3, 'admin_css', 1),
-(2, 6, 'Leather Handbag', 'Elegant leather handbag', NULL, 'admin_css', 1),
-(3, 7, 'Air Fryer', 'Healthy cooking appliance', NULL, 'admin_js', 1),
-(3, 7, 'Vacuum Cleaner', 'Powerful home cleaning device', NULL, 'admin_js', 1),
-(4, 8, 'PlayStation 5', 'Next-gen gaming console', 4, 'test_js', 1),
-(4, 8, 'Xbox Series X', 'Powerful Microsoft gaming console', 4, 'test_js', 1),
-(5, 9, 'Modern Sofa', 'Comfortable and stylish', 5, 'admin_js', 1),
-(5, 9, 'Wooden Dining Table', 'Elegant and durable', 5, 'admin_js', 1),
-(1, 3, 'iPhone 14 Pro', 'Latest Apple smartphone', 1, 'test_js', 1),
-(1, 5, 'Adidas Ultraboost', 'High-performance running shoes', 3, 'admin_css', 1),
-(3, 7, 'Microwave Oven', 'Efficient and modern', NULL, 'admin_js', 1),
-(4, 8, 'Nintendo Switch', 'Portable gaming console', 4, 'test_js', 1),
-(5, 9, 'Queen Size Bed', 'Luxurious and comfortable', 5, 'admin_js', 1),
-(1, 3, 'Google Pixel 7', 'Latest Google smartphone', 1, 'test_js', 1),
-(2, 5, 'Puma Running Shoes', 'Lightweight and stylish', 3, 'admin_css', 1),
-(3, 7, 'Blender', 'Powerful kitchen appliance', NULL, 'admin_js', 1),
-(4, 8, 'Gaming Laptop', 'High-end gaming performance', 4, 'test_js', 1),
-(5, 9, 'Office Chair', 'Ergonomic and comfortable', 5, 'admin_js', 1),
-(4, 3, 'OnePlus 11', 'Flagship OnePlus smartphone', 1, 'test_js', 1),
-(2, 5, 'Reebok Sneakers', 'Durable and comfortable', 3, 'admin_css', 1),
-(3, 7, 'Dishwasher', 'Efficient and modern', NULL, 'admin_js', 1),
-(4, 8, 'Smart TV', '4K Ultra HD', 4, 'test_js', 1),
-(5, 9, 'Bookshelf', 'Modern wooden bookshelf', 5, 'admin_js', 1),
-(5, 9, 'FlagShip Phone', 'A phone that is flagship, also, gaming', 5, 'admin_js', 1),
-(5, 9, 'FlagShip Tablet', 'Cool tablet', 5, 'admin_js', 1);
+(1, 3, 'Samsung Galaxy S22', 'Flagship Samsung smartphone', 1, 'test_png', 1),
+(1, 4, 'MacBook Pro 14', 'Apple high-end laptop', 2, 'test_png', 1),
+(2, 5, 'Nike Air Max', 'Stylish and comfortable sneakers', 3, 'test_png', 1),
+(2, 6, 'Leather Handbag', 'Elegant leather handbag', NULL, 'test_png', 1),
+(3, 7, 'Air Fryer', 'Healthy cooking appliance', NULL, 'test_png', 1),
+(3, 7, 'Vacuum Cleaner', 'Powerful home cleaning device', NULL, 'test_png', 1),
+(4, 8, 'PlayStation 5', 'Next-gen gaming console', 4, 'test_png', 1),
+(4, 8, 'Xbox Series X', 'Powerful Microsoft gaming console', 4, 'test_png', 1),
+(5, 9, 'Modern Sofa', 'Comfortable and stylish', 5, 'test_png', 1),
+(5, 9, 'Wooden Dining Table', 'Elegant and durable', 5, 'test_png', 1),
+(1, 3, 'iPhone 14 Pro', 'Latest Apple smartphone', 1, 'test_png', 1),
+(1, 5, 'Adidas Ultraboost', 'High-performance running shoes', 3, 'test_png', 1),
+(3, 7, 'Microwave Oven', 'Efficient and modern', NULL, 'test_png', 1),
+(4, 8, 'Nintendo Switch', 'Portable gaming console', 4, 'test_png', 1),
+(5, 9, 'Queen Size Bed', 'Luxurious and comfortable', 5, 'test_png', 1),
+(1, 3, 'Google Pixel 7', 'Latest Google smartphone', 1, 'test_png', 1),
+(2, 5, 'Puma Running Shoes', 'Lightweight and stylish', 3, 'test_png', 1),
+(3, 7, 'Blender', 'Powerful kitchen appliance', NULL, 'test_png', 1),
+(4, 8, 'Gaming Laptop', 'High-end gaming performance', 4, 'test_png', 1),
+(5, 9, 'Office Chair', 'Ergonomic and comfortable', 5, 'test_png', 1),
+(4, 3, 'OnePlus 11', 'Flagship OnePlus smartphone', 1, 'test_png', 1),
+(2, 5, 'Reebok Sneakers', 'Durable and comfortable', 3, 'test_png', 1),
+(3, 7, 'Dishwasher', 'Efficient and modern', NULL, 'test_png', 1),
+(4, 8, 'Smart TV', '4K Ultra HD', 4, 'test_png', 1),
+(5, 9, 'Bookshelf', 'Modern wooden bookshelf', 5, 'test_png', 1),
+(5, 9, 'FlagShip Phone', 'A phone that is flagship, also, gaming', 5, 'test_png', 1),
+(5, 9, 'FlagShip Tablet', 'Cool tablet', 5, 'test_png', 1);
 
 
 INSERT INTO tblProductItem (productId, stock, price)

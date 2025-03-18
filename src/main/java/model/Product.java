@@ -48,7 +48,7 @@ public class Product implements Serializable {
     private String description;
     @OneToMany(mappedBy = "productId")
     private List<ProductItem> productItemList;
-    @OneToMany(mappedBy = "productId")
+    @OneToMany(mappedBy = "productId", fetch = FetchType.LAZY)
     private List<ProductImage> productImageList;
     @OneToMany(mappedBy = "productId")
     private List<Review> reviewList;
@@ -60,16 +60,16 @@ public class Product implements Serializable {
     @Column(name = "id")
     private Integer id;
     @JoinColumn(name = "categoryId", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Category categoryId;
     @JoinColumn(name = "availablePromotionId", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Promotion availablePromotionId;
     @JoinColumn(name = "imageStringResourceId", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.EAGER)
     private ResourceMap imageStringResourceId;
     @JoinColumn(name = "shopId", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Shop shopId;
     @Column(name = "status")
     private Boolean status;

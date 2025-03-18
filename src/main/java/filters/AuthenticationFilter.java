@@ -19,6 +19,11 @@ public class AuthenticationFilter implements jakarta.servlet.Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String path = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
 
+        HttpSession session = httpRequest.getSession(false);
+        model.User user;
+
+        service.SessionAndCookieManager.createSessionFromCookie(httpRequest); // try to restore from cookie
+
         // service.Logging.logger.info("Filter AuthenticationFilter received a request going to: {}", path);
 
         // Allow non privileged list
@@ -28,11 +33,6 @@ public class AuthenticationFilter implements jakarta.servlet.Filter {
                 return;
             }
         }
-
-        HttpSession session = httpRequest.getSession(false);
-        model.User user;
-
-        service.SessionAndCookieManager.createSessionFromCookie(httpRequest); // try to restore from cookie
 
         if (session != null && (user = (model.User) session.getAttribute("user")) != null) {
             if (!user.getIsAdmin() && path.startsWith("/admin")) {

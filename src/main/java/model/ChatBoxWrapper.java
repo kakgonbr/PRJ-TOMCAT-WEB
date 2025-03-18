@@ -1,6 +1,6 @@
 package model;
 
-public class ChatBoxWrapper {
+public class ChatBoxWrapper implements java.io.Serializable {
     private int id;
     private int user1;
     private int user2;

@@ -80,10 +80,6 @@ public final class UserDAO {
 
         }
 
-        /**
-         *
-         * Careful, retrieve user's information from the database first
-         */
         public static synchronized void updateCookie(int userId, String cookie)
                 throws SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
@@ -95,6 +91,30 @@ public final class UserDAO {
                     User dbUser = em.find(User.class, userId);
 
                     dbUser.setPersistentCookie(cookie);
+
+                    et.commit();
+
+                } catch (Exception e) {
+                    if (et.isActive()) {
+                        et.rollback();
+                    }
+
+                    throw new java.sql.SQLException(e);
+                }
+            }
+        }
+
+        public static synchronized void deleteCookie(int userId)
+                throws SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                EntityTransaction et = em.getTransaction();
+
+                try {
+                    et.begin();
+
+                    User dbUser = em.find(User.class, userId);
+
+                    dbUser.setPersistentCookie(null);
 
                     et.commit();
 

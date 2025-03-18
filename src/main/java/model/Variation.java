@@ -46,6 +46,8 @@ public class Variation implements Serializable {
     @Size(max = 10)
     @Column(name = "unit")
     private String unit;
+    @Column(name = "status")
+    private Boolean status;
 
     private static final long serialVersionUID = 1L;
     @Id
