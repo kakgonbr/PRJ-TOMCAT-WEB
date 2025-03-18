@@ -42,6 +42,7 @@ import java.util.List;
     @NamedQuery(name = "Promotion.findByValue", query = "SELECT p FROM Promotion p WHERE p.value = :value"),
     @NamedQuery(name = "Promotion.findByCreationDate", query = "SELECT p FROM Promotion p WHERE p.creationDate = :creationDate"),
     @NamedQuery(name = "Promotion.findByExpireDate", query = "SELECT p FROM Promotion p WHERE p.expireDate = :expireDate")})
+
 public class Promotion implements Serializable {
 
     @Basic(optional = false)
@@ -79,6 +80,8 @@ public class Promotion implements Serializable {
     private List<Product> productList;
     @OneToMany(mappedBy = "promotionId")
     private List<ProductOrder> productOrderList;
+    @Column(name = "status")
+    private Boolean status;
 
     public Promotion() {
     }
@@ -154,6 +157,16 @@ public class Promotion implements Serializable {
     public void setProductOrderList(List<ProductOrder> productOrderList) {
         this.productOrderList = productOrderList;
     }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+    
+    
 
     @Override
     public int hashCode() {
