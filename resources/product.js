@@ -41,7 +41,7 @@ function fetchProducts(query, filter, shopId) {
 
                 cell = document.createElement("td");
                 link = document.createElement("a");
-                link.href = contextPath + "/category?categoryId=" + item.category.name;
+                link.href = contextPath + "/category?categoryId=" + item.category.id;
                 link.textContent = item.category.name;
                 cell.appendChild(link);
                 // cell.textContent = item.categoryId;

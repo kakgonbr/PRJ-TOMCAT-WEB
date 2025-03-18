@@ -15,7 +15,7 @@ function createCategoryElement(category) {
     let radio = document.createElement("input");
     radio.type = "radio";
     radio.name = "filter";
-    radio.value = category.name;
+    radio.value = category.id;
 
     label.appendChild(radio);
     label.appendChild(document.createTextNode(" " + category.name));
