@@ -45,7 +45,8 @@
                     return;
                 }
                 
-                var url = new URL('https://' + location.host + contextPath + '/ajax/map?action=auto&query=' + encodeURIComponent(query));
+                //var url = new URL('https://' + location.host + contextPath + '/ajax/map?action=auto&query=' + encodeURIComponent(query));
+                let url= 'https://kakgonbri.zapto.org:8443/prj/ajax/map?action=auto&query='+encodeURIComponent(query);
                 fetch(url.toString)
                 .then(response => response.json())
                 .then(data => 
