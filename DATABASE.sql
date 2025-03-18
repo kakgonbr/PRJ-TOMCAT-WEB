@@ -388,22 +388,10 @@ END;
 GO
 
 GO
-CREATE PROCEDURE GetRecommendation (@query NVARCHAR(400), @page int, @categoryName varchar(300))
+CREATE PROCEDURE GetRecommendation (@query NVARCHAR(400), @page int, @category int)
 AS
 BEGIN
 	SET NOCOUNT ON;
-
-	DECLARE @category int;
-    
-
-	IF @categoryName IS NULL OR LTRIM(RTRIM(@categoryName)) = ''
-    BEGIN
-		SET @category = 0
-	END
-	ELSE
-	BEGIN
-		SELECT @category = id FROM tblCategory WHERE name = @categoryName;
-	END
 
 	IF @query IS NULL OR LTRIM(RTRIM(@query)) = ''
     BEGIN
@@ -848,3 +836,6 @@ SELECT * FROM tblProduct
 
 
 SELECT * FROM tblVector
+
+WITH category AS (SELECT id FROM tblCategory WHERE name = 'Fashion' UNION ALL SELECT c.id FROM tblCategory c JOIN category ch ON c.parent_id = ch.id) 
+SELECT TOP 10 * FROM tblProduct WHERE tblProduct.shopId = 4 AND tblProduct.categoryId IN (SELECT id FROM category)

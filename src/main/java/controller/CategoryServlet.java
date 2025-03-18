@@ -11,7 +11,7 @@ public class CategoryServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         model.Category category = null;
-        int categoryId = Integer.parseInt(request.getParameter("categoryId"));
+        int categoryId = request.getParameter("categoryId") == null ? 0 : Integer.parseInt(request.getParameter("categoryId"));
 
         try {
             category = dao.CategoryDAO.CategoryFetcher.getCategoryDetails(categoryId);
