@@ -6,7 +6,7 @@ import jakarta.transaction.Transactional;
 
 /**
  * Get and make mappings of resources to system path. Note that the systemPath
- * path is <strong>relative</strong> to <code>/prj/resources</code>
+ * path is <strong>relative</strong> to <code>/prj/resources</code> 
  */
 public class ResourceDAO {
     public static synchronized String getPath(String name) throws java.sql.SQLException {
