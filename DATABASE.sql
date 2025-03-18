@@ -388,22 +388,10 @@ END;
 GO
 
 GO
-CREATE PROCEDURE GetRecommendation (@query NVARCHAR(400), @page int, @categoryName varchar(300))
+CREATE PROCEDURE GetRecommendation (@query NVARCHAR(400), @page int, @category int)
 AS
 BEGIN
 	SET NOCOUNT ON;
-
-	DECLARE @category int;
-    
-
-	IF @categoryName IS NULL OR LTRIM(RTRIM(@categoryName)) = ''
-    BEGIN
-		SET @category = 0
-	END
-	ELSE
-	BEGIN
-		SELECT @category = id FROM tblCategory WHERE name = @categoryName;
-	END
 
 	IF @query IS NULL OR LTRIM(RTRIM(@query)) = ''
     BEGIN
@@ -522,7 +510,8 @@ VALUES
 ('abc1@example.com', 'admin', '00001', 'admin', NULL, NULL, NULL, 1, 'test_png'),
 ('abc2@example.com', 'user123', '05602', 'user', NULL, NULL, NULL, 0, 'test_png'),
 ('abc3@example.com', 'user33443', '12003', 'user', NULL, NULL, NULL, 0, 'test_png'),
-('abc4@example.com', 'user126543', '56004', 'user', NULL, NULL, NULL, 0, 'test_png');
+('abc4@example.com', 'user126543', '56004', 'user', NULL, NULL, NULL, 0, 'test_png'),
+('abc5@example.com', 'user0', '14778', 'user', NULL, NULL, NULL, 0, 'test_png');
 
 --cosmestics and fashion
 INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
@@ -701,7 +690,8 @@ VALUES
 (2, 'Sneaker Haven', '321 Fashion Blvd', 'test_png', 1),
 (3, 'Home Essentials', '567 Home Lane', 'test_png', 1),
 (4, 'Tech Universe', '123 Innovation St', 'test_png', 1),
-(5, 'Fashion Hub', '456 Style Ave', 'test_png', 1);
+(5, 'Fashion Hub', '456 Style Ave', 'test_png', 1),
+(6, 'Fashion Path', N'154 Lê Lợi, Hải Châu, Đà Nẵng', 'test_png', 1);
 
 -- Understand that being in here means that the promotion will be active
 INSERT INTO tblPromotion (creatorId, name, type, ofAdmin, value, expireDate)
@@ -743,6 +733,14 @@ VALUES
 (5, 9, 'FlagShip Phone', 'A phone that is flagship, also, gaming', 5, 'test_png', 1),
 (5, 9, 'FlagShip Tablet', 'Cool tablet', 5, 'test_png', 1);
 
+INSERT INTO tblProduct (shopId, categoryId, name, description, availablePromotionId, imageStringResourceId, status)
+VALUES
+(6, 10, 'T-Shirt Path 1', 'Good', NULL, 'test_png', 1),
+(6, 10, 'T-Shirt Path 2', 'Good', NULL, 'test_png', 1),
+(6, 10, 'T-Shirt Path 3', 'Good', NULL, 'test_png', 1),
+(6, 12, 'Hoodie Path 1', 'Good', NULL, 'test_png', 1),
+(6, 11, 'Blazer Path 1', 'Good', NULL, 'test_png', 1);
+
 
 INSERT INTO tblProductItem (productId, stock, price)
 VALUES
@@ -771,6 +769,52 @@ VALUES
 (2, 18, 650),
 (3, 6, 1400),
 (4, 9, 800);
+
+INSERT INTO tblProductItem (productId, stock, price)
+VALUES
+(28, 12, 1100),
+(28, 10, 1000),
+(28, 5, 1200),
+(29, 12, 1300),
+(29, 20, 1400),
+(30, 10, 1000),
+(30, 9, 1000),
+(31, 12, 1200),
+(31, 13, 1200),
+(31, 15, 1100),
+(32, 10, 2000),
+(32, 11, 2100),
+(32, 12, 2200);
+
+INSERT INTO tblProductCustomization(productItemId,variationValueId)
+VALUES 
+	(27, 1),
+	(27, 15),
+	(28, 1),
+	(28, 16),
+	(29, 2),
+	(29, 16),
+	(30, 3),
+	(30, 17),
+	(31, 3),
+	(31, 16),
+	(32, 4),
+	(32, 15),
+	(33, 4),
+	(33, 16),
+	(34, 8),
+	(34, 15),
+	(35, 3),
+	(35, 15),
+	(36, 3),
+	(36, 16),
+	(37, 1),
+	(37, 15),
+	(38, 1),
+	(38, 16),
+	(39, 1),
+	(39, 17);
+
 
 EXEC ComputeTFIdF
 
@@ -904,3 +948,6 @@ SELECT * FROM tblProduct
 
 
 SELECT * FROM tblVector
+
+WITH category AS (SELECT id FROM tblCategory WHERE name = 'Fashion' UNION ALL SELECT c.id FROM tblCategory c JOIN category ch ON c.parent_id = ch.id) 
+SELECT TOP 10 * FROM tblProduct WHERE tblProduct.shopId = 4 AND tblProduct.categoryId IN (SELECT id FROM category)

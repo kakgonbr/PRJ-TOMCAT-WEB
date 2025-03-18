@@ -14,7 +14,7 @@ function fetchProducts(query, filter, shopId) {
     }
 
     if (filter) {
-        url.searchParams.append('category', filter.value)
+        url.searchParams.append('category', filter)
     }
 
     if (shopId) {
@@ -41,7 +41,7 @@ function fetchProducts(query, filter, shopId) {
 
                 cell = document.createElement("td");
                 link = document.createElement("a");
-                link.href = contextPath + "/category?categoryId=" + item.category.name;
+                link.href = contextPath + "/category?categoryId=" + item.category.id;
                 link.textContent = item.category.name;
                 cell.appendChild(link);
                 // cell.textContent = item.categoryId;
@@ -73,7 +73,8 @@ function fetchProducts(query, filter, shopId) {
 }
 
 function fetchByQueryAndCategory() {
-    fetchProducts(document.getElementById("searchBox"), document.querySelector('input[name="filter"]:checked'), null);
+    filter = document.querySelector('input[name="filter"]:checked');
+    fetchProducts(document.getElementById("searchBox"), filter? filter.value : 0, null);
 }
 
 function fetchByCategory() { // store category in global
@@ -81,5 +82,6 @@ function fetchByCategory() { // store category in global
 }
 
 function fetchByShop() { // store shop in global
-    fetchProducts(null, document.querySelector('input[name="filter"]:checked'), shopId);
+    filter = document.querySelector('input[name="filter"]:checked');
+    fetchProducts(null, filter? filter.value : 0, shopId);
 }

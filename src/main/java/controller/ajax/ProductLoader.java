@@ -14,7 +14,7 @@ public class ProductLoader extends HttpServlet {
         HttpSession session = request.getSession();
         model.User user = (model.User) session.getAttribute("user");
         String recommendations = request.getParameter("query");
-        String category = request.getParameter("category");
+        Integer category = request.getParameter("category") == null || request.getParameter("category").isBlank() ? 0 : Integer.parseInt(request.getParameter("category"));
         String shopId = request.getParameter("shopId");
 
         try {
@@ -26,9 +26,6 @@ public class ProductLoader extends HttpServlet {
                 }
             }
 
-            if (category == null) {
-                category = "";
-            }
             java.util.List<model.ProductWrapper> products;
 
             if (shopId == null || shopId.isEmpty()) {
@@ -41,11 +38,7 @@ public class ProductLoader extends HttpServlet {
             } else {
                 service.Logging.logger.info("Getting shop products for shop {}", shopId);
 
-                if (category == null || category.isEmpty()) {
-                    products = dao.ProductDAO.ProductFetcher.getShopProducts(Integer.parseInt(shopId)).stream().map(model.ProductWrapper::new).collect(Collectors.toList());
-                } else {
-                    products = dao.ProductDAO.ProductFetcher.getShopProductsByCategory(Integer.parseInt(shopId), category).stream().map(model.ProductWrapper::new).collect(Collectors.toList());
-                }
+                products = dao.ProductDAO.ProductFetcher.getShopProductsByCategory(Integer.parseInt(shopId), category).stream().map(model.ProductWrapper::new).collect(Collectors.toList());
             }
 
             response.setContentType("application/json");
