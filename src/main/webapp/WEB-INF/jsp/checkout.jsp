@@ -6,6 +6,27 @@
     <jsp:attribute name="head">
         <script>
             var contextPath = "${pageContext.request.contextPath}";
+        </script>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/checkout_css">
+    </jsp:attribute>
+
+    <jsp:attribute name="header">
+    
+    </jsp:attribute>
+
+    <jsp:attribute name="body">
+        <form>
+            <div class="address-container">
+                <label for="address">Địa chỉ</label>
+                <input type="text" id="address" name="address" required placeholder="Nhập địa chỉ của bạn" autocomplete="off">
+                <div id="suggestions" class="suggestions"></div>
+            </div>
+        </form>
+    </jsp:attribute>
+
+    <jsp:attribute name="footer">
+        <t:footer/>
+        <script>
             const addressInput = document.getElementById('address');
             const suggestionsContainer = document.getElementById('suggestions');
 
@@ -51,24 +72,5 @@
 
             addressInput.addEventListener('input', (e) => search(e.target.value));
         </script>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/checkout_css">
-    </jsp:attribute>
-
-    <jsp:attribute name="header">
-    
-    </jsp:attribute>
-
-    <jsp:attribute name="body">
-        <form>
-            <div class="address-container">
-                <label for="address">Địa chỉ</label>
-                <input type="text" id="address" name="address" required placeholder="Nhập địa chỉ của bạn" autocomplete="off">
-                <div id="suggestions" class="suggestions"></div>
-            </div>
-        </form>
-    </jsp:attribute>
-
-    <jsp:attribute name="footer">
-        <t:footer/>
     </jsp:attribute>
 </t:genericpage>
