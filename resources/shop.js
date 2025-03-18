@@ -23,6 +23,7 @@ function fetchShops() {
                 let anchor = document.createElement("a");
                 anchor.href = contextPath + "/shop?shopId=" + shop.id;
                 anchor.innerText = shop.name;
+                li.appendChild(anchor);
                 ul.appendChild(li);
 
                 li = document.createElement("li");
