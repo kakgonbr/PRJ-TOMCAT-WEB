@@ -41,7 +41,11 @@ public class ProductLoader extends HttpServlet {
             } else {
                 service.Logging.logger.info("Getting shop products for shop {}", shopId);
 
-                products = dao.ProductDAO.ProductFetcher.getShopProducts(Integer.parseInt(shopId)).stream().map(model.ProductWrapper::new).collect(Collectors.toList());
+                if (category == null || category.isEmpty()) {
+                    products = dao.ProductDAO.ProductFetcher.getShopProducts(Integer.parseInt(shopId)).stream().map(model.ProductWrapper::new).collect(Collectors.toList());
+                } else {
+                    products = dao.ProductDAO.ProductFetcher.getShopProductsByCategory(Integer.parseInt(shopId), category).stream().map(model.ProductWrapper::new).collect(Collectors.toList());
+                }
             }
 
             response.setContentType("application/json");
