@@ -15,7 +15,7 @@ public class CategoryWrapper implements java.io.Serializable {
     public CategoryWrapper() {}
 
     /**
-     * For displaying in product details
+     * For displaying in product details and search screen
      * @param category
      * @param hack
      */
@@ -26,7 +26,7 @@ public class CategoryWrapper implements java.io.Serializable {
     }
     
     /**
-     * For displaying a filter hierarchy
+     * For displaying a filter hierarchy and category dedicated pages
      * @param category
      */
     public CategoryWrapper(Category category) {

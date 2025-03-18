@@ -16,7 +16,7 @@ public class ProductWrapper {
         // setShopId(product.getShopId().getId());
         // setCategoryId(product.getCategoryId().getId());
         setShop(new ShopWrapper(product.getShopId()));
-        setCategory(new CategoryWrapper(product.getCategoryId()));
+        setCategory(new CategoryWrapper(product.getCategoryId(), false));
         setName(product.getName());
         setDescription(product.getDescription());
         setPromotion(product.getAvailablePromotionId() == null ? null : new PromotionWrapper(product.getAvailablePromotionId()));

@@ -14,7 +14,7 @@ function fetchProducts(query, filter, shopId) {
     }
 
     if (filter) {
-        url.searchParams.append('category', filter)
+        url.searchParams.append('category', filter.value)
     }
 
     if (shopId) {
@@ -73,7 +73,7 @@ function fetchProducts(query, filter, shopId) {
 }
 
 function fetchByQueryAndCategory() {
-    fetchProducts(document.getElementById("searchBox").value, document.querySelector('input[name="filter"]:checked').value, null);
+    fetchProducts(document.getElementById("searchBox").value, document.querySelector('input[name="filter"]:checked'), null);
 }
 
 function fetchByCategory() { // store category in global
@@ -81,5 +81,5 @@ function fetchByCategory() { // store category in global
 }
 
 function fetchByShop() { // store shop in global
-    fetchProducts(null, document.querySelector('input[name="filter"]:checked').value, shopId);
+    fetchProducts(null, document.querySelector('input[name="filter"]:checked'), shopId);
 }
