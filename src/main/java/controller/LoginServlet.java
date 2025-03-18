@@ -6,6 +6,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -62,8 +63,11 @@ public class LoginServlet extends HttpServlet {
                 throw new java.sql.SQLException("Failed to retreive user");
             }
 
+            HttpSession session = request.getSession();
+            session.setAttribute("user", user);
+
             if (rememberMe) {
-                String cookie = service.SessionAndCookieManager.createCookie(user, request.getSession());
+                String cookie = service.SessionAndCookieManager.createCookie(user, session);
                 Cookie toBeAdded = new Cookie(config.Config.CookieMapper.REMEMBER_ME_COOKIE, cookie);
     
                 toBeAdded.setSecure(true);

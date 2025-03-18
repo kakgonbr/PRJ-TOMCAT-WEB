@@ -32,8 +32,6 @@ public final class SessionAndCookieManager {
      *
      */
     public static String createCookie(User user, jakarta.servlet.http.HttpSession session) throws java.sql.SQLException {
-        session.setAttribute("user", user);
-
         for (int i = 0; i < config.Config.CookieMapper.UUID_RETRY; ++i) {
             // user.setCookie(java.util.UUID.randomUUID().toString());
             String cookie = java.util.UUID.randomUUID().toString();
@@ -47,11 +45,11 @@ public final class SessionAndCookieManager {
                 return cookie;
             } catch (java.sql.SQLException e) {
                 service.Logging.logger.warn("Failed to genereate UUID for session {}, retries remaining: {}, reason: {}", session.getId(), config.Config.CookieMapper.UUID_RETRY - i, e.getMessage());
+
+                continue;
             }
 
-            throw new java.sql.SQLException("Could not insert a new cookie for session {}", session.getId());
         }
-
-        return null;
+        throw new java.sql.SQLException("Could not insert a new cookie for session {}", session.getId());
     }
 }

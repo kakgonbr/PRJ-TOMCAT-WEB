@@ -1,7 +1,7 @@
 package config;
 
 public final class Config {
-    public static final String[] nonPrivileged = {"/login", "/public", "/home", "/redirect", "/resources", "/ipn", "/return", "/logs", "/ajax/products", "/ajax/category", "/signup", "/product", "/shop", "/category"};
+    public static final String[] nonPrivileged = {"/login", "/public", "/home", "/redirect", "/resources", "/ipn", "/return", "/logs", "/ajax", "/signup", "/product", "/shop", "/category"};
     public static final String[] nonMaintenance = {"/login", "/error", "/redirect"};
     
     public static final String LOG_LOCATION = "/prj/logs/app.log";
