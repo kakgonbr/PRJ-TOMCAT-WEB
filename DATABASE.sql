@@ -514,7 +514,8 @@ VALUES
 ('userMain_css', 'userMain.css'),
 ('login_css', 'login.css'),
 ('cp_js', 'controlPanel.js'),
-('filter_js', 'filter.js');
+('filter_js', 'filter.js'),
+('checkout_css','checkout.css');
 
 INSERT INTO tblUser (email, username, phoneNumber, password, persistentCookie, googleId, facebookId, isAdmin, profileStringResourceId)
 VALUES 
