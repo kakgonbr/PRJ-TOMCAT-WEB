@@ -11,12 +11,14 @@
 
         <script src="${pageContext.request.contextPath}/resources/product_js"></script>
         <script src="${pageContext.request.contextPath}/resources/filter_js"></script>
+        <script src="${pageContext.request.contextPath}/resources/shop_js"></script>
         
         <script>
             var contextPath = "${pageContext.request.contextPath}";
             var shopId = "${param.shopId}"
             document.addEventListener("DOMContentLoaded", fetchCategory);
             document.addEventListener("DOMContentLoaded", fetchByShop);
+            document.addEventListener("DOMContentLoaded", fetchShops);
         </script>
     </jsp:attribute>
 
@@ -37,6 +39,10 @@
             <table border="1" id="productTable">
             </table>
         </c:if>
+        <p>Explore Shops</p>
+        <div id="shopContainer">
+
+        </div>
     </jsp:attribute>
 
     <jsp:attribute name="footer">

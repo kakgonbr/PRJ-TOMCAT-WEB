@@ -489,6 +489,7 @@ GO
 
 INSERT INTO tblResourceMap
 VALUES
+('shop_js', 'shop.js'),
 ('test_png', 'test.png'),
 ('main_css', 'main.css'),
 ('main_js', 'main.js'),

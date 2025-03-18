@@ -13,10 +13,12 @@ public class ShopServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         model.User user = session == null ? null : (model.User) session.getAttribute("user");
         model.Shop shop = null;
-        int shopId = Integer.parseInt(request.getParameter("shopId"));
+        int shopId = request.getParameter("shopId") == null ? -1 :Integer.parseInt(request.getParameter("shopId"));
 
         try {
-            shop = dao.ShopDAO.ShopFetcher.getShop(shopId);
+            if (shopId != -1) {
+                shop = dao.ShopDAO.ShopFetcher.getShop(shopId);
+            }
 
             request.setAttribute("shop", new model.ShopWrapper(shop));
 
