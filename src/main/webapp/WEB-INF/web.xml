@@ -136,6 +136,10 @@
         <servlet-name>MapAPI</servlet-name>
         <servlet-class>controller.ajax.MapAPI</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>n_CheckOutServlet</servlet-name>
+        <servlet-class>controller.CheckOutServlet</servlet-class>
+    </servlet>
 
 
 
@@ -253,6 +257,10 @@
     <servlet-mapping>
         <servlet-name>MapAPI</servlet-name>
         <url-pattern>/ajax/map</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>n_CheckOutServlet</servlet-name>
+        <url-pattern>/checkout</url-pattern>
     </servlet-mapping>
 
     <!-- FILTER DECLARATIONS -->
