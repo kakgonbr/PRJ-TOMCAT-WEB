@@ -23,7 +23,7 @@ public class ShopAuthenticationServlet extends HttpServlet {
 
         int shopId = getShop(request, response);
         if (shopId != -1) {
-            response.sendRedirect(request.getContextPath() + "/jsp/shopInfo.jsp");
+            response.sendRedirect(request.getContextPath() + "/shop");
         } else {
             response.sendRedirect(request.getContextPath() + "/shop-signup");
         }
