@@ -1,5 +1,7 @@
 package dao;
 
+import org.hibernate.Hibernate;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.ParameterMode;
@@ -36,10 +38,17 @@ public class ProductDAO {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 model.Product product = em.find(model.Product.class, id);
 
-                product.getCategoryId();
-                product.getProductImageList();
-                product.getShopId();
-                product.getProductItemList().forEach(model.ProductItem::getProductCustomizationList);
+                // product.getCategoryId();
+                // service.Logging.logger.info(product.getProductImageList());
+                // product.getShopId();
+                // product.getProductItemList().forEach(model.ProductItem::getProductCustomizationList);
+                // product.getProductItemList().stream().map(model.ProductItem::getProductCustomizationList).forEach(service.Logging.logger::info);
+                // Hibernate.initialize(product.getCategoryId());
+                // Hibernate.initialize(product.getAvailablePromotionId());
+                Hibernate.initialize(product.getProductImageList());
+                // Hibernate.initialize(product.getShopId());
+                Hibernate.initialize(product.getProductItemList());
+                product.getProductItemList().stream().map(model.ProductItem::getProductCustomizationList).forEach(Hibernate::initialize);
 
                 return product;
 
@@ -47,6 +56,39 @@ public class ProductDAO {
                 throw new java.sql.SQLException(e);
             }
         } // public static synchronized model.Product getProductDetails
+
+        private static final String GET_PRODUCTS_FROM_SHOP = "SELECT * FROM tblProduct WHERE shopId = ?1";
+
+        public static synchronized java.util.List<model.Product> getShopProducts(int shopId) throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return em.createNativeQuery(GET_PRODUCTS_FROM_SHOP, model.Product.class)
+                        .setParameter(1, shopId).getResultList();
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
+            }
+        }
+
+        private static final String GET_PRODUCTS_FROM_SHOP_BY_CATEGORY = "WITH category AS (SELECT id FROM tblCategory WHERE id = ?1 UNION ALL SELECT c.id FROM tblCategory c JOIN category ch ON c.parent_id = ch.id) SELECT TOP 10 * FROM tblProduct WHERE tblProduct.shopId = ?2 AND tblProduct.categoryId IN (SELECT id FROM category)";
+
+        public static synchronized java.util.List<model.Product> getShopProductsByCategory(int shopId, int category) throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return em.createNativeQuery(GET_PRODUCTS_FROM_SHOP_BY_CATEGORY, model.Product.class)
+                        .setParameter(1, category).setParameter(2, shopId).getResultList();
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
+            }
+        }
+
+        private static final String GET_PRODUCTS_BY_CATEGORY = "WITH category AS (SELECT id FROM tblCategory WHERE id = ?1 UNION ALL SELECT c.id FROM tblCategory c JOIN category ch ON c.parent_id = ch.id) SELECT TOP 10 * FROM tblProduct WHERE tblProduct.categoryId IN (SELECT id FROM category)";
+
+        public static synchronized java.util.List<model.Product> getCategoryProducts(int category) throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return em.createNativeQuery(GET_PRODUCTS_BY_CATEGORY, model.Product.class)
+                        .setParameter(1, category).getResultList();
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
+            }
+        }
 
         // TODO: PAGINATE THIS
         public static synchronized java.util.List<model.Review> getReviews(int productId) throws java.sql.SQLException {
@@ -60,14 +102,14 @@ public class ProductDAO {
         private static final String GET_RECOMMENDATION = "GetRecommendation";
 
         @SuppressWarnings("unchecked")
-        public static synchronized java.util.List<model.Product> getRecommendation(String query, int page, String category)
+        public static synchronized java.util.List<model.Product> getRecommendation(String query, int page, int category)
                 throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 return em.createStoredProcedureQuery(GET_RECOMMENDATION, model.Product.class)
                         .registerStoredProcedureParameter("query", String.class, ParameterMode.IN)
                         .registerStoredProcedureParameter("page", Integer.class, ParameterMode.IN)
-                        .registerStoredProcedureParameter("categoryName", String.class, ParameterMode.IN)
-                        .setParameter("query", query).setParameter("page", page).setParameter("categoryName", category)
+                        .registerStoredProcedureParameter("category", Integer.class, ParameterMode.IN)
+                        .setParameter("query", query).setParameter("page", page).setParameter("category", category)
                         .getResultList();
 
             } catch (Exception e) {
@@ -76,7 +118,7 @@ public class ProductDAO {
         } // public static synchronized java.util.List<Product> getRecommendation
 
         public static synchronized java.util.List<model.Product> getRecommendation(String query, int page) throws java.sql.SQLException {
-            return getRecommendation(query, page, "");
+            return getRecommendation(query, page, 0);
         }
 
         private static final String GET_CUSTOMIZATIONS = "SELECT tblProductCustomization.* FROM tblProductCustomization INNER JOIN tblProductItem ON productItemId = tblProductItem.id WHERE tblProductItem.productId = ?1";

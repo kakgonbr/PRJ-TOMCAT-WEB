@@ -6,6 +6,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -62,15 +63,19 @@ public class LoginServlet extends HttpServlet {
                 throw new java.sql.SQLException("Failed to retreive user");
             }
 
-            String cookie = service.SessionAndCookieManager.createSession(user, request.getSession(), rememberMe);
+            HttpSession session = request.getSession();
+            session.setAttribute("user", user);
 
-            Cookie toBeAdded = new Cookie(config.Config.CookieMapper.REMEMBER_ME_COOKIE, cookie);
-
-            toBeAdded.setSecure(true);
-            toBeAdded.setHttpOnly(true);
-            toBeAdded.setMaxAge(604800); // 1 week
-
-            response.addCookie(toBeAdded);
+            if (rememberMe) {
+                String cookie = service.SessionAndCookieManager.createCookie(user, session);
+                Cookie toBeAdded = new Cookie(config.Config.CookieMapper.REMEMBER_ME_COOKIE, cookie);
+    
+                toBeAdded.setSecure(true);
+                toBeAdded.setHttpOnly(true);
+                toBeAdded.setMaxAge(604800); // 1 week
+    
+                response.addCookie(toBeAdded);
+            }
         } catch (java.sql.SQLException e) {
             service.Logging.logger.warn("Log in failed for request {}, tried: {} and {}. Reason: {}",
                     request.getRequestId(), userOrEmail, password, e.getMessage());

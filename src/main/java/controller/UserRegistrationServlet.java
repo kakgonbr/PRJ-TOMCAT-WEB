@@ -86,8 +86,7 @@ public class UserRegistrationServlet extends HttpServlet {
         String googleId = request.getParameter("googleId");
 
         if (googleId != null && idToEmail.containsKey(googleId)) { // ensuring integrity, user cannot just edit their email to cause mismatch with the id
-            email = idToEmail.get(googleId);
-            idToEmail.remove(googleId);
+            email = idToEmail.remove(googleId);
         } else {
             email = request.getParameter("email");
         }

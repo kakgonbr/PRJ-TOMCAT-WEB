@@ -1,7 +1,7 @@
 package config;
 
 public final class Config {
-    public static final String[] nonPrivileged = {"/login", "/public", "/home", "/redirect", "/resources", "/ipn", "/return", "/logs", "/ajax/products", "/ajax/category", "/signup"};
+    public static final String[] nonPrivileged = {"/login", "/public", "/home", "/redirect", "/resources", "/ipn", "/return", "/logs", "/ajax", "/signup", "/product", "/shop", "/category"};
     public static final String[] nonMaintenance = {"/login", "/error", "/redirect"};
     
     public static final String LOG_LOCATION = "/prj/logs/app.log";
@@ -34,6 +34,9 @@ public final class Config {
         public static final String ADMIN_EDIT_USER = "/WEB-INF/jsp/admin/userEdit.jsp";
         public static final String ADMIN_EDIT_SHOP = "/WEB-INF/jsp/admin/shopEdit.jsp";
         public static final String ADMIN_EDIT_PROMOTION = "/WEB-INF/jsp/admin/promotionEdit.jsp";
+        public static final String PRODUCT_DETAILS = "/WEB-INF/jsp/productInfo.jsp";
+        public static final String CATEGORY_DETAILS = "/WEB-INF/jsp/categoryInfo.jsp";
+        public static final String SHOP_DETAILS = "/WEB-INF/jsp/shopInfo.jsp";
 
         public static final String PRIVILEGED_ADMIN_JSP = "/WEB-INF/jsp/admin/adminStats.jsp";
     }

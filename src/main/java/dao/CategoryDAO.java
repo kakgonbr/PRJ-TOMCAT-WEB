@@ -2,6 +2,8 @@ package dao;
 
 import java.util.List;
 
+import org.hibernate.Hibernate;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Query;
@@ -30,21 +32,24 @@ public class CategoryDAO {
             }
         }
 
-        public static synchronized List<Category> getCategoryHierarchy() throws java.sql.SQLException {
-            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                java.util.List<Category> categories = em.createNamedQuery("Category.findAll", Category.class).getResultList();
+        // public static synchronized List<Category> getCategoryHierarchy() throws java.sql.SQLException {
+        //     try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+        //         java.util.List<Category> categories = em.createNamedQuery("Category.findAll", Category.class).getResultList();
 
-                categories.forEach(Category::getCategoryList);
+        //         categories.forEach(Category::getCategoryList);
 
-                return categories;
-            } catch (Exception e) {
-                throw new java.sql.SQLException(e);
-            }
-        } // public static synchronized List<Category> getCategoryHierarchy
+        //         return categories;
+        //     } catch (Exception e) {
+        //         throw new java.sql.SQLException(e);
+        //     }
+        // } // public static synchronized List<Category> getCategoryHierarchy
 
         // recursive!!!
         private static synchronized void initCategory(Category category) {
             if (category == null) return;
+
+            // make sure entity manager is still active
+            Hibernate.initialize(category.getCategoryList());
 
             for (Category subCategory : category.getCategoryList()) {
                 initCategory(subCategory);
@@ -68,8 +73,8 @@ public class CategoryDAO {
                 Category category = em.find(Category.class, id);
 
                 // tell jpa to fetch stuff
-                category.getImageStringResourceId();
-                
+                Hibernate.initialize(category.getImageStringResourceId());
+                initCategory(category);
                 
                 return category;
             }
