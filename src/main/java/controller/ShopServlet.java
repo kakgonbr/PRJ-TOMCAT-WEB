@@ -18,9 +18,8 @@ public class ShopServlet extends HttpServlet {
         try {
             if (shopId != -1) {
                 shop = dao.ShopDAO.ShopFetcher.getShop(shopId);
+                request.setAttribute("shop", new model.ShopWrapper(shop));
             }
-
-            request.setAttribute("shop", new model.ShopWrapper(shop));
 
         } catch (java.sql.SQLException e) {
             request.setAttribute("code", 404);
