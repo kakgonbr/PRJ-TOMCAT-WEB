@@ -55,9 +55,7 @@
                         </div>
                     </div>
                     <div class="d-grid gap-2 col-2 mx-auto mt-4">
-                        <a href="../html/sellercentre.html" class="w-75">
-                            <button class="btn btn-primary w-100" type="button">Register</button>
-                        </a>
+                            <button class="btn btn-primary w-100" type="submit">Register</button>
                     </div>
                 </form>
             </div>
