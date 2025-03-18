@@ -9,7 +9,7 @@ function fetchProducts(query, filter, shopId) {
     // }
 
     if (query) {
-        url.searchParams.append('query', encodeURIComponent(query));
+        url.searchParams.append('query', encodeURIComponent(query.value));
         // url += "?query=" + encodeURIComponent(query);
     }
 
@@ -73,7 +73,7 @@ function fetchProducts(query, filter, shopId) {
 }
 
 function fetchByQueryAndCategory() {
-    fetchProducts(document.getElementById("searchBox").value, document.querySelector('input[name="filter"]:checked'), null);
+    fetchProducts(document.getElementById("searchBox"), document.querySelector('input[name="filter"]:checked'), null);
 }
 
 function fetchByCategory() { // store category in global
