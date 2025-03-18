@@ -1,5 +1,6 @@
 <%@ attribute name="node" required="true" type="model.CategoryWrapper" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <li>
     ID: ${node.id}
@@ -12,7 +13,6 @@
 </li>
 <li>Children:
     <c:if test="${not empty node.children}">
-    Not empty
         <ul>
             <c:forEach var="child" items="${node.children}">
                 <t:categoryTree node="${child}"/>
