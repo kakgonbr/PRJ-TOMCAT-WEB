@@ -46,9 +46,9 @@
 
                         <div class="col-md-6 d-flex flex-column align-items-center">
                             <p class="align-self-center w-50">Shop Name</p>
-                            <input type="text" class="form-control w-50 mb-4" value="${param.shopName}">
+                            <input type="text" class="form-control w-50 mb-4" name="shopName" value="${param.shopName}">
                             <p class="align-self-center w-50">Address:</p>
-                            <input type="text" class="form-control w-50 mb-4" value="${param.shopAddress}">
+                            <input type="text" class="form-control w-50 mb-4" name="shopAddress" value="${param.address}">
                         </div>
                         <div class="col-md-6">
                             <p class="text-dark">i dont know what to write Here</p>
