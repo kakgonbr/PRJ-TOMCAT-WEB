@@ -1,0 +1,26 @@
+.address-container {
+    position: relative;
+    margin-bottom: 20px;
+}
+.suggestions{
+    position: absolute;
+    display: none;
+    border-radius: 8px;
+    width: 100%;
+    max-height: 300px;
+    z-index: 1000;
+    overflow-y: auto;
+    background: #F2F2F2;
+}
+.suggestion-item {
+    padding: 12px 16px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    
+}
+.suggestion-item:hover {
+    background: #292e3a;
+    color: white;
+    padding-left: 24px;
+}
