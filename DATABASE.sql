@@ -890,7 +890,7 @@ VALUES
 (28, 12, 1100),
 (28, 10, 1000),
 (28, 5, 1200),
-(29, 12, 1300),
+(29, 12, 1300)
 (29, 20, 1400),
 (30, 10, 1000),
 (30, 9, 1000),
@@ -930,7 +930,89 @@ VALUES
 	(25, 1),
 	(26, 17);
 
+	--product item for electronics
+INSERT INTO tblProductItem (productId, stock, price) VALUES
+	(33, 42, 7200),
+	(33, 58, 9100),
+	(34, 96, 5300),
+	(34, 62, 7800),
+	(35, 47, 8600),
+	(35, 38, 1400),
+	(36, 69, 2500),
+	(37, 55, 3800),
+	(37, 24, 6700),
+	(38, 81, 4100),
+	(38, 49, 6300),
+	(39, 39, 9200),
+	(39, 76, 2700),
+	(40, 53, 1500),
+	(40, 21, 5300),
+	(41, 30, 1800),
+	(41, 71, 2500),
+	(42, 19, 5700),
+	(42, 35, 3200),
+	(43, 61, 4600),
+	(43, 44, 3900),
+	(44, 22, 6800),
+	(45, 47, 5700),
+	(45, 27, 4400),
+	(46, 66, 5900),
+	(46, 38, 2200),
+	(47, 32, 7100),
+	(47, 55, 4700),
+	(48, 41, 8200),
+	(48, 68, 5300),
+	(49, 35, 7600),
+	(50, 73, 3400),
+	(50, 58, 9100),
+	(51, 24, 6500),
+	(51, 45, 3800),
+	(51, 48, 4800),
+	(52, 52, 7200),
+	(52, 60, 3100),
+	(53, 30, 8600),
+	(53, 19, 4900),
+	(54, 48, 7500),
+	(55, 22, 6900),
+	(55, 53, 2800),
+	(56, 77, 8100),
+	(56, 29, 3900),
+	(56, 20, 3800),
+	(57, 34, 7300),
+	(57, 46, 5000),
+	(58, 39, 8700),
+	(58, 61, 4200),
+	(59, 45, 5900),
+	(59, 26, 3100);	
+	
 
+INSERT INTO tblProductCustomization(productItemId,variationValueId)
+ VALUES 
+ 	(27, 1),
+ 	(27, 15),
+ 	(28, 1),
+ 	(28, 16),
+ 	(29, 2),
+ 	(29, 16),
+ 	(30, 3),
+ 	(30, 17),
+ 	(31, 3),
+ 	(31, 16),
+ 	(32, 4),
+ 	(32, 15),
+ 	(33, 4),
+ 	(33, 16),
+ 	(34, 8),
+ 	(34, 15),
+ 	(35, 3),
+ 	(35, 15),
+ 	(36, 3),
+ 	(36, 16),
+ 	(37, 1),
+ 	(37, 15),
+ 	(38, 1),
+ 	(38, 16);
+ 
 EXEC ComputeTFIdF
 
 INSERT INTO tblServerStatistics (day, totalMoneyEarned, userNum, productNum, shopNum, promotionNum, purchaseNum, visitNum, peakSessionNum, averageResponseTime, maxResponseTime)
@@ -953,7 +1035,6 @@ VALUES
     ((SELECT id FROM tblCategory WHERE name = 'Electronics'), 'storage capacity', 'string', 'GB', NULL),
     ((SELECT id FROM tblCategory WHERE name = 'Electronics'), 'RAM size', 'string', 'GB', NULL),
 	((SELECT id FROM tblCategory WHERE name = 'Electronics'), 'brand', 'string', NULL, NULL),
-    ((SELECT id FROM tblCategory WHERE name = 'laptops'), 'screen size', 'string', 'inch', NULL),
 	((SELECT id FROM tblCategory WHERE name = 'laptops'), 'chip', 'string', null, NULL),
 	((SELECT id FROM tblCategory WHERE name = 'televisions'), 'screen size', 'string', 'inch', NULL),
     ((SELECT id FROM tblCategory WHERE name = 'cameras'), 'megapixels', 'string', 'MP', NULL);
@@ -970,20 +1051,6 @@ VALUES
 	((SELECT id FROM tblVariation WHERE name = 'color' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), 'Purple', NULL),
 
 
-
-    -- Storage variations for Electronics
-    ((SELECT id FROM tblVariation WHERE name = 'storage capacity' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), '64GB', NULL),
-    ((SELECT id FROM tblVariation WHERE name = 'storage capacity' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), '128GB', NULL),
-    ((SELECT id FROM tblVariation WHERE name = 'storage capacity' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), '256GB', NULL),
-    ((SELECT id FROM tblVariation WHERE name = 'storage capacity' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), '512GB', NULL),
-
-
-    -- RAM size variations for Electronics
-    ((SELECT id FROM tblVariation WHERE name = 'RAM size' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), '4GB', NULL),
-    ((SELECT id FROM tblVariation WHERE name = 'RAM size' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), '8GB', NULL),
-    ((SELECT id FROM tblVariation WHERE name = 'RAM size' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), '16GB', NULL),
-	((SELECT id FROM tblVariation WHERE name = 'RAM size' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), '32GB', NULL),
-
 		--brand variation
 	((SELECT id FROM tblVariation WHERE name = 'brand'), 'Apple', NULL),
     ((SELECT id FROM tblVariation WHERE name = 'brand'), 'Samsung', NULL),
@@ -999,11 +1066,9 @@ VALUES
 
 	INSERT INTO tblVariationValue (variationId, value, status)
 VALUES
-
-    -- Screen size variations for Laptops
-    ((SELECT id FROM tblVariation WHERE name = 'screen size' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'laptops')), '13 inch', NULL),
-    ((SELECT id FROM tblVariation WHERE name = 'screen size' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'laptops')), '15 inch', NULL),
-    ((SELECT id FROM tblVariation WHERE name = 'screen size' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'laptops')), '17 inch', NULL),
+	-- Screen size variations for Televisions
+    ((SELECT id FROM tblVariation WHERE name = 'chip' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'laptops')), 'AMD', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'chip' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'laptops')), 'Intel', NULL),
 
     -- Screen size variations for Televisions
     ((SELECT id FROM tblVariation WHERE name = 'screen size' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'televisions')), '42 inch', NULL),
