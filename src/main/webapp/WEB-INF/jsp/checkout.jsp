@@ -24,8 +24,9 @@
                     suggestionsContainer.style.display= 'none';
                     return;
                 }
-                let url = 'https://' + location.host + contextPath + '/ajax/map?action=auto&query=' + encodeURIComponent(query);
-                fetch(url)
+                
+                var url = new URL('https://' + location.host + contextPath + '/ajax/map?action=auto&query=' + encodeURIComponent(query));
+                fetch(url.toString)
                 .then(response => response.json())
                 .then(data => 
                 {
