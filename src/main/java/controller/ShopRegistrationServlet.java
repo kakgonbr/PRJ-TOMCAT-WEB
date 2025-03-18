@@ -20,19 +20,36 @@ import model.Shop;
 public class ShopRegistrationServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        model.User user = null;
+        if (session != null) {
+            user = (model.User) session.getAttribute("user");
+        }
+
+        if (user == null) {
+            service.Logging.logger.warn("Unauthorized attempt to register shop. IP: {}, UserAgent: {}",
+                    request.getRemoteAddr(), request.getHeader("User-Agent"));
+
+            response.sendRedirect(request.getContextPath() + "/login?error=access_denied");
+            return;
+        }
+        request.getRequestDispatcher(config.Config.JSPMapper.SHOP_SIGNUP).forward(request, response);
+    }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        HttpSession session = request.getSession(false);
-        model.User user = session == null ? null : (model.User) session.getAttribute("user");
+                HttpSession session = request.getSession(false);
+        model.User user = (session != null) ? (model.User) session.getAttribute("user") : null;
 
         if (user == null) {
-            response.sendRedirect("login.jsp?error=not_logged_in");
+            response.sendRedirect(request.getContextPath() + "/login?error=access_denied");
             return;
         }
-
-        // Nhận dữ liệu từ form
+        //just need shopname and address
         String shopName = request.getParameter("shopName");
         String address = request.getParameter("shopAddress");
         //validation!!
@@ -40,19 +57,19 @@ public class ShopRegistrationServlet extends HttpServlet {
             request.setAttribute("error", "shopName");
 
             request.getRequestDispatcher(config.Config.JSPMapper.SHOP_SIGNUP).forward(request, response);
-            
+
             return;
         }
         if (address == null || address.trim().isEmpty()) {
             request.setAttribute("error", "address");
 
             request.getRequestDispatcher(config.Config.JSPMapper.SHOP_SIGNUP).forward(request, response);
-            
+
             return;
         }
         model.Shop shop;
         try {
-            
+
             shop = new Shop();
             shop.setName(shopName);
             shop.setAddress(address);
@@ -61,12 +78,14 @@ public class ShopRegistrationServlet extends HttpServlet {
 
             dao.ShopDAO.ShopManager.createShop(shop);
 
-            // Chuyển hướng đến trang home sau khi đăng ký thành công
-            response.sendRedirect("home.jsp?success=shop_registered");
+            response.sendRedirect(request.getContextPath() + "/home");
 
         } catch (SQLException e) {
-            request.setAttribute("error", "database_error");
-            request.getRequestDispatcher("registerShop.jsp").forward(request, response);
+            service.Logging.logger.error("Database error while registering shop for user {}: {}",
+                    user.getId(), e.getMessage());
+
+            request.setAttribute("error", "db");
+            request.getRequestDispatcher(config.Config.JSPMapper.SHOP_SIGNUP).forward(request, response);
         }
     }
 }

@@ -13,8 +13,8 @@
     <div class="container-fluid">
         <a class="navbar-brand" href="#">BM Market</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-            data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
-            aria-expanded="true" aria-label="Toggle navigation">
+                data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
+                aria-expanded="true" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="navbar-collapse collapse show" id="navbarNavDropdown">
@@ -24,14 +24,15 @@
                         <a class="nav-link ${activePage == 'home' ? 'active' : ''}" href="${pageContext.request.contextPath}/home">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Another page here</a>
-                    </li>
+                        <a class="nav-link ${activePage == 'shop-signup' ? 'active' : ''}" 
+                           href="${pageContext.request.contextPath}/shop-signup">Register Shop</a>
+                    </li>   
                     <li class="nav-item">
                         <a class="nav-link" href="#">Yet another page</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
+                           data-bs-toggle="dropdown" aria-expanded="false">
                             Dropdown link
                         </a>
                         <ul class="dropdown-menu">
@@ -57,22 +58,22 @@
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="bd-theme-text">
                         <li>
                             <button type="button" id="button-theme-light"
-                                class="dropdown-item d-flex align-items-center button-switch-theme"
-                                data-bs-theme-value="light" aria-pressed="false">
+                                    class="dropdown-item d-flex align-items-center button-switch-theme"
+                                    data-bs-theme-value="light" aria-pressed="false">
                                 Light
                             </button>
                         </li>
                         <li>
                             <button type="button" id="button-theme-dark"
-                                class="dropdown-item d-flex align-items-center button-switch-theme"
-                                data-bs-theme-value="dark" aria-pressed="false">
+                                    class="dropdown-item d-flex align-items-center button-switch-theme"
+                                    data-bs-theme-value="dark" aria-pressed="false">
                                 Dark
                             </button>
                         </li>
                         <li>
                             <button type="button" id="button-theme-system"
-                                class="dropdown-item d-flex align-items-center button-switch-theme"
-                                data-bs-theme-value="system" aria-pressed="true">
+                                    class="dropdown-item d-flex align-items-center button-switch-theme"
+                                    data-bs-theme-value="system" aria-pressed="true">
                                 Auto
                             </button>
                         </li>
@@ -83,7 +84,7 @@
                     <li>
                         <form class="d-flex" role="search">
                             <input class="form-control me-2" type="search" placeholder="Search"
-                                aria-label="Search" />
+                                   aria-label="Search" />
                             <button class="btn btn-outline-success" type="submit">
                                 Search
                             </button>
@@ -94,7 +95,7 @@
                     <li class="nav-item dropdown">
                         <!-- add user name here -->
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             ${user}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end"
