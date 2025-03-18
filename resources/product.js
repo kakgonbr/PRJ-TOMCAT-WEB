@@ -73,7 +73,8 @@ function fetchProducts(query, filter, shopId) {
 }
 
 function fetchByQueryAndCategory() {
-    fetchProducts(document.getElementById("searchBox"), document.querySelector('input[name="filter"]:checked'), null);
+    filter = document.querySelector('input[name="filter"]:checked');
+    fetchProducts(document.getElementById("searchBox"), filter? filter.value : 0, null);
 }
 
 function fetchByCategory() { // store category in global

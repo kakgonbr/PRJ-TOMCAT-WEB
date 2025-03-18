@@ -2,11 +2,15 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <li>
-ID: ${node.id}
+    ID: ${node.id}
 </li>
 <li>
     Name: ${node.name}
+</li>
+<li>
     Image: <img src="${pageContext.request.contextPath}/resources/${node.resourceString}" alt="">
+</li>
+<li>Children:
     <c:if test="${not empty node.children}">
         <ul>
             <c:forEach var="child" items="${node.children}">
