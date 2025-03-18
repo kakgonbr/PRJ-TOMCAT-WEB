@@ -5,7 +5,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ page session="false" %>
 
-<t:genericpage title="TEMPLATE">
+<t:genericpage title="Log">
     <jsp:attribute name="head">
         <t:resources/>
         <script>

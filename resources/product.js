@@ -25,7 +25,7 @@ function fetchProducts(query, filter, shopId) {
         .then(response => response.json())
         .then(data => {
             let tableBody = document.getElementById("productTable");
-            tableBody.innerHTML = "<tr><th>Shop ID</th><th>Category ID</th><th>Name</th><th>Description</th><th>Thumbnail Path</th></tr>";
+            tableBody.innerHTML = "<tr><th>Shop</th><th>Category</th><th>Name</th><th>Description</th><th>Thumbnail Path</th></tr>";
 
             data.forEach(item => {
                 let row = document.createElement("tr");

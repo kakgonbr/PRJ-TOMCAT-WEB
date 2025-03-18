@@ -1,4 +1,15 @@
-﻿CREATE TABLE tblResourceMap
+﻿USE master
+IF EXISTS(select * from sys.databases where name='PRJ-PROJECT-TEST')
+BEGIN
+	ALTER DATABASE [PRJ-PROJECT-TEST] SET SINGLE_USER WITH ROLLBACK IMMEDIATE
+	DROP DATABASE [PRJ-PROJECT-TEST]
+END
+
+CREATE DATABASE [PRJ-PROJECT-TEST]
+GO
+USE [PRJ-PROJECT-TEST]
+GO
+CREATE TABLE tblResourceMap
 (
 	id varchar(30) PRIMARY KEY,
 	systemPath varchar(50) NOT NULL
@@ -122,7 +133,7 @@ CREATE TABLE tblVariationValue
 (
 	id int PRIMARY KEY IDENTITY(1, 1),
 	variationId int,
-	value varchar(15),
+	value varchar(32),
 
 	constraint fk_variationvalue_variation foreign key (variationId) references tblVariation(id)
 )
@@ -789,32 +800,32 @@ VALUES
 
 INSERT INTO tblProductCustomization(productItemId,variationValueId)
 VALUES 
-	(27, 1),
-	(27, 15),
-	(28, 1),
-	(28, 16),
-	(29, 2),
-	(29, 16),
-	(30, 3),
-	(30, 17),
-	(31, 3),
-	(31, 16),
-	(32, 4),
-	(32, 15),
-	(33, 4),
-	(33, 16),
-	(34, 8),
-	(34, 15),
-	(35, 3),
-	(35, 15),
-	(36, 3),
-	(36, 16),
-	(37, 1),
-	(37, 15),
-	(38, 1),
-	(38, 16),
-	(39, 1),
-	(39, 17);
+	(1, 1),
+	(2, 15),
+	(3, 1),
+	(4, 16),
+	(5, 2),
+	(6, 16),
+	(7, 3),
+	(8, 17),
+	(9, 3),
+	(10, 16),
+	(11, 4),
+	(12, 15),
+	(13, 4),
+	(14, 16),
+	(15, 8),
+	(16, 15),
+	(17, 3),
+	(18, 15),
+	(19, 3),
+	(20, 16),
+	(21, 1),
+	(22, 15),
+	(23, 1),
+	(24, 16),
+	(25, 1),
+	(26, 17);
 
 
 EXEC ComputeTFIdF
@@ -883,6 +894,8 @@ VALUES
     ((SELECT id FROM tblVariation WHERE name = 'brand'), 'Canon', NULL),
     ((SELECT id FROM tblVariation WHERE name = 'brand'), 'Nikon', NULL);
 
+	INSERT INTO tblVariationValue (variationId, value, status)
+VALUES
 
     -- Screen size variations for Laptops
     ((SELECT id FROM tblVariation WHERE name = 'screen size' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'laptops')), '13 inch', NULL),
@@ -897,7 +910,7 @@ VALUES
     -- Camera megapixel variations
     ((SELECT id FROM tblVariation WHERE name = 'megapixels' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'cameras')), '12MP', NULL),
     ((SELECT id FROM tblVariation WHERE name = 'megapixels' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'cameras')), '24MP', NULL),
-    ((SELECT id FROM tblVariation WHERE name = 'megapixels' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'cameras')), '48MP', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'megapixels' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'cameras')), '48MP', NULL);
 
 
 -- Book variation
@@ -944,11 +957,8 @@ VALUES
     ((SELECT id FROM tblVariation WHERE name = 'Rating'), '2 Stars', NULL),
     ((SELECT id FROM tblVariation WHERE name = 'Rating'), '3 Stars', NULL),
     ((SELECT id FROM tblVariation WHERE name = 'Rating'), '4 Stars', NULL),
-    ((SELECT id FROM tblVariation WHERE name = 'Rating'), '5 Stars', NULL);s
+    ((SELECT id FROM tblVariation WHERE name = 'Rating'), '5 Stars', NULL);
 SELECT * FROM tblProduct
 
 
 SELECT * FROM tblVector
-
-WITH category AS (SELECT id FROM tblCategory WHERE name = 'Fashion' UNION ALL SELECT c.id FROM tblCategory c JOIN category ch ON c.parent_id = ch.id) 
-SELECT TOP 10 * FROM tblProduct WHERE tblProduct.shopId = 4 AND tblProduct.categoryId IN (SELECT id FROM category)
