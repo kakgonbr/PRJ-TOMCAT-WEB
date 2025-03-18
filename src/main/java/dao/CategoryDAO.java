@@ -71,7 +71,7 @@ public class CategoryDAO {
 
                 // tell jpa to fetch stuff
                 Hibernate.initialize(category.getImageStringResourceId());
-                
+                Hibernate.initialize(category.getCategoryList());
                 
                 return category;
             }
