@@ -132,6 +132,10 @@
         <servlet-name>n_ShopLoader</servlet-name>
         <servlet-class>controller.ajax.ShopLoader</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MapAPI</servlet-name>
+        <servlet-class>controller.ajax.MapAPI</servlet-class>
+    </servlet>
 
 
 
@@ -245,6 +249,10 @@
     <servlet-mapping>
         <servlet-name>n_ShopLoader</servlet-name>
         <url-pattern>/ajax/shops</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MapAPI</servlet-name>
+        <url-pattern>/ajax/map</url-pattern>
     </servlet-mapping>
 
     <!-- FILTER DECLARATIONS -->

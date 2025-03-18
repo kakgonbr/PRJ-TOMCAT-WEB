@@ -722,10 +722,10 @@ VALUES
 
 	INSERT INTO tblVariationValue (variationId, value)
 VALUES 
-    (1, 'L’Oréal'), 
+    (1, 'Lï¿½Orï¿½al'), 
     (1, 'Maybelline'), 
     (1, 'MAC'), 
-    (1, 'Estée Lauder'),
+    (1, 'Estï¿½e Lauder'),
     
     -- Volume (in ml)
     (2, '10'),
@@ -1061,13 +1061,3 @@ SELECT * FROM tblProduct
 
 
 SELECT * FROM tblVector
-<<<<<<< HEAD
-
-INSERT INTO tblVariation (categoryId,name,datatype,unit)
- VALUES 
- 	(1,'color','string',NULL),
- 	(6,'man clothes size','string',NULL),
- 	(8,'shoe size','string',NULL),
- 	(7,'woman clothes size', 'string', NULL);
-=======
->>>>>>> 6aa2d98f4b0b8ac9bb4379966d6e8824e190998a

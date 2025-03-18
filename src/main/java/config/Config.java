@@ -85,5 +85,7 @@ public final class Config {
     public static class GoongMapAPIConfig {
         public static final String API_KEY = System.getenv("GOONG_API_KEY");
         public static final String API_AUTOCOMPLETE_LINK = "https://rsapi.goong.io/place/autocomplete?";
+        public static final String API_GEO_CODE = "https://rsapi.goong.io/geocode?";
+        public static final String API_GEO_DIRECTION = "https://rsapi.goong.io/direction?";
     }
 }
