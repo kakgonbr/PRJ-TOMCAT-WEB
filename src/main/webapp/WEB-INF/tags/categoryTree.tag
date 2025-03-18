@@ -6,7 +6,7 @@
     ID: ${node.id}
 </li>
 <li>
-    Name: ${node.name}
+    Name: <a href="${pageContext.request.contextPath}/category?categoryId=node.id">${node.name}</a>
 </li>
 <li>
     Image: <img src="${pageContext.request.contextPath}/resources/${node.resourceString}" alt="">

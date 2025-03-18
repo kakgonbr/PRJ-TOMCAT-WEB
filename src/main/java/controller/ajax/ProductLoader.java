@@ -14,8 +14,7 @@ public class ProductLoader extends HttpServlet {
         HttpSession session = request.getSession();
         model.User user = (model.User) session.getAttribute("user");
         String recommendations = request.getParameter("query");
-        Integer category = request.getParameter("category") == null || request.getParameter("category").isBlank() ? null : Integer.parseInt(request.getParameter("category"));
-        category = category == null ? 0 : category;
+        Integer category = request.getParameter("category") == null || request.getParameter("category").isBlank() ? 0 : Integer.parseInt(request.getParameter("category"));
         String shopId = request.getParameter("shopId");
 
         try {
