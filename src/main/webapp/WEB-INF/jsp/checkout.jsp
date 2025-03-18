@@ -4,7 +4,6 @@
 
 <t:genericpage title="Checkout">
     <jsp:attribute name="head">
-        <t:resources/>
         <script>
             var contextPath = "${pageContext.request.contextPath}";
             const addressInput = document.getElementById('address');
