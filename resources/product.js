@@ -77,7 +77,7 @@ function fetchByQueryAndCategory() {
 }
 
 function fetchByCategory() { // store category in global
-    fetchProducts(null, category, null);
+    fetchProducts(null, categoryId, null);
 }
 
 function fetchByShop() { // store shop in global

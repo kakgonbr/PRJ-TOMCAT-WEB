@@ -13,7 +13,7 @@
         
         <script>
             var contextPath = "${pageContext.request.contextPath}";
-            var category = "${param.categoryId}"
+            var categoryId = "${param.categoryId}"
 
             document.addEventListener("DOMContentLoaded", fetchByQueryAndCategory);
         </script>
