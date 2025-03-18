@@ -48,7 +48,7 @@
                             <p class="align-self-center w-50">Shop Name</p>
                             <input type="text" class="form-control w-50 mb-4" value="${param.shopName}">
                             <p class="align-self-center w-50">Address:</p>
-                            <input type="text" class="form-control w-50 mb-4" value="${param.address}">>
+                            <input type="text" class="form-control w-50 mb-4" value="${param.shopAddress}">
                         </div>
                         <div class="col-md-6">
                             <p class="text-dark">i dont know what to write Here</p>
