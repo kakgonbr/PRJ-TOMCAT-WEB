@@ -16,7 +16,7 @@
             var contextPath = "${pageContext.request.contextPath}";
             var shop = "${param.shopId}"
             document.addEventListener("DOMContentLoaded", fetchCategory);
-            document.addEventListener("DOMContentLoaded", fetchByQueryAndCategory);
+            document.addEventListener("DOMContentLoaded", fetchByShop);
         </script>
     </jsp:attribute>
 
