@@ -1,4 +1,4 @@
-CREATE TABLE tblResourceMap
+﻿CREATE TABLE tblResourceMap
 (
 	id varchar(30) PRIMARY KEY,
 	systemPath varchar(50) NOT NULL
@@ -787,6 +787,119 @@ VALUES
 ('2025-03-11', 3400, 310,  200,  38, 28,  60,  50, 180,  55,  800),
 ('2025-03-12', 6000, 350, 210,  39, 28,  55,  170, 130,  70,  380);
 
+-- Electronics variation, 
+INSERT INTO tblVariation (categoryId, name, datatype, unit, status)
+VALUES 
+    ((SELECT id FROM tblCategory WHERE name = 'Electronics'), 'color', 'string', NULL, NULL),
+    ((SELECT id FROM tblCategory WHERE name = 'Electronics'), 'storage capacity', 'string', 'GB', NULL),
+    ((SELECT id FROM tblCategory WHERE name = 'Electronics'), 'RAM size', 'string', 'GB', NULL),
+	((SELECT id FROM tblCategory WHERE name = 'Electronics'), 'brand', 'string', NULL, NULL),
+    ((SELECT id FROM tblCategory WHERE name = 'laptops'), 'screen size', 'string', 'inch', NULL),
+	((SELECT id FROM tblCategory WHERE name = 'laptops'), 'chip', 'string', null, NULL),
+	((SELECT id FROM tblCategory WHERE name = 'televisions'), 'screen size', 'string', 'inch', NULL),
+    ((SELECT id FROM tblCategory WHERE name = 'cameras'), 'megapixels', 'string', 'MP', NULL);
+-- Electronics variation value
+	INSERT INTO tblVariationValue (variationId, value, status)
+VALUES
+    -- Color variations for Electronics
+    ((SELECT id FROM tblVariation WHERE name = 'color' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), 'Black', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'color' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), 'White', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'color' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), 'Silver', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'color' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), 'Gold', NULL),
+	((SELECT id FROM tblVariation WHERE name = 'color' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), 'Pink', NULL),
+	((SELECT id FROM tblVariation WHERE name = 'color' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), 'Cyan', NULL),
+	((SELECT id FROM tblVariation WHERE name = 'color' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), 'Purple', NULL),
+
+
+
+    -- Storage variations for Electronics
+    ((SELECT id FROM tblVariation WHERE name = 'storage capacity' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), '64GB', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'storage capacity' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), '128GB', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'storage capacity' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), '256GB', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'storage capacity' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), '512GB', NULL),
+
+
+    -- RAM size variations for Electronics
+    ((SELECT id FROM tblVariation WHERE name = 'RAM size' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), '4GB', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'RAM size' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), '8GB', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'RAM size' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), '16GB', NULL),
+	((SELECT id FROM tblVariation WHERE name = 'RAM size' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), '32GB', NULL),
+
+		--brand variation
+	((SELECT id FROM tblVariation WHERE name = 'brand'), 'Apple', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'brand'), 'Samsung', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'brand'), 'Sony', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'brand'), 'LG', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'brand'), 'Dell', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'brand'), 'HP', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'brand'), 'Lenovo', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'brand'), 'Asus', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'brand'), 'Acer', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'brand'), 'Canon', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'brand'), 'Nikon', NULL);
+
+
+    -- Screen size variations for Laptops
+    ((SELECT id FROM tblVariation WHERE name = 'screen size' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'laptops')), '13 inch', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'screen size' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'laptops')), '15 inch', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'screen size' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'laptops')), '17 inch', NULL),
+
+    -- Screen size variations for Televisions
+    ((SELECT id FROM tblVariation WHERE name = 'screen size' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'televisions')), '42 inch', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'screen size' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'televisions')), '50 inch', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'screen size' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'televisions')), '65 inch', NULL),
+
+    -- Camera megapixel variations
+    ((SELECT id FROM tblVariation WHERE name = 'megapixels' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'cameras')), '12MP', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'megapixels' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'cameras')), '24MP', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'megapixels' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'cameras')), '48MP', NULL),
+
+
+-- Book variation
+INSERT INTO tblVariation (categoryId, name, datatype, unit, status)
+VALUES 
+    ((SELECT id FROM tblCategory WHERE name = 'Book'), 'Format', 'string', NULL, NULL),
+    ((SELECT id FROM tblCategory WHERE name = 'Book'), 'Language', 'string', NULL, NULL),
+    ((SELECT id FROM tblCategory WHERE name = 'Book'), 'Publication Year', 'integer', 'year', NULL),
+    ((SELECT id FROM tblCategory WHERE name = 'Book'), 'Publisher', 'string', NULL, NULL),
+	((SELECT id FROM tblCategory WHERE name = 'Book'), 'Rating', 'string', NULL, NULL);
+
+--Book variation value
+INSERT INTO tblVariationValue (variationId, value, status)
+VALUES
+    -- Giá trị cho "Format"
+    ((SELECT id FROM tblVariation WHERE name = 'Format'), 'Hardcover', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'Format'), 'Paperback', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'Format'), 'Ebook', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'Format'), 'Audiobook', NULL),
+
+    -- Giá trị cho "Language"
+    ((SELECT id FROM tblVariation WHERE name = 'Language'), 'English', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'Language'), 'French', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'Language'), 'German', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'Language'), 'Spanish', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'Language'), 'Chinese', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'Language'), 'Japanese', NULL),
+
+    -- Giá trị cho "Publication Year" (chỉ demo một số năm)
+    ((SELECT id FROM tblVariation WHERE name = 'Publication Year'), '2020', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'Publication Year'), '2021', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'Publication Year'), '2022', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'Publication Year'), '2023', NULL),
+
+    -- Giá trị cho "Publisher"
+    ((SELECT id FROM tblVariation WHERE name = 'Publisher'), 'Penguin Random House', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'Publisher'), 'HarperCollins', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'Publisher'), 'Simon & Schuster', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'Publisher'), 'Hachette Book Group', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'Publisher'), 'Macmillan Publishers', NULL),
+
+    -- Giá trị cho "Rating"
+    ((SELECT id FROM tblVariation WHERE name = 'Rating'), '1 Star', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'Rating'), '2 Stars', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'Rating'), '3 Stars', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'Rating'), '4 Stars', NULL),
+    ((SELECT id FROM tblVariation WHERE name = 'Rating'), '5 Stars', NULL);s
 SELECT * FROM tblProduct
 
 
