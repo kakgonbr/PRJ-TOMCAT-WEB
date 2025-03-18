@@ -657,6 +657,30 @@ INSERT INTO tblVariation (categoryId,name,datatype,unit)
  	(6,'man clothes size','string',NULL),
  	(8,'shoe size','string',NULL),
  	(7,'woman clothes size', 'string', NULL);
+
+
+INSERT INTO tblVariation (categoryId, name, datatype, unit)
+VALUES
+    ((SELECT id FROM tblCategory WHERE name = 'Cosmestic'), 'Brand', 'string', NULL),
+	((SELECT id FROM tblCategory WHERE name = 'Cosmetic'), 'Volume', 'integer', 'ml'),
+
+	((SELECT id FROM tblCategory WHERE name = 'Skincare'), 'Skin Type', 'string', NULL);
+	((SELECT id FROM tblCategory WHERE name = 'Skincare'), 'Function', 'string', NULL);
+
+	((SELECT id FROM tblCategory WHERE name = 'Makeup'), 'Shade', 'string', NULL);
+	((SELECT id FROM tblCategory WHERE name = 'Makeup'), 'Finish & Texture', 'string', NULL);
+
+	((SELECT id FROM tblCategory WHERE name = 'Haircare'), 'Hair Type', 'string', NULL);
+	((SELECT id FROM tblCategory WHERE name = 'Haircare'), 'Form', 'string', NULL);
+
+	((SELECT id FROM tblCategory WHERE name = 'Bodycare'), 'Scent', 'string', NULL);
+	((SELECT id FROM tblCategory WHERE name = 'Bodycare'), 'Absorption Rate', 'string', NULL);
+
+	((SELECT id FROM tblCategory WHERE name = 'Fragrance'), 'Fragrance Notes', 'string', NULL);
+	((SELECT id FROM tblCategory WHERE name = 'Fragrance'), 'Occasion & Season', 'string', NULL);
+
+
+
  
  INSERT INTO tblVariationValue (variationId, value)
  VALUES 
@@ -692,6 +716,81 @@ INSERT INTO tblVariation (categoryId,name,datatype,unit)
  	(4 , 'M'),
  	(4 , 'L'),
  	(4 , 'XL');
+
+
+	INSERT INTO tblVariationValue (variationId, value)
+VALUES 
+    (1, 'L’Oréal'), 
+    (1, 'Maybelline'), 
+    (1, 'MAC'), 
+    (1, 'Estée Lauder'),
+    
+    -- Volume (in ml)
+    (2, '10'),
+    (2, '15'),
+    (2, '30'),
+    (2, '50'),
+    (2, '100'),
+    
+    -- Skin Type
+    (3, 'Oily Skin'),
+    (3, 'Dry Skin'),
+    (3, 'Combination Skin'),
+    (3, 'Sensitive Skin'),
+
+	--Function 
+	(3, 'Brightening'),
+    (3, 'Anti-Aging'),
+    (3, 'Acne Treatment'),
+    (3, 'Soothing & Calming'),
+    
+    -- Shade 
+    (4, 'Light Beige'),
+    (4, 'Medium Tan'),
+    (4, 'Dark Brown'),
+    
+    -- Finish & texture
+    (5, 'Matte'),
+    (5, 'Dewy'),
+    (5, 'Satin'),
+    (5, 'Glossy'),
+    (5, 'Sheer'),
+    (5, 'Velvet');
+
+	-- Hair type
+	(5, 'Thin Hair'),
+    (5, 'Thick Hair'),
+    (5, 'Curly Hair'),
+    (5, 'Damaged Hair'),
+
+	-- Form
+	(5, 'Liquid'),
+    (5, 'Cream'),
+    (5, 'Gel/Wax'),
+    (5, 'Powder'),
+
+	-- Scent
+	(5, 'Vanilla'),
+    (5, 'Lavender'),
+    (5, 'Citrus'),
+
+	-- Scent
+	(5, 'Fast-absorbing'),
+    (5, 'Deeply moisturizing'),
+
+	-- Fragrance Notes
+	(5, 'Floral'),
+    (5, 'Fruity'),
+    (5, 'Woody'),
+    (5, 'Fresh'),
+	(5, 'Musky'),
+
+	-- Occasion & Season
+	(5, 'Everyday Wear'),
+    (5, 'Date Night'),
+    (5, 'Office-Friendly'),
+    (5, 'Summer Fragrances'),
+	(5, 'Winter Fragrances'),
 
 
 INSERT INTO tblShop (ownerId, name, address, profileStringResourceId, visible)
@@ -790,3 +889,10 @@ SELECT * FROM tblProduct
 
 
 SELECT * FROM tblVector
+
+INSERT INTO tblVariation (categoryId,name,datatype,unit)
+ VALUES 
+ 	(1,'color','string',NULL),
+ 	(6,'man clothes size','string',NULL),
+ 	(8,'shoe size','string',NULL),
+ 	(7,'woman clothes size', 'string', NULL);

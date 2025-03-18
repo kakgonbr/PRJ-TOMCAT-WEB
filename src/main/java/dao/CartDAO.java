@@ -5,7 +5,6 @@ import jakarta.persistence.EntityTransaction;
 import java.sql.SQLException;
 import java.util.List;
 import model.Cart;
-import service.DatabaseConnection;
 
 public final class CartDAO {
 
