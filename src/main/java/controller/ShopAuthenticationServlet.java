@@ -25,7 +25,7 @@ public class ShopAuthenticationServlet extends HttpServlet {
         if (shopId != -1) {
             response.sendRedirect("jsp/shopInfor.jsp");
         } else {
-            response.sendRedirect("jsp/shopSignup.jsp");
+            response.sendRedirect("/shop-signup");
         }
     }
 
@@ -34,7 +34,7 @@ public class ShopAuthenticationServlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
 
         if (user == null) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("jsp/login.jsp");
             return false;
         }
         return true;
