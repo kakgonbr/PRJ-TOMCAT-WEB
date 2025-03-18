@@ -25,7 +25,7 @@ public class ShopAuthenticationServlet extends HttpServlet {
         if (shopId != -1) {
             response.sendRedirect("jsp/shopInfor.jsp");
         } else {
-            response.sendRedirect("/shopSignup");
+            response.sendRedirect("jsp/shopSignup.jsp");
         }
     }
 
