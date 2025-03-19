@@ -25,7 +25,7 @@ CREATE TABLE tblUser
 	persistentCookie varchar(255),
 	googleId varchar(255),	
 	facebookId varchar(255),
-	isAdmin bit DEFAULT 0,
+	isAdmin bit DEFAULT 0 NOT NULL,
 	credit money,
 	status bit NOT NULL DEFAULT 1,
 
@@ -145,7 +145,7 @@ CREATE TABLE tblProduct
 (
 	id int PRIMARY KEY IDENTITY(1, 1),
 	shopId int,
-	categoryId int,
+	categoryId int NOT NULL,
 	name nvarchar(50) NOT NULL,
 	description nvarchar(255),
 	availablePromotionId int,
@@ -711,6 +711,7 @@ VALUES
 (5, (select id from tblCategory where name = 'smartphones'), 'FlagShip Phone', 'A phone that is flagship, also, gaming', 5, 'test_png', 1),
 (5, (select id from tblCategory where name = 'tablets'), 'FlagShip Tablet', 'Cool tablet', 5, 'test_png', 1);
 
+SELECT * FROM tblProduct
 
 INSERT INTO tblProduct (shopId, categoryId, name, description, availablePromotionId, imageStringResourceId, status)
 VALUES
