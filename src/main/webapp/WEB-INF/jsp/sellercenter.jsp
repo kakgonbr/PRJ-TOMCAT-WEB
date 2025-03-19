@@ -80,7 +80,7 @@
                 <main class="col-md-10 p-4">
                     <button onclick="fetchUserShopProducts()" class="btn btn-primary">Load Product List</button>
                     <p>Products:</p>
-                    <table border="1" id="productTableShop">
+                    <table border="1" id="productTableShop" class="table table-striped table-bordered table-hover">
                     </table>
                 </main>
             </div>
