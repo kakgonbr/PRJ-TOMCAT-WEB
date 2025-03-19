@@ -28,12 +28,13 @@ public class ShopServlet extends HttpServlet {
             return;
         }
 
-        if (user == null || shop.getOwnerId().getId() != user.getId()) {
-            request.getRequestDispatcher(config.Config.JSPMapper.SHOP_DETAILS).forward(request, response);
+        if (user != null && shop.getOwnerId().getId() == user.getId()) {
+            request.getRequestDispatcher(config.Config.JSPMapper.SELLER_CENTER).forward(request, response);
 
             return;
         }
-
+        
+        
         // special page for shop owner here
     }
 
