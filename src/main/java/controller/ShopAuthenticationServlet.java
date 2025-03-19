@@ -18,11 +18,12 @@ public class ShopAuthenticationServlet extends HttpServlet {
         if (!sessionChecker(request, response)) {
             return;
         }
-
+        HttpSession session = request.getSession();
         int shopId = getShop(request, response);
         service.Logging.logger.info("ShopAuthenticationServlet - Found shopId: " + shopId);
         if (shopId != -1) {
-            response.sendRedirect(request.getContextPath() + "/shop?shopId=" + shopId);
+            session.setAttribute("shopId", shopId);
+            response.sendRedirect(request.getContextPath() + "/shophome");
         } else {
             response.sendRedirect(request.getContextPath() + "/shop-signup");
         }
