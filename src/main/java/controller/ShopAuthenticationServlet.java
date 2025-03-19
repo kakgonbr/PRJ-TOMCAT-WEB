@@ -8,8 +8,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.Shop;
 import model.User;
 
@@ -22,8 +20,9 @@ public class ShopAuthenticationServlet extends HttpServlet {
         }
 
         int shopId = getShop(request, response);
+        service.Logging.logger.info("ShopAuthenticationServlet - Found shopId: " + shopId);
         if (shopId != -1) {
-            response.sendRedirect(request.getContextPath() + "/shop");
+            response.sendRedirect(request.getContextPath() + "/shop?shopId=" + shopId);
         } else {
             response.sendRedirect(request.getContextPath() + "/shop-signup");
         }
@@ -34,7 +33,7 @@ public class ShopAuthenticationServlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
 
         if (user == null) {
-            response.sendRedirect("jsp/login.jsp");
+            response.sendRedirect(request.getContextPath() + "/login");
             return false;
         }
         return true;
@@ -52,7 +51,7 @@ public class ShopAuthenticationServlet extends HttpServlet {
             Shop shop = ShopDAO.ShopFetcher.getShopByOwnerId(user.getId());
             return (shop != null) ? shop.getId() : -1;
         } catch (SQLException ex) {
-            Logger.getLogger(ShopAuthenticationServlet.class.getName()).log(Level.SEVERE, null, ex);
+            service.Logging.logger.error("ShopAuthenticationServlet - SQL Exception while fetching shop: ", ex);
         }
 
         return -1; 
