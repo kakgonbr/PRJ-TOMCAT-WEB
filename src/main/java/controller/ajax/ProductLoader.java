@@ -17,7 +17,7 @@ public class ProductLoader extends HttpServlet {
         String productId = request.getParameter("productId");
         if (productId != null && !productId.isBlank()) {
             try {
-                String json = new com.google.gson.Gson().toJson(new model.ProductWrapper(dao.ProductDAO.ProductFetcher.getProductDetails(Integer.parseInt(productId))));
+                String json = new com.google.gson.Gson().toJson(new model.ProductDetailsWrapper(dao.ProductDAO.ProductFetcher.getProductDetails(Integer.parseInt(productId))));
 
                 service.Logging.logger.info("Sending back json {}", json);
 
