@@ -25,10 +25,10 @@
     <jsp:attribute name="header">
         <t:nav search="true" mainNav="true" user="${sessionScope.user.username}" activePage="home"/>
     </jsp:attribute>
-<p>Debug Shop ID: ${param.shopId}</p>
+    <jsp:attribute name="body">
+        <p>Debug Shop ID: ${param.shopId}</p>
 <p>Shop Object: ${shop}</p>
 <p>Shop Name: ${shop.name}</p>
-    <jsp:attribute name="body">
         <c:if test="${shop != null}">
             <ul>Shop:
                 <li>ID: ${shop.id}</li>
