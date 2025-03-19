@@ -8,7 +8,8 @@
 <t:genericpage title="Product">
     <jsp:attribute name="head">
         <t:resources />
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/product_js">
+
+        <script src="${pageContext.request.contextPath}/resources/product_js"></script>
         
         <script>
             var contextPath = "${pageContext.request.contextPath}";
