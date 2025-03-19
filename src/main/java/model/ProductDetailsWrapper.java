@@ -1,5 +1,7 @@
 package model;
 
+import java.util.stream.Collectors;
+
 /**
  * Used for displaying a detailed product information
  */
@@ -13,7 +15,7 @@ public class ProductDetailsWrapper implements java.io.Serializable {
     private String thumbnail;
     private java.util.List<String> productImages;
     private java.util.List<ProductCustomizationWrapper> productCustomizations;
-    private String customizationName;
+    private java.util.Set<String> customizationNames;
 
     public ProductDetailsWrapper() {}
 
@@ -25,18 +27,11 @@ public class ProductDetailsWrapper implements java.io.Serializable {
         setDescription(product.getDescription());
         setPromotion(product.getAvailablePromotionId() == null ? null : new PromotionWrapper(product.getAvailablePromotionId()));
         setThumbnail(product.getImageStringResourceId().getId());
+        
+        // way too java-y
         setProductImages(product.getProductImageList().stream().map(ProductImage::getImageStringResourceId).map(ResourceMap::getId).toList());
-        // product item and product customization are one to one
-
-        try {
-            setProductCustomizations(product.getProductItemList().stream().map(ProductItem::getProductCustomizationList).map(l -> l.get(0)).map(ProductCustomizationWrapper::new).toList());
-            if (productCustomizations.size() != 0) {
-                setCustomizationName(productCustomizations.get(0).getName());
-            }
-        } catch (IndexOutOfBoundsException e) {
-            // No way this happens. For each product item there must be one customization. The database doesn't really reflect this, but it's a little too late for change
-        }
-
+        setProductCustomizations(product.getProductItemList().stream().flatMap(i -> i.getProductCustomizationList().stream()).map(ProductCustomizationWrapper::new).toList());
+        setCustomizationNames(productCustomizations.stream().map(ProductCustomizationWrapper::getName).collect(Collectors.toSet()));
     }
 
     public Integer getId() {
@@ -111,13 +106,11 @@ public class ProductDetailsWrapper implements java.io.Serializable {
         this.productCustomizations = productCustomizations;
     }
 
-    public String getCustomizationName() {
-        return customizationName;
+    public java.util.Set<String> getCustomizationNames() {
+        return customizationNames;
     }
 
-    public void setCustomizationName(String customizationName) {
-        this.customizationName = customizationName;
-    }
-
-    
+    public void setCustomizationNames(java.util.Set<String> customizationNames) {
+        this.customizationNames = customizationNames;
+    }    
 }
