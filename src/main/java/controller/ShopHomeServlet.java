@@ -11,6 +11,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -20,16 +21,16 @@ import jakarta.servlet.http.HttpServletResponse;
 public class ShopHomeServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String shopIdParam = request.getParameter("shopId");
+        HttpSession session = request.getSession();
+        Integer shopId = (Integer) session.getAttribute("shopId");
 
-        if (shopIdParam == null || shopIdParam.isEmpty()) {
+        if (shopId == null) {
             response.sendRedirect(request.getContextPath() + "/shop-signup");
             return;
         }
 
-        int shopId = Integer.parseInt(shopIdParam);
         request.setAttribute("shopId", shopId);
-        request.getRequestDispatcher(config.Config.JSPMapper.SELLER_CENTER).forward(request, response); 
+        request.getRequestDispatcher(config.Config.JSPMapper.SELLER_CENTER).forward(request, response);
     }
 
     @Override
