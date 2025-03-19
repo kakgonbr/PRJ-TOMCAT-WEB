@@ -1,8 +1,7 @@
 <t:genericpage title="Header">
     <jsp:attribute name="head">
         <t:resources/>
-
-        <script src="${pageContext.request.contextPath}/resources/userMain_css"></script>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/userMain_css">
         <script src="${pageContext.request.contextPath}/resources/userMain_js"></script>
         
         <script>
