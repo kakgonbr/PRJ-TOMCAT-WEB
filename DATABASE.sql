@@ -947,6 +947,17 @@ VALUES
 	((SELECT id FROM tblVariation WHERE name = 'color' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), 'Cyan', NULL),
 	((SELECT id FROM tblVariation WHERE name = 'color' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), 'Purple', NULL),
 
+	--storage capacity
+	((SELECT id FROM tblVariation WHERE name = 'storage capacity' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), '128GB', NULL),
+	((SELECT id FROM tblVariation WHERE name = 'storage capacity' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), '256GB', NULL),
+	((SELECT id FROM tblVariation WHERE name = 'storage capacity' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), '512GB', NULL),
+	
+	--RAM size
+	((SELECT id FROM tblVariation WHERE name = 'RAM size' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), '8GB', NULL),
+	((SELECT id FROM tblVariation WHERE name = 'RAM size' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), '16GB', NULL),
+	((SELECT id FROM tblVariation WHERE name = 'RAM size' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), '32GB', NULL),
+	((SELECT id FROM tblVariation WHERE name = 'RAM size' AND categoryId = (SELECT id FROM tblCategory WHERE name = 'Electronics')), '64GB', NULL),
+
 
 		--brand variation
 	((SELECT id FROM tblVariation WHERE name = 'brand'), 'Apple', NULL),
