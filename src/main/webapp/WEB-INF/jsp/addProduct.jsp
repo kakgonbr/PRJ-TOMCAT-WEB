@@ -7,20 +7,29 @@
         <script>
             var contextPath = "${pageContext.request.contextPath}";
 
+            function createCategoryOptions(categories, parentElement, level = 0) {
+                categories.forEach(category => {
+                    let option = document.createElement("option");
+                    option.value = category.id;
+                    option.textContent = "-".repeat(level) + " " + category.name; // Thụt lề cho danh mục con
+                    parentElement.appendChild(option);
+
+                    // Nếu có danh mục con, gọi đệ quy để thêm vào
+                    if (category.children && category.children.length > 0) {
+                        createCategoryOptions(category.children, parentElement, level + 1);
+                    }
+                });
+            }
+
             function fetchCategory() {
                 fetch(contextPath + "/ajax/category")
-                    .then(response => response.json())
-                    .then(data => {
-                        let categorySelect = document.getElementById("category");
-                        categorySelect.innerHTML = "";
-                        data.forEach(category => {
-                            let option = document.createElement("option");
-                            option.value = category.id;
-                            option.textContent = category.name;
-                            categorySelect.appendChild(option);
-                        });
-                    })
-                    .catch(error => console.error("Error fetching categories:", error));
+                        .then(response => response.json())
+                        .then(data => {
+                            let categorySelect = document.getElementById("category");
+                            categorySelect.innerHTML = "";
+                            createCategoryOptions([data], categorySelect); // Truyền dữ liệu gốc vào hàm đệ quy
+                        })
+                        .catch(error => console.error("Error fetching categories:", error));
             }
 
             document.addEventListener("DOMContentLoaded", fetchCategory);
