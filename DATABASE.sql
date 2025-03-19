@@ -127,7 +127,7 @@ CREATE TABLE tblVariation
 )
 
 ALTER TABLE tblVariation
-ADD status bit;
+ADD status bit DEFAULT 1;
 
 CREATE TABLE tblVariationValue
 (
@@ -416,7 +416,7 @@ BEGIN
         RETURN;
     END
 
-    CREATE TABLE #result (value varchar(400));
+    CREATE TABLE #result (value varchar(MAX));
     
     WITH tf AS (
 		SELECT b.keyword, COUNT(s.value) * 1.0 / NULLIF((SELECT COUNT(*) FROM STRING_SPLIT(@query, ' ')), 0) AS TF
@@ -515,7 +515,10 @@ VALUES
 ('login_css', 'login.css'),
 ('cp_js', 'controlPanel.js'),
 ('filter_js', 'filter.js'),
-('checkout_css','checkout.css');
+('checkout_css','checkout.css'),
+('userMain_js','userMain.js'),
+('catalog_css','catalog.css'),
+('catalog_js','catalog.js');
 
 INSERT INTO tblUser (email, username, phoneNumber, password, persistentCookie, googleId, facebookId, isAdmin, profileStringResourceId)
 VALUES 
@@ -1382,6 +1385,56 @@ VALUES
      (SELECT id FROM tblVariationValue WHERE value = 'Minimalist')),
     (75, 
      (SELECT id FROM tblVariationValue WHERE value = 'Fixed'));
+
+INSERT INTO tblProduct (shopId, categoryId, name, description, availablePromotionId, imageStringResourceId, status)
+VALUES
+(1, (select id from tblCategory where name = 'smartphones'), 'Samsung Galaxy S24 Ultra', 'Flagship Samsung smartphone', 1, 'test_png', 1);
+
+INSERT INTO tblVariation (categoryId, name, datatype, unit, status)
+VALUES
+(83, 'Storage Capacity', 'integer', 'GB', 1);
+
+INSERT INTO tblVariationValue (variationId, value, status)
+VALUES
+(IDENT_CURRENT('tblVariation'), '64', 1),
+(IDENT_CURRENT('tblVariation'), '128', 1),
+(IDENT_CURRENT('tblVariation'), '256', 1);
+
+INSERT INTO tblVariation (categoryId, name, datatype, unit, status)
+VALUES
+(83, 'Color', 'string', NULL, 1); -- might screw things up
+
+INSERT INTO tblVariationValue (variationId, value, status)
+VALUES
+(IDENT_CURRENT('tblVariation'), 'Silver', 1),
+(IDENT_CURRENT('tblVariation'), 'Black', 1),
+(IDENT_CURRENT('tblVariation'), 'White', 1);
+
+INSERT INTO tblProductItem (productId, stock, price)
+VALUES
+(IDENT_CURRENT('tblProduct'), 11, 128338),
+(IDENT_CURRENT('tblProduct'), 20, 2168419),
+(IDENT_CURRENT('tblProduct'), 2, 14236173127),
+(IDENT_CURRENT('tblProduct'), 7, 2672123123),
+(IDENT_CURRENT('tblProduct'), 14, 75243422);
+
+INSERT INTO tblProductCustomization (productItemId, variationValueId)
+VALUES
+(IDENT_CURRENT('tblProductItem') - 4, IDENT_CURRENT('tblVariationValue') - 5), -- 64
+(IDENT_CURRENT('tblProductItem') - 4, IDENT_CURRENT('tblVariationValue') - 2), -- silver
+
+(IDENT_CURRENT('tblProductItem') - 3, IDENT_CURRENT('tblVariationValue') - 5), -- 64
+(IDENT_CURRENT('tblProductItem') - 3, IDENT_CURRENT('tblVariationValue')), -- white
+
+(IDENT_CURRENT('tblProductItem') - 2, IDENT_CURRENT('tblVariationValue') - 4), -- 128
+(IDENT_CURRENT('tblProductItem') - 2, IDENT_CURRENT('tblVariationValue') - 2), -- silver
+
+(IDENT_CURRENT('tblProductItem') - 1, IDENT_CURRENT('tblVariationValue') - 4), -- 128
+(IDENT_CURRENT('tblProductItem') - 1, IDENT_CURRENT('tblVariationValue') - 1), -- black
+
+(IDENT_CURRENT('tblProductItem'), IDENT_CURRENT('tblVariationValue') - 3), -- 256
+(IDENT_CURRENT('tblProductItem'), IDENT_CURRENT('tblVariationValue') - 2); -- silver
+
 
 --FIX Some product with null category
 update tblProduct
