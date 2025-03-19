@@ -76,7 +76,15 @@ public class Shop implements Serializable {
         this.id = id;
         this.name = name;
     }
-
+    
+    public Shop(Integer id, String name, String address, Boolean visible, User ownerId) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.visible = visible;
+        this.ownerId = ownerId;
+    }
+    
     public Integer getId() {
         return id;
     }
