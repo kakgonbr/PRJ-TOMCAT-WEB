@@ -55,6 +55,6 @@ public class ShopAuthenticationServlet extends HttpServlet {
             service.Logging.logger.error("ShopAuthenticationServlet - SQL Exception while fetching shop: ", ex);
         }
 
-        return -1; 
+        return -1;
     }
 }

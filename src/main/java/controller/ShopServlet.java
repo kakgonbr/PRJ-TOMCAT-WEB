@@ -30,7 +30,7 @@ public class ShopServlet extends HttpServlet {
 
         // special page for shop owner here
         if (user != null && shop.getOwnerId().getId() == user.getId()) {
-            request.getRequestDispatcher(config.Config.JSPMapper.SELLER_CENTER).forward(request, response);
+            request.getRequestDispatcher(config.Config.JSPMapper.SHOP_DETAILS).forward(request, response);
 
             return;
         }
