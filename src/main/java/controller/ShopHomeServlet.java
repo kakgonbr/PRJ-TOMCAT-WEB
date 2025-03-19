@@ -15,6 +15,13 @@ public class ShopHomeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String path = request.getServletPath();
+
+        if ("/addproduct".equals(path)) {
+            request.getRequestDispatcher("/WEB-INF/jsp/addProduct.jsp").forward(request, response);
+            return;
+        }
+
         HttpSession session = request.getSession();
         Integer shopId = (Integer) session.getAttribute("shopId");
 
@@ -22,16 +29,16 @@ public class ShopHomeServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/shop-signup");
             return;
         }
-        
+
         request.setAttribute("shopId", shopId);
-        request.getRequestDispatcher(config.Config.JSPMapper.SELLER_CENTER).forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/jsp/sellercenter.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
 
-        if ("addproduct".equals(action)) {
+        if ("addProduct".equals(action)) {
             addProduct(request, response);
             return;
         }
@@ -42,23 +49,21 @@ public class ShopHomeServlet extends HttpServlet {
     private void addProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         model.User user = session == null ? null : (model.User) session.getAttribute("user");
-        
-        int shopId = request.getParameter("shopId") == null ? -1 : Integer.parseInt(request.getParameter("shopId"));
-        int categoryId = request.getParameter("category") == null ? -1 : Integer.parseInt(request.getParameter("category"));
-        String name = request.getParameter("name");
+
+        int shopId = getIntParameter(request, "shopId");
+        int categoryId = getIntParameter(request, "category");
+        String name = request.getParameter("productName");
         String description = request.getParameter("description");
 
         if (user == null || shopId == -1 || categoryId == -1 || name == null || description == null) {
-            request.setAttribute("code", 400);
-            request.getRequestDispatcher(request.getContextPath() + "/error").forward(request, response);
+            response.sendRedirect(request.getContextPath() + "/error?code=400");
             return;
         }
 
         try {
             Shop shop = dao.ShopDAO.ShopFetcher.getShop(shopId);
             if (shop == null || shop.getOwnerId().getId() != user.getId()) {
-                request.setAttribute("code", 403);
-                request.getRequestDispatcher(request.getContextPath() + "/error").forward(request, response);
+                response.sendRedirect(request.getContextPath() + "/error?code=403");
                 return;
             }
 
@@ -70,10 +75,17 @@ public class ShopHomeServlet extends HttpServlet {
             product.setStatus(true);
 
             dao.ProductDAO.ProductManager.addProduct(product);
-            response.sendRedirect(request.getContextPath() + "/shop/selectVariation.jsp?productId=" + product.getId());
+            response.sendRedirect(request.getContextPath() + "/selectVariation?productId=" + product.getId());
         } catch (SQLException e) {
-            request.setAttribute("code", 500);
-            request.getRequestDispatcher(request.getContextPath() + "/error").forward(request, response);
+            response.sendRedirect(request.getContextPath() + "/error?code=500");
+        }
+    }
+
+    private int getIntParameter(HttpServletRequest request, String paramName) {
+        try {
+            return Integer.parseInt(request.getParameter(paramName));
+        } catch (NumberFormatException e) {
+            return -1;
         }
     }
 }

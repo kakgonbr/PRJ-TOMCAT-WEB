@@ -33,7 +33,7 @@
 
     <jsp:attribute name="body">
         <h2>Add Product</h2>
-        <form id="addProductForm" action="${pageContext.request.contextPath}/shop-management" method="post">
+        <form id="addProductForm" action="${pageContext.request.contextPath}/addproduct" method="post">
             <input type="hidden" name="action" value="addProduct">
 
             <label for="productName">Product Name:</label>
@@ -50,9 +50,6 @@
 
             <label for="stock">Stock:</label>
             <input type="number" id="stock" name="stock" required><br>
-
-            <label for="image">Product Image:</label>
-            <input type="file" id="image" name="image"><br>
 
             <button type="submit">Next</button>
         </form>

@@ -20,11 +20,11 @@
     </listener>
     <!-- SERVLET DECLARATIONS -->
     <!-- TEMPLATE:
-    <servlet>
-        <servlet-name>n_TestServlet</servlet-name>
-        <servlet-class>controller.TestServlet</servlet-class>
-    </servlet>
-     -->
+   <servlet>
+       <servlet-name>n_TestServlet</servlet-name>
+       <servlet-class>controller.TestServlet</servlet-class>
+   </servlet>
+    -->
     <servlet>
         <servlet-name>n_LoginServlet</servlet-name>
         <servlet-class>controller.LoginServlet</servlet-class>
@@ -147,11 +147,11 @@
     </servlet>
     <!-- SERVLET MAPPINGS -->
     <!-- TEMPLATE:
-    <servlet-mapping>
-        <servlet-name>n_TestServlet</servlet-name>
-        <url-pattern>/test</url-pattern>
-    </servlet-mapping>
-     -->
+   <servlet-mapping>
+       <servlet-name>n_TestServlet</servlet-name>
+       <url-pattern>/test</url-pattern>
+   </servlet-mapping>
+    -->
     <servlet>
         <servlet-name>ShopRegisterationServlet</servlet-name>
         <servlet-class>controller.ShopRegistrationServlet</servlet-class>
@@ -279,6 +279,10 @@
     <servlet-mapping>
         <servlet-name>n_ShopHomeServlet</servlet-name>
         <url-pattern>/shophome</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>n_ShopHomeServlet</servlet-name>
         <url-pattern>/addproduct</url-pattern>
     </servlet-mapping>
     <!-- FILTER DECLARATIONS -->
