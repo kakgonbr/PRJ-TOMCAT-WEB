@@ -109,7 +109,7 @@ function fetchUserShopProducts() {
         .then(response => response.json())
         .then(data => {
             let tableBody = document.getElementById("productTableShop");
-            tableBody.innerHTML = "<tr><th>Tên</th><th>Mô tả</th><th>Giá</th></tr>";
+            tableBody.innerHTML = '<thead class="thead-dark"><tr><th>Tên</th><th>Mô tả</th><th>Giá</th></tr></thead>';
 
             data.forEach(item => {
                 let row = document.createElement("tr");
@@ -132,5 +132,4 @@ function fetchUserShopProducts() {
         .catch(error => console.error("Error fetching data:", error));
 }
 
-// Khi trang seller.jsp load xong thì gọi AJAX để lấy sản phẩm
 window.onload = fetchUserShopProducts;
