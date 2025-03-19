@@ -284,6 +284,18 @@
         <servlet-name>n_ShopHomeServlet</servlet-name>
         <url-pattern>/shophome</url-pattern>
     </servlet-mapping>
+        <servlet-mapping>
+        <servlet-name>ShopRegisterationServlet</servlet-name>
+        <url-pattern>/shop-signup</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>n_ShopAuthenticationServlet</servlet-name>
+        <url-pattern>/shopauth</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>n_AddProductServlet</servlet-name>
+        <url-pattern>/addproduct</url-pattern>
+    </servlet-mapping>
     <!-- FILTER DECLARATIONS -->
     <filter>
         <filter-name>n_MaintenanceFilter</filter-name>
@@ -318,18 +330,7 @@
     </error-page> -->
     <!-- ENDPOINTS -->
     <!-- ChatEndPoint AT /chat OR ws://kakgonbri.zapto.org/prj/chat-->
-    <servlet-mapping>
-        <servlet-name>ShopRegisterationServlet</servlet-name>
-        <url-pattern>/shop-signup</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>n_ShopAuthenticationServlet</servlet-name>
-        <url-pattern>/shopauth</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>n_AddProductServlet</servlet-name>
-        <url-pattern>/addproduct</url-pattern>
-    </servlet-mapping>
+
     <session-config>
         <session-timeout>
             30
