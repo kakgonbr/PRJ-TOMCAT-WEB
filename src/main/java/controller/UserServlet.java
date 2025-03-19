@@ -26,23 +26,32 @@ public class UserServlet extends HttpServlet {
         }
 
         try {
+            user = dao.UserDAO.UserFetcher.getUser(user.getUsername(), user.getPassword());
+
+            if (user == null) {
+                throw new java.sql.SQLException("Failed to retreive user");
+            }
+
+            request.getSession().setAttribute("user", user);
+
             switch (action) {
                 case "displayName":
                     user.setDisplayName(request.getParameter("displayName"));
                     dao.UserDAO.UserManager.updateUser(user);
                     request.setAttribute("changed", "Display name");
-                break;
-                case "password":
+                    break;
+                    case "password":
                     String password = request.getParameter("password");
                     String confirm = request.getParameter("confirmPassword");
-
+                    
                     if (!password.equals(confirm)) {
                         request.setAttribute("error", "Passwords do not match");
                         break;
                     }
-
+                    
                     user.setPassword(password);
                     dao.UserDAO.UserManager.updateUser(user);
+                    request.setAttribute("changed", "Password");
                 break;
                 case "credit":
                     // uh

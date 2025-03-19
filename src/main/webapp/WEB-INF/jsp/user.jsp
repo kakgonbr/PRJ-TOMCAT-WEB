@@ -35,6 +35,7 @@
             <input type="hidden" name="action" value="password">
             <label>Change password:</label>
             <input type="password" name="password">
+            <label>Confirm Password:</label>
             <input type="password" name="confirmPassword">
             <input type="submit" value="Change" />
         </form>
