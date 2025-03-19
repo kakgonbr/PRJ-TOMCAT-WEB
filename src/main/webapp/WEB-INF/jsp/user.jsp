@@ -20,29 +20,30 @@
         </c:if>
         <c:if test="${changed != null && changed != ''}">
             <p>Changed ${changed}.</p>
-            <label>Username:</label>
-            <input type="text" name="username" value="${sessionScope.user.username}" disabled>
-            <form action="${pageContext.request.contextPath}/user" method="POST">
-                <input type="hidden" name="action" value="displayName">
-                <label>Display Name:</label>
-                <input type="text" name="displayName" value="${sessionScope.user.displayName}">
-                <input type="submit" value="Update" />
-            </form>
-            <label>Phone Number:</label>
-            <input type="text" name="phoneNumber" value="${sessionScope.user.phoneNumber}" disabled>
-            <form action="${pageContext.request.contextPath}/user" method="POST">
-                <input type="hidden" name="action" value="password">
-                <label>Change password:</label>
-                <input type="password" name="password">
-                <input type="password" name="confirmPassword">
-                <input type="submit" value="Change" />
-            </form>
-            <form action="${pageContext.request.contextPath}/user" method="POST">
-                <input type="hidden" name="action" value="credit">
-                <label>Credit:</label>
-                <input type="text" name="credit" value="${sessionScope.user.credit}">
-                <input type="submit" value="Add Credit" />
-            </form>
+        </c:if>
+        <label>Username:</label>
+        <input type="text" name="username" value="${sessionScope.user.username}" disabled>
+        <form action="${pageContext.request.contextPath}/user" method="POST">
+            <input type="hidden" name="action" value="displayName">
+            <label>Display Name:</label>
+            <input type="text" name="displayName" value="${sessionScope.user.displayName}">
+            <input type="submit" value="Update" />
+        </form>
+        <label>Phone Number:</label>
+        <input type="text" name="phoneNumber" value="${sessionScope.user.phoneNumber}" disabled>
+        <form action="${pageContext.request.contextPath}/user" method="POST">
+            <input type="hidden" name="action" value="password">
+            <label>Change password:</label>
+            <input type="password" name="password">
+            <input type="password" name="confirmPassword">
+            <input type="submit" value="Change" />
+        </form>
+        <form action="${pageContext.request.contextPath}/user" method="POST">
+            <input type="hidden" name="action" value="credit">
+            <label>Credit:</label>
+            <input type="text" name="credit" value="${sessionScope.user.credit}">
+            <input type="submit" value="Add Credit" />
+        </form>
     </jsp:attribute>
 
     <jsp:attribute name="footer">
