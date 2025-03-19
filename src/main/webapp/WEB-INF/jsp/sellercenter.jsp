@@ -15,6 +15,7 @@
         <script src="${pageContext.request.contextPath}/resources/product_js"></script>
         <script src="${pageContext.request.contextPath}/resources/shop_js"></script>
         <script>
+            var contextPath = "${pageContext.request.contextPath}";
             document.addEventListener("DOMContentLoaded", function () {
                 fetchUserShopProducts();
                 handleAccordionSearch("searchBox", "menuAccordion");
