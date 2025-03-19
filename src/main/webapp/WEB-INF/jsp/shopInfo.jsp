@@ -26,9 +26,6 @@
         <t:nav search="true" mainNav="true" user="${sessionScope.user.username}" activePage="home"/>
     </jsp:attribute>
     <jsp:attribute name="body">
-        <p>Debug Shop ID: ${param.shopId}</p>
-<p>Shop Object: ${shop}</p>
-<p>Shop Name: ${shop.name}</p>
         <c:if test="${shop != null}">
             <ul>Shop:
                 <li>ID: ${shop.id}</li>
