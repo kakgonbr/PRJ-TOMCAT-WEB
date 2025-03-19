@@ -688,10 +688,8 @@ VALUES
 (2, (select id from tblCategory where name = 'Shoes'), 'Nike Air Max', 'Stylish and comfortable sneakers', 3, 'test_png', 1),
 (2, (select id from tblCategory where name = 'Accessory'), 'Leather Handbag', 'Elegant leather handbag', NULL, 'test_png', 1),
 (3, (select id from tblCategory where name = 'smartphones'), 'Air Fryer', 'Healthy cooking appliance', NULL, 'test_png', 1),
-(3, (select id from tblCategory where name = 'Home Appliances'), 'Vacuum Cleaner', 'Powerful home cleaning device', NULL, 'test_png', 1),
 (4, (select id from tblCategory where name = 'Electronics'), 'PlayStation 5', 'Next-gen gaming console', 4, 'test_png', 1),
 (4, (select id from tblCategory where name = 'Electronics'), 'Xbox Series X', 'Powerful Microsoft gaming console', 4, 'test_png', 1),
-(5, (select id from tblCategory where name = 'Sofa and Couches'), 'Modern Sofa', 'Comfortable and stylish', 5, 'test_png', 1),
 (5, (select id from tblCategory where name = 'Dining Tables'), 'Wooden Dining Table', 'Elegant and durable', 5, 'test_png', 1),
 (1, (select id from tblCategory where name = 'smartphones'), 'iPhone 14 Pro', 'Latest Apple smartphone', 1, 'test_png', 1),
 (1, (select id from tblCategory where name = 'Shoes'), 'Adidas Ultraboost', 'High-performance running shoes', 3, 'test_png', 1),
@@ -700,12 +698,10 @@ VALUES
 (5, (select id from tblCategory where name = 'Beds'), 'Queen Size Bed', 'Luxurious and comfortable', 5, 'test_png', 1),
 (1, (select id from tblCategory where name = 'smartphones'), 'Google Pixel 7', 'Latest Google smartphone', 1, 'test_png', 1),
 (2, (select id from tblCategory where name = 'Shoes'), 'Puma Running Shoes', 'Lightweight and stylish', 3, 'test_png', 1),
-(3, (select id from tblCategory where name = 'Home Appliances'), 'Blender', 'Powerful kitchen appliance', NULL, 'test_png', 1),
 (4, (select id from tblCategory where name = 'laptops'), 'Gaming Laptop', 'High-end gaming performance', 4, 'test_png', 1),
 (5, (select id from tblCategory where name = 'Chairs'), 'Office Chair', 'Ergonomic and comfortable', 5, 'test_png', 1),
 (4, (select id from tblCategory where name = 'smartphones'), 'OnePlus 11', 'Flagship OnePlus smartphone', 1, 'test_png', 1),
 (2, (select id from tblCategory where name = 'Shoes'), 'Reebok Sneakers', 'Durable and comfortable', 3, 'test_png', 1),
-(3, (select id from tblCategory where name = 'Home Appliances'), 'Dishwasher', 'Efficient and modern', NULL, 'test_png', 1),
 (4, (select id from tblCategory where name = 'televisions'), 'Smart TV', '4K Ultra HD', 4, 'test_png', 1),
 (5, (select id from tblCategory where name = 'Storage'), 'Bookshelf', 'Modern wooden bookshelf', 5, 'test_png', 1),
 (5, (select id from tblCategory where name = 'smartphones'), 'FlagShip Phone', 'A phone that is flagship, also, gaming', 5, 'test_png', 1),
@@ -1270,7 +1266,6 @@ VALUES
     -- Seating Products
     (8, (SELECT id FROM tblCategory WHERE name = 'Chairs'), 'Ergonomic Office Chair', 'Comfortable for long hours', NULL, 'test_png', 1),
     (8, (SELECT id FROM tblCategory WHERE name = 'Sofas and Couches'), 'Luxury Leather Sofa', 'Spacious and stylish', NULL, 'test_png', 1),
-    (8, (SELECT id FROM tblCategory WHERE name = 'Ottomans and Footstools'), 'Velvet Ottoman', 'Multi-purpose seating', NULL, 'test_png', 1),
 
     -- Sleeping Products
     (8, (SELECT id FROM tblCategory WHERE name = 'Beds'), 'King Size Bed', 'Solid wood frame', NULL, 'test_png', 1),
