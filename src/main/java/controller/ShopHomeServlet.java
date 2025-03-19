@@ -1,25 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.SQLException;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import model.Product;
+import model.Shop;
+import model.Category;
 
-/**
- *
- * @author hoahtm
- */
-@WebServlet(name = "ShopHomeServlet", urlPatterns = {"/shophome"})
 public class ShopHomeServlet extends HttpServlet {
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         Integer shopId = (Integer) session.getAttribute("shopId");
@@ -28,13 +22,58 @@ public class ShopHomeServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/shop-signup");
             return;
         }
-
+        
         request.setAttribute("shopId", shopId);
         request.getRequestDispatcher(config.Config.JSPMapper.SELLER_CENTER).forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String action = request.getParameter("action");
 
+        if ("addproduct".equals(action)) {
+            addProduct(request, response);
+            return;
+        }
+
+        response.sendRedirect(request.getContextPath() + "/error");
+    }
+
+    private void addProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        model.User user = session == null ? null : (model.User) session.getAttribute("user");
+        
+        int shopId = request.getParameter("shopId") == null ? -1 : Integer.parseInt(request.getParameter("shopId"));
+        int categoryId = request.getParameter("category") == null ? -1 : Integer.parseInt(request.getParameter("category"));
+        String name = request.getParameter("name");
+        String description = request.getParameter("description");
+
+        if (user == null || shopId == -1 || categoryId == -1 || name == null || description == null) {
+            request.setAttribute("code", 400);
+            request.getRequestDispatcher(request.getContextPath() + "/error").forward(request, response);
+            return;
+        }
+
+        try {
+            Shop shop = dao.ShopDAO.ShopFetcher.getShop(shopId);
+            if (shop == null || shop.getOwnerId().getId() != user.getId()) {
+                request.setAttribute("code", 403);
+                request.getRequestDispatcher(request.getContextPath() + "/error").forward(request, response);
+                return;
+            }
+
+            Product product = new Product();
+            product.setShopId(shop);
+            product.setCategoryId(new Category(categoryId));
+            product.setName(name);
+            product.setDescription(description);
+            product.setStatus(true);
+
+            dao.ProductDAO.ProductManager.addProduct(product);
+            response.sendRedirect(request.getContextPath() + "/shop/selectVariation.jsp?productId=" + product.getId());
+        } catch (SQLException e) {
+            request.setAttribute("code", 500);
+            request.getRequestDispatcher(request.getContextPath() + "/error").forward(request, response);
+        }
     }
 }

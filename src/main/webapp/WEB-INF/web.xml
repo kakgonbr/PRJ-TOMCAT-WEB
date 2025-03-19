@@ -141,6 +141,10 @@
         <servlet-name>n_UserServlet</servlet-name>
         <servlet-class>controller.UserServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>n_ShopHomeServlet</servlet-name>
+        <servlet-class>controller.ShopHomeServlet</servlet-class>
+    </servlet>
     <!-- SERVLET MAPPINGS -->
     <!-- TEMPLATE:
     <servlet-mapping>
@@ -271,6 +275,11 @@
     <servlet-mapping>
         <servlet-name>n_UserServlet</servlet-name>
         <url-pattern>/user</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>n_ShopHomeServlet</servlet-name>
+        <url-pattern>/shophome</url-pattern>
+        <url-pattern>/addproduct</url-pattern>
     </servlet-mapping>
     <!-- FILTER DECLARATIONS -->
     <filter>
