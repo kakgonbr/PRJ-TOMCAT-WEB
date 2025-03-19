@@ -100,3 +100,37 @@ function getProductInfo(productId) {
         })
         .catch(error => console.error("Error fetching data:", error));
 }
+
+function fetchUserShopProducts() {
+    var url = new URL("https://" + location.host + contextPath + "/ajax/products");
+    url.searchParams.append('action', 'fetchUserShopProducts');
+
+    fetch(url.toString())
+        .then(response => response.json())
+        .then(data => {
+            let tableBody = document.getElementById("productTableShop");
+            tableBody.innerHTML = "<tr><th>Tên</th><th>Mô tả</th><th>Giá</th></tr>";
+
+            data.forEach(item => {
+                let row = document.createElement("tr");
+
+                let cell = document.createElement("td");
+                cell.textContent = item.name;
+                row.appendChild(cell);
+
+                cell = document.createElement("td");
+                cell.textContent = item.description;
+                row.appendChild(cell);
+
+                cell = document.createElement("td");
+                cell.textContent = item.price;
+                row.appendChild(cell);
+
+                tableBody.appendChild(row);
+            });
+        })
+        .catch(error => console.error("Error fetching data:", error));
+}
+
+// Khi trang seller.jsp load xong thì gọi AJAX để lấy sản phẩm
+window.onload = fetchUserShopProducts;

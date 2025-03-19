@@ -37,3 +37,45 @@ function fetchShops() {
         })
         .catch(error => console.error("Error fetching data:", error));
 }
+
+function handleAccordionSearch(searchBoxId, accordionContainerId) {
+    let searchBox = document.getElementById(searchBoxId);
+    let accordionContainer = document.getElementById(accordionContainerId);
+
+    if (!searchBox || !accordionContainer) return;
+
+    searchBox.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+
+            let searchValue = searchBox.value.trim().toLowerCase();
+            let found = false;
+
+            let accordions = accordionContainer.querySelectorAll(".accordion-item");
+
+            accordions.forEach(item => {
+                let button = item.querySelector(".accordion-button");
+                let collapseId = button.getAttribute("data-bs-target");
+                let collapse = document.querySelector(collapseId);
+                let bsCollapse = new bootstrap.Collapse(collapse, { toggle: false });
+
+                if (button.textContent.trim().toLowerCase().includes(searchValue)) {
+                    bsCollapse.show();
+                    found = true;
+                } else {
+                    let links = collapse.querySelectorAll("a");
+                    links.forEach(link => {
+                        if (link.textContent.trim().toLowerCase().includes(searchValue)) {
+                            bsCollapse.show();
+                            found = true;
+                        }
+                    });
+                }
+            });
+
+            if (!found) {
+                alert("Không tìm thấy kết quả!");
+            }
+        }
+    });
+}
