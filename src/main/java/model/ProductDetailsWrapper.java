@@ -14,7 +14,7 @@ public class ProductDetailsWrapper implements java.io.Serializable {
     private PromotionWrapper promotion;
     private String thumbnail;
     private java.util.List<String> productImages;
-    private java.util.List<ProductCustomizationWrapper> productCustomizations;
+    private java.util.List<ProductItemWrapper> productItems;
     private java.util.Set<String> customizationNames;
 
     public ProductDetailsWrapper() {}
@@ -30,8 +30,8 @@ public class ProductDetailsWrapper implements java.io.Serializable {
         
         // way too java-y
         setProductImages(product.getProductImageList().stream().map(ProductImage::getImageStringResourceId).map(ResourceMap::getId).toList());
-        setProductCustomizations(product.getProductItemList().stream().flatMap(i -> i.getProductCustomizationList().stream()).map(ProductCustomizationWrapper::new).toList());
-        setCustomizationNames(productCustomizations.stream().map(ProductCustomizationWrapper::getName).collect(Collectors.toSet()));
+        setProductItems(product.getProductItemList().stream().map(ProductItemWrapper::new).toList());
+        setCustomizationNames(productItems.stream().flatMap(i -> i.getCustomizations().stream()).map(ProductCustomizationWrapper::getName).collect(Collectors.toSet()));
     }
 
     public Integer getId() {
@@ -98,19 +98,19 @@ public class ProductDetailsWrapper implements java.io.Serializable {
         this.productImages = productImages;
     }
 
-    public java.util.List<ProductCustomizationWrapper> getProductCustomizations() {
-        return productCustomizations;
-    }
-
-    public void setProductCustomizations(java.util.List<ProductCustomizationWrapper> productCustomizations) {
-        this.productCustomizations = productCustomizations;
-    }
-
     public java.util.Set<String> getCustomizationNames() {
         return customizationNames;
     }
 
     public void setCustomizationNames(java.util.Set<String> customizationNames) {
         this.customizationNames = customizationNames;
+    }
+
+    public java.util.List<ProductItemWrapper> getProductItems() {
+        return productItems;
+    }
+
+    public void setProductItems(java.util.List<ProductItemWrapper> productItems) {
+        this.productItems = productItems;
     }    
 }
