@@ -25,7 +25,6 @@
     <jsp:attribute name="header">
         <t:nav search="true" mainNav="true" user="${sessionScope.user.username}" activePage="home"/>
     </jsp:attribute>
-
     <jsp:attribute name="body">
         <c:if test="${shop != null}">
             <ul>Shop:

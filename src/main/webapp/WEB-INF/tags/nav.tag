@@ -25,8 +25,8 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link ${activePage == 'shop-signup' ? 'active' : ''}" 
-                           href="${pageContext.request.contextPath}/shop-signup">Register Shop</a>
-                    </li>   
+                           href="${pageContext.request.contextPath}/shopauth">Register Shop</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Yet another page</a>
                     </li>

@@ -25,7 +25,7 @@ CREATE TABLE tblUser
 	persistentCookie varchar(255),
 	googleId varchar(255),	
 	facebookId varchar(255),
-	isAdmin bit DEFAULT 0,
+	isAdmin bit DEFAULT 0 NOT NULL,
 	credit money,
 	status bit NOT NULL DEFAULT 1,
 
@@ -145,7 +145,7 @@ CREATE TABLE tblProduct
 (
 	id int PRIMARY KEY IDENTITY(1, 1),
 	shopId int,
-	categoryId int,
+	categoryId int NOT NULL,
 	name nvarchar(50) NOT NULL,
 	description nvarchar(255),
 	availablePromotionId int,
@@ -662,140 +662,6 @@ INSERT INTO tblVariation (categoryId,name,datatype,unit)
  	(7,'woman clothes size', 'string', NULL);
 
 
-INSERT INTO tblVariation (categoryId, name, datatype, unit)
-VALUES
-    ((SELECT id FROM tblCategory WHERE name = 'Cosmestic'), 'Brand', 'string', NULL),
-	((SELECT id FROM tblCategory WHERE name = 'Cosmestic'), 'Volume', 'integer', 'ml'),
-
-	((SELECT id FROM tblCategory WHERE name = 'Skincare'), 'Skin Type', 'string', NULL);
-	((SELECT id FROM tblCategory WHERE name = 'Skincare'), 'Function', 'string', NULL);
-
-	((SELECT id FROM tblCategory WHERE name = 'Makeup'), 'Shade', 'string', NULL);
-	((SELECT id FROM tblCategory WHERE name = 'Makeup'), 'Finish & Texture', 'string', NULL);
-
-	((SELECT id FROM tblCategory WHERE name = 'Haircare'), 'Hair Type', 'string', NULL);
-	((SELECT id FROM tblCategory WHERE name = 'Haircare'), 'Form', 'string', NULL);
-
-	((SELECT id FROM tblCategory WHERE name = 'Bodycare'), 'Scent', 'string', NULL);
-	((SELECT id FROM tblCategory WHERE name = 'Bodycare'), 'Absorption Rate', 'string', NULL);
-
-	((SELECT id FROM tblCategory WHERE name = 'Fragrance'), 'Fragrance Notes', 'string', NULL);
-	((SELECT id FROM tblCategory WHERE name = 'Fragrance'), 'Occasion & Season', 'string', NULL);
-
-
-
- 
- INSERT INTO tblVariationValue (variationId, value)
- VALUES 
- 	(1 , 'Black'),
- 	(1 , 'White'),
- 	(1 , 'Gray'),
- 	(1 , 'Blue'),
- 	(1 , 'Red'),
- 	(1 , 'Beige'),
- 	(1 , 'Brown'),
- 	(1 , 'Navy'),
- 	(1 , 'Pink'),
- 	(1 , 'Orange'),
- 	(1 , 'Green'),
- 	(1 , 'Yellow'),
- 	(2 , 'XS'),
- 	(2 , 'S'),
- 	(2 , 'M'),
- 	(2 , 'L'),
- 	(2 , 'XL'),
- 	(2 , 'XXL'),
- 	(3 , '35'),
- 	(3 , '36'),
- 	(3 , '37'),
- 	(3 , '38'),
- 	(3 , '39'),
- 	(3 , '40'),
- 	(3 , '41'),
- 	(3 , '42'),
- 	(3 , '43'),
- 	(4 , 'XS'),
- 	(4 , 'S'),
- 	(4 , 'M'),
- 	(4 , 'L'),
- 	(4 , 'XL');
-
-
-	INSERT INTO tblVariationValue (variationId, value)
-VALUES 
-    (1, 'L�Or�al'), 
-    (1, 'Maybelline'), 
-    (1, 'MAC'), 
-    (1, 'Est�e Lauder'),
-    
-    -- Volume (in ml)
-    (2, '10'),
-    (2, '15'),
-    (2, '30'),
-    (2, '50'),
-    (2, '100'),
-    
-    -- Skin Type
-    (3, 'Oily Skin'),
-    (3, 'Dry Skin'),
-    (3, 'Combination Skin'),
-    (3, 'Sensitive Skin'),
-
-	--Function 
-	(3, 'Brightening'),
-    (3, 'Anti-Aging'),
-    (3, 'Acne Treatment'),
-    (3, 'Soothing & Calming'),
-    
-    -- Shade 
-    (4, 'Light Beige'),
-    (4, 'Medium Tan'),
-    (4, 'Dark Brown'),
-    
-    -- Finish & texture
-    (5, 'Matte'),
-    (5, 'Dewy'),
-    (5, 'Satin'),
-    (5, 'Glossy'),
-    (5, 'Sheer'),
-    (5, 'Velvet');
-
-	-- Hair type
-	(5, 'Thin Hair'),
-    (5, 'Thick Hair'),
-    (5, 'Curly Hair'),
-    (5, 'Damaged Hair'),
-
-	-- Form
-	(5, 'Liquid'),
-    (5, 'Cream'),
-    (5, 'Gel/Wax'),
-    (5, 'Powder'),
-
-	-- Scent
-	(5, 'Vanilla'),
-    (5, 'Lavender'),
-    (5, 'Citrus'),
-
-	-- Scent
-	(5, 'Fast-absorbing'),
-    (5, 'Deeply moisturizing'),
-
-	-- Fragrance Notes
-	(5, 'Floral'),
-    (5, 'Fruity'),
-    (5, 'Woody'),
-    (5, 'Fresh'),
-	(5, 'Musky'),
-
-	-- Occasion & Season
-	(5, 'Everyday Wear'),
-    (5, 'Date Night'),
-    (5, 'Office-Friendly'),
-    (5, 'Summer Fragrances'),
-	(5, 'Winter Fragrances'),
-
-
 INSERT INTO tblShop (ownerId, name, address, profileStringResourceId, visible)
 VALUES
 (1, 'Gadget World', '789 Tech Road', 'test_png', 1),
@@ -822,10 +688,8 @@ VALUES
 (2, (select id from tblCategory where name = 'Shoes'), 'Nike Air Max', 'Stylish and comfortable sneakers', 3, 'test_png', 1),
 (2, (select id from tblCategory where name = 'Accessory'), 'Leather Handbag', 'Elegant leather handbag', NULL, 'test_png', 1),
 (3, (select id from tblCategory where name = 'smartphones'), 'Air Fryer', 'Healthy cooking appliance', NULL, 'test_png', 1),
-(3, (select id from tblCategory where name = 'Home Appliances'), 'Vacuum Cleaner', 'Powerful home cleaning device', NULL, 'test_png', 1),
 (4, (select id from tblCategory where name = 'Electronics'), 'PlayStation 5', 'Next-gen gaming console', 4, 'test_png', 1),
 (4, (select id from tblCategory where name = 'Electronics'), 'Xbox Series X', 'Powerful Microsoft gaming console', 4, 'test_png', 1),
-(5, (select id from tblCategory where name = 'Sofa and Couches'), 'Modern Sofa', 'Comfortable and stylish', 5, 'test_png', 1),
 (5, (select id from tblCategory where name = 'Dining Tables'), 'Wooden Dining Table', 'Elegant and durable', 5, 'test_png', 1),
 (1, (select id from tblCategory where name = 'smartphones'), 'iPhone 14 Pro', 'Latest Apple smartphone', 1, 'test_png', 1),
 (1, (select id from tblCategory where name = 'Shoes'), 'Adidas Ultraboost', 'High-performance running shoes', 3, 'test_png', 1),
@@ -834,19 +698,16 @@ VALUES
 (5, (select id from tblCategory where name = 'Beds'), 'Queen Size Bed', 'Luxurious and comfortable', 5, 'test_png', 1),
 (1, (select id from tblCategory where name = 'smartphones'), 'Google Pixel 7', 'Latest Google smartphone', 1, 'test_png', 1),
 (2, (select id from tblCategory where name = 'Shoes'), 'Puma Running Shoes', 'Lightweight and stylish', 3, 'test_png', 1),
-(3, (select id from tblCategory where name = 'Home Appliances'), 'Blender', 'Powerful kitchen appliance', NULL, 'test_png', 1),
 (4, (select id from tblCategory where name = 'laptops'), 'Gaming Laptop', 'High-end gaming performance', 4, 'test_png', 1),
 (5, (select id from tblCategory where name = 'Chairs'), 'Office Chair', 'Ergonomic and comfortable', 5, 'test_png', 1),
 (4, (select id from tblCategory where name = 'smartphones'), 'OnePlus 11', 'Flagship OnePlus smartphone', 1, 'test_png', 1),
 (2, (select id from tblCategory where name = 'Shoes'), 'Reebok Sneakers', 'Durable and comfortable', 3, 'test_png', 1),
-(3, (select id from tblCategory where name = 'Home Appliances'), 'Dishwasher', 'Efficient and modern', NULL, 'test_png', 1),
 (4, (select id from tblCategory where name = 'televisions'), 'Smart TV', '4K Ultra HD', 4, 'test_png', 1),
 (5, (select id from tblCategory where name = 'Storage'), 'Bookshelf', 'Modern wooden bookshelf', 5, 'test_png', 1),
 (5, (select id from tblCategory where name = 'smartphones'), 'FlagShip Phone', 'A phone that is flagship, also, gaming', 5, 'test_png', 1),
 (5, (select id from tblCategory where name = 'tablets'), 'FlagShip Tablet', 'Cool tablet', 5, 'test_png', 1);
 
-insert into tblCategory(name, imageStringResourceId, parent_id) values 
-('Home Appliances', 'test_png', 2);
+SELECT * FROM tblProduct
 
 INSERT INTO tblProduct (shopId, categoryId, name, description, availablePromotionId, imageStringResourceId, status)
 VALUES
@@ -855,6 +716,42 @@ VALUES
 (6, 10, 'T-Shirt Path 3', 'Good', NULL, 'test_png', 1),
 (6, 12, 'Hoodie Path 1', 'Good', NULL, 'test_png', 1),
 (6, 11, 'Blazer Path 1', 'Good', NULL, 'test_png', 1);
+
+
+INSERT INTO tblVariationValue (variationId, value)
+  VALUES 
+  	(1 , 'Black'),
+  	(1 , 'White'),
+  	(1 , 'Gray'),
+  	(1 , 'Blue'),
+  	(1 , 'Red'),
+  	(1 , 'Beige'),
+  	(1 , 'Brown'),
+  	(1 , 'Navy'),
+  	(1 , 'Pink'),
+  	(1 , 'Orange'),
+  	(1 , 'Green'),
+  	(1 , 'Yellow'),
+  	(2 , 'XS'),
+  	(2 , 'S'),
+  	(2 , 'M'),
+  	(2 , 'L'),
+  	(2 , 'XL'),
+  	(2 , 'XXL'),
+  	(3 , '35'),
+  	(3 , '36'),
+  	(3 , '37'),
+  	(3 , '38'),
+  	(3 , '39'),
+  	(3 , '40'),
+  	(3 , '41'),
+  	(3 , '42'),
+  	(3 , '43'),
+  	(4 , 'XS'),
+  	(4 , 'S'),
+  	(4 , 'M'),
+  	(4 , 'L'),
+  	(4 , 'XL');
 
 
 INSERT INTO tblProductItem (productId, stock, price)
@@ -890,7 +787,7 @@ VALUES
 (28, 12, 1100),
 (28, 10, 1000),
 (28, 5, 1200),
-(29, 12, 1300)
+(29, 12, 1300),
 (29, 20, 1400),
 (30, 10, 1000),
 (30, 9, 1000),
@@ -932,58 +829,58 @@ VALUES
 
 	--product item for electronics
 INSERT INTO tblProductItem (productId, stock, price) VALUES
-	(33, 42, 7200),
-	(33, 58, 9100),
-	(34, 96, 5300),
-	(34, 62, 7800),
-	(35, 47, 8600),
-	(35, 38, 1400),
-	(36, 69, 2500),
-	(37, 55, 3800),
-	(37, 24, 6700),
-	(38, 81, 4100),
-	(38, 49, 6300),
-	(39, 39, 9200),
-	(39, 76, 2700),
-	(40, 53, 1500),
-	(40, 21, 5300),
-	(41, 30, 1800),
-	(41, 71, 2500),
-	(42, 19, 5700),
-	(42, 35, 3200),
-	(43, 61, 4600),
-	(43, 44, 3900),
-	(44, 22, 6800),
-	(45, 47, 5700),
-	(45, 27, 4400),
-	(46, 66, 5900),
-	(46, 38, 2200),
-	(47, 32, 7100),
-	(47, 55, 4700),
-	(48, 41, 8200),
-	(48, 68, 5300),
-	(49, 35, 7600),
-	(50, 73, 3400),
-	(50, 58, 9100),
-	(51, 24, 6500),
-	(51, 45, 3800),
-	(51, 48, 4800),
-	(52, 52, 7200),
-	(52, 60, 3100),
-	(53, 30, 8600),
-	(53, 19, 4900),
-	(54, 48, 7500),
-	(55, 22, 6900),
-	(55, 53, 2800),
-	(56, 77, 8100),
-	(56, 29, 3900),
-	(56, 20, 3800),
-	(57, 34, 7300),
-	(57, 46, 5000),
-	(58, 39, 8700),
-	(58, 61, 4200),
-	(59, 45, 5900),
-	(59, 26, 3100);	
+	(1, 42, 7200),
+	(1, 58, 9100),
+	(2, 96, 5300),
+	(2, 62, 7800),
+	(3, 47, 8600),
+	(3, 38, 1400),
+	(4, 69, 2500),
+	(5, 55, 3800),
+	(5, 24, 6700),
+	(6, 81, 4100),
+	(6, 49, 6300),
+	(7, 39, 9200),
+	(7, 76, 2700),
+	(8, 53, 1500),
+	(8, 21, 5300),
+	(9, 30, 1800),
+	(9, 71, 2500),
+	(10, 19, 5700),
+	(10, 35, 3200),
+	(11, 61, 4600),
+	(11, 44, 3900),
+	(12, 22, 6800),
+	(13, 47, 5700),
+	(13, 27, 4400),
+	(14, 66, 5900),
+	(14, 38, 2200),
+	(15, 32, 7100),
+	(15, 55, 4700),
+	(16, 41, 8200),
+	(16, 68, 5300),
+	(17, 35, 7600),
+	(18, 73, 3400),
+	(19, 58, 9100),
+	(20, 24, 6500),
+	(20, 45, 3800),
+	(20, 48, 4800),
+	(21, 52, 7200),
+	(21, 60, 3100),
+	(22, 30, 8600),
+	(22, 19, 4900),
+	(23, 48, 7500),
+	(24, 22, 6900),
+	(24, 53, 2800),
+	(25, 77, 8100),
+	(25, 29, 3900),
+	(25, 20, 3800),
+	(26, 34, 7300),
+	(26, 46, 5000),
+	(27, 39, 8700),
+	(29, 61, 4200),
+	(30, 45, 5900),
+	(30, 26, 3100);	
 	
 
 INSERT INTO tblProductCustomization(productItemId,variationValueId)
@@ -1370,7 +1267,6 @@ VALUES
     -- Seating Products
     (8, (SELECT id FROM tblCategory WHERE name = 'Chairs'), 'Ergonomic Office Chair', 'Comfortable for long hours', NULL, 'test_png', 1),
     (8, (SELECT id FROM tblCategory WHERE name = 'Sofas and Couches'), 'Luxury Leather Sofa', 'Spacious and stylish', NULL, 'test_png', 1),
-    (8, (SELECT id FROM tblCategory WHERE name = 'Ottomans and Footstools'), 'Velvet Ottoman', 'Multi-purpose seating', NULL, 'test_png', 1),
 
     -- Sleeping Products
     (8, (SELECT id FROM tblCategory WHERE name = 'Beds'), 'King Size Bed', 'Solid wood frame', NULL, 'test_png', 1),

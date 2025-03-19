@@ -36,6 +36,7 @@ import java.util.List;
     @NamedQuery(name = "Shop.findById", query = "SELECT s FROM Shop s WHERE s.id = :id"),
     @NamedQuery(name = "Shop.findByName", query = "SELECT s FROM Shop s WHERE s.name = :name"),
     @NamedQuery(name = "Shop.findByAddress", query = "SELECT s FROM Shop s WHERE s.address = :address"),
+    @NamedQuery(name = "Shop.findByOwnerId", query = "SELECT s FROM Shop s WHERE s.ownerId.id = :ownerId"),
     @NamedQuery(name = "Shop.findByVisible", query = "SELECT s FROM Shop s WHERE s.visible = :visible")})
 public class Shop implements Serializable {
 

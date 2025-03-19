@@ -11,8 +11,26 @@ import jakarta.servlet.http.HttpSession;
 public class ProductLoader extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        model.User user = (model.User) session.getAttribute("user");
+        // specific product
+        response.setContentType("application/json");
+
+        String productId = request.getParameter("productId");
+        if (productId != null && !productId.isBlank()) {
+            try {
+                String json = new com.google.gson.Gson().toJson(new model.ProductDetailsWrapper(dao.ProductDAO.ProductFetcher.getProductDetails(Integer.parseInt(productId))));
+
+                service.Logging.logger.info("Sending back json {}", json);
+
+                response.getWriter().write(json);
+                return;
+            } catch (java.sql.SQLException | NumberFormatException e) {
+                service.Logging.logger.warn("FAILED TO GET PRODUCT DETAILS FOR PRODUCT ID {}, REASON: {}", productId, e.getMessage());
+                return;
+            }
+        }
+
+        HttpSession session = request.getSession(false);
+        model.User user = session == null ? null : (model.User) session.getAttribute("user");
         String recommendations = request.getParameter("query");
         Integer category = request.getParameter("category") == null || request.getParameter("category").isBlank() ? 0 : Integer.parseInt(request.getParameter("category"));
         String shopId = request.getParameter("shopId");
@@ -28,7 +46,7 @@ public class ProductLoader extends HttpServlet {
 
             java.util.List<model.ProductWrapper> products;
 
-            if (shopId == null || shopId.isEmpty()) {
+            if (shopId == null || shopId.isBlank()) {
                 service.Logging.logger.info("Getting recommendations for query '{}'", recommendations);
 
                 products = dao.ProductDAO.ProductFetcher
@@ -40,8 +58,6 @@ public class ProductLoader extends HttpServlet {
 
                 products = dao.ProductDAO.ProductFetcher.getShopProductsByCategory(Integer.parseInt(shopId), category).stream().map(model.ProductWrapper::new).collect(Collectors.toList());
             }
-
-            response.setContentType("application/json");
 
             String json = new com.google.gson.Gson().toJson(products);
 

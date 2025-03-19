@@ -148,6 +148,10 @@
         <servlet-name>ShopRegisterationServlet</servlet-name>
         <servlet-class>controller.ShopRegistrationServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>n_ShopAuthenticationServlet</servlet-name>
+        <servlet-class>controller.ShopAuthenticationServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>n_LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -297,6 +301,10 @@
     <servlet-mapping>
         <servlet-name>ShopRegisterationServlet</servlet-name>
         <url-pattern>/shop-signup</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>n_ShopAuthenticationServlet</servlet-name>
+        <url-pattern>/shopauth</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

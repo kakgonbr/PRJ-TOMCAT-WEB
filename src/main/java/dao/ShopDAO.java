@@ -91,6 +91,14 @@ public class ShopDAO {
                 throw new java.sql.SQLException(e);
             }
         } // public static model.Shop getShop
+        public static synchronized model.Shop getShopByOwnerId(int ownerId)
+                throws SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return em.createNamedQuery("Shop.findByOwnerId", model.Shop.class).setParameter("ownerId", ownerId).getSingleResult();
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
+            }
+        } // public static model.Shop getShop
         
         public static synchronized java.util.List<model.Shop> getShops()
                 throws java.sql.SQLException {
