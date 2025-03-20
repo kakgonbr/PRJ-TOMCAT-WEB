@@ -79,7 +79,7 @@
                     <div class="container">
                         <h2>Edit product</h2>
                         <form action="${pageContext.request.contextPath}/product?action=edit&productId=${product.id}" method="post">
-                            <input type="hidden" name="id" value="${product.id}" />
+                            <input type="hidden" name="id" value="${product.id}" /> 
 
                             <div class="mb-3">
                                 <label for="name" class="form-label">name:</label>
@@ -91,7 +91,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="category" class="form-label">Category:</label>
+                                <label>Category:</label>
                                 <div id="categoryFilter"></div>
                             </div>
 
