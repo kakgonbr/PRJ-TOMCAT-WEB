@@ -48,7 +48,7 @@ public class CartItem implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER) // to get the user's id, which is required for the order's ifnromation
     private Cart cartId;
     @JoinColumn(name = "productItemId", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private ProductItem productItemId;
     @Column(name = "status")
     private Boolean status;

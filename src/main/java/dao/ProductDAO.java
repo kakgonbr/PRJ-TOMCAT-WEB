@@ -57,6 +57,15 @@ public class ProductDAO {
             }
         } // public static synchronized model.Product getProductDetails
 
+        public static synchronized model.ProductItem getProductItem(int id) throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return em.createNamedQuery("ProductItem.findById", model.ProductItem.class).setParameter("id", id)
+                        .getSingleResult();
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
+            }
+        }
+
         private static final String GET_PRODUCTS_FROM_SHOP = "SELECT * FROM tblProduct WHERE shopId = ?1";
 
         public static synchronized java.util.List<model.Product> getShopProducts(int shopId) throws java.sql.SQLException {
@@ -69,7 +78,7 @@ public class ProductDAO {
         }
 
         private static final String GET_PRODUCTS_FROM_SHOP_BY_CATEGORY = "WITH category AS (SELECT id FROM tblCategory WHERE id = ?1 UNION ALL SELECT c.id FROM tblCategory c JOIN category ch ON c.parent_id = ch.id) SELECT TOP 10 * FROM tblProduct WHERE tblProduct.shopId = ?2 AND tblProduct.categoryId IN (SELECT id FROM category)";
-
+        
         public static synchronized java.util.List<model.Product> getShopProductsByCategory(int shopId, int category) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 return em.createNativeQuery(GET_PRODUCTS_FROM_SHOP_BY_CATEGORY, model.Product.class)

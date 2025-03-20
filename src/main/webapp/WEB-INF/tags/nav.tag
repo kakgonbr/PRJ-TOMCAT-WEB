@@ -71,7 +71,7 @@
                             </button>
                         </li>
                         <li>
-                            <button type="button" id="button-theme-system"
+                            <button type="button" id="button-theme-system"  
                                     class="dropdown-item d-flex align-items-center button-switch-theme"
                                     data-bs-theme-value="system" aria-pressed="true">
                                 Auto

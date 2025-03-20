@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-<t:genericpage title="Home">
+<t:genericpage title="Catalog">
     <jsp:attribute name="head">
         <t:resources/>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/catalog_css">

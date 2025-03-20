@@ -33,13 +33,20 @@
         <div align="center">
         <form action="${pageContext.request.contextPath}/admin/cp?table=products" method="post">
             <table border="1" cellpadding="5">
-                <caption>
-                    <h2>
-                        Editing Product ID ${product.id}
-                    </h2>
-                </caption>
-                <c:if test="${product != null}">
+                <c:if test="${product.id != null}">
+                    <caption>
+                        <h2>
+                            Editing Product ID ${product.id}
+                        </h2>
+                    </caption>
                     <input type="hidden" name="id" value="<c:out value='${product.id}' />" />
+                </c:if>
+                <c:if test="${product.id == null}">
+                    <caption>
+                        <h2>
+                            Creating a new product
+                        </h2>
+                     </caption>
                 </c:if>
                 <tr>
                     <th>Name:</th>

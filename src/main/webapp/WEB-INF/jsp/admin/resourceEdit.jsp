@@ -33,13 +33,20 @@
         <div align="center">
         <form action="${pageContext.request.contextPath}/admin/cp?table=resources" method="post">
             <table border="1" cellpadding="5">
-                <caption>
-                    <h2>
-                        Editing Resource ID ${resource.id}
-                    </h2>
-                </caption>
-                <c:if test="${resource != null}">
+                <c:if test="${resource.id != null}">
+                    <caption>
+                        <h2>
+                            Editing Resource ID ${resource.id}
+                        </h2>
+                    </caption>
                     <input type="hidden" name="id" value="<c:out value='${resource.id}' />" />
+                </c:if>
+                <c:if test="${resource.id == null}">
+                    <caption>
+                        <h2>
+                            Creating a new resource mapping
+                        </h2>
+                     </caption>
                 </c:if>
                 <tr>
                     <th>System Path:</th>

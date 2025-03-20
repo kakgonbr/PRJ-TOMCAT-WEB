@@ -518,7 +518,9 @@ VALUES
 ('checkout_css','checkout.css'),
 ('userMain_js','userMain.js'),
 ('catalog_css','catalog.css'),
-('catalog_js','catalog.js');
+('catalog_js','catalog.js'),
+('productInfoTest_css','productInfoTest.css'),
+('productInfoTest_js','productInfoTest.js');
 
 INSERT INTO tblUser (email, username, phoneNumber, password, persistentCookie, googleId, facebookId, isAdmin, profileStringResourceId)
 VALUES 
