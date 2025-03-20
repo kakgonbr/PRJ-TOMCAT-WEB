@@ -81,7 +81,7 @@
                 <main class="col-md-10 p-4">
                     <button onclick="fetchProductsShop(shopId);" class="btn btn-primary">Load Product List</button>
                     <p>Products:</p>
-                    <table border="1" id="productTable">
+                    <table border="1" id="productTableShop">
                     </table>
                 </main>
             </div>
