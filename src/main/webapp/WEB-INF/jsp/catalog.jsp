@@ -8,7 +8,7 @@
         
         <script>
             var contextPath = "${pageContext.request.contextPath}";
-            var categoryId = "${param.categoryId}"
+            var categoryId = "${categoryId}"
         </script>
 
     </jsp:attribute>
