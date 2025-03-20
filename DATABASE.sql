@@ -26,11 +26,11 @@ CREATE TABLE tblUser
 	googleId varchar(255),	
 	facebookId varchar(255),
 	isAdmin bit DEFAULT 0,
-	credit money,
+	credit money NOT NULL DEFAULT 0,
 	status bit NOT NULL DEFAULT 1,
 
-	displayName nvarchar(50),
-	profileStringResourceId varchar(30),
+	displayName nvarchar(50) NOT NULL DEFAULT '',
+	profileStringResourceId varchar(30) NOT NULL,
 	bio nvarchar(255),
 
 	CONSTRAINT fk_user_resourceId FOREIGN KEY (profileStringResourceId) REFERENCES tblResourceMap(id)
@@ -94,7 +94,7 @@ CREATE TABLE tblPromotion
 CREATE TABLE tblShop
 (
 	id int PRIMARY KEY IDENTITY(1, 1),
-	ownerId int,
+	ownerId int NOT NULL,
 	name nvarchar(30) NOT NULL,
 	address nvarchar(100),
 	profileStringResourceId varchar(30),
@@ -118,10 +118,10 @@ CREATE TABLE tblCategory
 CREATE TABLE tblVariation
 (
 	id int PRIMARY KEY IDENTITY(1, 1),
-	categoryId int,
+	categoryId int NOT NULL DEFAULT 0,
 	name nvarchar(30),
-	datatype varchar(10),
-	unit varchar(10),
+	datatype varchar(10) NOT NULL DEFAULT 'string',
+	unit varchar(10) NOT NULL DEFAULT '',
 
 	CONSTRAINT fk_variation_category FOREIGN KEY (categoryId) REFERENCES tblCategory(id)
 )
@@ -132,7 +132,7 @@ ADD status bit DEFAULT 1;
 CREATE TABLE tblVariationValue
 (
 	id int PRIMARY KEY IDENTITY(1, 1),
-	variationId int,
+	variationId int NOT NULL,
 	value varchar(32),
 
 	constraint fk_variationvalue_variation foreign key (variationId) references tblVariation(id)
@@ -144,8 +144,8 @@ ADD status bit;
 CREATE TABLE tblProduct
 (
 	id int PRIMARY KEY IDENTITY(1, 1),
-	shopId int,
-	categoryId int,
+	shopId int NOT NULL,
+	categoryId int NOT NULL DEFAULT 0,
 	name nvarchar(50) NOT NULL,
 	description nvarchar(255),
 	availablePromotionId int,

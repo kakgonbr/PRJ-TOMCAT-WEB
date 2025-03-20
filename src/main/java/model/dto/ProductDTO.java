@@ -17,7 +17,7 @@ public class ProductDTO implements java.io.Serializable {
         setCategoryId(product.getCategoryId().getId());
         setDescription(product.getDescription());
         setId(product.getId());
-        setImageStringResourceId(product.getImageStringResourceId().getId());
+        setImageStringResourceId(product.getImageStringResourceId() == null ? null : product.getImageStringResourceId().getId());
         setName(product.getName());
         setShopId(product.getShopId().getId());
         setStatus(product.isStatus());

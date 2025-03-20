@@ -61,6 +61,7 @@ public class Product implements Serializable {
     private Integer id;
     @JoinColumn(name = "categoryId", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.EAGER)
+    @NotNull
     private Category categoryId;
     @JoinColumn(name = "availablePromotionId", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.EAGER)
@@ -70,6 +71,7 @@ public class Product implements Serializable {
     private ResourceMap imageStringResourceId;
     @JoinColumn(name = "shopId", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.EAGER)
+    @NotNull
     private Shop shopId;
     @Column(name = "status")
     private Boolean status;

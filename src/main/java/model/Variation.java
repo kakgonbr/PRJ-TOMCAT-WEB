@@ -16,6 +16,7 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlTransient;
@@ -42,8 +43,10 @@ public class Variation implements Serializable {
     private String name;
     @Size(max = 10)
     @Column(name = "datatype")
+    @NotNull
     private String datatype;
     @Size(max = 10)
+    @NotNull
     @Column(name = "unit")
     private String unit;
     @Column(name = "status")
@@ -57,6 +60,7 @@ public class Variation implements Serializable {
     private Integer id;
     @JoinColumn(name = "categoryId", referencedColumnName = "id")
     @ManyToOne
+    @NotNull
     private Category categoryId;
     @OneToMany(mappedBy = "variationId")
     private List<VariationValue> variationValueList;

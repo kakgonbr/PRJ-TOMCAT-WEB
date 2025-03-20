@@ -26,7 +26,7 @@ public class ProductDetailsWrapper implements java.io.Serializable {
         setName(product.getName());
         setDescription(product.getDescription());
         setPromotion(product.getAvailablePromotionId() == null ? null : new PromotionWrapper(product.getAvailablePromotionId()));
-        setThumbnail(product.getImageStringResourceId().getId());
+        setThumbnail(product.getImageStringResourceId() == null ? null : product.getImageStringResourceId().getId());
         
         // way too java-y
         setProductImages(product.getProductImageList().stream().map(ProductImage::getImageStringResourceId).map(ResourceMap::getId).toList());

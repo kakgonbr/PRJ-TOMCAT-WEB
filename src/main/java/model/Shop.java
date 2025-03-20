@@ -64,6 +64,7 @@ public class Shop implements Serializable {
     private ResourceMap profileStringResourceId;
     @JoinColumn(name = "ownerId", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.EAGER)
+    @NotNull
     private User ownerId;
 
     public Shop() {

@@ -20,7 +20,7 @@ public class ProductWrapper {
         setName(product.getName());
         setDescription(product.getDescription());
         setPromotion(product.getAvailablePromotionId() == null ? null : new PromotionWrapper(product.getAvailablePromotionId()));
-        setThumbnail(product.getImageStringResourceId().getId());
+        setThumbnail(product.getImageStringResourceId() == null ? null : product.getImageStringResourceId().getId());
     }
 
     public ShopWrapper getShop() {
