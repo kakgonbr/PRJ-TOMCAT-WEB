@@ -40,7 +40,7 @@ public class AddProductServlet extends HttpServlet {
         }
 
         // Lấy thông tin từ request
-        String categoryIdValue = request.getParameter("category");
+        String categoryIdValue = request.getParameter("filter");
         String name = request.getParameter("name");
         String description = request.getParameter("description");
 
