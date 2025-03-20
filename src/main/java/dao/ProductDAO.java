@@ -57,6 +57,15 @@ public class ProductDAO {
             }
         } // public static synchronized model.Product getProductDetails
 
+        public static synchronized model.ProductItem getProductItem(int id) throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return em.createNamedQuery("ProductItem.findById", model.ProductItem.class).setParameter("id", id)
+                        .getSingleResult();
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
+            }
+        }
+
         private static final String GET_PRODUCTS_FROM_SHOP = "SELECT * FROM tblProduct WHERE shopId = ?1";
 
         public static synchronized java.util.List<model.Product> getShopProducts(int shopId) throws java.sql.SQLException {

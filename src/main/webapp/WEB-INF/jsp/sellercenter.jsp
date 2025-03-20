@@ -54,8 +54,7 @@
                                     <div class="accordion-body">
                                         <a href="#" class="list-group-item list-group-item-action pb-3">🛍 My
                                             Products</a>
-                                        <a href="#" class="list-group-item list-group-item-action">➕ Add
-                                            Product</a>
+                                        <a href="${pageContext.request.contextPath}/addproduct" class="list-group-item list-group-item-action">➕ Add Product</a>
                                     </div>
                                 </div>
                             </div>
