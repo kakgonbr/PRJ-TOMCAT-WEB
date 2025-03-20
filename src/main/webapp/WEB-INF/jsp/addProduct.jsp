@@ -30,6 +30,9 @@
                     })
                     .catch(error => console.error("Error fetching categories:", error));
             }
+            document.addEventListener("DOMContentLoaded", function () {
+                fetchCategory();
+            });
         </script>
     </jsp:attribute>
 
