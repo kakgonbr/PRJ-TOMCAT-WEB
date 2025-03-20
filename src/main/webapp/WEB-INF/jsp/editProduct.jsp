@@ -115,10 +115,10 @@
                                             <td>${product.productItems[0].id}</td>
                                     <input type="hidden" name="productItemId" value="${product.productItems[0].id}">
                                     <td>
-                                        <input type="text" name="productItemStock" class="form-control" value="${product.productItems[0].stock}" required>
+                                        <input type="number" name="productItemStock" class="form-control" value="${product.productItems[0].stock}" required>
                                     </td>
                                     <td>
-                                        <input type="text" name="productItemPrice" class="form-control" value="${product.productItems[0].price}" required step="0.01">
+                                        <input type="number" name="productItemPrice" class="form-control" value="${product.productItems[0].price}" required step="0.01">
                                     </td>
                                     </tr>
                                     </tbody>
