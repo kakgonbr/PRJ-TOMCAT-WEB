@@ -46,6 +46,7 @@ public final class Config {
         public static final String CART_JSP = "/WEB-INF/jsp/cart.jsp";
         public static final String CATALOG = "/WEB-INF/jsp/catalog.jsp";
         public static final String PRODUCT_INFO = "/WEB-INF/jsp/productInfoTest.jsp";
+        public static final String EDIT_PRODUCT = "/WEB-INF/jsp/editProduct.jsp";
 
         public static final String PRIVILEGED_ADMIN_JSP = "/WEB-INF/jsp/admin/adminStats.jsp";
     }

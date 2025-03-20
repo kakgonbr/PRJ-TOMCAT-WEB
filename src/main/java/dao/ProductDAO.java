@@ -252,7 +252,7 @@ public class ProductDAO {
                 java.util.List<model.ProductCustomization> customizations) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 EntityTransaction et = em.getTransaction();
-
+ 
                 try {
                     et.begin();
 
