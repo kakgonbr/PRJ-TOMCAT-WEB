@@ -14,9 +14,9 @@
         <script src="${pageContext.request.contextPath}/resources/shop_js"></script>
 
         <script>
-            var contextPath = "${pageContext.request.contextPath}";
-            fetchCategory();
-            handleAccordionSearch("searchBox", "menuAccordion");
+           document.addEventListener("DOMContentLoaded", function () {
+                fetchCategory();
+                handleAccordionSearch("searchBox", "menuAccordion");
             });
         </script>
 
@@ -76,10 +76,8 @@
                 </nav>
                 <main class="col-md-10 p-4">
                     <div class="container">
-                        <h2>Chỉnh sửa sản phẩm</h2
-                        <c:if test="${not empty product}">
+                        <h2>Edit product</h2>
                         <form action="${pageContext.request.contextPath}/product?action=edit&productId=${product.id}" method="post">
-                        </c:if>
                             <input type="hidden" name="id" value="${product.id}" />
 
                             <div class="mb-3">
