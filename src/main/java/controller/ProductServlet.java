@@ -62,7 +62,7 @@ public class ProductServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         Integer shopIdValue = (Integer) session.getAttribute("shopId");
-        String productName = request.getParameter("productName");
+        String productName = request.getParameter("name");
         String categoryParam = request.getParameter("category");
         String description = request.getParameter("description");
         String[] productItemIds = request.getParameterValues("productItemId");

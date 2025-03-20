@@ -116,10 +116,10 @@
                                                 <td>${item.id}</td>
                                                 <input type="hidden" name="productItemId[]" value="${item.id}">
                                                 <td>
-                                                    <input type="number" name="productItemStock[${item.id}]" class="form-control" value="${item.stock}" required>
+                                                    <input type="number" name="productItemStock[]" class="form-control" value="${item.stock}" required>
                                                 </td>
                                                 <td>
-                                                    <input type="number" name="productItemPrice[${item.id}]" class="form-control" value="${item.price}" required step="0.01">
+                                                    <input type="number" name="productItemPrice[]" class="form-control" value="${item.price}" required step="0.01">
                                                 </td>
                                             </tr>
                                         </c:forEach>
