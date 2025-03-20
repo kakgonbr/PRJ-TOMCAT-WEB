@@ -5,37 +5,16 @@
 <t:genericpage title="Add Product">
     <jsp:attribute name="head">
         <t:resources/>
+        <script src="${pageContext.request.contextPath}/resources/filter_js"></script>
+        
         <script>
             var contextPath = "${pageContext.request.contextPath}";
-
-            function createCategoryOptions(categories, parentElement, level = 0) {
-                categories.forEach(category => {
-                    let option = document.createElement("option");
-                    option.value = category.id;
-                    option.textContent = "-".repeat(level) + " " + category.name;
-                    parentElement.appendChild(option);
-
-                    if (category.children && category.children.length > 0) {
-                        createCategoryOptions(category.children, parentElement, level + 1);
-                    }
-                });
-            }
-
-            function fetchCategory() {
-                fetch(contextPath + "/ajax/category")
-                    .then(response => response.json())
-                    .then(data => {
-                        let categorySelect = document.getElementById("category");
-                        categorySelect.innerHTML = "";
-                        createCategoryOptions([data], categorySelect);
-                    })
-                    .catch(error => console.error("Error fetching categories:", error));
-            }
+            var shopId = "${sessionScope.shopId}";
 
             document.addEventListener("DOMContentLoaded", function () {
                 fetchCategory();
             });
-        </script>
+        </script>            
     </jsp:attribute>
 
     <jsp:attribute name="header">
@@ -58,10 +37,8 @@
 
             <label for="description">Description:</label>
             <textarea id="description" name="description"></textarea><br>
-
-            <label for="category">Category:</label>
-            <select id="category" name="category"></select><br>
-
+             <label>Category:</label>
+            <div id="categoryFilter"></div> <%-- Danh sách danh mục hiển thị tại đây --%>
             <button type="submit">Add Product</button>
         </form>
     </jsp:attribute>
