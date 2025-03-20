@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpSession;
 import model.Product;
 import model.Shop;
 import model.Category;
-import config.Config;
+import model.Variation;
 
 public class AddProductServlet extends HttpServlet {
 
@@ -25,7 +25,7 @@ public class AddProductServlet extends HttpServlet {
         }
 
         request.setAttribute("shopId", shopId);
-        request.getRequestDispatcher(Config.JSPMapper.ADD_PRODUCT).forward(request, response);
+        request.getRequestDispatcher(config.Config.JSPMapper.ADD_PRODUCT).forward(request, response);
     }
 
     @Override
@@ -33,37 +33,73 @@ public class AddProductServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         model.User user = session == null ? null : (model.User) session.getAttribute("user");
 
-        int shopId = request.getParameter("shopId") == null ? -1 : Integer.parseInt(request.getParameter("shopId"));
-        int categoryId = request.getParameter("category") == null ? -1 : Integer.parseInt(request.getParameter("category"));
-        String name = request.getParameter("name");
-        String description = request.getParameter("description");
-
-        if (user == null || shopId == -1 || categoryId == -1 || name == null || description == null) {
-            request.setAttribute("code", 400);
-            request.getRequestDispatcher(Config.JSPMapper.ERROR_JSP).forward(request, response);
+        if (user == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
 
+        String action = request.getParameter("action");
+
+        if ("addProduct".equals(action)) {
+            handleAddProduct(request, response, session);
+        } else if ("selectVariation".equals(action)) {
+            handleSelectVariation(request, response, session);
+        }
+    }
+
+    private void handleAddProduct(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
         try {
-            Shop shop = dao.ShopDAO.ShopFetcher.getShop(shopId);
-            if (shop == null || shop.getOwnerId().getId() != user.getId()) {
-                request.setAttribute("code", 403);
-                request.getRequestDispatcher(Config.JSPMapper.ERROR_JSP).forward(request, response);
+            int categoryId = Integer.parseInt(request.getParameter("category"));
+            String name = request.getParameter("productName");
+            String description = request.getParameter("description");
+            Integer shopId = (Integer) session.getAttribute("shopId");
+
+            if (shopId == null || categoryId == -1 || name == null || description == null) {
+                request.getRequestDispatcher(config.Config.JSPMapper.ERROR_JSP).forward(request, response);
                 return;
             }
 
             Product product = new Product();
-            product.setShopId(shop);
+            product.setShopId(new Shop(shopId));
             product.setCategoryId(new Category(categoryId));
             product.setName(name);
             product.setDescription(description);
             product.setStatus(true);
 
             dao.ProductDAO.ProductManager.addProduct(product);
-            response.sendRedirect(request.getContextPath() + "/addproduct-success?productId=" + product.getId());
+
+            session.setAttribute("categoryId", categoryId);
+
+            response.sendRedirect(request.getContextPath() + "/addproduct?action=selectVariation");
+        } catch (SQLException | NumberFormatException e) {
+            request.getRequestDispatcher(config.Config.JSPMapper.ERROR_JSP).forward(request, response);
+        }
+    }
+
+    private void handleSelectVariation(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+        try {
+            int categoryId = (Integer) session.getAttribute("categoryId");
+            String variationName = request.getParameter("variationName");
+            String variationOptions = request.getParameter("variationOptions");
+            String unit = request.getParameter("unit");
+            String datatype = request.getParameter("datatype"); 
+
+            if (categoryId == -1 || variationName == null || variationOptions == null || unit == null || datatype == null) {
+                request.getRequestDispatcher(config.Config.JSPMapper.ERROR_JSP).forward(request, response);
+                return;
+            }
+
+            Variation variation = new Variation();
+            variation.setCategoryId(new Category(categoryId));
+            variation.setName(variationName);
+            variation.setDatatype(datatype); 
+            variation.setUnit(unit);
+
+            dao.VariationDAO.VariationManager.createVariation(variation);
+
+            response.sendRedirect(request.getContextPath() + "/addproduct?action=selectVariation&success=true");
         } catch (SQLException e) {
-            request.setAttribute("code", 500);
-            request.getRequestDispatcher(Config.JSPMapper.ERROR_JSP).forward(request, response);
+            request.getRequestDispatcher(config.Config.JSPMapper.ERROR_JSP).forward(request, response);
         }
     }
 }
