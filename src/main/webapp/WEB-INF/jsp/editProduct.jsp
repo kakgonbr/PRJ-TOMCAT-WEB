@@ -114,7 +114,7 @@
                                         <c:forEach var="item" items="${product.productItems}">
                                             <tr>
                                                 <td>${item.id}</td>
-                                                <input type="hidden" name="productItemId" value="${item.id}">
+                                                <input type="hidden" name="productItemId[]" value="${item.id}">
                                                 <td>
                                                     <input type="number" name="productItemStock[${item.id}]" class="form-control" value="${item.stock}" required>
                                                 </td>

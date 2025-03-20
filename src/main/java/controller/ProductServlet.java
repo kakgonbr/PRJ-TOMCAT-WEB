@@ -105,6 +105,10 @@ public class ProductServlet extends HttpServlet {
                 BigDecimal price = new BigDecimal(priceParams[i]);
 
                 dao.ProductItemDAO.productItemManager.editProductItem(productItemId, stock, price);
+
+                System.out.println("productItemIds: " + java.util.Arrays.toString(productItemIds));
+                System.out.println("stockParams: " + java.util.Arrays.toString(stockParams));
+                System.out.println("priceParams: " + java.util.Arrays.toString(priceParams));
             }
 
             response.sendRedirect(request.getContextPath() + "/shophome");
