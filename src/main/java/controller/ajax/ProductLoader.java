@@ -31,11 +31,7 @@ public class ProductLoader extends HttpServlet {
 
         HttpSession session = request.getSession(false);
         model.User user = session == null ? null : (model.User) session.getAttribute("user");
-        String action = request.getParameter("action"); // Nhận action từ AJAX
-        if ("fetchUserShopProducts".equals(action) && user != null) {
-            fetchUserShopProducts(response, user);
-            return;
-        }
+
         String recommendations = request.getParameter("query");
         Integer category = request.getParameter("category") == null || request.getParameter("category").isBlank() ? 0 : Integer.parseInt(request.getParameter("category"));
         String shopId = request.getParameter("shopId");
@@ -77,27 +73,6 @@ public class ProductLoader extends HttpServlet {
     }
 
     //fetch product from shop
-    private void fetchUserShopProducts(HttpServletResponse response, model.User user) throws IOException {
-        try {
-            model.Shop shop = dao.ShopDAO.ShopFetcher.getShopByOwnerId(user.getId());
-
-            if (shop == null) {
-                response.getWriter().write("[]");
-                return;
-            }
-
-            java.util.List<model.ProductWrapper> products = dao.ProductDAO.ProductFetcher
-                    .getShopProductsByCategory(shop.getId(), 0)
-                    .stream().map(model.ProductWrapper::new)
-                    .collect(Collectors.toList());
-
-            String json = new com.google.gson.Gson().toJson(products);
-            response.getWriter().write(json);
-        } catch (java.sql.SQLException e) {
-            service.Logging.logger.warn("FAILED TO GET SHOP PRODUCTS, REASON: {}", e.getMessage());
-            response.getWriter().write("[]");
-        }
-    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
