@@ -47,6 +47,8 @@
                             Creating a new resource mapping
                         </h2>
                      </caption>
+                    <th>ID:</th>
+                    <input type="text" name="id" value="" />
                 </c:if>
                 <tr>
                     <th>System Path:</th>

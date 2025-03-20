@@ -19,7 +19,7 @@ public class CategoryLoader extends HttpServlet {
             // Really inefficient
             // java.util.List<model.CategoryWrapper> categories = dao.CategoryDAO.CategoryFetcher.getAllCategories().stream().map(model.CategoryWrapper::new).collect(Collectors.toList()); 
 
-            model.CategoryWrapper wrapper = new model.CategoryWrapper(dao.CategoryDAO.CategoryFetcher.getTopCategory(categoryId == null ? 0 : categoryId), false);
+            model.CategoryWrapper wrapper = new model.CategoryWrapper(dao.CategoryDAO.CategoryFetcher.getTopCategory(categoryId == null ? 0 : categoryId));
 
 
             response.setContentType("application/json");
