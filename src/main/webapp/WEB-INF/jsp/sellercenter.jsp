@@ -14,10 +14,12 @@
 
         <script src="${pageContext.request.contextPath}/resources/product_js"></script>
         <script src="${pageContext.request.contextPath}/resources/shop_js"></script>
+        
         <script>
             var contextPath = "${pageContext.request.contextPath}";
+            var shopId = "${sessionScope.shopId}";
             document.addEventListener("DOMContentLoaded", function () {
-                fetchByQueryAndCategory();
+                fetchProducts(0,0,shopId);
                 handleAccordionSearch("searchBox", "menuAccordion");
             });
         </script>
@@ -77,7 +79,7 @@
                     </div>
                 </nav>
                 <main class="col-md-10 p-4">
-                    <button onclick="fetchByQueryAndCategory()" class="btn btn-primary">Load Product List</button>
+                    <button onclick="fetchProducts(0,0,shopId)" class="btn btn-primary">Load Product List</button>
                     <p>Products:</p>
                     <table border="1" id="productTable">
                     </table>
