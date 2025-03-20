@@ -16,11 +16,15 @@
         <script src="${pageContext.request.contextPath}/resources/shop_js"></script>
         <script>
             var contextPath = "${pageContext.request.contextPath}";
+            var shopId = "${sessionScope.user.shopId}"; 
+
             document.addEventListener("DOMContentLoaded", function () {
-                fetchUserShopProducts();
-                handleAccordionSearch("searchBox", "menuAccordion");
+                if (shopId) {
+                    fetchByShop(); 
+                } else {
+                    console.warn("No shopId found for user.");
+                }
             });
-        </script>
 
     </jsp:attribute>
 
@@ -77,9 +81,9 @@
                     </div>
                 </nav>
                 <main class="col-md-10 p-4">
-                    <button onclick="fetchUserShopProducts()" class="btn btn-primary">Load Product List</button>
+                <button onclick="fetchByShop()" class="btn btn-primary">Refresh Product List</button>
                     <p>Products:</p>
-                    <table border="1" id="productTableShop" class="table table-striped table-bordered table-hover">
+                    <table border="1" id="productTable">
                     </table>
                 </main>
             </div>
