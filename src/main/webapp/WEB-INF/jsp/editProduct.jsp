@@ -7,7 +7,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<t:genericpage title="Seller Center">
+<t:genericpage title="Edit product">
     <jsp:attribute name="head">
         <t:resources/>
         <script src="${pageContext.request.contextPath}/resources/shop_js"></script>
@@ -15,7 +15,7 @@
 
         <script>
             var contextPath = "${pageContext.request.contextPath}";
-           document.addEventListener("DOMContentLoaded", function () {
+            document.addEventListener("DOMContentLoaded", function () {
                 fetchCategory();
                 handleAccordionSearch("searchBox", "menuAccordion");
             });
@@ -78,6 +78,11 @@
                 <main class="col-md-10 p-4">
                     <div class="container">
                         <h2>Edit product</h2>
+                        <c:if test="${not empty error}">
+                            <div class="alert alert-danger">
+                                ${error}
+                            </div>
+                        </c:if>
                         <form action="${pageContext.request.contextPath}/product?action=edit&productId=${product.id}" method="post">
                             <input type="hidden" name="id" value="${product.id}" /> 
 
