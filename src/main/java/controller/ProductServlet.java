@@ -33,6 +33,7 @@ public class ProductServlet extends HttpServlet {
 
                     if (true) {
                         response.sendRedirect("/shophome");
+                        return;
                     } else {
                         request.setAttribute("error", "Delete failed");
                         request.getRequestDispatcher(config.Config.JSPMapper.SELLER_CENTER).forward(request, response);
@@ -42,7 +43,10 @@ public class ProductServlet extends HttpServlet {
             } catch (java.sql.SQLException | NumberFormatException e) {
                 service.Logging.logger.warn("FAILED TO PROCESS ACTION {} FOR PRODUCT ID {}, REASON: {}", action, productId, e.getMessage());
                 request.setAttribute("error", "true");
+                return;
             }
+        } if (productId != null) {
+             request.getRequestDispatcher(config.Config.JSPMapper.PRODUCT_DETAILS).forward(request, response);
         }
 
         try {
@@ -52,8 +56,6 @@ public class ProductServlet extends HttpServlet {
 
             request.setAttribute("error", "true");
         }
-
-        request.getRequestDispatcher(config.Config.JSPMapper.PRODUCT_DETAILS).forward(request, response);
     }
 
     @Override
@@ -104,6 +106,7 @@ public class ProductServlet extends HttpServlet {
             dao.ProductItemDAO.productItemManager.editProductItem(productItemId, stock, price);
 
             response.sendRedirect(request.getContextPath() + "/shophome");
+            return;
         } catch (NumberFormatException e) {
             service.Logging.logger.warn("Invalid input format: {}", e.getMessage());
             request.setAttribute("error", "Invalid number format.");

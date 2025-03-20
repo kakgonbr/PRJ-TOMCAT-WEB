@@ -3,7 +3,6 @@
     Created on : Mar 20, 2025, 11:36:46 PM
     Author     : hoahtm
 --%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -11,11 +10,11 @@
 <t:genericpage title="Seller Center">
     <jsp:attribute name="head">
         <t:resources/>
-        var contextPath = "${pageContext.request.contextPath}";
         <script src="${pageContext.request.contextPath}/resources/shop_js"></script>
         <script src="${pageContext.request.contextPath}/resources/filter_js"></script>
 
         <script>
+            var contextPath = "${pageContext.request.contextPath}";
            document.addEventListener("DOMContentLoaded", function () {
                 fetchCategory();
                 handleAccordionSearch("searchBox", "menuAccordion");
