@@ -65,16 +65,15 @@ public class ProductServlet extends HttpServlet {
         String productName = request.getParameter("productName");
         String categoryParam = request.getParameter("category");
         String description = request.getParameter("description");
-        String productItemIdParam = request.getParameter("productItemId");
-        String stockParam = request.getParameter("productItemStock");
-        String priceParam = request.getParameter("productItemPrice");
+        String[] productItemIds = request.getParameterValues("productItemId");
+        String[] stockParams = request.getParameterValues("productItemStock");
+        String[] priceParams = request.getParameterValues("productItemPrice");
 
-        if (productItemIdParam == null || stockParam == null || priceParam == null) {
+        if (productItemIds == null || stockParams == null || priceParams == null) {
             request.setAttribute("error", "Missing parameters.");
             request.getRequestDispatcher(config.Config.JSPMapper.EDIT_PRODUCT).forward(request, response);
             return;
         }
-
         try {
             model.Shop shop = dao.ShopDAO.ShopFetcher.getShop(shopIdValue);
             if (shop == null) {
@@ -91,9 +90,6 @@ public class ProductServlet extends HttpServlet {
                 request.getRequestDispatcher(config.Config.JSPMapper.ADD_PRODUCT).forward(request, response);
                 return;
             }
-            int productItemId = Integer.parseInt(productItemIdParam);
-            int stock = Integer.parseInt(stockParam);
-            BigDecimal price = new BigDecimal(priceParam);
             // save product to db
             Product product = new Product();
             product.setShopId(shop);
@@ -103,7 +99,13 @@ public class ProductServlet extends HttpServlet {
             product.setImageStringResourceId(null);
             product.setStatus(true);
             dao.ProductDAO.ProductManager.editProduct(product);
-            dao.ProductItemDAO.productItemManager.editProductItem(productItemId, stock, price);
+            for (int i = 0; i < productItemIds.length; i++) {
+                int productItemId = Integer.parseInt(productItemIds[i]);
+                int stock = Integer.parseInt(stockParams[i]);
+                BigDecimal price = new BigDecimal(priceParams[i]);
+
+                dao.ProductItemDAO.productItemManager.editProductItem(productItemId, stock, price);
+            }
 
             response.sendRedirect(request.getContextPath() + "/shophome");
             return;

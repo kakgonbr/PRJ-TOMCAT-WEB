@@ -114,6 +114,7 @@
                                         <c:forEach var="item" items="${product.productItems}">
                                             <tr>
                                                 <td>${item.id}</td>
+                                                <input type="hidden" name="productItemId" value="${item.id}">
                                                 <td>
                                                     <input type="number" name="productItemStock[${item.id}]" class="form-control" value="${item.stock}" required>
                                                 </td>
@@ -128,7 +129,7 @@
 
                             <div class="mb-3">
                                 <button type="submit" class="btn btn-primary">Save changes</button>
-                                <a href="${pageContext.request.contextPath}/seller_center" class="btn btn-secondary">Hủy</a>
+                                <a href="${pageContext.request.contextPath}/shophome" class="btn btn-secondary">Hủy</a>
                             </div>
                         </form>
                     </div>
