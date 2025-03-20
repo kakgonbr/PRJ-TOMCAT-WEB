@@ -145,6 +145,10 @@
         <servlet-name>n_ShopHomeServlet</servlet-name>
         <servlet-class>controller.ShopHomeServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>TestCatalogServlet</servlet-name>
+        <servlet-class>controller.TestCatalogServlet</servlet-class>
+    </servlet>
     <!-- SERVLET MAPPINGS -->
     <!-- TEMPLATE:
    <servlet-mapping>
@@ -295,6 +299,10 @@
     <servlet-mapping>
         <servlet-name>n_AddProductServlet</servlet-name>
         <url-pattern>/addproduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TestCatalogServlet</servlet-name>
+        <url-pattern>/testcatalog</url-pattern>
     </servlet-mapping>
     <!-- FILTER DECLARATIONS -->
     <filter>

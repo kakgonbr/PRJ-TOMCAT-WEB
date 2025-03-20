@@ -53,3 +53,56 @@ dropdownItems.forEach(item => {
         chosenElement.textContent = this.textContent.trim();
     });
 });
+
+/**/
+async function fetchCategories() {
+    try {
+        let response = await fetch('https://kakgonbri.zapto.org:8443/prj/ajax/category?categoryId='+ categoryId);
+        let data = await response.json();
+        renderCategories(data.children);
+    } catch (error) {
+        console.error('Error fetching category data:', error);
+    }
+}
+
+function generateCategoryHTML(category, parentId = "categoriesCollapseContent") {
+    let categoryId = `category${category.id}`;
+    let collapseId = `collapse${category.id}`;
+    
+    let html = `<div class="form-check">
+        <input class="form-check-input" type="checkbox" id="${categoryId}" value="${categoryId}" name="categoryFilter">
+        <label class="form-check-label" for="${categoryId}" data-bs-toggle="collapse" data-bs-target="#${collapseId}">
+            ${category.name}
+        </label>`;
+    
+    if (category.children && category.children.length > 0) {
+        html += `<div class="collapse my-1" id="${collapseId}">
+                    <div class="collapse-content" id="${collapseId}Content">`;
+        
+        category.children.forEach(child => {
+            html += generateCategoryHTML(child, `${collapseId}Content`);
+        });
+        
+        html += `</div>
+                </div>`;
+    }
+    
+    html += `</div>`;
+    return html;
+}
+
+function renderCategories(categories) {
+    let container = document.getElementById("categoriesCollapseContent");
+    if (!container) return;
+    
+    let html = "";
+    categories.forEach(category => {
+        html += generateCategoryHTML(category);
+    });
+    
+    container.innerHTML = html;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    fetchCategories();
+});

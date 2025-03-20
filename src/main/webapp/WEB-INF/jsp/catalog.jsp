@@ -8,6 +8,7 @@
         
         <script>
             var contextPath = "${pageContext.request.contextPath}";
+            var categoryId = "${categoryId}"
         </script>
 
     </jsp:attribute>
@@ -39,63 +40,13 @@
                 <!-- Sidebar Filters -->
                 <div class="col-3 mb-4">
                     <form class="sidebar">
-                        <!-- -->
                         <div class="filter-section mb-3">
                             <div class="collapse-header" data-bs-toggle="collapse" data-bs-target="#categoriesCollapse">
                                 Categories <span class="float-end"><i class="bi bi-chevron-down text-dark"></i></span>
                             </div>
                             <div class="collapse show mt-2" id="categoriesCollapse" style="max-height: 250px; overflow: auto;">
-                                <div class="collapse-content">
-                                    <!--check if current category have children category-->
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="categorychild1" value="categorychild1" name="categoryFilter">
-                                        <label class="form-check-label" for="categorychild1" data-bs-toggle="collapse" data-bs-target="#categoryChild1Collapse">Category Child 1</label>
-                                        <!--check if children of current category have category chau-->
-                                        <div class="collapse my-1" id="categoryChild1Collapse">
-                                            <div class="collapse-content">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="categorychau2child1" value="categorychau2child1" name="categoryFilter">
-                                                    <label class="form-check-label" for="categorychau2child1">Category Chau 2 Child 1</label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="categorychau3child1" value="categorychau3child1" name="categoryFilter">
-                                                    <label class="form-check-label" for="categorychau3child1">Category Chau 3 Child 1</label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="categorychau4child1" value="categorychau4child1" name="categoryFilter">
-                                                    <label class="form-check-label" for="categorychau4child1">Category Chau 4 Child 1</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="categorychild2" value="categorychild2" name="categoryFilter">
-                                        <label class="form-check-label" for="categorychild2" data-bs-toggle="collapse" data-bs-target="#categoryChild2Collapse">Category Child 2</label>
-                                        <div class="collapse my-1" id="categoryChild2Collapse">
-                                            <div class="collapse-content">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="categorychau2child2" value="categorychau2child2" name="categoryFilter">
-                                                    <label class="form-check-label" for="categorychau2child2">Category Chau 2 Child 2</label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="categorychau3child2" value="categorychau3child2" name="categoryFilter">
-                                                    <label class="form-check-label" for="categorychau3child2">Category Chau 3 Child 2</label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="categorychau4child2" value="categorychau4child2" name="categoryFilter">
-                                                    <label class="form-check-label" for="categorychau4child2">Category Chau 4 Child 2</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="categorychild3" value="categorychild3">
-                                        <label class="form-check-label" for="categorychild3">Category Child 3</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="categorychild4" value="categorychild4">
-                                        <label class="form-check-label" for="categorychild4">Category Child 4</label>
-                                    </div>
+                                <div class="collapse-content" id="categoriesCollapseContent">
+                                    
                                 </div>
                             </div>
                         </div>
