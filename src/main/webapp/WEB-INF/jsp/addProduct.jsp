@@ -1,6 +1,87 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
+<t:genericpage title="Add Product">
+    <jsp:attribute name="head">
+        <t:resources/>
+        <script>
+            var contextPath = "${pageContext.request.contextPath}";
+
+            function createCategoryOptions(categories) {
+                let categorySelect = document.getElementById("category");
+                categorySelect.innerHTML = "";
+                categories.forEach(category => {
+                    let option = document.createElement("option");
+                    option.value = category.id;
+                    option.textContent = category.name;
+                    categorySelect.appendChild(option);
+                });
+            }
+
+            function fetchCategory() {
+                fetch(contextPath + "/ajax/category")
+                    .then(response => response.json())
+                    .then(data => {
+                        createCategoryOptions(data);
+                    })
+                    .catch(error => console.error("Error fetching categories:", error));
+            }
+
+            document.addEventListener("DOMContentLoaded", function () {
+                fetchCategory();
+            });
+        </script>
+    </jsp:attribute>
+
+    <jsp:attribute name="header">
+        <t:nav mainNav="true" user="${sessionScope.user.username}" activePage="addProduct"/>
+    </jsp:attribute>
+
+    <jsp:attribute name="body">
+        <h2>Add Product</h2>
+        <form id="addProductForm" action="${pageContext.request.contextPath}/addproduct" method="post">
+            <input type="hidden" name="action" value="addProduct">
+
+            <label for="productName">Product Name:</label>
+            <input type="text" id="productName" name="name" required><br>
+
+            <label for="description">Description:</label>
+            <textarea id="description" name="description"></textarea><br>
+
+            <label for="category">Category:</label>
+            <select id="category" name="categoryId"></select><br>
+
+            <button type="submit">Add Product</button>
+        </form>
+    </jsp:attribute>
+
+    <jsp:attribute name="footer">
+        <t:footer/>
+    </jsp:attribute>
+</t:genericpage>
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        
+        
+        
+        
+
+
+<%--<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+
 <t:genericpage title="Add Product & Select Variations">
     <jsp:attribute name="head">
         <t:resources/>
@@ -175,4 +256,4 @@
     <jsp:attribute name="footer">
         <t:footer/>
     </jsp:attribute>
-</t:genericpage>
+</t:genericpage>--%>
