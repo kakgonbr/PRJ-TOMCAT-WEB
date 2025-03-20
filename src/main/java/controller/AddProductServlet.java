@@ -14,6 +14,20 @@ import dao.ShopDAO;
 import dao.CategoryDAO;
 
 public class AddProductServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Kiểm tra đăng nhập
+        HttpSession session = request.getSession();
+        Integer shopIdValue = (Integer) session.getAttribute("shopId");
+
+        if (shopIdValue == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+        request.getRequestDispatcher(config.Config.JSPMapper.ADD_PRODUCT).forward(request, response);
+    }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Lấy shopId từ session
@@ -31,8 +45,8 @@ public class AddProductServlet extends HttpServlet {
         String description = request.getParameter("description");
 
         // Kiểm tra dữ liệu đầu vào
-        if (categoryIdValue == null || name == null || description == null ||
-            categoryIdValue.trim().isEmpty() || name.trim().isEmpty() || description.trim().isEmpty()) {
+        if (categoryIdValue == null || name == null || description == null
+                || categoryIdValue.trim().isEmpty() || name.trim().isEmpty() || description.trim().isEmpty()) {
             request.setAttribute("error", "missing_fields");
             request.getRequestDispatcher(config.Config.JSPMapper.ADD_PRODUCT).forward(request, response);
             return;
@@ -80,29 +94,6 @@ public class AddProductServlet extends HttpServlet {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //package controller;
 //
