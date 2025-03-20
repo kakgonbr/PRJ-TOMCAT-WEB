@@ -123,7 +123,10 @@ function fetchUserShopProducts() {
                 row.appendChild(cell);
 
                 cell = document.createElement("td");
-                cell.textContent = item.price;
+                let image = document.createElement("img");
+                image.src = contextPath + "/resources/" + item.thumbnail;
+                cell.appendChild(image);
+                // cell.textContent = item.thumbnailId;
                 row.appendChild(cell);
 
                 tableBody.appendChild(row);
