@@ -83,10 +83,10 @@ public class AddProductServlet extends HttpServlet {
             dao.ProductDAO.ProductManager.addProduct(product);
 
             // Chuyển hướng đến trang danh sách sản phẩm sau khi thêm thành công
-            request.getRequestDispatcher(config.Config.JSPMapper.SELLER_CENTER).forward(request, response);
+            response.sendRedirect(request.getContextPath() + "/shophome");
 
         } catch (SQLException e) {
-            request.setAttribute("error", "db_error");
+            request.setAttribute("error", "db");
             request.getRequestDispatcher(config.Config.JSPMapper.ADD_PRODUCT).forward(request, response);
         } catch (NumberFormatException e) {
             request.setAttribute("error", "invalid_category_format");
