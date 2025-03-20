@@ -111,19 +111,16 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <c:forEach var="item" items="${product.productItems}">
-                                            <c:out value="${product.productItems}" />
-                                            <tr>
-                                                <td>${item.id}</td>
-                                                <input type="hidden" name="productItemId" value="${item.id}">
-                                                <td>
-                                                    <input type="text" name="productItemStock[]" class="form-control" value="${item.stock}" required>
-                                                </td>
-                                                <td>
-                                                    <input type="text" name="productItemPrice[]" class="form-control" value="${item.price}" required step="0.01">
-                                                </td>
-                                            </tr>
-                                        </c:forEach>
+                                        <tr>
+                                            <td>${product.productItems[0].id}</td>
+                                    <input type="hidden" name="productItemId" value="${product.productItems[0].id}">
+                                    <td>
+                                        <input type="text" name="productItemStock" class="form-control" value="${product.productItems[0].stock}" required>
+                                    </td>
+                                    <td>
+                                        <input type="text" name="productItemPrice" class="form-control" value="${product.productItems[0].price}" required step="0.01">
+                                    </td>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>

@@ -65,11 +65,11 @@ public class ProductServlet extends HttpServlet {
         String productName = request.getParameter("name");
         String categoryParam = request.getParameter("category");
         String description = request.getParameter("description");
-        String[] productItemIds = request.getParameterValues("productItemId");
-        String[] stockParams = request.getParameterValues("productItemStock");
-        String[] priceParams = request.getParameterValues("productItemPrice");
+        String productItemIdParam = request.getParameter("productItemId");
+        String stockParam = request.getParameter("productItemStock");
+        String priceParam = request.getParameter("productItemPrice");
 
-        if (productItemIds == null || stockParams == null || priceParams == null) {
+        if (productItemIdParam == null || stockParam == null || priceParam == null) {
             request.setAttribute("error", "Missing parameters.");
             request.getRequestDispatcher(config.Config.JSPMapper.EDIT_PRODUCT).forward(request, response);
             return;
@@ -99,20 +99,14 @@ public class ProductServlet extends HttpServlet {
             product.setImageStringResourceId(null);
             product.setStatus(true);
             dao.ProductDAO.ProductManager.editProduct(product);
-            for (int i = 0; i < productItemIds.length; i++) {
-                int productItemId = Integer.parseInt(productItemIds[i]);
-                int stock = Integer.parseInt(stockParams[i]);
-                BigDecimal price = new BigDecimal(priceParams[i]);
+            int productItemId = Integer.parseInt(productItemIdParam);
+            int stock = Integer.parseInt(stockParam);
+            BigDecimal price = new BigDecimal(priceParam);
 
-                dao.ProductItemDAO.productItemManager.editProductItem(productItemId, stock, price);
-
-                System.out.println("productItemIds: " + java.util.Arrays.toString(productItemIds));
-                System.out.println("stockParams: " + java.util.Arrays.toString(stockParams));
-                System.out.println("priceParams: " + java.util.Arrays.toString(priceParams));
-            }
+            dao.ProductItemDAO.productItemManager.editProductItem(productItemId, stock, price);
 
             response.sendRedirect(request.getContextPath() + "/shophome");
-            return;
+            System.out.println("Updated productItem: ID=" + productItemId + ", Stock=" + stock + ", Price=" + price);
         } catch (NumberFormatException e) {
             service.Logging.logger.warn("Invalid input format: {}", e.getMessage());
             request.setAttribute("error", "Invalid number format.");
