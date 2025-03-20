@@ -45,8 +45,8 @@ public class ProductServlet extends HttpServlet {
                 request.setAttribute("error", "true");
                 return;
             }
-        } if (productId != null) {
-             request.getRequestDispatcher(config.Config.JSPMapper.PRODUCT_DETAILS).forward(request, response);
+        } else if (productId != null) {
+            request.getRequestDispatcher(config.Config.JSPMapper.PRODUCT_DETAILS).forward(request, response);
         }
 
         try {
