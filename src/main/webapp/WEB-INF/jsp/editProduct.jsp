@@ -11,6 +11,7 @@
 <t:genericpage title="Seller Center">
     <jsp:attribute name="head">
         <t:resources/>
+        var contextPath = "${pageContext.request.contextPath}";
         <script src="${pageContext.request.contextPath}/resources/shop_js"></script>
         <script src="${pageContext.request.contextPath}/resources/filter_js"></script>
 
