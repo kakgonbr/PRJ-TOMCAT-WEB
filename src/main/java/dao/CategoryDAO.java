@@ -56,9 +56,9 @@ public class CategoryDAO {
             }
         }
 
-        public static synchronized Category getTopCategory() throws java.sql.SQLException {
+        public static synchronized Category getTopCategory(int id) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                Category category = em.createNamedQuery("Category.findById", Category.class).setParameter("id", 0).getSingleResult();
+                Category category = em.createNamedQuery("Category.findById", Category.class).setParameter("id", id).getSingleResult();
 
                 initCategory(category);
                 
@@ -67,6 +67,10 @@ public class CategoryDAO {
                 throw new java.sql.SQLException(e);
             }
         } // public static synchronized Category getTopCategory 
+
+        public static synchronized Category getTopCategory() throws java.sql.SQLException {
+            return getTopCategory(0);
+        }
         
         public static synchronized Category getCategoryDetails(int id) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {

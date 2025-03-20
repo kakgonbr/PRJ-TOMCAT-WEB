@@ -60,6 +60,7 @@
 
                 </tbody>
             </table>
+            <a href="${pageContext.request.contextPath}/admin/cp?table=resources&action=edit">Create a new resource mapping</a>
         </div>
 
         <div class="table-container">
@@ -80,6 +81,7 @@
 
                 </tbody>
             </table>
+            <a href="${pageContext.request.contextPath}/admin/cp?table=products&action=edit">Create a new product</a>
         </div>
         
         <div class="table-container">
@@ -107,6 +109,7 @@
 
                 </tbody>
             </table>
+            <a href="${pageContext.request.contextPath}/admin/cp?table=users&action=edit">Create a new user</a>
         </div>
 
         <div class="table-container">
@@ -125,6 +128,7 @@
 
                 </tbody>
             </table>
+            <a href="${pageContext.request.contextPath}/admin/cp?table=shops&action=edit">Create a new shop</a>
         </div>
 
         <div class="table-container">
@@ -146,6 +150,7 @@
 
                 </tbody>
             </table>
+            <a href="${pageContext.request.contextPath}/admin/cp?table=promotions&action=edit">Create a new promotion</a>
         </div>
 
     </jsp:attribute>
