@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <t:genericpage title="Add Product">
     <jsp:attribute name="head">
@@ -30,6 +31,7 @@
                     })
                     .catch(error => console.error("Error fetching categories:", error));
             }
+
             document.addEventListener("DOMContentLoaded", function () {
                 fetchCategory();
             });
@@ -42,6 +44,12 @@
 
     <jsp:attribute name="body">
         <h2>Add Product</h2>
+
+        <%-- Hiển thị lỗi nếu có --%>
+        <c:if test="${not empty error}">
+            <div>${error}</div>
+        </c:if>
+
         <form id="addProductForm" action="${pageContext.request.contextPath}/addproduct" method="post">
             <input type="hidden" name="action" value="addProduct">
 
@@ -52,7 +60,7 @@
             <textarea id="description" name="description"></textarea><br>
 
             <label for="category">Category:</label>
-            <select id="category" name="categoryId"></select><br>
+            <select id="category" name="category"></select><br>
 
             <button type="submit">Add Product</button>
         </form>
@@ -62,6 +70,7 @@
         <t:footer/>
     </jsp:attribute>
 </t:genericpage>
+
 
 
 
