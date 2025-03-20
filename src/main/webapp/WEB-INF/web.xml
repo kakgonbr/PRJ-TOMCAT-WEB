@@ -168,6 +168,10 @@
         <servlet-name>n_AddProductServlet</servlet-name>
         <servlet-class>controller.AddProductServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>n_VariationLoader</servlet-name>
+        <servlet-class>controller.ajax.VariationLoader</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>n_LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -288,7 +292,7 @@
         <servlet-name>n_ShopHomeServlet</servlet-name>
         <url-pattern>/shophome</url-pattern>
     </servlet-mapping>
-        <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>ShopRegisterationServlet</servlet-name>
         <url-pattern>/shop-signup</url-pattern>
     </servlet-mapping>
@@ -338,7 +342,10 @@
     </error-page> -->
     <!-- ENDPOINTS -->
     <!-- ChatEndPoint AT /chat OR ws://kakgonbri.zapto.org/prj/chat-->
-
+    <servlet-mapping>
+        <servlet-name>n_VariationLoader</servlet-name>
+        <url-pattern>/ajax/variation</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

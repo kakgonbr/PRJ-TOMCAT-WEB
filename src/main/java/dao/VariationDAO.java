@@ -64,11 +64,39 @@ public final class VariationDAO {
 
     public static final class VariationFetcher {
 
+        public static synchronized Integer getVariationIdByNameAndCategory(String name, int categoryId) throws SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return em.createNamedQuery(
+                        "Variation.findByNameAndCategory", Integer.class)
+                        .setParameter("name", name)
+                        .setParameter("categoryId", categoryId)
+                        .getSingleResult();
+            } catch (NoResultException e) {
+                return null;
+            } catch (Exception e) {
+                throw new SQLException(e);
+            }
+        }
+
         public static synchronized Variation getVariation(int id) throws SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 return em.createNamedQuery("Variation.findById", Variation.class)
                         .setParameter("id", id)
                         .getSingleResult();
+            } catch (Exception e) {
+                throw new SQLException(e);
+            }
+        }
+
+        public static synchronized Variation getTopVariation(int id) throws SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                Variation variation = em.createNamedQuery("Variation.findById", Variation.class)
+                        .setParameter("id", id)
+                        .getSingleResult();
+
+                variation.getVariationValueList().size();
+
+                return variation;
             } catch (Exception e) {
                 throw new SQLException(e);
             }
@@ -103,4 +131,3 @@ public final class VariationDAO {
         }
     }
 }
-
