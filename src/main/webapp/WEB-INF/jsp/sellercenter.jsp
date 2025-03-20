@@ -19,7 +19,7 @@
             var contextPath = "${pageContext.request.contextPath}";
             var shopId = "${sessionScope.shopId}";
             document.addEventListener("DOMContentLoaded", function () {
-                fetchProducts(0,0,shopId);
+                fetchProductsShop(shopId);
                 handleAccordionSearch("searchBox", "menuAccordion");
             });
         </script>
@@ -79,7 +79,7 @@
                     </div>
                 </nav>
                 <main class="col-md-10 p-4">
-                    <button onclick="fetchProducts(0,0,shopId)" class="btn btn-primary">Load Product List</button>
+                    <button onclick="fetchProductsShop(shopId);" class="btn btn-primary">Load Product List</button>
                     <p>Products:</p>
                     <table border="1" id="productTable">
                     </table>

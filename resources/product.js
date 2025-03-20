@@ -100,3 +100,54 @@ function getProductInfo(productId) {
         })
         .catch(error => console.error("Error fetching data:", error));
 }
+
+function fetchProductsShop(shopId) {
+    var url = new URL("https://" + location.host + contextPath + "/ajax/products");
+
+    if (shopId) {
+        url.searchParams.append('shopId', shopId);
+    }
+
+    fetch(url.toString())
+        .then(response => response.json())
+        .then(data => {
+            let tableBody = document.getElementById("productTable");
+            tableBody.innerHTML = "<tr><th>Shop</th><th>Category</th><th>Name</th><th>Description</th></tr>";
+
+            data.forEach(item => {
+                let row = document.createElement("tr");
+                let cell;
+
+                cell = document.createElement("td");
+                let link = document.createElement("a");
+                link.href = contextPath + "/shop?shopId=" + item.shop.id;
+                link.textContent = item.shop.name;
+                cell.appendChild(link);
+                // cell.textContent = item.shopId;
+                row.appendChild(cell);
+
+                cell = document.createElement("td");
+                link = document.createElement("a");
+                link.href = contextPath + "/category?categoryId=" + item.category.id;
+                link.textContent = item.category.name;
+                cell.appendChild(link);
+                // cell.textContent = item.categoryId;
+                row.appendChild(cell);
+
+                cell = document.createElement("td");
+                link = document.createElement("a");
+                link.href = contextPath + "/product?productId=" + item.id; // Set the URL
+                link.textContent = item.name; // Set the link text
+                cell.appendChild(link);
+                // cell.textContent = item.name;
+                row.appendChild(cell);
+
+                cell = document.createElement("td");
+                cell.textContent = item.description;
+                row.appendChild(cell);
+
+                tableBody.appendChild(row);
+            });
+        })
+        .catch(error => console.error("Error fetching data:", error));
+}
