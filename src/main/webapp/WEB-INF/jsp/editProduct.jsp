@@ -112,14 +112,15 @@
                                     </thead>
                                     <tbody>
                                         <c:forEach var="item" items="${product.productItems}">
+                                            <c:out value="${product.productItems}" />
                                             <tr>
                                                 <td>${item.id}</td>
-                                                <input type="hidden" name="productItemId[]" value="${item.id}">
+                                                <input type="hidden" name="productItemId" value="${item.id}">
                                                 <td>
-                                                    <input type="number" name="productItemStock[]" class="form-control" value="${item.stock}" required>
+                                                    <input type="text" name="productItemStock[]" class="form-control" value="${item.stock}" required>
                                                 </td>
                                                 <td>
-                                                    <input type="number" name="productItemPrice[]" class="form-control" value="${item.price}" required step="0.01">
+                                                    <input type="text" name="productItemPrice[]" class="form-control" value="${item.price}" required step="0.01">
                                                 </td>
                                             </tr>
                                         </c:forEach>
