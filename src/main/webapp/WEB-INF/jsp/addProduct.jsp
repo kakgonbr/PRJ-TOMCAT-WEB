@@ -7,14 +7,16 @@
         <script>
             var contextPath = "${pageContext.request.contextPath}";
 
-            function createCategoryOptions(categories) {
-                let categorySelect = document.getElementById("category");
-                categorySelect.innerHTML = "";
+            function createCategoryOptions(categories, parentElement, level = 0) {
                 categories.forEach(category => {
                     let option = document.createElement("option");
                     option.value = category.id;
-                    option.textContent = category.name;
-                    categorySelect.appendChild(option);
+                    option.textContent = "-".repeat(level) + " " + category.name;
+                    parentElement.appendChild(option);
+
+                    if (category.children && category.children.length > 0) {
+                        createCategoryOptions(category.children, parentElement, level + 1);
+                    }
                 });
             }
 
@@ -22,14 +24,12 @@
                 fetch(contextPath + "/ajax/category")
                     .then(response => response.json())
                     .then(data => {
-                        createCategoryOptions(data);
+                        let categorySelect = document.getElementById("category");
+                        categorySelect.innerHTML = "";
+                        createCategoryOptions([data], categorySelect);
                     })
                     .catch(error => console.error("Error fetching categories:", error));
             }
-
-            document.addEventListener("DOMContentLoaded", function () {
-                fetchCategory();
-            });
         </script>
     </jsp:attribute>
 
