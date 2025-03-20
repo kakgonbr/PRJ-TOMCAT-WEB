@@ -17,7 +17,7 @@
         <script>
             var contextPath = "${pageContext.request.contextPath}";
             document.addEventListener("DOMContentLoaded", function () {
-                fetchByShop();
+                fetchByQueryAndCategory();
                 handleAccordionSearch("searchBox", "menuAccordion");
             });
         </script>
@@ -77,7 +77,7 @@
                     </div>
                 </nav>
                 <main class="col-md-10 p-4">
-                    <button onclick="fetchByShop()" class="btn btn-primary">reset Product List</button>
+                    <button onclick="fetchByQueryAndCategory()" class="btn btn-primary">Load Product List</button>
                     <p>Products:</p>
                     <table border="1" id="productTable">
                     </table>
