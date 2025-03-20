@@ -17,6 +17,7 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlTransient;
@@ -50,6 +51,7 @@ public class VariationValue implements Serializable {
     private Boolean status;
     @JoinColumn(name = "variationId", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.EAGER)
+    @NotNull
     private Variation variationId;
     @OneToMany(mappedBy = "variationValueId")
     private List<ProductCustomization> productCustomizationList;

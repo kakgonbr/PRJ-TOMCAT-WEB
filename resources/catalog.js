@@ -57,7 +57,7 @@ dropdownItems.forEach(item => {
 /**/
 async function fetchCategories() {
     try {
-        let response = await fetch('https://kakgonbri.zapto.org:8443/prj/ajax/category?categoryId=1');
+        let response = await fetch('https://kakgonbri.zapto.org:8443/prj/ajax/category?categoryId='+ categoryId);
         let data = await response.json();
         renderCategories(data.children);
     } catch (error) {
