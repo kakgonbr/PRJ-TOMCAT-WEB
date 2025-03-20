@@ -7,6 +7,7 @@ package model;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -48,7 +49,7 @@ public class ProductItem implements Serializable {
     @Column(name = "price")
     private BigDecimal price;
     @JoinColumn(name = "productId", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Product productId;
     @OneToMany(mappedBy = "productItemId")
     private List<CartItem> cartItemList;

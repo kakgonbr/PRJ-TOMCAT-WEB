@@ -71,6 +71,16 @@ public final class CartDAO {
             }
         }
 
+        private static final String GET_CART_BY_USER = "SELECT TOP 1 FROM tblCart WHERE userId = ?1";
+
+        public static synchronized Cart getCartByUser(int userId) throws SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return (Cart) em.createNativeQuery(GET_CART_BY_USER, model.Cart.class).setParameter(1, userId).getSingleResult();
+            } catch (Exception e) {
+                throw new SQLException(e);
+            }
+        }
+
         public static synchronized List<Cart> getCarts() throws SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 return em.createNamedQuery("Cart.findAll", Cart.class).getResultList();

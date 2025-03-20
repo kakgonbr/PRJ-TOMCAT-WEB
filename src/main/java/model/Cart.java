@@ -7,6 +7,7 @@ package model;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -32,7 +33,7 @@ import java.util.List;
     @NamedQuery(name = "Cart.findById", query = "SELECT t FROM Cart t WHERE t.id = :id")})
 public class Cart implements Serializable {
 
-    @OneToMany(mappedBy = "cartId")
+    @OneToMany(mappedBy = "cartId", fetch = FetchType.EAGER)
     private List<CartItem> cartItemList;
 
     private static final long serialVersionUID = 1L;
