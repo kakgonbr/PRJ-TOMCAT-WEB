@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class TestCatalogServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("categoryId", 0);
         request.getRequestDispatcher(config.Config.JSPMapper.CATALOG).forward(request, response);
     }
 

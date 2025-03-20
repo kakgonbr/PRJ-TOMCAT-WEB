@@ -8,6 +8,7 @@
         
         <script>
             var contextPath = "${pageContext.request.contextPath}";
+            var categoryId = "${param.categoryId}"
         </script>
 
     </jsp:attribute>
@@ -39,7 +40,6 @@
                 <!-- Sidebar Filters -->
                 <div class="col-3 mb-4">
                     <form class="sidebar">
-                        <!-- -->
                         <div class="filter-section mb-3">
                             <div class="collapse-header" data-bs-toggle="collapse" data-bs-target="#categoriesCollapse">
                                 Categories <span class="float-end"><i class="bi bi-chevron-down text-dark"></i></span>
