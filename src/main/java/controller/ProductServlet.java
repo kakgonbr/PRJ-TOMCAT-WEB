@@ -69,8 +69,10 @@ public class ProductServlet extends HttpServlet {
         String stockParam = request.getParameter("productItemStock");
         String priceParam = request.getParameter("productItemPrice");
 
-        if (productItemIdParam == null || stockParam == null || priceParam == null) {
-            request.setAttribute("error", "Missing parameters.");
+        if (productItemIdParam == null || productItemIdParam.trim().isEmpty()
+                || stockParam == null || stockParam.trim().isEmpty()
+                || priceParam == null || priceParam.trim().isEmpty()) {
+            request.setAttribute("error", "Missing or invalid parameters.");
             request.getRequestDispatcher(config.Config.JSPMapper.EDIT_PRODUCT).forward(request, response);
             return;
         }
@@ -106,10 +108,9 @@ public class ProductServlet extends HttpServlet {
             dao.ProductItemDAO.productItemManager.editProductItem(productItemId, stock, price);
 
             response.sendRedirect(request.getContextPath() + "/shophome");
-            System.out.println("Updated productItem: ID=" + productItemId + ", Stock=" + stock + ", Price=" + price);
         } catch (NumberFormatException e) {
             service.Logging.logger.warn("Invalid input format: {}", e.getMessage());
-            request.setAttribute("error", "Invalid number format.");
+            request.setAttribute("error", "Invalid number format." + e.getMessage());
             request.getRequestDispatcher(config.Config.JSPMapper.EDIT_PRODUCT).forward(request, response);
         } catch (java.sql.SQLException e) {
             service.Logging.logger.warn("Database error while updating product item: {}", e.getMessage());

@@ -51,7 +51,7 @@ public class ProductDAO {
                 product.getProductItemList().stream().map(model.ProductItem::getProductCustomizationList).forEach(Hibernate::initialize);
 
                 return product;
-
+ 
             } catch (Exception e) {
                 throw new java.sql.SQLException(e);
             }

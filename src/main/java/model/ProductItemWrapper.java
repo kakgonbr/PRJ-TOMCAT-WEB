@@ -46,5 +46,5 @@ public class ProductItemWrapper {
     public void setCustomizations(java.util.List<ProductCustomizationWrapper> customizations) {
         this.customizations = customizations;
     }
-
+    
 }
