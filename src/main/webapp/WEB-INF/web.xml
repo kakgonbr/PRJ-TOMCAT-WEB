@@ -110,6 +110,14 @@
         <servlet-class>controller.ajax.AdminTableLoader</servlet-class>
     </servlet>
     <servlet>
+    <servlet-name>CartServlet</servlet-name>
+    <servlet-class>controller.CartServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>CartServlet</servlet-name>
+    <url-pattern>/cart</url-pattern>
+</servlet-mapping>
+    <servlet>
         <servlet-name>n_AdminCPServlet</servlet-name>
         <servlet-class>controller.AdminCPServlet</servlet-class>
     </servlet>
