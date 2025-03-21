@@ -63,7 +63,7 @@ public class ProductServlet extends HttpServlet {
         HttpSession session = request.getSession();
         Integer shopIdValue = (Integer) session.getAttribute("shopId");
         String productName = request.getParameter("name");
-        String categoryParam = request.getParameter("category");
+        String categoryParam = request.getParameter("filter");
         String description = request.getParameter("description");
         String productItemIdParam = request.getParameter("productItemId");
         String stockParam = request.getParameter("productItemStock");
