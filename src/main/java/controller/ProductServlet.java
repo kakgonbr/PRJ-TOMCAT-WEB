@@ -113,18 +113,18 @@ public class ProductServlet extends HttpServlet {
         }
     }
 
-    private void handleDeleteProduct(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void handleDeleteProduct(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String productIdParam = request.getParameter("productId");
         try {
             int productId = Integer.parseInt(productIdParam);
             dao.ProductDAO.ProductManager.deleteProduct(productId);
             response.sendRedirect(request.getContextPath() + "/shophome");
         } catch (NumberFormatException e) {
-            service.Logging.logger.warn("Invalid product ID format: {}", e.getMessage());
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid product ID.");
+            request.setAttribute("error", "number format occur");
+            request.getRequestDispatcher(config.Config.JSPMapper.SELLER_CENTER).forward(request, response);
         } catch (java.sql.SQLException e) {
-            service.Logging.logger.warn("Database error while deleting product: {}", e.getMessage());
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error occurred.");
+            request.setAttribute("error", "Database error occurred.");
+            request.getRequestDispatcher(config.Config.JSPMapper.SELLER_CENTER).forward(request, response);
         }
     }
 }
