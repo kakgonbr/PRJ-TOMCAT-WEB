@@ -176,6 +176,7 @@ public class ProductDAO {
     }
 
     public static class ProductManager {
+
         public static synchronized void addProduct(model.Product product) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 EntityTransaction et = em.getTransaction();
@@ -233,11 +234,14 @@ public class ProductDAO {
         } // public static synchronized void editProduct
 
         public static void updateMultipleProductItems(java.util.List<ProductItem> updatedItems) throws java.sql.SQLException {
-            try (EntityManager em = DatabaseConnection.getEntityManager()) {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 EntityTransaction et = em.getTransaction();
                 try {
                     et.begin();
                     for (ProductItem item : updatedItems) {
+                        if (item == null || item.getId() == null) {
+                            throw new IllegalArgumentException("ProductItem hoặc ID không hợp lệ.");
+                        }
                         ProductItem existingItem = em.find(ProductItem.class, item.getId());
                         if (existingItem != null) {
                             existingItem.setStock(item.getStock());
