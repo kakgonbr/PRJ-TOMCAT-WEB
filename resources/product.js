@@ -63,6 +63,10 @@ function fetchProducts(query, filter, shopId) {
         row.appendChild(cell);
 
         cell = document.createElement("td");
+        cell.textContent = item.status;
+        row.appendChild(cell);
+
+        cell = document.createElement("td");
         let image = document.createElement("img");
         image.src = contextPath + "/resources/" + item.thumbnail;
         cell.appendChild(image);
