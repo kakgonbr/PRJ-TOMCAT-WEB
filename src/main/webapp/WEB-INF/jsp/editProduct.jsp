@@ -111,7 +111,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <c:forEach var="item" items="${productItems}">
+                                        <c:forEach var="item" items="${product.productItems}">
                                             <tr>
                                                 <td>
                                                     <input type="hidden" name="productItemId" value="${item.id}">
