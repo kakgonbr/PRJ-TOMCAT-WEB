@@ -6,9 +6,14 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.ParameterMode;
 import jakarta.persistence.StoredProcedureQuery;
+import java.math.BigDecimal;
+import model.ProductItem;
+import service.DatabaseConnection;
 
 public class ProductDAO {
+
     public static class ProductFetcher {
+
         public static synchronized java.util.List<model.Product> getProducts() throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 return em.createNamedQuery("Product.findAll", model.Product.class).getResultList();
@@ -27,9 +32,9 @@ public class ProductDAO {
         } // public static synchronized model.Product getProduct
 
         /**
-         * Eagerly fetches most information about a product, used for displaying the
-         * product detail screen
-         * 
+         * Eagerly fetches most information about a product, used for displaying
+         * the product detail screen
+         *
          * @param id
          * @return
          * @throws java.sql.SQLException
@@ -51,7 +56,7 @@ public class ProductDAO {
                 product.getProductItemList().stream().map(model.ProductItem::getProductCustomizationList).forEach(Hibernate::initialize);
 
                 return product;
- 
+
             } catch (Exception e) {
                 throw new java.sql.SQLException(e);
             }
@@ -78,7 +83,7 @@ public class ProductDAO {
         }
 
         private static final String GET_PRODUCTS_FROM_SHOP_BY_CATEGORY = "WITH category AS (SELECT id FROM tblCategory WHERE id = ?1 UNION ALL SELECT c.id FROM tblCategory c JOIN category ch ON c.parent_id = ch.id) SELECT TOP 10 * FROM tblProduct WHERE tblProduct.shopId = ?2 AND tblProduct.categoryId IN (SELECT id FROM category)";
-        
+
         public static synchronized java.util.List<model.Product> getShopProductsByCategory(int shopId, int category) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 return em.createNativeQuery(GET_PRODUCTS_FROM_SHOP_BY_CATEGORY, model.Product.class)
@@ -141,13 +146,14 @@ public class ProductDAO {
                 throw new java.sql.SQLException(e);
             }
         } // public static synchronized java.util.List<model.ProductCustomization>
-          // getCustomizations
+        // getCustomizations
     } // public static class ProductFetcher
 
     /**
      * Try not to touch this, its methods are mostly run by the job handler
      */
     public static class TFIDF {
+
         private static final String COMPUTE_TFIDF = "ComputeTFIDF";
 
         public static synchronized void computeTFIDF() throws java.sql.SQLException {
@@ -192,9 +198,9 @@ public class ProductDAO {
         } // public static synchronized void addProduct
 
         /**
-         * Make sure the product has its category set and the category exists in the
-         * database
-         * 
+         * Make sure the product has its category set and the category exists in
+         * the database
+         *
          * @param product
          * @throws java.sql.SQLException
          */
@@ -226,6 +232,29 @@ public class ProductDAO {
             }
         } // public static synchronized void editProduct
 
+        public static void updateMultipleProductItems(java.util.List<ProductItem> updatedItems) throws java.sql.SQLException {
+            try (EntityManager em = DatabaseConnection.getEntityManager()) {
+                EntityTransaction et = em.getTransaction();
+                try {
+                    et.begin();
+                    for (ProductItem item : updatedItems) {
+                        ProductItem existingItem = em.find(ProductItem.class, item.getId());
+                        if (existingItem != null) {
+                            existingItem.setStock(item.getStock());
+                            existingItem.setPrice(item.getPrice());
+                            em.merge(existingItem);
+                        }
+                    }
+                    et.commit();
+                } catch (Exception e) {
+                    if (et.isActive()) {
+                        et.rollback();
+                    }
+                    throw new java.sql.SQLException(e);
+                }
+            }
+        }
+
         private static String MARK_PRODUCT_DELETE = "UPDATE tblProduct SET status = 0 WHERE id = ?1";
 
         public static synchronized void deleteProduct(int productId) throws java.sql.SQLException {
@@ -252,15 +281,16 @@ public class ProductDAO {
                 java.util.List<model.ProductCustomization> customizations) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 EntityTransaction et = em.getTransaction();
- 
+
                 try {
                     et.begin();
 
                     for (final model.ProductCustomization customization : customizations) {
                         model.VariationValue variationValue = customization.getVariationValueId();
 
-                        if (em.find(model.Variation.class, variationValue) == null)
+                        if (em.find(model.Variation.class, variationValue) == null) {
                             continue;
+                        }
 
                         // customization's VariationValue gets its ID assigned here.
                         em.persist(variationValue);
