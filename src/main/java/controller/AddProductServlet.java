@@ -163,11 +163,11 @@ public class AddProductServlet extends HttpServlet {
                 return;
             }
 
-            // ðŸ›  Kiá»ƒm tra xem variation cÃ³ sáºµn khÃ´ng
-            int variationId = dao.VariationDAO.VariationFetcher.getVariationIdByNameAndCategory(variationName, categoryId);
+            // Kiểm tra xem variation đã tồn tại chưa
+            Integer variationId = dao.VariationDAO.VariationFetcher.getVariationIdByNameAndCategory(variationName, categoryId);
 
-            // Náº¿u khÃ´ng tÃ¬m tháº¥y (variationId == -1 hoáº·c exception) thÃ¬ táº¡o má»›i
-            if (variationId == -1) {
+            // Nếu không tìm thấy, thêm mới variation
+            if (variationId == null) {
                 Variation variation = new Variation();
                 variation.setCategoryId(new Category(categoryId));
                 variation.setName(variationName);
@@ -175,21 +175,27 @@ public class AddProductServlet extends HttpServlet {
                 variation.setUnit(unit);
 
                 dao.VariationDAO.VariationManager.createVariation(variation);
+
+                // Lấy lại variationId sau khi tạo mới
                 variationId = dao.VariationDAO.VariationFetcher.getVariationIdByNameAndCategory(variationName, categoryId);
+                if (variationId == null) {
+                    request.setAttribute("error", "variation_creation_failed");
+                    request.getRequestDispatcher(config.Config.JSPMapper.SELECT_VARIATION).forward(request, response);
+                    return;
+                }
             }
+
             session.setAttribute("variationId", variationId);
 
-            // ðŸ›  ThÃªm cÃ¡c giÃ¡ trá»‹ variationOptions (náº¿u chÆ°a cÃ³)
+            // Xử lý danh sách variation values
             String[] optionsArray = variationOptions.split(",");
             List<VariationValue> variationValuesList = new ArrayList<>();
             for (String value : optionsArray) {
                 value = value.trim();
                 if (!value.isEmpty()) {
-                    // Kiá»ƒm tra xem giÃ¡ trá»‹ Ä‘Ã£ tá»“n táº¡i chÆ°a
                     VariationValue existingValue = dao.VariationValueDAO.VariationValueFetcher.getVariationValueByValue(value);
 
                     if (existingValue == null) {
-                        // Chá»‰ thÃªm náº¿u chÆ°a cÃ³
                         VariationValue variationValue = new VariationValue();
                         variationValue.setVariationId(new Variation(variationId));
                         variationValue.setValue(value);
@@ -253,4 +259,3 @@ public class AddProductServlet extends HttpServlet {
     }
 
 }
-
