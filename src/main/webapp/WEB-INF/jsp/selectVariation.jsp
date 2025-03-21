@@ -49,6 +49,24 @@
 
     <jsp:attribute name="body">
         <h2>Select Variations</h2>
+        <c:if test="${not empty error}">
+            <div style="color: red; font-weight: bold;">
+                <c:choose>
+                    <c:when test="${error == 'missing_fields'}">
+                        ⚠️ Please fill in all required fields.
+                    </c:when>
+                    <c:when test="${error == 'variation_creation_failed'}">
+                        ❌ Failed to create variation. Please try again.
+                    </c:when>
+                    <c:when test="${error == 'db_error'}">
+                        ❗ A database error occurred. Please contact support.
+                    </c:when>
+                    <c:otherwise>
+                        🚨 Unknown error: ${error}
+                    </c:otherwise>
+                </c:choose>
+            </div>
+        </c:if>
 
         <form id="selectVariationForm" action="${pageContext.request.contextPath}/addproduct" method="post">
             <input type="hidden" name="action" value="selectVariation">
