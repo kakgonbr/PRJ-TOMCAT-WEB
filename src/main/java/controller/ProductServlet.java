@@ -16,50 +16,29 @@ public class ProductServlet extends HttpServlet {
         String action = request.getParameter("action");
         String productId = request.getParameter("productId");
 
-        if (action != null && productId != null) {
+        if ("edit".equals(action) && productId != null) {
             try {
                 int id = Integer.parseInt(productId);
-
-                if (action.equals("edit")) {
-                    try {
-                        request.setAttribute("product", new model.ProductDetailsWrapper(dao.ProductDAO.ProductFetcher.getProductDetails(id)));
-                        request.getRequestDispatcher(config.Config.JSPMapper.EDIT_PRODUCT).forward(request, response);
-                    } catch (Exception e) {
-                        service.Logging.logger.error("Error processing edit action: ", e);
-                        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server error: " + e.getMessage());
-                    }
-                } else if (action.equals("delete")) {
-                    dao.ProductDAO.ProductManager.deleteProduct(id);
-
-                    if (true) {
-                        response.sendRedirect("/shophome");
-                        return;
-                    } else {
-                        request.setAttribute("error", "Delete failed");
-                        request.getRequestDispatcher(config.Config.JSPMapper.SELLER_CENTER).forward(request, response);
-                    }
-                    return;
-                }
-            } catch (java.sql.SQLException | NumberFormatException e) {
-                service.Logging.logger.warn("FAILED TO PROCESS ACTION {} FOR PRODUCT ID {}, REASON: {}", action, productId, e.getMessage());
-                request.setAttribute("error", "true");
-                return;
+                request.setAttribute("product", new model.ProductDetailsWrapper(dao.ProductDAO.ProductFetcher.getProductDetails(id)));
+                request.getRequestDispatcher(config.Config.JSPMapper.EDIT_PRODUCT).forward(request, response);
+            } catch (Exception e) {
+                service.Logging.logger.error("Error processing edit action: ", e);
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server error: " + e.getMessage());
             }
-        } else if (productId != null) {
-            request.getRequestDispatcher(config.Config.JSPMapper.PRODUCT_DETAILS).forward(request, response);
-        }
-
-        try {
-            request.setAttribute("product", new model.ProductDetailsWrapper(dao.ProductDAO.ProductFetcher.getProductDetails(Integer.parseInt(productId))));
-        } catch (java.sql.SQLException | NumberFormatException e) {
-            service.Logging.logger.warn("FAILED TO GET PRODUCT INFORMATION FOR PRODUCT ID {}, REASON: {}", productId, e.getMessage());
-
-            request.setAttribute("error", "true");
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String action = request.getParameter("action");
+        if ("edit".equals(action)) {
+            handleEditProduct(request, response);
+        } else if ("delete".equals(action)) {
+            handleDeleteProduct(request, response);
+        }
+    }
+
+    private void handleEditProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         Integer shopIdValue = (Integer) session.getAttribute("shopId");
         String productIdParam = request.getParameter("productId");
@@ -70,14 +49,14 @@ public class ProductServlet extends HttpServlet {
         String[] stocks = request.getParameterValues("stock");
         String[] prices = request.getParameterValues("price");
 
-        if (productItemIds == null && stocks == null && prices == null) {
+        if (productItemIds == null || stocks == null || prices == null) {
             request.setAttribute("error", "Missing or invalid parameters.");
             request.getRequestDispatcher(config.Config.JSPMapper.EDIT_PRODUCT).forward(request, response);
             return;
         }
+
         try {
             int productId = Integer.parseInt(productIdParam);
-            
             model.Shop shop = dao.ShopDAO.ShopFetcher.getShop(shopIdValue);
             if (shop == null) {
                 request.setAttribute("error", "invalid_shop");
@@ -85,7 +64,6 @@ public class ProductServlet extends HttpServlet {
                 return;
             }
 
-            // Lấy đối tượng Category từ ID
             int categoryIdInt = Integer.parseInt(categoryParam);
             model.Category category = dao.CategoryDAO.CategoryFetcher.getCategoryDetails(categoryIdInt);
             if (category == null) {
@@ -93,13 +71,14 @@ public class ProductServlet extends HttpServlet {
                 request.getRequestDispatcher(config.Config.JSPMapper.ADD_PRODUCT).forward(request, response);
                 return;
             }
-            // save product to db
+
             Product product = dao.ProductDAO.ProductFetcher.getProductDetails(productId);
             if (product == null) {
                 request.setAttribute("error", "Product not found.");
                 request.getRequestDispatcher(config.Config.JSPMapper.EDIT_PRODUCT).forward(request, response);
                 return;
             }
+
             java.util.List<model.ProductItem> productItemList = new java.util.ArrayList<>();
             product.setShopId(shop);
             product.setCategoryId(category);
@@ -108,7 +87,7 @@ public class ProductServlet extends HttpServlet {
             product.setImageStringResourceId(null);
             product.setStatus(true);
             dao.ProductDAO.ProductManager.editProduct(product);
-            //save productItem to db
+
             for (int i = 0; i < productItemIds.length; i++) {
                 int productItemId = Integer.parseInt(productItemIds[i]);
                 int stock = Integer.parseInt(stocks[i]);
@@ -121,8 +100,7 @@ public class ProductServlet extends HttpServlet {
                 productItemList.add(item);
             }
 
-             dao.ProductDAO.ProductManager.updateMultipleProductItems(productId, productItemList);
-
+            dao.ProductDAO.ProductManager.updateMultipleProductItems(productId, productItemList);
             response.sendRedirect(request.getContextPath() + "/shophome");
         } catch (NumberFormatException e) {
             service.Logging.logger.warn("Invalid input format: {}", e.getMessage());
@@ -132,6 +110,21 @@ public class ProductServlet extends HttpServlet {
             service.Logging.logger.warn("Database error while updating product item: {}", e.getMessage());
             request.setAttribute("error", "Database error occurred.");
             request.getRequestDispatcher(config.Config.JSPMapper.EDIT_PRODUCT).forward(request, response);
+        }
+    }
+
+    private void handleDeleteProduct(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String productIdParam = request.getParameter("productId");
+        try {
+            int productId = Integer.parseInt(productIdParam);
+            dao.ProductDAO.ProductManager.deleteProduct(productId);
+            response.sendRedirect(request.getContextPath() + "/shophome");
+        } catch (NumberFormatException e) {
+            service.Logging.logger.warn("Invalid product ID format: {}", e.getMessage());
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid product ID.");
+        } catch (java.sql.SQLException e) {
+            service.Logging.logger.warn("Database error while deleting product: {}", e.getMessage());
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error occurred.");
         }
     }
 }
