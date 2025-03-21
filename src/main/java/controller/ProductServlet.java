@@ -62,6 +62,7 @@ public class ProductServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         Integer shopIdValue = (Integer) session.getAttribute("shopId");
+        String productIdParam = request.getParameter("productId");
         String productName = request.getParameter("name");
         String categoryParam = request.getParameter("filter");
         String description = request.getParameter("description");
@@ -75,6 +76,8 @@ public class ProductServlet extends HttpServlet {
             return;
         }
         try {
+            int productId = Integer.parseInt(productIdParam);
+            
             model.Shop shop = dao.ShopDAO.ShopFetcher.getShop(shopIdValue);
             if (shop == null) {
                 request.setAttribute("error", "invalid_shop");
@@ -91,7 +94,12 @@ public class ProductServlet extends HttpServlet {
                 return;
             }
             // save product to db
-            Product product = new Product();
+            Product product = dao.ProductDAO.ProductFetcher.getProductDetails(productId);
+            if (product == null) {
+                request.setAttribute("error", "Product not found.");
+                request.getRequestDispatcher(config.Config.JSPMapper.EDIT_PRODUCT).forward(request, response);
+                return;
+            }
             java.util.List<model.ProductItem> productItemList = new java.util.ArrayList<>();
             product.setShopId(shop);
             product.setCategoryId(category);
@@ -101,19 +109,19 @@ public class ProductServlet extends HttpServlet {
             product.setStatus(true);
             dao.ProductDAO.ProductManager.editProduct(product);
             //save productItem to db
-        for (int i = 0; i < productItemIds.length; i++) {
-            int productItemId = Integer.parseInt(productItemIds[i]);
-            int stock = Integer.parseInt(stocks[i]);
-            BigDecimal price = new BigDecimal(prices[i]);
+            for (int i = 0; i < productItemIds.length; i++) {
+                int productItemId = Integer.parseInt(productItemIds[i]);
+                int stock = Integer.parseInt(stocks[i]);
+                BigDecimal price = new BigDecimal(prices[i]);
 
-            model.ProductItem item = new model.ProductItem();
-            item.setId(productItemId);
-            item.setStock(stock);
-            item.setPrice(price);
-            productItemList.add(item);
-        }
+                model.ProductItem item = new model.ProductItem();
+                item.setId(productItemId);
+                item.setStock(stock);
+                item.setPrice(price);
+                productItemList.add(item);
+            }
 
-        dao.ProductDAO.ProductManager.updateMultipleProductItems(productItemList);
+             dao.ProductDAO.ProductManager.updateMultipleProductItems(productId, productItemList);
 
             response.sendRedirect(request.getContextPath() + "/shophome");
         } catch (NumberFormatException e) {

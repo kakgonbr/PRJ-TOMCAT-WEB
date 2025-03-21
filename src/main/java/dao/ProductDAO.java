@@ -233,7 +233,7 @@ public class ProductDAO {
             }
         } // public static synchronized void editProduct
 
-        public static void updateMultipleProductItems(java.util.List<ProductItem> updatedItems) throws java.sql.SQLException {
+        public static void updateMultipleProductItems(int productId, java.util.List<ProductItem> updatedItems) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 EntityTransaction et = em.getTransaction();
                 try {
