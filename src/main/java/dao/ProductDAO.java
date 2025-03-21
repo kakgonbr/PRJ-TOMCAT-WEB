@@ -92,6 +92,19 @@ public class ProductDAO {
                 throw new java.sql.SQLException(e);
             }
         }
+        
+                private static final String GET_PRODUCTS_BY_NAME_AND_SHOP = "SELECT id FROM tblProduct p WHERE p.name = :name AND p.shopId = :shopId";
+        public static synchronized Integer getProductByNameAndShop(String name, int shopId) throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                Object result = em.createNativeQuery(GET_PRODUCTS_BY_NAME_AND_SHOP)
+                .setParameter("name", name)
+                .setParameter("shopId", shopId)
+                .getSingleResult();
+                return (result != null) ? ((Number) result).intValue() : null;
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
+            }
+        }
 
         private static final String GET_PRODUCTS_BY_CATEGORY = "WITH category AS (SELECT id FROM tblCategory WHERE id = ?1 UNION ALL SELECT c.id FROM tblCategory c JOIN category ch ON c.parent_id = ch.id) SELECT TOP 10 * FROM tblProduct WHERE tblProduct.categoryId IN (SELECT id FROM category)";
 
@@ -312,5 +325,26 @@ public class ProductDAO {
                 }
             }
         } // public static synchronized void addCustomizations
+        
+        public static synchronized void addProductItem(model.ProductItem productItem) throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                EntityTransaction et = em.getTransaction();
+
+                try {
+                    et.begin();
+
+                    em.persist(productItem);
+
+                    et.commit();
+                } catch (Exception e) {
+                    if (et.isActive()) {
+                        et.rollback();
+                    }
+
+                    throw new java.sql.SQLException(e);
+                }
+            }
+
+        } // public static synchronized void addProductItem
     }
 }

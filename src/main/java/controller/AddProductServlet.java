@@ -11,11 +11,14 @@ import model.Product;
 import model.Shop;
 import model.Category;
 import model.Variation;
+import model.VariationValue;
 import dao.ShopDAO;
 import dao.CategoryDAO;
-import dao.ProductDAO;
-import dao.VariationDAO;
-import model.VariationValue;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import model.ProductCustomization;
+import model.ProductItem;
 
 public class AddProductServlet extends HttpServlet {
 
@@ -34,6 +37,9 @@ public class AddProductServlet extends HttpServlet {
         switch (action != null ? action : "addProduct") {
             case "selectVariation":
                 request.getRequestDispatcher(config.Config.JSPMapper.SELECT_VARIATION).forward(request, response);
+                break;
+            case "setStockAndPrice":
+                request.getRequestDispatcher(config.Config.JSPMapper.SET_STOCK_AND_PRICE).forward(request, response);
                 break;
             case "addProduct":
             default:
@@ -60,6 +66,9 @@ public class AddProductServlet extends HttpServlet {
                 case "selectVariation":
                     handleSelectVariation(request, response, session);
                     break;
+                case "setStockAndPrice":
+                    handleSetStockAndPrice(request, response);
+                    break;
                 default:
                     response.sendRedirect(request.getContextPath() + "/shophome");
             }
@@ -70,58 +79,59 @@ public class AddProductServlet extends HttpServlet {
     }
 
     private void handleAddProduct(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException, SQLException {
-        Integer shopIdValue = (Integer) session.getAttribute("shopId");
+        Integer shopId = (Integer) session.getAttribute("shopId");
 
-        if (shopIdValue == null) {
+        if (shopId == null) {
             response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
 
-        // Lấy thông tin từ request
-        String categoryIdValue = request.getParameter("filter");
+        String categoryIdString = request.getParameter("filter");
         String name = request.getParameter("name");
         String description = request.getParameter("description");
 
-        // Kiểm tra dữ liệu đầu vào
-        if (categoryIdValue == null || name == null || description == null
-                || categoryIdValue.trim().isEmpty() || name.trim().isEmpty() || description.trim().isEmpty()) {
+        if (categoryIdString == null || name == null || description == null
+                || categoryIdString.trim().isEmpty() || name.trim().isEmpty() || description.trim().isEmpty()) {
             request.setAttribute("error", "missing_fields");
             request.getRequestDispatcher(config.Config.JSPMapper.ADD_PRODUCT).forward(request, response);
             return;
         }
-
+        int categoryId = Integer.parseInt(categoryIdString);
+        session.setAttribute("categoryId", categoryId);
         try {
-            // Lấy đối tượng Shop từ ID
-            Shop shop = ShopDAO.ShopFetcher.getShop(shopIdValue);
+            Shop shop = ShopDAO.ShopFetcher.getShop(shopId);
             if (shop == null) {
                 request.setAttribute("error", "invalid_shop");
                 request.getRequestDispatcher(config.Config.JSPMapper.ADD_PRODUCT).forward(request, response);
                 return;
             }
 
-            // Lấy đối tượng Category từ ID
-            int categoryIdInt = Integer.parseInt(categoryIdValue);
-            Category category = CategoryDAO.CategoryFetcher.getCategoryDetails(categoryIdInt);
+            Category category = CategoryDAO.CategoryFetcher.getCategoryDetails(categoryId);
             if (category == null) {
                 request.setAttribute("error", "invalid_category");
                 request.getRequestDispatcher(config.Config.JSPMapper.ADD_PRODUCT).forward(request, response);
                 return;
             }
 
-            // Tạo sản phẩm mới với status = 1 (KHÔNG xử lý ảnh)
             Product product = new Product();
             product.setShopId(shop);
             product.setCategoryId(category);
             product.setName(name);
             product.setDescription(description);
-            product.setImageStringResourceId(null); // Không xử lý ảnh
-            product.setStatus(true); // Luôn đặt status là 1
-
-            // Thêm sản phẩm vào database
+            product.setImageStringResourceId(null);
+            product.setStatus(true);
             dao.ProductDAO.ProductManager.addProduct(product);
+            int productId = dao.ProductDAO.ProductFetcher.getProductByNameAndShop(name, shopId);
+            session.setAttribute("productId", productId);
+            List<Product> selectedProducts = (List<Product>) session.getAttribute("selectedProducts");
+            if (selectedProducts == null) {
+                selectedProducts = new ArrayList<>();
+            }
+            product.setId(productId);
+            selectedProducts.add(product);
+            session.setAttribute("selectedProducts", selectedProducts);
 
-            // Chuyển hướng đến trang danh sách sản phẩm sau khi thêm thành công
-            response.sendRedirect(request.getContextPath() + "/shophome");
+            response.sendRedirect(request.getContextPath() + "/addproduct?action=selectVariation");
 
         } catch (SQLException e) {
             request.setAttribute("error", "db");
@@ -142,43 +152,103 @@ public class AddProductServlet extends HttpServlet {
             }
 
             String variationName = request.getParameter("variationName");
-            String variationOptions = request.getParameter("variationOptions"); // Các giá trị options
+            String variationOptions = request.getParameter("variationOptions");
             String unit = request.getParameter("unit");
             String datatype = request.getParameter("datatype");
 
-            if (variationName == null || variationOptions == null || unit == null || datatype == null
-                    || variationName.trim().isEmpty() || variationOptions.trim().isEmpty() || unit.trim().isEmpty() || datatype.trim().isEmpty()) {
+            if (variationName == null || variationOptions == null || datatype == null
+                    || variationName.trim().isEmpty() || variationOptions.trim().isEmpty() || datatype.trim().isEmpty()) {
                 request.setAttribute("error", "missing_fields");
                 request.getRequestDispatcher(config.Config.JSPMapper.SELECT_VARIATION).forward(request, response);
                 return;
             }
 
-            Variation variation = new Variation();
-            variation.setCategoryId(new Category(categoryId));
-            variation.setName(variationName);
-            variation.setDatatype(datatype);
-            variation.setUnit(unit);
-
-            dao.VariationDAO.VariationManager.createVariation(variation);
-
+            // ðŸ›  Kiá»ƒm tra xem variation cÃ³ sáºµn khÃ´ng
             int variationId = dao.VariationDAO.VariationFetcher.getVariationIdByNameAndCategory(variationName, categoryId);
 
+            // Náº¿u khÃ´ng tÃ¬m tháº¥y (variationId == -1 hoáº·c exception) thÃ¬ táº¡o má»›i
+            if (variationId == -1) {
+                Variation variation = new Variation();
+                variation.setCategoryId(new Category(categoryId));
+                variation.setName(variationName);
+                variation.setDatatype(datatype);
+                variation.setUnit(unit);
+
+                dao.VariationDAO.VariationManager.createVariation(variation);
+                variationId = dao.VariationDAO.VariationFetcher.getVariationIdByNameAndCategory(variationName, categoryId);
+            }
+            session.setAttribute("variationId", variationId);
+
+            // ðŸ›  ThÃªm cÃ¡c giÃ¡ trá»‹ variationOptions (náº¿u chÆ°a cÃ³)
             String[] optionsArray = variationOptions.split(",");
+            List<VariationValue> variationValuesList = new ArrayList<>();
             for (String value : optionsArray) {
                 value = value.trim();
                 if (!value.isEmpty()) {
-                    VariationValue variationValue = new VariationValue();
-                    variationValue.setVariationId(new Variation(variationId));
-                    variationValue.setValue(value);
-                    dao.VariationValueDAO.VariationValueManager.createVariationValue(variationValue);
+                    // Kiá»ƒm tra xem giÃ¡ trá»‹ Ä‘Ã£ tá»“n táº¡i chÆ°a
+                    VariationValue existingValue = dao.VariationValueDAO.VariationValueFetcher.getVariationValueByValue(value);
+
+                    if (existingValue == null) {
+                        // Chá»‰ thÃªm náº¿u chÆ°a cÃ³
+                        VariationValue variationValue = new VariationValue();
+                        variationValue.setVariationId(new Variation(variationId));
+                        variationValue.setValue(value);
+                        dao.VariationValueDAO.VariationValueManager.createVariationValue(variationValue);
+
+                        existingValue = dao.VariationValueDAO.VariationValueFetcher.getVariationValueByValue(value);
+                    }
+                    variationValuesList.add(existingValue);
                 }
             }
-
-            response.sendRedirect(request.getContextPath() + "/shophome");
+            session.setAttribute("variationValues", variationValuesList);
+            response.sendRedirect(request.getContextPath() + "/addproduct?action=setStockAndPrice");
 
         } catch (SQLException e) {
             request.setAttribute("error", "db_error");
             request.getRequestDispatcher(config.Config.JSPMapper.SELECT_VARIATION).forward(request, response);
+        }
+    }
+
+    private void handleSetStockAndPrice(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String[] productItemIds = request.getParameterValues("productItemId");
+        String[] stockValues = request.getParameterValues("stock");
+        String[] priceValues = request.getParameterValues("price");
+
+        if (productItemIds == null || stockValues == null || priceValues == null
+                || productItemIds.length != stockValues.length || productItemIds.length != priceValues.length) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid data");
+            return;
+        }
+
+        try {
+            for (int i = 0; i < productItemIds.length; i++) {
+                int productItemId = Integer.parseInt(productItemIds[i]);
+                int stock = Integer.parseInt(stockValues[i]);
+                BigDecimal price = new BigDecimal(priceValues[i]);
+
+                // Lấy ProductItem từ DB
+                ProductItem productItem = dao.ProductDAO.ProductFetcher.getProductItem(productItemId);
+                if (productItem != null) {
+                    productItem.setStock(stock);
+                    productItem.setPrice(price);
+                    dao.ProductDAO.ProductManager.addProductItem(productItem);
+
+                    // Lấy danh sách ProductCustomization từ productItemId
+                    List<ProductCustomization> customizations
+                            = dao.ProductDAO.ProductFetcher.getCustomizations(productItemId);
+
+                    // Chỉ thêm nếu có customization hợp lệ
+                    if (customizations != null && !customizations.isEmpty()) {
+                        dao.ProductDAO.ProductManager.addCustomizations(productItem.getProductId().getId(), customizations);
+                    }
+                }
+            }
+
+            response.sendRedirect("/shophome");
+        } catch (Exception ex) {
+            request.setAttribute("error", "Stock and price error");
+            request.getRequestDispatcher(config.Config.JSPMapper.ERROR_JSP).forward(request, response);
         }
     }
 

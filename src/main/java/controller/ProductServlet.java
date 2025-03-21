@@ -25,7 +25,7 @@ public class ProductServlet extends HttpServlet {
                 service.Logging.logger.error("Error processing edit action: ", e);
                 response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server error: " + e.getMessage());
             }
-        }
+        } 
     }
 
     @Override
