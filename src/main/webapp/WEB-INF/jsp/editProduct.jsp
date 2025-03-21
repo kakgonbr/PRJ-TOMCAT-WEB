@@ -111,16 +111,20 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>${product.productItems[0].id}</td>
-                                    <input type="hidden" name="productItemId" value="${product.productItems[0].id}">
-                                    <td>
-                                        <input type="number" name="productItemStock" class="form-control" value="${product.productItems[0].stock}" required>
-                                    </td>
-                                    <td>
-                                        <input type="number" name="productItemPrice" class="form-control" value="${product.productItems[0].price}" required step="0.01">
-                                    </td>
-                                    </tr>
+                                        <c:forEach var="item" items="${productItems}">
+                                            <tr>
+                                                <td>
+                                                    <input type="hidden" name="productItemId" value="${item.id}">
+                                                    ${item.id}
+                                                </td>
+                                                <td>
+                                                    <input type="number" name="stock" value="${item.stock}">
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="price" value="${item.price}">
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
                                     </tbody>
                                 </table>
                             </div>

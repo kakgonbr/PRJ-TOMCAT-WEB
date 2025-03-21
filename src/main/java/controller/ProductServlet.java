@@ -65,13 +65,11 @@ public class ProductServlet extends HttpServlet {
         String productName = request.getParameter("name");
         String categoryParam = request.getParameter("filter");
         String description = request.getParameter("description");
-        String productItemIdParam = request.getParameter("productItemId");
-        String stockParam = request.getParameter("productItemStock");
-        String priceParam = request.getParameter("productItemPrice");
+        String[] productItemIds = request.getParameterValues("productItemId");
+        String[] stocks = request.getParameterValues("stock");
+        String[] prices = request.getParameterValues("price");
 
-        if (productItemIdParam == null || productItemIdParam.trim().isEmpty()
-                || stockParam == null || stockParam.trim().isEmpty()
-                || priceParam == null || priceParam.trim().isEmpty()) {
+        if (productItemIds == null && stocks == null && prices == null) {
             request.setAttribute("error", "Missing or invalid parameters.");
             request.getRequestDispatcher(config.Config.JSPMapper.EDIT_PRODUCT).forward(request, response);
             return;
@@ -94,6 +92,7 @@ public class ProductServlet extends HttpServlet {
             }
             // save product to db
             Product product = new Product();
+            java.util.List<model.ProductItem> productItemList = new java.util.ArrayList<>();
             product.setShopId(shop);
             product.setCategoryId(category);
             product.setName(productName);
@@ -101,11 +100,20 @@ public class ProductServlet extends HttpServlet {
             product.setImageStringResourceId(null);
             product.setStatus(true);
             dao.ProductDAO.ProductManager.editProduct(product);
-            int productItemId = Integer.parseInt(productItemIdParam);
-            int stock = Integer.parseInt(stockParam);
-            BigDecimal price = new BigDecimal(priceParam);
+            //save productItem to db
+        for (int i = 0; i < productItemIds.length; i++) {
+            int productItemId = Integer.parseInt(productItemIds[i]);
+            int stock = Integer.parseInt(stocks[i]);
+            BigDecimal price = new BigDecimal(prices[i]);
 
-            dao.ProductItemDAO.productItemManager.editProductItem(productItemId, stock, price);
+            model.ProductItem item = new model.ProductItem();
+            item.setId(productItemId);
+            item.setStock(stock);
+            item.setPrice(price);
+            productItemList.add(item);
+        }
+
+        dao.ProductDAO.ProductManager.updateMultipleProductItems(productItemList);
 
             response.sendRedirect(request.getContextPath() + "/shophome");
         } catch (NumberFormatException e) {
