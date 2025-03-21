@@ -2,7 +2,6 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-
 <t:genericpage title="Select Variation">
     <jsp:attribute name="head">
         <t:resources/>
@@ -18,7 +17,7 @@
 
             function toggleNewVariationForm() {
                 let form = document.getElementById("newVariationForm");
-                form.style.display = form.style.display === "none" ? "block" : "none";
+                form.style.display = (form.style.display === "none" || form.style.display === "") ? "block" : "none";
             }
 
             // Hiển thị Variation đã chọn
@@ -28,10 +27,10 @@
 
                 document.querySelectorAll("input[name='variation']:checked").forEach(variation => {
                     let div = document.createElement("div");
-                    div.innerHTML = <strong>${variation.dataset.name}</strong>;
-                    
+                    div.innerHTML = `<strong>${variation.dataset.name}</strong>`;
+
                     let ul = document.createElement("ul");
-                    document.querySelectorAll(input[name='variationValue'][data-parent='${variation.value}']:checked).forEach(value => {
+                    document.querySelectorAll(`input[name="variationValue"][data-parent="${variation.value}"]:checked`).forEach(value => {
                         let li = document.createElement("li");
                         li.textContent = value.dataset.name;
                         ul.appendChild(li);
@@ -68,7 +67,7 @@
             </div>
 
             <h3>Selected Variations:</h3>
-            <div id="selectedVariations"></div>
+            <div id="variationFilter"></div>
 
             <label for="datatype">Data Type:</label>
             <select name="datatype" id="datatype">
