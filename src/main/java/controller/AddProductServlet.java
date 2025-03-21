@@ -188,7 +188,7 @@ public class AddProductServlet extends HttpServlet {
             session.setAttribute("variationId", variationId);
 
             // Xử lý danh sách variation values
-            String[] optionsArray = variationOptions.split(",");
+            String[] optionsArray = variationOptions.split("\\s*,\\s*");
             List<VariationValue> variationValuesList = new ArrayList<>();
             for (String value : optionsArray) {
                 value = value.trim();
