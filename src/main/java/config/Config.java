@@ -1,9 +1,10 @@
 package config;
 
 public final class Config {
+
     public static final String[] nonPrivileged = {"/login", "/public", "/home", "/redirect", "/resources", "/ipn", "/return", "/logs", "/ajax", "/signup", "/product", "/shop", "/category"};
     public static final String[] nonMaintenance = {"/login", "/error", "/redirect"};
-    
+
     public static final String LOG_LOCATION = "/prj/logs/app.log";
 
     public static final class DBConfig {
@@ -19,6 +20,7 @@ public final class Config {
     }
 
     public static final class JSPMapper {
+
         public static final String LOGIN_JSP = "/WEB-INF/jsp/login.jsp";
         public static final String HOME_JSP = "/WEB-INF/jsp/home.jsp";
         public static final String MAINTENANCE_JSP = "/WEB-INF/jsp/maintenance.jsp";
@@ -47,17 +49,19 @@ public final class Config {
         public static final String CATALOG = "/WEB-INF/jsp/catalog.jsp";
         public static final String PRODUCT_INFO = "/WEB-INF/jsp/productInfoTest.jsp";
         public static final String EDIT_PRODUCT = "/WEB-INF/jsp/editProduct.jsp";
-
         public static final String PRIVILEGED_ADMIN_JSP = "/WEB-INF/jsp/admin/adminStats.jsp";
+        public static final String SET_STOCK_AND_PRICE = "/WEB-INF/jsp/admin/adminStats.jsp";
     }
 
     public static final class CookieMapper {
+
         public static final String REMEMBER_ME_COOKIE = "rememberMe";
 
         public static final int UUID_RETRY = 3;
     }
 
     public static final class Time {
+
         public static final java.time.format.DateTimeFormatter outputFormatDate = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy");
         public static final java.time.format.DateTimeFormatter inputFormatDate = java.time.format.DateTimeFormatter.ofPattern("d/M/yyyy");
 
@@ -66,16 +70,19 @@ public final class Config {
     }
 
     public static final class Resources {
+
         public static final String ROOT_DIR = "/prj/resources";
     }
 
     public static final class MailConfig {
+
         public static final String EMAIL_AUTH_USER = System.getenv("EMAIL_AUTH_USER");
         public static final String EMAIL_AUTH_PASSWORD = System.getenv("EMAIL_AUTH_PASSWORD"); // Dangerous
         public static final String EMAIL_FROM = EMAIL_AUTH_USER;
     }
 
     public static class GGLoginConfig {
+
         public static final String GOOGLE_CLIENT_ID = System.getenv("GOOGLE_CLIENT_ID");
         public static final String GOOGLE_CLIENT_SECRET = System.getenv("GOOGLE_CLIENT_SECRET");
         public static final String GOOGLE_REDIRECT_URI = "https://kakgonbri.zapto.org:8443/prj/signup";
@@ -85,6 +92,7 @@ public final class Config {
     }
 
     public static class FBLoginConfig {
+
         public static final String FACEBOOK_CLIENT_ID = System.getenv("FACEBOOK_CLIENT_ID");
         public static final String FACEBOOK_CLIENT_SECRET = System.getenv("FACEBOOK_CLIENT_SECRET");
         public static final String FACEBOOK_REDIRECT_URI = "https://kakgonbri.zapto.org/prj/signup?method=fb";
@@ -93,6 +101,7 @@ public final class Config {
     }
 
     public static class GoongMapAPIConfig {
+
         public static final String API_KEY = System.getenv("GOONG_API_KEY");
         public static final String API_AUTOCOMPLETE_LINK = "https://rsapi.goong.io/place/autocomplete?";
         public static final String API_GEO_CODE = "https://rsapi.goong.io/geocode?";
