@@ -95,22 +95,6 @@ function fetchByShop() {
   fetchProducts(null, filter ? filter.value : 0, shopId);
 }
 
-function getProductInfo(productId) {
-  var url = new URL(
-    "https://" + location.host + contextPath + "/ajax/products"
-  );
-
-  if (productId) {
-    url.searchParams.append("productId", productId);
-  }
-
-  fetch(url.toString())
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data); // test
-    })
-    .catch((error) => console.error("Error fetching data:", error));
-}
 
 function fetchProductsShop(shopId) {
   var url = new URL(
