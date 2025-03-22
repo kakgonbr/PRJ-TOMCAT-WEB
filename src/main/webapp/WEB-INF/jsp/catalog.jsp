@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <t:genericpage title="Catalog">
     <jsp:attribute name="head">
@@ -46,12 +47,36 @@
                         </a>
                     </div>
                     <!--user-->
+                    
+                    <c:if test="${user != null && user != ''}">
                     <div class="ms-4">
-                        <a href="#" class="p-2 text-decoration-none fs-5 logo rounded-pill">
-                            <i class="bi bi-person-fill "></i>
-                            <span class="text-muted">User</span>
+                        <!-- add user name here -->
+                        <a class="nav-link dropdown-toggle p-2 text-decoration-none fs-5 logo rounded-pill" href="#" id="navbarDropdown"
+                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                           <i class="bi bi-person-fill "></i>
+                           <span class="text-muted">${user}</span>
+                            
                         </a>
+                        <ul class="dropdown-menu dropdown-menu-end"
+                            aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li><a class="dropdown-item" href="#">Something</a></li>
+                            <li>
+                                <hr class="dropdown-divider" />
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="${pageContext.request.contextPath}/login?action=logout">Logout</a>
+                            </li>
+                        </ul>
                     </div>
+                    </c:if>
+                    <c:if test="${user == null || user == ''}">
+                        <div class="ms-4">
+                        
+                            <a href="${pageContext.request.contextPath}/login" class="p-2 text-decoration-none fs-5 logo rounded-pill">Log In</a>
+                        
+                        </div>
+                    </c:if>
                     <!--cart-->
                     <div class="ms-4">
                         <a href="#" class="p-2 text-decoration-none fs-5 logo rounded-pill">
@@ -87,12 +112,6 @@
                         <button class="btn border-0 rounded-5 noHoverEffect" type="submit">
                             <i class="bi bi-search"></i> 
                         </button>
-                        
-                        <ul class="dropdown-menu border-0 shadow p-3 overflow-auto dropdown-menu-fullwidth" >
-                            <li><a class="dropdown-item" href="#">lore</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
                     </form>
                     
                 </div>
