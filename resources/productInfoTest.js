@@ -165,16 +165,17 @@ function updateSelection() {
         
         const productItemIdInput = document.getElementById("productItemId");
         const price = document.getElementById("price-counter");
-
+        
         productItemIdInput.value = matchingItem.id;
         price.innerText = matchingItem.price + "$";
-
+        
         currentMaxQuantity = matchingItem.stock;
-
+        
         updateQuantity(0);
     } else {
         console.log("No matching product available.");
         
+        const price = document.getElementById("price-counter");
         const productItemIdInput = document.getElementById("productItemId");
 
         productItemIdInput.value = 0;
