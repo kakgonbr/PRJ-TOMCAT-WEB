@@ -63,7 +63,7 @@ public class ProductItem implements Serializable {
     
     @OneToMany(mappedBy = "productItemId")
     private List<ProductCustomization> productCustomizationList;
-    private String name;
+    // private String name;
 
     public ProductItem() {
     }
@@ -71,9 +71,9 @@ public class ProductItem implements Serializable {
     public ProductItem(Integer id) {
         this.id = id;
     }
-    public String getName() {
-    return this.name; // Hoặc thuộc tính phù hợp
-}
+//     public String getName() {
+//     return this.name; // Hoặc thuộc tính phù hợp
+// }
 
     // Getters and Setters
      public Integer getId() {
