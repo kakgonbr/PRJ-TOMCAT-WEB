@@ -5,7 +5,8 @@
     <jsp:attribute name="head">
         <t:resources/>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/catalog_css">
-        
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/userMain_css">
+
         <script>
             var contextPath = "${pageContext.request.contextPath}";
             var categoryId = "${categoryId}"
@@ -286,5 +287,6 @@
     <jsp:attribute name="footer">
         <t:footer/>
         <script src="${pageContext.request.contextPath}/resources/catalog_js"></script>
+        <script src="${pageContext.request.contextPath}/resources/userMain_js"></script>
     </jsp:attribute>
 </t:genericpage>
