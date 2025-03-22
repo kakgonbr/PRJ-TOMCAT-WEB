@@ -92,7 +92,7 @@ public final class VariationDAO {
         public static synchronized model.Variation getTopVariation(int id) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 model.Variation variation = em.find(model.Variation.class, id);
-                Hibernate.initialize(variation.getVariationValueList());
+                Hibernate.initialize(variation.getVariationValueList());               
 
                 return variation;
 
@@ -118,16 +118,11 @@ public final class VariationDAO {
                 throw new SQLException(e);
             }
         }
-
-        public List<Variation> getVariationsByCategoryId(int categoryId) throws SQLException {
+        public static synchronized List<Variation> getVariationsByCategoryId(int categoryId) throws SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                List<Variation> variations = em.createQuery("FROM Variation v WHERE v.category.id = :categoryId", Variation.class)
+                return em.createNamedQuery("Variation.findByCategoryId", Variation.class)
                         .setParameter("categoryId", categoryId)
                         .getResultList();
-                for (Variation v : variations) {
-                    v.getVariationValueList().size();
-                }
-                return variations;
             } catch (Exception e) {
                 throw new SQLException(e);
             }
