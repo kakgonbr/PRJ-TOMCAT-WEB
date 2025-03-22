@@ -10,6 +10,7 @@
         <script>
             var contextPath = "${pageContext.request.contextPath}";
             var categoryId = "${sessionScope.categoryId}";
+            var variationId = null;
 
             document.addEventListener("DOMContentLoaded", function () {
                 if (!categoryId) {
@@ -17,6 +18,7 @@
                     return;
                 }
                 fetchVariations(categoryId);
+                fetchVariationValues(variationId);
             });
 
             function toggleNewVariationForm() {
@@ -81,7 +83,9 @@
 
             <label>Choose Variation:</label>
             <div id="variationFilter"></div> 
-
+            
+             <button type="button" onclick="fetchVariationValues()" class="btn btn-warning">Apply Variation</button>
+             
             <label>Choose Variation Values:</label>
             <div id="variationValueFilter"></div> 
 
