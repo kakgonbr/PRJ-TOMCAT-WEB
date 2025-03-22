@@ -50,7 +50,7 @@
     <jsp:attribute name="body">
         <h2>Select Variations</h2>
         <c:if test="${not empty error}">
-            <div style="color: red; font-weight: bold;">
+            <div style="color: red; font-weight: bold; padding: 10px; border: 1px solid red; background-color: #ffe6e6;">
                 <c:choose>
                     <c:when test="${error == 'missing_fields'}">
                         ⚠️ Please fill in all required fields.
@@ -62,9 +62,13 @@
                         ❗ A database error occurred. Please contact support.
                     </c:when>
                     <c:otherwise>
-                        🚨 Unknown error: ${error}
+                        🚨 Unknown error occurred.
                     </c:otherwise>
                 </c:choose>
+                <br>
+                <c:if test="${not empty errorMessage}">
+                    <strong>Details:</strong> ${errorMessage}
+                </c:if>
             </div>
         </c:if>
 
