@@ -17,17 +17,17 @@
     <jsp:attribute name="body">
         <h2>Cart Items</h2>
         <table border="1">
+            <th>
+                <td>Image</td>
+                <td>Name</td>
+                <td>Shop</td>
+                <td>Promotion</td>
+                <td>Quantity</td>
+                <td>Price</td>
+                <td>Stock</td>
+                <td>Customization</td>
+            </th>
             <c:forEach var="cartItem" items="${cartItems}">
-                <th>
-                    <td>Image</td>
-                    <td>Name</td>
-                    <td>Shop</td>
-                    <td>Promotion</td>
-                    <td>Quantity</td>
-                    <td>Price</td>
-                    <td>Stock</td>
-                    <td>Customization</td>
-                </th>
                 <tbody>
                     <tr>
                         <td>
