@@ -145,6 +145,7 @@ public class AddProductServlet extends HttpServlet {
     private void handleSelectVariation(HttpServletRequest request, HttpServletResponse response, HttpSession session)
             throws ServletException, IOException {
         try {
+            Integer productId = (Integer) session.getAttribute("productId");
             Integer categoryId = (Integer) session.getAttribute("categoryId");
             if (categoryId == null) {
                 response.sendRedirect(request.getContextPath() + "/shophome");
@@ -191,14 +192,14 @@ public class AddProductServlet extends HttpServlet {
 
             // Xử lý danh sách variation values
             String[] optionsArray = variationOptions.split("\\s*,\\s*");
-            List<VariationValue> variationValuesList = new ArrayList<>();
+            List<ProductItem> productItemList = new ArrayList<>();
             for (String value : optionsArray) {
                 value = value.trim();
                 if (!value.isEmpty()) {
-                    VariationValue existingValue = dao.VariationValueDAO.VariationValueFetcher.getVariationValueByValue(value);
+                    VariationValue variationValue = dao.VariationValueDAO.VariationValueFetcher.getVariationValueByValue(value);
 
-                    if (existingValue == null) {
-                        VariationValue variationValue = new VariationValue();
+                    if (variationValue == null) {
+                        variationValue = new VariationValue();
                         variationValue.setVariationId(new Variation(variationId));
                         variationValue.setValue(value);
                         try {
@@ -210,12 +211,30 @@ public class AddProductServlet extends HttpServlet {
                             return;
                         }
 
-                        existingValue = dao.VariationValueDAO.VariationValueFetcher.getVariationValueByValue(value);
+                        variationValue = dao.VariationValueDAO.VariationValueFetcher.getVariationValueByValue(value);
                     }
-                    variationValuesList.add(existingValue);
+                    ProductItem productItem = new ProductItem();
+                    productItem.setProductId(new Product(productId));
+                    productItem.setStock(0);
+                    productItem.setPrice(BigDecimal.ZERO);
+
+                    productItem = dao.ProductDAO.ProductManager.addProductItem(productItem);
+                    int productItemId = productItem.getId();
+                    productItem.setId(productItemId);
+
+                    ProductCustomization productCustomization = new ProductCustomization();
+                    productCustomization.setProductItemId(new ProductItem(productItemId));
+                    productCustomization.setVariationValueId(variationValue);
+
+                    List<ProductCustomization> customizations = new ArrayList<>();
+                    customizations.add(productCustomization);
+
+                    dao.ProductDAO.ProductManager.addCustomizations(productId, customizations);
+
+                    productItemList.add(productItem);
                 }
             }
-            session.setAttribute("variationValues", variationValuesList);
+            session.setAttribute("selectedProductItems", productItemList);
             response.sendRedirect(request.getContextPath() + "/addproduct?action=setStockAndPrice");
 
         } catch (SQLException e) {
@@ -238,32 +257,28 @@ public class AddProductServlet extends HttpServlet {
         }
 
         try {
+            List<ProductItem> updatedItems = new ArrayList<>();
             for (int i = 0; i < productItemIds.length; i++) {
                 int productItemId = Integer.parseInt(productItemIds[i]);
                 int stock = Integer.parseInt(stockValues[i]);
                 BigDecimal price = new BigDecimal(priceValues[i]);
 
-                // Lấy ProductItem từ DB
-                ProductItem productItem = dao.ProductDAO.ProductFetcher.getProductItem(productItemId);
-                if (productItem != null) {
-                    productItem.setStock(stock);
-                    productItem.setPrice(price);
-                    dao.ProductDAO.ProductManager.addProductItem(productItem);
+                // Tạo đối tượng ProductItem với ID hiện có
+                ProductItem productItem = new ProductItem();
+                productItem.setId(productItemId);
+                productItem.setStock(stock);
+                productItem.setPrice(price);
 
-                    // Lấy danh sách ProductCustomization từ productItemId
-                    List<ProductCustomization> customizations
-                            = dao.ProductDAO.ProductFetcher.getCustomizations(productItemId);
-
-                    // Chỉ thêm nếu có customization hợp lệ
-                    if (customizations != null && !customizations.isEmpty()) {
-                        dao.ProductDAO.ProductManager.addCustomizations(productItem.getProductId().getId(), customizations);
-                    }
-                }
+                updatedItems.add(productItem);
             }
 
-            response.sendRedirect("/shophome");
+            // Cập nhật danh sách ProductItem
+            int productId = (Integer) request.getSession().getAttribute("productId");
+            dao.ProductDAO.ProductManager.updateMultipleProductItems(productId, updatedItems);
+
+            response.sendRedirect(request.getContextPath() + "/shophome");
         } catch (Exception ex) {
-            request.setAttribute("error", "Stock and price error");
+            request.setAttribute("error", "Stock and price update error");
             request.getRequestDispatcher(config.Config.JSPMapper.ERROR_JSP).forward(request, response);
         }
     }
