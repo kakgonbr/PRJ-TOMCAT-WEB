@@ -24,19 +24,8 @@ function moveSlider(direction) {
 }
 // Đặt ảnh đầu tiên là active khi tải trang
 
-
 let inputQuantity;
 let lastValidValue; 
-
-inputQuantity.addEventListener('input', function() {
-    const currentValue = this.value;
-    if (currentValue === '' || isNaN(currentValue) || parseInt(currentValue) < 1) {
-        this.value = lastValidValue; 
-    } else {
-        lastValidValue = parseInt(currentValue); 
-    }
-    }
-);
 
 function updateQuantity(change) {
     let quantity = parseInt(inputQuantity.value); 
@@ -55,5 +44,16 @@ document.addEventListener("DOMContentLoaded", function () {
     imageWidth = 155; // Chiều rộng mỗi ảnh (145px + 10px margin)
     sliderImages[0].classList.add('active');
     inputQuantity = document.getElementById('quantity');
+    
+    inputQuantity.addEventListener('input', function() {
+            const currentValue = this.value;
+            if (currentValue === '' || isNaN(currentValue) || parseInt(currentValue) < 1) {
+                this.value = lastValidValue; 
+            } else {
+                lastValidValue = parseInt(currentValue); 
+            }
+        }
+    );
+
     lastValidValue = parseInt(inputQuantity.value); 
 });
