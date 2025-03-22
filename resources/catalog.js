@@ -139,7 +139,7 @@ function generateTabContent(category) {
 function generateSubCategoryList(children) {
     if (children.length === 0) return "";
     
-    let html = `<ul class="list-unstyled">`;
+    let html = `<ul class="">`;
     children.forEach(child => {
         html += `<li>
                     <a href="#" class="text-decoration-none text-dark blackLineUnderneath">${child.name}</a>
