@@ -520,7 +520,9 @@ VALUES
 ('catalog_css','catalog.css'),
 ('catalog_js','catalog.js'),
 ('productInfoTest_css','productInfoTest.css'),
-('productInfoTest_js','productInfoTest.js');
+('productInfoTest_js','productInfoTest.js'),
+('searchPage_css','searchPage.css'),
+('searchPage_js','searchPage.js');
 
 INSERT INTO tblUser (email, username, phoneNumber, password, persistentCookie, googleId, facebookId, isAdmin, profileStringResourceId)
 VALUES 

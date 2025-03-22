@@ -20,7 +20,7 @@
     </jsp:attribute>
 
     <jsp:attribute name="header">
-        <t:nav search="true" mainNav="true" user="${sessionScope.user.username}" activePage="home"/>
+        <t:userHeader user="${sessionScope.user.username}" />
     </jsp:attribute>
 
     <jsp:attribute name="body">

@@ -14,6 +14,7 @@ public class TestCatalogServlet extends HttpServlet {
             request.setAttribute("categoryId", 0);
         else
             request.setAttribute("categoryId", categoryId);
+        
         request.getRequestDispatcher(config.Config.JSPMapper.CATALOG).forward(request, response);
     }
 
