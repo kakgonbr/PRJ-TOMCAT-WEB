@@ -626,7 +626,7 @@ VALUES
     -- seating subcategories
     ('Chairs', 'test_png', (select id from tblCategory where name = 'Seating')),
     ('Sofas and Couches', 'test_png', (select id from tblCategory where name = 'Seating')),
-    ('Ottomans and Footstools:', 'test_png', (select id from tblCategory where name = 'Seating')),
+    ('Ottomans and Footstools', 'test_png', (select id from tblCategory where name = 'Seating')),
 
     -- sleeping subcategories
     ('Beds', 'test_png', (select id from tblCategory where name = 'Sleeping')),
@@ -659,12 +659,16 @@ INSERT INTO tblCategory (name, imageStringResourceId, parent_id) VALUES
 ('audio device', 'test_png', (select id from tblCategory where name = 'Electronics'));
 
 
-INSERT INTO tblVariation (categoryId,name,datatype,unit)
+INSERT INTO tblCategory (name, imageStringResourceId, parent_id)
+VALUES
+('Home Appliances', 'test_png', 0);
+
+INSERT INTO tblVariation (categoryId,name,datatype)
  VALUES 
- 	(1,'color','string',NULL),
- 	(6,'man clothes size','string',NULL),
- 	(8,'shoe size','string',NULL),
- 	(7,'woman clothes size', 'string', NULL);
+ 	(1,'color','string'),
+ 	(6,'man clothes size','string'),
+ 	(8,'shoe size','string'),
+ 	(7,'woman clothes size', 'string');
 
 
 INSERT INTO tblShop (ownerId, name, address, profileStringResourceId, visible)
@@ -696,7 +700,7 @@ VALUES
 (3, (select id from tblCategory where name = 'Home Appliances'), 'Vacuum Cleaner', 'Powerful home cleaning device', NULL, 'test_png', 1),
 (4, (select id from tblCategory where name = 'Electronics'), 'PlayStation 5', 'Next-gen gaming console', 4, 'test_png', 1),
 (4, (select id from tblCategory where name = 'Electronics'), 'Xbox Series X', 'Powerful Microsoft gaming console', 4, 'test_png', 1),
-(5, (select id from tblCategory where name = 'Sofa and Couches'), 'Modern Sofa', 'Comfortable and stylish', 5, 'test_png', 1),
+(5, (select id from tblCategory where name = 'Sofas and Couches'), 'Modern Sofa', 'Comfortable and stylish', 5, 'test_png', 1),
 (5, (select id from tblCategory where name = 'Dining Tables'), 'Wooden Dining Table', 'Elegant and durable', 5, 'test_png', 1),
 (1, (select id from tblCategory where name = 'smartphones'), 'iPhone 14 Pro', 'Latest Apple smartphone', 1, 'test_png', 1),
 (1, (select id from tblCategory where name = 'Shoes'), 'Adidas Ultraboost', 'High-performance running shoes', 3, 'test_png', 1),
@@ -918,7 +922,6 @@ INSERT INTO tblProductCustomization(productItemId,variationValueId)
  	(38, 1),
  	(38, 16);
  
-EXEC ComputeTFIdF
 
 INSERT INTO tblServerStatistics (day, totalMoneyEarned, userNum, productNum, shopNum, promotionNum, purchaseNum, visitNum, peakSessionNum, averageResponseTime, maxResponseTime)
 VALUES 
@@ -936,11 +939,11 @@ VALUES
 -- Electronics variation, 
 INSERT INTO tblVariation (categoryId, name, datatype, unit, status)
 VALUES 
-    ((SELECT id FROM tblCategory WHERE name = 'Electronics'), 'color', 'string', NULL, NULL),
+    ((SELECT id FROM tblCategory WHERE name = 'Electronics'), 'color', 'string', '', NULL),
     ((SELECT id FROM tblCategory WHERE name = 'Electronics'), 'storage capacity', 'string', 'GB', NULL),
     ((SELECT id FROM tblCategory WHERE name = 'Electronics'), 'RAM size', 'string', 'GB', NULL),
-	((SELECT id FROM tblCategory WHERE name = 'Electronics'), 'brand', 'string', NULL, NULL),
-	((SELECT id FROM tblCategory WHERE name = 'laptops'), 'chip', 'string', null, NULL),
+	((SELECT id FROM tblCategory WHERE name = 'Electronics'), 'brand', 'string', '', NULL),
+	((SELECT id FROM tblCategory WHERE name = 'laptops'), 'chip', 'string', '', NULL),
 	((SELECT id FROM tblCategory WHERE name = 'televisions'), 'screen size', 'string', 'inch', NULL),
     ((SELECT id FROM tblCategory WHERE name = 'cameras'), 'megapixels', 'string', 'MP', NULL);
 -- Electronics variation value
@@ -1000,11 +1003,11 @@ VALUES
 -- Book variation
 INSERT INTO tblVariation (categoryId, name, datatype, unit, status)
 VALUES 
-    ((SELECT id FROM tblCategory WHERE name = 'Book'), 'Format', 'string', NULL, NULL),
-    ((SELECT id FROM tblCategory WHERE name = 'Book'), 'Language', 'string', NULL, NULL),
-    ((SELECT id FROM tblCategory WHERE name = 'Book'), 'Publication Year', 'integer', 'year', NULL),
-    ((SELECT id FROM tblCategory WHERE name = 'Book'), 'Publisher', 'string', NULL, NULL),
-	((SELECT id FROM tblCategory WHERE name = 'Book'), 'Rating', 'string', NULL, NULL);
+    ((SELECT id FROM tblCategory WHERE name = 'Book'), 'Format', 'string', '', NULL),
+    ((SELECT id FROM tblCategory WHERE name = 'Book'), 'Language', 'string', '', NULL),
+    ((SELECT id FROM tblCategory WHERE name = 'Book'), 'Publication Year', 'integer', '', NULL),
+    ((SELECT id FROM tblCategory WHERE name = 'Book'), 'Publisher', 'string', '', NULL),
+	((SELECT id FROM tblCategory WHERE name = 'Book'), 'Rating', 'string', '', NULL);
 
 --Book variation value
 INSERT INTO tblVariationValue (variationId, value, status)
@@ -1042,11 +1045,6 @@ VALUES
     ((SELECT id FROM tblVariation WHERE name = 'Rating'), '3 Stars', NULL),
     ((SELECT id FROM tblVariation WHERE name = 'Rating'), '4 Stars', NULL),
     ((SELECT id FROM tblVariation WHERE name = 'Rating'), '5 Stars', NULL);
-SELECT * FROM tblProduct
-
-
-SELECT * FROM tblVector
-
 
 INSERT INTO tblUser (email, username, phoneNumber, password, persistentCookie, googleId, facebookId, isAdmin, profileStringResourceId)
 VALUES 
@@ -1066,19 +1064,19 @@ VALUES
  --cosmetic
 INSERT INTO tblVariation (categoryId, name, datatype, unit)
 VALUES
-    ((SELECT id FROM tblCategory WHERE name = 'Cosmestic'), 'brand', 'string', NULL),
+    ((SELECT id FROM tblCategory WHERE name = 'Cosmestic'), 'brand', 'string', ''),
 	((SELECT id FROM tblCategory WHERE name = 'Cosmestic'), 'volume', 'integer', 'ml'),
 
-	((SELECT id FROM tblCategory WHERE name = 'Skincare'), 'skin type', 'string', NULL),
+	((SELECT id FROM tblCategory WHERE name = 'Skincare'), 'skin type', 'string', ''),
 
-	((SELECT id FROM tblCategory WHERE name = 'Makeup'), 'finish & texture', 'string', NULL),
+	((SELECT id FROM tblCategory WHERE name = 'Makeup'), 'finish & texture', 'string', ''),
 
-	((SELECT id FROM tblCategory WHERE name = 'Haircare'), 'hair type', 'string', NULL),
-	((SELECT id FROM tblCategory WHERE name = 'Haircare'), 'form', 'string', NULL),
+	((SELECT id FROM tblCategory WHERE name = 'Haircare'), 'hair type', 'string', ''),
+	((SELECT id FROM tblCategory WHERE name = 'Haircare'), 'form', 'string', ''),
 
-	((SELECT id FROM tblCategory WHERE name = 'Bodycare'), 'absorption rate', 'string', NULL),
+	((SELECT id FROM tblCategory WHERE name = 'Bodycare'), 'absorption rate', 'string', ''),
 
-	((SELECT id FROM tblCategory WHERE name = 'Fragrance'), 'fragrance notes', 'string', NULL);
+	((SELECT id FROM tblCategory WHERE name = 'Fragrance'), 'fragrance notes', 'string', '');
 
 	INSERT INTO tblVariationValue (variationId, value)
 VALUES 
@@ -1221,24 +1219,24 @@ VALUES
 INSERT INTO tblVariation (categoryId, name, datatype, unit)
 VALUES
 	--furniture
-	((SELECT id FROM tblCategory WHERE name = 'Furniture'), 'Material', 'string', NULL),
-    ((SELECT id FROM tblCategory WHERE name = 'Furniture'), 'Style', 'string', NULL),
-    ((SELECT id FROM tblCategory WHERE name = 'Furniture'), 'Size', 'string', NULL),
+	((SELECT id FROM tblCategory WHERE name = 'Furniture'), 'Material', 'string', ''),
+    ((SELECT id FROM tblCategory WHERE name = 'Furniture'), 'Style', 'string', ''),
+    ((SELECT id FROM tblCategory WHERE name = 'Furniture'), 'Size', 'string', ''),
 
 	-- Seating 
-	((SELECT id FROM tblCategory WHERE name = 'Seating'), 'Cushion Type', 'string', NULL),
+	((SELECT id FROM tblCategory WHERE name = 'Seating'), 'Cushion Type', 'string', ''),
     
     -- Sleeping 
-    ((SELECT id FROM tblCategory WHERE name = 'Sleeping'), 'Mattress Type', 'string', NULL),
+    ((SELECT id FROM tblCategory WHERE name = 'Sleeping'), 'Mattress Type', 'string', ''),
     
     -- Storage
     ((SELECT id FROM tblCategory WHERE name = 'Storage'), 'Capacity', 'integer', 'liters'),
 
     -- Dining 
-    ((SELECT id FROM tblCategory WHERE name = 'Dining'), 'Shape', 'string', NULL),
+    ((SELECT id FROM tblCategory WHERE name = 'Dining'), 'Shape', 'string', ''),
 
     -- Office 
-    ((SELECT id FROM tblCategory WHERE name = 'Office'), 'Adjustability', 'string', NULL);
+    ((SELECT id FROM tblCategory WHERE name = 'Office'), 'Adjustability', 'string', '');
 
 
 	INSERT INTO tblVariationValue (variationId, value)
@@ -1404,7 +1402,7 @@ VALUES
 
 INSERT INTO tblVariation (categoryId, name, datatype, unit, status)
 VALUES
-(83, 'Color', 'string', NULL, 1); -- might screw things up
+(83, 'Color', 'string', '', 1); -- might screw things up
 
 INSERT INTO tblVariationValue (variationId, value, status)
 VALUES
@@ -1442,3 +1440,6 @@ VALUES
 update tblProduct
 set categoryId = 3
 where categoryId is NULL;
+
+EXEC ComputeTFIdF
+SELECT * FROM tblVector

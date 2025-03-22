@@ -1,9 +1,9 @@
 let currentIndex = 0;
 const imagesPerView = 4; 
-const slider = document.querySelector('.slider');
-const sliderImages = document.querySelectorAll('.slider img');
-const totalImages = sliderImages.length;
-const imageWidth = 155; // Chiều rộng mỗi ảnh (145px + 10px margin)
+let slider;
+let sliderImages;
+let totalImages;
+let imageWidth;
 
 function changeImage(img) {
     document.getElementById('mainImage').src = img.src;
@@ -23,10 +23,10 @@ function moveSlider(direction) {
     slider.style.transform = `translateX(${translateX}px)`;
 }
 // Đặt ảnh đầu tiên là active khi tải trang
-sliderImages[0].classList.add('active');
 
-const inputQuantity = document.getElementById('quantity');
-let lastValidValue = parseInt(inputQuantity.value); 
+
+let inputQuantity;
+let lastValidValue; 
 
 inputQuantity.addEventListener('input', function() {
     const currentValue = this.value;
@@ -47,3 +47,13 @@ function updateQuantity(change) {
     inputQuantity.value = quantity; 
     lastValidValue = quantity; 
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    slider = document.querySelector('.slider');
+    sliderImages = document.querySelectorAll('.slider img');
+    totalImages = sliderImages.length;
+    imageWidth = 155; // Chiều rộng mỗi ảnh (145px + 10px margin)
+    sliderImages[0].classList.add('active');
+    inputQuantity = document.getElementById('quantity');
+    lastValidValue = parseInt(inputQuantity.value); 
+});

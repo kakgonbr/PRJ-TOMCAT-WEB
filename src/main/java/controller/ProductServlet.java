@@ -16,16 +16,27 @@ public class ProductServlet extends HttpServlet {
         String action = request.getParameter("action");
         String productId = request.getParameter("productId");
 
-        if ("edit".equals(action) && productId != null) {
-            try {
-                int id = Integer.parseInt(productId);
-                request.setAttribute("product", new model.ProductDetailsWrapper(dao.ProductDAO.ProductFetcher.getProductDetails(id)));
-                request.getRequestDispatcher(config.Config.JSPMapper.EDIT_PRODUCT).forward(request, response);
-            } catch (Exception e) {
-                service.Logging.logger.error("Error processing edit action: ", e);
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server error: " + e.getMessage());
+        if (productId != null) {
+            int id = Integer.parseInt(productId);
+            if ("edit".equals(action)) {
+                try {
+                    request.setAttribute("product", new model.ProductDetailsWrapper(dao.ProductDAO.ProductFetcher.getProductDetails(id)));
+                    request.getRequestDispatcher(config.Config.JSPMapper.EDIT_PRODUCT).forward(request, response);
+                } catch (Exception e) {
+                    service.Logging.logger.error("Error processing edit action: ", e);
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server error: " + e.getMessage());
+                }
+                return;
             }
-        } 
+
+            request.getRequestDispatcher(config.Config.JSPMapper.PRODUCT_INFO).forward(request, response);
+        }
+
+
+        request.setAttribute("code", 404);
+            request.getRequestDispatcher(request.getContextPath() + "/error").forward(request, response);
+
+            return;
     }
 
     @Override

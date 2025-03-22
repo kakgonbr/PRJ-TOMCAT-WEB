@@ -5,10 +5,15 @@
 <t:genericpage title="Product">
     <jsp:attribute name="head">
         <t:resources />
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/productInfoTest_css">
+        <script src="${pageContext.request.contextPath}/resources/product_js"></script>
+        
         <script>
             var contextPath = "${pageContext.request.contextPath}";
+            document.addEventListener("DOMContentLoaded", function () {
+                getProductInfo(${param.productId});
+            });
         </script>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/productInfoTest_css">
     </jsp:attribute>
 
     <jsp:attribute name="header">
