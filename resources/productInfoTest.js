@@ -89,7 +89,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const customizationContainer = document.getElementById("customizations");
     for (const [type, values] of Object.entries(customizationMap)) {
         const container = document.createElement("div");
-        container.classList.add("row customization-group");
+        container.classList.add("row");
+        container.classList.add("customization-group");
 
         const title = document.createElement("h3");
         title.textContent = type;
