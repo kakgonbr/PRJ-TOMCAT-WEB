@@ -119,8 +119,8 @@ async function fetchCategoriesHeader() {
 }
 
 function generateTabContent(category) {
-    let tabId = `tab${category.id}`;
-    let html = `<div class="tab-pane fade" id="${tabId}" role="tabpanel">
+    let tabId = `child${category.id}`;
+    let html = `<div class="tab-pane fade" id="${tabId}">
                     <div class="row">`;
 
     category.children.forEach(child => {
@@ -152,32 +152,33 @@ function generateSubCategoryList(children) {
 }
 
 function renderTabs(categories) {
-    let tabsContainer = document.getElementById("categoryTabs");
+    let navTabsContainer = document.querySelector(".nav.nav-tabs");
     let tabContentContainer = document.querySelector(".tab-content");
 
-    if (!tabsContainer || !tabContentContainer) return;
+    if (!navTabsContainer || !tabContentContainer) return;
 
     let tabsHtml = "";
     let contentHtml = "";
 
     categories.forEach((category, index) => {
         let activeClass = index === 0 ? "active" : "";
-        let ariaSelected = index === 0 ? "true" : "false";
+        let tabId = `child${category.id}`;
 
-        // Tabs (nav)
+        // Thêm các tab chính (nav-item)
         tabsHtml += `<li class="nav-item">
-                        <a class="nav-link ${activeClass}" id="tab${category.id}-tab" data-bs-toggle="tab" href="#tab${category.id}" role="tab" aria-controls="tab${category.id}" aria-selected="${ariaSelected}">${category.name}</a>
+                        <a class="nav-link ${activeClass} text-dark" href="#${tabId}" data-bs-toggle="tab">${category.name}</a>
                      </li>`;
 
-        // Tab Content
-        contentHtml += `<div class="tab-pane fade ${activeClass}" id="tab${category.id}" role="tabpanel">
+        // Thêm nội dung của từng tab
+        contentHtml += `<div class="tab-pane fade ${activeClass}" id="${tabId}">
                             ${generateTabContent(category)}
                         </div>`;
     });
 
-    tabsContainer.innerHTML = tabsHtml;
+    navTabsContainer.innerHTML = tabsHtml;
     tabContentContainer.innerHTML = contentHtml;
 }
 
 // Fetch categories and generate the UI
 document.addEventListener("DOMContentLoaded", fetchCategoriesHeader);
+

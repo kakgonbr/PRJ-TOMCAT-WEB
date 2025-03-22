@@ -69,27 +69,12 @@
                 </div>
                 <div class="dropdown-menu border-0 shadow p-3 overflow-auto my-3 dropdown-menu-hover" >
                     <div class="container">
-                        <div class="nav nav-tabs d-flex align-items-center justify-content-center text-dark">
-                            <li class="nav-item">
-                              <a class="nav-link active text-dark" href="#child1" data-bs-toggle="tab">Child1 of ALL</a>
-                            </li>
-                            <li class="nav-item">
-                              <a class="nav-link text-dark" href="#child2" data-bs-toggle="tab">Child2 of ALL</a>
-                            </li>
-                            <li class="nav-item">
-                              <a class="nav-link text-dark" href="#child3" data-bs-toggle="tab">Child3 of ALL</a>
-                            </li>
-                            <li class="nav-item">
-                              <a class="nav-link text-dark" href="#child4" data-bs-toggle="tab">Child4 of ALL</a>
-                            </li>
-                        </div>
+                        <ul class="nav nav-tabs d-flex align-items-center justify-content-center text-dark">
+                            
+                        </ul>
+                
                         <div class="row">
                             
-                            <ul class="nav nav-tabs" id="categoryTabs">
-                               
-                            </ul>
-                    
-                           
                             <div class="tab-content">
                                 
                             </div>
