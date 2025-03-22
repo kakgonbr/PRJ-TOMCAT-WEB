@@ -76,23 +76,6 @@ function getProductInfo(productId) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    slider = document.querySelector('.slider');
-    sliderImages = document.querySelectorAll('.slider img');
-    totalImages = sliderImages.length;
-    imageWidth = 155; // Chiều rộng mỗi ảnh (145px + 10px margin)
-    sliderImages[0].classList.add('active');
-    inputQuantity = document.getElementById('quantity');
-
-    inputQuantity.addEventListener('input', function () {
-        const currentValue = this.value;
-        if (currentValue === '' || isNaN(currentValue) || parseInt(currentValue) < 1) {
-            this.value = lastValidValue;
-        } else {
-            lastValidValue = parseInt(currentValue);
-        }
-    });
-
-    lastValidValue = parseInt(inputQuantity.value);
     getProductInfo(productId);
 });
 
@@ -139,6 +122,27 @@ function postFetch() {
     preselect();
 
     getImages();
+
+    slider = document.querySelector('.slider');
+    sliderImages = document.querySelectorAll('.slider img');
+    totalImages = sliderImages.length;
+    imageWidth = 155; // Chiều rộng mỗi ảnh (145px + 10px margin)
+
+    if (sliderImages.length > 0) {
+        sliderImages[0].classList.add('active');
+    }
+    inputQuantity = document.getElementById('quantity');
+
+    inputQuantity.addEventListener('input', function () {
+        const currentValue = this.value;
+        if (currentValue === '' || isNaN(currentValue) || parseInt(currentValue) < 1) {
+            this.value = lastValidValue;
+        } else {
+            lastValidValue = parseInt(currentValue);
+        }
+    });
+
+    lastValidValue = parseInt(inputQuantity.value);
 }
 
 var selectedOptions = {};
