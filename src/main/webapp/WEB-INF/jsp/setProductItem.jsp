@@ -6,31 +6,6 @@
     <jsp:attribute name="head">
         <t:resources/>
         <script src="${pageContext.request.contextPath}/resources/product_js"></script>
-        <script>
-            function openPopup(productId, name, stock, price) {
-                document.getElementById("popup").style.display = "block";
-                document.getElementById("productId").value = productId;
-                document.getElementById("productName").textContent = name;
-                document.getElementById("stock").value = stock || 0;
-                document.getElementById("price").value = price || 0;
-            }
-
-            function closePopup() {
-                document.getElementById("popup").style.display = "none";
-            }
-        </script>
-        <style>
-            .popup {
-                display: none;
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: white;
-                padding: 20px;
-                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-            }
-        </style>
     </jsp:attribute>
 
     <jsp:attribute name="body">
@@ -40,18 +15,21 @@
             <input type="hidden" name="action" value="setStockAndPrice">
             <table border="1">
                 <tr>
-                    <th>Name</th>
+                    <th>ID</th>
                     <th>Stock</th>
                     <th>Price</th>
-                    <th>Action</th>
                 </tr>
-                <c:forEach var="item" items="${sessionScope.selectedProducts}">
+                <c:forEach var="item" items="${sessionScope.selectedProductItems}">
                     <tr>
-                        <td>${item.name}</td>
-                        <td><input type="number" name="stock" min="0" value="${item.stock}"></td>
-                        <td><input type="number" name="price" min="0" step="0.01" value="${item.price}"></td>
                         <td>
                             <input type="hidden" name="productItemId" value="${item.id}">
+                            ${item.id}
+                        </td>
+                        <td>
+                            <input type="number" name="stock" value="${item.stock}">
+                        </td>
+                        <td>
+                            <input type="text" name="price" value="${item.price}">
                         </td>
                     </tr>
                 </c:forEach>
