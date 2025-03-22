@@ -7,6 +7,8 @@
 <t:genericpage title="Home">
     <jsp:attribute name="head">
         <t:resources/>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/userMain_css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/newHome_css">
 
         <script src="${pageContext.request.contextPath}/resources/product_js"></script>
         <script src="${pageContext.request.contextPath}/resources/filter_js"></script>
@@ -89,6 +91,7 @@
 
     <jsp:attribute name="footer">
         <t:footer/>
+        <script src="${pageContext.request.contextPath}/resources/userMain_js"></script>
     </jsp:attribute>
 </t:genericpage>
 
