@@ -74,7 +74,7 @@ public final class CartDAO {
         }
 
         // pardon the inconsistency
-        private static final String GET_CART_BY_USER = "SELECT c FROM Cart c JOIN FETCH c.CartItem ci JOIN FETCH ci.ProductItem pi JOIN FETCH ci.ProductCustomization WHERE userId = :userId";
+        private static final String GET_CART_BY_USER = "SELECT c FROM Cart c JOIN FETCH c.cartItemList ci JOIN FETCH ci.productItemId pi JOIN FETCH ci.productCustomizationList WHERE userId = :userId";
 
         public static synchronized Cart getCartByUser(int userId) throws SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
