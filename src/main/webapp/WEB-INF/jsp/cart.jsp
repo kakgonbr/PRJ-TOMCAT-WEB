@@ -59,7 +59,7 @@
                             ${cartItem.productItem.stock}
                         </td>
                         <td>
-                            <c:forEach var="customization" items="cartItem.productItem.customizations">
+                            <c:forEach var="customization" items="${cartItem.productItem.customizations}">
                                 <p>${customization.name}: ${customization.value} ${customization.unit}</p><br></br>
                             </c:forEach>
                         </td>
