@@ -12,9 +12,11 @@
             var categoryId = "${sessionScope.categoryId}";
 
             document.addEventListener("DOMContentLoaded", function () {
-                if (categoryId) {
-                    fetchVariations(categoryId);
+                if (!categoryId) {
+                    console.error("Category ID is missing in session");
+                    return;
                 }
+                fetchVariations(categoryId);
             });
 
             function toggleNewVariationForm() {
@@ -50,6 +52,7 @@
 
     <jsp:attribute name="body">
         <h2>Select Variations</h2>
+        <p>Debug: Category ID from session = ${sessionScope.categoryId}</p>
         <c:if test="${not empty error}">
             <div style="color: red; font-weight: bold; padding: 10px; border: 1px solid red; background-color: #ffe6e6;">
                 <c:choose>
