@@ -99,10 +99,10 @@
                         <div class="d-flex justify-content-center">
                             <button type="submit" class="btn btn-dark mt-5">Register</button>
                         </div>
-                        <div class="img-container col-md-4">
-                            <img src="" class="img-fluid">
-                        </div>
                     </form>
+                </div>
+                <div class="img-container col-md-4">
+                    <img src="" class="img-fluid">
                 </div>
             </div>
         </div>
