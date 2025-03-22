@@ -73,7 +73,7 @@ function createVariationElement(variation) {
 }
 
 function fetchVariationValues(variationId) {
-    var url = new URL(contextPath + "/ajax/variation");
+    "https://" + location.host + contextPath + "/ajax/variation"
 
     if (variationId) {
         url.searchParams.append("variationId", variationId);
