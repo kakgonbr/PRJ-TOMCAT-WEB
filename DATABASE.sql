@@ -522,7 +522,8 @@ VALUES
 ('productInfoTest_css','productInfoTest.css'),
 ('productInfoTest_js','productInfoTest.js'),
 ('searchPage_css','searchPage.css'),
-('searchPage_js','searchPage.js');
+('searchPage_js','searchPage.js'),
+('newHome_css','newHome.css');
 
 INSERT INTO tblUser (email, username, phoneNumber, password, persistentCookie, googleId, facebookId, isAdmin, profileStringResourceId)
 VALUES 
