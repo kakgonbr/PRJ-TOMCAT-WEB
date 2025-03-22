@@ -99,10 +99,9 @@ document.addEventListener("DOMContentLoaded", function () {
 function postFetch() {
     for (const [type, values] of Object.entries(customizationMap)) {
         const container = document.getElementById("customizations");
-        container.classList.add("my-3");
         
         const title = document.createElement("h4");
-        title.classList.add("fw-semibold mb-3");
+        title.classList.add("fw-semibold");
         title.classList.add("mb-3");
         title.textContent = type;
         container.appendChild(title);
