@@ -55,9 +55,11 @@ public class ProductLoader extends HttpServlet {
                         .collect(Collectors.toList()); // let page be 0 for nowa
 
             } else {
+                String statusParam = request.getParameter("status");
+                Boolean status = (statusParam == null || statusParam.isBlank()) ? true : Boolean.parseBoolean(statusParam);
                 service.Logging.logger.info("Getting shop products for shop {}", shopId);
-
-                products = dao.ProductDAO.ProductFetcher.getShopProductsByCategory(Integer.parseInt(shopId), category).stream().map(model.ProductWrapper::new).collect(Collectors.toList());
+                
+                products = dao.ProductDAO.ProductFetcher.getShopProductsByCategory(Integer.parseInt(shopId), category, status).stream().map(model.ProductWrapper::new).collect(Collectors.toList());
             }
 
             String json = new com.google.gson.Gson().toJson(products);

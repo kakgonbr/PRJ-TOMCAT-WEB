@@ -107,11 +107,6 @@
                                 <button onclick="fetchProductsShop(shopId, true);" class="btn btn-primary">View Available Products</button>
                                 <button onclick="fetchProductsShop(shopId, false);" class="btn btn-danger">View Deleted Products</button>
                             </table>
-                            <div id="waitingConfirm" class="tab-pane fade">Waiting for confirm orders...</div>
-                            <div id="waitingGoods" class="tab-pane fade">Waiting for goods orders...</div>
-                            <div id="inProgress" class="tab-pane fade">In progress orders...</div>
-                            <div id="delivered" class="tab-pane fade">Delivered orders...</div>
-                            <div id="refund" class="tab-pane fade">Refund orders...</div>
                         </div>
                     </div>
                 </main>
