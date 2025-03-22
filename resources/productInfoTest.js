@@ -64,16 +64,25 @@ function getProductInfo(productId) {
             let anchor = document.createElement("a");
             anchor.href = contextPath + "/shop?shopId=" + productData.shop.id;
             anchor.innerText = productData.shop.name;
-            let heading = document.getElementById("product-shop");
-            heading.innerText = "Shop: ";
-            heading.appendChild(anchor);
+            let header = document.getElementById("product-shop");
+            header.innerText = "Shop: ";
+            header.appendChild(anchor);
             
             anchor = document.createElement("a");
             anchor.href = contextPath + "/category?categoryId=" + productData.category.id;
             anchor.innerText = productData.category.name;
-            heading = document.getElementById("product-category");
-            heading.innerText = "Category: ";
-            heading.appendChild(anchor);
+            header = document.getElementById("product-category");
+            header.innerText = "Category: ";
+            header.appendChild(anchor);
+
+            let container = document.getElementById("promotion-container");
+            header = document.createElement("h3");
+            header.innerText = "Active Promotion:" + productData.promotion.name + " : - " + productData.promotion.value + (productData.promotion.type ? "$" : "%");
+            container.appendChild(header);
+
+            header = document.createElement("h3");
+            header.innerText = "Expire on: " + productData.promotion.expireDate;
+            container.appendChild(header);
 
             productData.productItems.forEach(item => {
                 item.customizations.forEach(customization => {
