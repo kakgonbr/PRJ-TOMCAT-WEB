@@ -5,7 +5,11 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<t:genericpage title="Sign Up">
+<t:genericpage title="">
+    <jsp:attribute name="head">
+        <t:resources/>
+    </jsp:attribute>
+
     <jsp:attribute name="header">
         <%-- TODO: Add informative error messages telling the user accepted formats --%>
         <c:if test="${error == 'db'}">
@@ -102,7 +106,7 @@
                     </form>
                 </div>
                 <div class="img-container col-md-4">
-                    <img src="" class="img-fluid">
+                    <img src="../images/register.png" class="img-fluid">
                 </div>
             </div>
         </div>
