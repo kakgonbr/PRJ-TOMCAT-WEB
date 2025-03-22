@@ -19,7 +19,7 @@
             var contextPath = "${pageContext.request.contextPath}";
             var shopId = "${sessionScope.shopId}";
             document.addEventListener("DOMContentLoaded", function () {
-                fetchProductsShop(shopId);
+                fetchProductsShop(shopId, true);
                 handleAccordionSearch("searchBox", "menuAccordion");
             });
         </script>
@@ -57,7 +57,7 @@
                                 </h2>
                                 <div id="collapseProduct" class="accordion-collapse collapse">
                                     <div class="accordion-body">
-                                        <a href="#" class="list-group-item list-group-item-action pb-3">🛍 My
+                                        <a href="${pageContext.request.contextPath}/shophome" class="list-group-item list-group-item-action pb-3">🛍 My
                                             Products</a>
                                         <a href="${pageContext.request.contextPath}/addproduct" class="list-group-item list-group-item-action">➕ Add Product</a>
                                     </div>
@@ -73,7 +73,7 @@
                                     </button>
                                 </h2>
                                 <div id="collapseShop" class="accordion-collapse collapse">
-                                    <a href="#" class="list-group-item list-group-item-action p-3">🏪
+                                    <a href="#" class="list-group-item list-group-item-action p-3">🏪    
                                         Shop
                                         Information</a>
                                 </div>
@@ -82,7 +82,8 @@
                     </div>
                 </nav>
                 <main class="col-md-10 p-4">
-                    <button onclick="fetchProductsShop(shopId);" class="btn btn-primary">Load Product List</button>
+                    <button onclick="fetchProductsShop(shopId, true);" class="btn btn-primary">View Available Products</button>
+                    <button onclick="fetchProductsShop(shopId, false);" class="btn btn-danger">View Deleted Products</button>
                     <p>Products:</p>
                     <table border="1" id="productTableShop">
                     </table>
