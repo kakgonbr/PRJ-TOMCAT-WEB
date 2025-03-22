@@ -196,3 +196,34 @@ function fetchProductsShop(shopId, status) {
     })
     .catch((error) => console.error("Error fetching data:", error));
 }
+
+/*fetch products for home page */
+async function fetchProductsHomePage() {
+  const container = document.querySelector(".row.gy-4");
+  
+  try {
+      const response = await fetch("https://kakgonbri.zapto.org:8443/prj/ajax/products?");
+      const products = await response.json();
+      
+      products.forEach(product => {
+          const productCard = document.createElement("div");
+          productCard.classList.add("col-3", "mb-2");
+          productCard.innerHTML = `
+              <a href="#" class="text-dark text-decoration-none">
+                  <div class="card">
+                      <div class="position-relative">
+                          <img src="${product.thumbnail}" alt="${product.name}" loading="lazy" class="w-100">
+                      </div>
+                      <div class="card-body d-flex flex-column justify-content-between">
+                          <p class="card-title mt-3 fw-semibold blackLineUnderneath">${product.name}</p>
+                          <input type="hidden" value="${product.id}">
+                      </div>
+                  </div>
+              </a>
+          `;
+          container.appendChild(productCard);
+      });
+  } catch (error) {
+      console.error("Error for fetching products for homepage:", error);
+  }
+}

@@ -52,6 +52,7 @@ public final class Config {
         public static final String PRIVILEGED_ADMIN_JSP = "/WEB-INF/jsp/admin/adminStats.jsp";
         public static final String SET_STOCK_AND_PRICE = "/WEB-INF/jsp/setProductItem.jsp";
         public static final String SEARCH = "/WEB-INF/jsp/search.jsp";
+        public static final String NEW_HOME = "/WEB-INF/jsp/newHome.jsp";
     }
 
     public static final class CookieMapper {

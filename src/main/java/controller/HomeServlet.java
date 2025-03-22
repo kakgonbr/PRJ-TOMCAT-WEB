@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class HomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher(config.Config.JSPMapper.HOME_JSP).forward(request, response);
+        request.getRequestDispatcher(config.Config.JSPMapper.NEW_HOME).forward(request, response);
     }
     
     @Override

@@ -2,7 +2,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<t:genericpage title="Catalog">
+<t:genericpage title="Search">
     <jsp:attribute name="head">
         <t:resources/>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/searchPage_css">
