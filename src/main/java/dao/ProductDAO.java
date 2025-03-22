@@ -92,14 +92,15 @@ public class ProductDAO {
                 throw new java.sql.SQLException(e);
             }
         }
-        
-                private static final String GET_PRODUCTS_BY_NAME_AND_SHOP = "SELECT id FROM tblProduct p WHERE p.name = :name AND p.shopId = :shopId";
+
+        private static final String GET_PRODUCTS_BY_NAME_AND_SHOP = "SELECT id FROM tblProduct p WHERE p.name = :name AND p.shopId = :shopId";
+
         public static synchronized Integer getProductByNameAndShop(String name, int shopId) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 Object result = em.createNativeQuery(GET_PRODUCTS_BY_NAME_AND_SHOP)
-                .setParameter("name", name)
-                .setParameter("shopId", shopId)
-                .getSingleResult();
+                        .setParameter("name", name)
+                        .setParameter("shopId", shopId)
+                        .getSingleResult();
                 return (result != null) ? ((Number) result).intValue() : null;
             } catch (Exception e) {
                 throw new java.sql.SQLException(e);
@@ -325,8 +326,8 @@ public class ProductDAO {
                 }
             }
         } // public static synchronized void addCustomizations
-        
-        public static synchronized void addProductItem(model.ProductItem productItem) throws java.sql.SQLException {
+
+        public static synchronized ProductItem addProductItem(model.ProductItem productItem) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 EntityTransaction et = em.getTransaction();
 
@@ -334,8 +335,9 @@ public class ProductDAO {
                     et.begin();
 
                     em.persist(productItem);
-
+                    em.flush();
                     et.commit();
+                    return productItem;
                 } catch (Exception e) {
                     if (et.isActive()) {
                         et.rollback();
