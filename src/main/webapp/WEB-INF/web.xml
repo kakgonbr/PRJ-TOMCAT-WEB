@@ -310,7 +310,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>TestCatalogServlet</servlet-name>
-        <url-pattern>/testcatalog</url-pattern>
+        <url-pattern>/search</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CartServlet</servlet-name>
