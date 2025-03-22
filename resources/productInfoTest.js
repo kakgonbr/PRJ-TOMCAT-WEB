@@ -201,15 +201,9 @@ function preselect() {
 
 function getImages() {
     if (!productData) return;
-    const current = document.getElementById("current-image");
-    current.innerHTML = "";
 
-    const img = document.createElement("img");
+    const img = document.getElementById("mainImage");
     img.src = contextPath + "/resources/" + productData.thumbnail;
-    img.classList.add("rounded");
-    img.style = "width: 100%; object-fit: cover;";
-
-    current.appendChild(img);
 
     const container = document.getElementById("product-images-container");
     container.innerHTML = "";

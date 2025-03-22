@@ -20,10 +20,10 @@
     <main class="container my-5">
       <div class="row ">
         <div class="col-6 row">
-          <div class="col-12 rounded mx-auto mb-2" id="current-image" style="max-width: 620px;">
-            <%-- <img id="mainImage" class="rounded"
-              src="https://raw.githubusercontent.com/HoanghoDev/youtube_v2/main/auto_slider/images/slider2_1.png"
-              alt="Product Image" style="width: 100%; object-fit: cover;"> --%>
+          <div class="col-12 rounded mx-auto mb-2" style="max-width: 620px;">
+            <img id="mainImage" class="rounded"
+              src=""
+              alt="Product Image" style="width: 100%; object-fit: cover;">
           </div>
           <div class="d-flex align-items-center overflow-hidden" style="position: relative;">
             <button class="slider-btn left" onclick="moveSlider(-1)"><i class="bi bi-chevron-left"></i></button>
