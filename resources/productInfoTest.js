@@ -176,9 +176,9 @@ function updateSelection() {
         console.log("No matching product available.");
         
         const productItemIdInput = document.getElementById("productItemId");
-        productItemIdInput.value = 0;
-        inputQuantity.value = 0;
 
+        productItemIdInput.value = 0;
+        price.innerText = "Out of Stock";
         currentMaxQuantity = 0;
 
         updateQuantity(0);
