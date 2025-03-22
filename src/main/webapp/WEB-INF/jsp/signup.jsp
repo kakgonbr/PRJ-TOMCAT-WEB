@@ -6,10 +6,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <t:genericpage title="Sign Up">
-    <jsp:attribute name="head">
-        <t:resources/>
-    </jsp:attribute>
-
     <jsp:attribute name="header">
         <%-- TODO: Add informative error messages telling the user accepted formats --%>
         <c:if test="${error == 'db'}">
@@ -102,6 +98,9 @@
                         <hr class="border-dark" style="border-style: dashed;">
                         <div class="d-flex justify-content-center">
                             <button type="submit" class="btn btn-dark mt-5">Register</button>
+                        </div>
+                        <div class="img-container col-md-4">
+                            <img src="" class="img-fluid">
                         </div>
                     </form>
                 </div>
