@@ -73,11 +73,12 @@ public final class CartDAO {
             }
         }
 
-        private static final String GET_CART_BY_USER = "SELECT TOP 1 * FROM tblCart WHERE userId = ?1";
+        // pardon the inconsistency
+        private static final String GET_CART_BY_USER = "SELECT c FROM tblCart c JOIN FETCH c.CartItem ci JOIN FETCH ci.ProductItem pi JOIN FETCH ci.ProductCustomization WHERE userId = :userId";
 
         public static synchronized Cart getCartByUser(int userId) throws SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                return (Cart) em.createNativeQuery(GET_CART_BY_USER, model.Cart.class).setParameter(1, userId).getSingleResult();
+                return em.createQuery(GET_CART_BY_USER, model.Cart.class).setParameter("userId", userId).getSingleResult();
             } catch (NoResultException e) {
                 return null;
             } catch (Exception e) {
