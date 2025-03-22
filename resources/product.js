@@ -209,7 +209,7 @@ async function fetchProductsHomePage() {
           const productCard = document.createElement("div");
           productCard.classList.add("col-3", "mb-2");
           productCard.innerHTML = `
-              <a href="#" class="text-dark text-decoration-none">
+              <a href="https://kakgonbri.zapto.org:8443/prj/product?productId=${product.id}" class="text-dark text-decoration-none">
                   <div class="card">
                       <div class="position-relative">
                           <img src="${product.thumbnail}" alt="${product.name}" loading="lazy" class="w-100">
