@@ -15,7 +15,7 @@ public class CartServlet extends HttpServlet {
 
             model.User user = (model.User)request.getSession(false).getAttribute("user");
 
-            model.Cart cart = dao.CartDAO.CartFetcher.getCartByUser(user.getId());
+            model.Cart cart = dao.CartDAO.CartFetcher.getCartByUser(user.getId(), true);
 
             if (cart == null) {
                 cart = new model.Cart();
@@ -59,7 +59,7 @@ public class CartServlet extends HttpServlet {
                 return;
             }
 
-            model.Cart cart = dao.CartDAO.CartFetcher.getCartByUser(user.getId());
+            model.Cart cart = dao.CartDAO.CartFetcher.getCartByUser(user.getId(), false);
 
             model.CartItem cartItem = new model.CartItem();
             cartItem.setProductItemId(productItem);

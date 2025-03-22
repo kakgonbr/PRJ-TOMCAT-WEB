@@ -6,6 +6,9 @@ import jakarta.persistence.NoResultException;
 
 import java.sql.SQLException;
 import java.util.List;
+
+import org.hibernate.Hibernate;
+
 import model.Cart;
 
 public final class CartDAO {
@@ -73,12 +76,17 @@ public final class CartDAO {
             }
         }
 
-        // pardon the inconsistency
-        private static final String GET_CART_BY_USER = "SELECT c FROM Cart c JOIN FETCH c.cartItemList ci JOIN FETCH ci.productItemId pi JOIN FETCH pi.productCustomizationList WHERE userId.id = :userId";
+        private static final String GET_CART_BY_USER = "SELECT TOP 1 * FROM tblCart WHERE userId = ?1";
 
-        public static synchronized Cart getCartByUser(int userId) throws SQLException {
+        public static synchronized Cart getCartByUser(int userId, boolean fetch) throws SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                return em.createQuery(GET_CART_BY_USER, model.Cart.class).setParameter("userId", userId).getSingleResult();
+                model.Cart cart = (Cart) em.createNativeQuery(GET_CART_BY_USER, model.Cart.class).setParameter(1, userId).getSingleResult();
+
+                if (fetch) {
+                    cart.getCartItemList().stream().flatMap(ci -> ci.getProductItemId().getProductCustomizationList().stream()).forEach(Hibernate::initialize);
+                }
+
+                return cart;
             } catch (NoResultException e) {
                 return null;
             } catch (Exception e) {
