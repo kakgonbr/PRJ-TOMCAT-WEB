@@ -19,6 +19,7 @@ public class CartServlet extends HttpServlet {
 
             if (cart == null) {
                 cart = new model.Cart();
+                cart.setCartItemList(new java.util.ArrayList<>());
 
                 cart.setUserId(user);
 

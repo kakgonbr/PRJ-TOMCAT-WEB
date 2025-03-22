@@ -33,7 +33,7 @@
                         <td>
                             <img src="${pageContext.request.contextPath}/resources/${cartItem.productWrapper.thumbnail}" alt="">
                         </td>
-                        <td>
+                        <%-- <td>
                             ${cartItem.productWrapper.name}
                         </td>
                         <td>
@@ -59,13 +59,13 @@
                             ${cartItem.productItem.stock}
                         </td>
                         <td>
-                            <c:forEach var="customization" items="cartItem.productWrapper.customizations">
+                            <c:forEach var="customization" items="cartItem.productItem.customizations">
                                 <p>${customization.name}: ${customization.value} ${customization.unit}</p><br></br>
                             </c:forEach>
                         </td>
                         <td>
                             <a href="${pageContext.request.contextPath}/cart?action=remove&id=${cartItem.id}">Remove</a>
-                        </td>
+                        </td> --%>
                     </tr>
                 </tbody>
             </c:forEach>
