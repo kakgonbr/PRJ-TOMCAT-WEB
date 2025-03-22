@@ -14,7 +14,7 @@
 
         <script src="${pageContext.request.contextPath}/resources/product_js"></script>
         <script src="${pageContext.request.contextPath}/resources/shop_js"></script>
-        
+
         <script>
             var contextPath = "${pageContext.request.contextPath}";
             var shopId = "${sessionScope.shopId}";
@@ -33,8 +33,8 @@
     <jsp:attribute name="body">
         <div class="container-fluid">
             <c:if test="${not empty error}">
-            <div class="alert alert-danger">${error}</div>
-        </c:if>
+                <div class="alert alert-danger">${error}</div>
+            </c:if>
 
             <div class="row">
                 <!-- Sidebar -->
@@ -78,16 +78,44 @@
                                         Information</a>
                                 </div>
                             </div>
+                            <!-- marketing center -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseMarketing">
+                                        Marketing center
+                                    </button>
+                                </h2>
+                                <div id="collapseMarketing" class="accordion-collapse collapse">
+                                    <div class="accordion-body">
+                                        <a href="shop-advertisement.html"
+                                           class="list-group-item list-group-item-action pb-3">📢
+                                            Shop Advertisement</a>
+                                        <a href="discount.html" class="list-group-item list-group-item-action">🏷
+                                            Discount</a>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </nav>
                 <main class="col-md-10 p-4">
-                    <button onclick="fetchProductsShop(shopId, true);" class="btn btn-primary">View Available Products</button>
-                    <button onclick="fetchProductsShop(shopId, false);" class="btn btn-danger">View Deleted Products</button>
-                    <p>Products:</p>
-                    <table border="1" id="productTableShop">
-                    </table>
+                    <div class="tab-content mt-3">
+                        <div id="all" class="tab-pane fade show active">
+                            <table class="table table-bordered" id="productTableShop">
+                                <button onclick="fetchProductsShop(shopId, true);" class="btn btn-primary">View Available Products</button>
+                                <button onclick="fetchProductsShop(shopId, false);" class="btn btn-danger">View Deleted Products</button>
+                            </table>
+                            <div id="waitingConfirm" class="tab-pane fade">Waiting for confirm orders...</div>
+                            <div id="waitingGoods" class="tab-pane fade">Waiting for goods orders...</div>
+                            <div id="inProgress" class="tab-pane fade">In progress orders...</div>
+                            <div id="delivered" class="tab-pane fade">Delivered orders...</div>
+                            <div id="refund" class="tab-pane fade">Refund orders...</div>
+                        </div>
+                    </div>
                 </main>
+
             </div>
         </div>
     </jsp:attribute>

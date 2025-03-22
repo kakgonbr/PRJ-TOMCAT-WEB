@@ -8,6 +8,7 @@ public class ProductWrapper {
     private String description;
     private PromotionWrapper promotion;
     private String thumbnail;
+     private boolean status;
 
     public ProductWrapper() {}
 
@@ -21,6 +22,7 @@ public class ProductWrapper {
         setDescription(product.getDescription());
         setPromotion(product.getAvailablePromotionId() == null ? null : new PromotionWrapper(product.getAvailablePromotionId()));
         setThumbnail(product.getImageStringResourceId() == null ? null : product.getImageStringResourceId().getId());
+        setStatus(product.isStatus());
     }
 
     public ShopWrapper getShop() {
@@ -79,4 +81,14 @@ public class ProductWrapper {
     public void setThumbnail(String thumbnailId) {
         this.thumbnail = thumbnailId;
     }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+
 }

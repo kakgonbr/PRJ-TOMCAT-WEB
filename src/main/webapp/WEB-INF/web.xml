@@ -114,6 +114,10 @@
         <servlet-class>controller.CartServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>CartItemServlet</servlet-name>
+        <servlet-class>controller.CartItemServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>n_AdminCPServlet</servlet-name>
         <servlet-class>controller.AdminCPServlet</servlet-class>
     </servlet>
@@ -150,8 +154,8 @@
         <servlet-class>controller.ShopHomeServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>TestCatalogServlet</servlet-name>
-        <servlet-class>controller.TestCatalogServlet</servlet-class>
+        <servlet-name>SearchServlet</servlet-name>
+        <servlet-class>controller.SearchServlet</servlet-class>
     </servlet>
     <!-- SERVLET MAPPINGS -->
     <!-- TEMPLATE:
@@ -309,12 +313,16 @@
         <url-pattern>/addproduct</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>TestCatalogServlet</servlet-name>
+        <servlet-name>SearchServlet</servlet-name>
         <url-pattern>/search</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CartServlet</servlet-name>
         <url-pattern>/cart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CartItemServlet</servlet-name>
+        <url-pattern>/cartitem</url-pattern>
     </servlet-mapping>
     <!-- FILTER DECLARATIONS -->
     <filter>

@@ -47,13 +47,13 @@ function generateTabContent(category) {
     
     category.children.forEach(child => {
         html += `<div class="col">
-                    <a href="https://kakgonbri.zapto.org:8443/prj/testcatalog?categoryId=${child.id}" class="text-decoration-none text-dark blackLineUnderneath">
+                    <a href="https://kakgonbri.zapto.org:8443/prj/search?categoryId=${child.id}" class="text-decoration-none text-dark blackLineUnderneath">
                         <h5 class="mt-3">${child.name}</h5>
                     </a>
                     <ul class="list-unstyled">`;
         
         child.children.forEach(grandchild => {
-            html += `<li><a href="https://kakgonbri.zapto.org:8443/prj/testcatalog?categoryId=${grandchild.id}" class="text-decoration-none text-dark blackLineUnderneath">${grandchild.name}</a></li>`;
+            html += `<li><a href="https://kakgonbri.zapto.org:8443/prj/search?categoryId=${grandchild.id}" class="text-decoration-none text-dark blackLineUnderneath">${grandchild.name}</a></li>`;
         });
         
         html += `</ul>
@@ -79,7 +79,7 @@ function renderTabs(categories) {
         let tabId = `content${category.id}`;
 
         tabHtml += `<li class="nav-item">
-                        <a class="nav-link ${activeClass} text-dark" href="https://kakgonbri.zapto.org:8443/prj/testcatalog?categoryId=${category.id}" data-tab="${tabId}">${category.name}</a>
+                        <a class="nav-link ${activeClass} text-dark" href="https://kakgonbri.zapto.org:8443/prj/search?categoryId=${category.id}" data-tab="${tabId}">${category.name}</a>
                     </li>`;
 
         contentHtml += generateTabContent(category);
