@@ -27,8 +27,8 @@
           </div>
           <div class="d-flex align-items-center overflow-hidden" style="position: relative;">
             <button class="slider-btn left" onclick="moveSlider(-1)"><i class="bi bi-chevron-left"></i></button>
-            <div class="slider rounded">
-              <img
+            <div class="slider rounded" id="product-images-container">
+              <%-- <img
                 src="https://raw.githubusercontent.com/HoanghoDev/youtube_v2/main/auto_slider/images/slider2_1.png"
                 class="img-slider rounded" onmouseover="changeImage(this)">
               <img
@@ -46,7 +46,7 @@
               <img
                 src="https://raw.githubusercontent.com/HoanghoDev/youtube_v2/main/auto_slider/images/slider2_6.png"
                 class="img-slider rounded" onmouseover="changeImage(this)">
-            </div>
+            </div> --%>
             <button class="slider-btn right" onclick="moveSlider(1)"><i class="bi bi-chevron-right"></i></button>
           </div>
         </div>
@@ -57,6 +57,8 @@
           <div class="my-3" id="customizations">
 
           </div>
+          <h4>Stock: </h4>
+          <h4 id="stock-counter">Loading</h4>
           <input type="text" class="form-control-plaintext fs-3 fw-semibold" id="price" name="price">
           <form action="${pageContext.request.contextPath}/cart" method="POST">
             <input type="hidden" id="productItemId" name="productItemId">

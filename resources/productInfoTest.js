@@ -137,6 +137,8 @@ function postFetch() {
     }
 
     preselect();
+
+    getImages();
 }
 
 var selectedOptions = {};
@@ -167,14 +169,14 @@ function updateSelection() {
         console.log("No matching product available.");
         
         const productItemIdInput = document.getElementById("productItemId");
-        productItemIdInput.value = "";
+        productItemIdInput.value = 0;
 
         currentMaxQuantity = 0;
 
         updateQuantity(0);
     }
 
-    
+    document.getElementById("stock-counter").innerText = currentMaxQuantity;
 }
 
 function preselect() {
@@ -190,4 +192,22 @@ function preselect() {
         });
         updateSelection();
     }
+}
+
+function getImages() {
+    const container = document.getElementById("product-images-container");
+    container.innerHTML = "";
+
+    if (!productData) return;
+
+    const images = [productData.profileResource, ...productData.productImages];
+
+    images.forEach((imageSrc) => {
+        const img = document.createElement("img");
+        img.src = contextPath + "/resources/" + imageSrc;
+        img.classList.add("img-slider", "rounded");
+        img.setAttribute("onmouseover", "changeImage(this)");
+
+        container.appendChild(img);
+    });
 }
