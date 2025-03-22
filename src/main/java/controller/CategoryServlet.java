@@ -20,7 +20,7 @@ public class CategoryServlet extends HttpServlet {
 
         } catch (java.sql.SQLException e) {
             request.setAttribute("code", 404);
-            request.getRequestDispatcher(request.getContextPath() + "/error").forward(request, response);
+            request.getRequestDispatcher("/error").forward(request, response);
 
             return;
         }

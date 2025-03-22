@@ -23,7 +23,7 @@ public class ChatServlet extends HttpServlet {
             service.Logging.logger.warn("FAILED TO GET CHATBOXES FOR {}, REASON: {}", user.getId(), e.getMessage());
 
             request.setAttribute("code", 500);
-            request.getRequestDispatcher(request.getContextPath() + "/error").forward(request, response);
+            request.getRequestDispatcher("/error").forward(request, response);
             return;
         }
 
@@ -48,7 +48,7 @@ public class ChatServlet extends HttpServlet {
             service.Logging.logger.warn("FAILED TO CREATE CHATBOX FOR {}, REASON: {}", user.getId(), e.getMessage());
 
             request.setAttribute("code", 500);
-            request.getRequestDispatcher(request.getContextPath() + "/error").forward(request, response);
+            request.getRequestDispatcher("/error").forward(request, response);
             return;
         }
 

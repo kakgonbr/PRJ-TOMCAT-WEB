@@ -28,7 +28,7 @@ public class CartServlet extends HttpServlet {
         } catch (java.sql.SQLException e) {
             service.Logging.logger.warn("FAILED TO GET CART ITEMS, REASON: {}", e.getMessage());
             request.setAttribute("code", 404);
-            request.getRequestDispatcher(request.getContextPath() + "/error").forward(request, response);
+            request.getRequestDispatcher("/error").forward(request, response);
 
             return;
         }

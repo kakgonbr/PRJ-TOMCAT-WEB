@@ -30,7 +30,7 @@ public class RedirectServlet extends HttpServlet {
         }
 
         request.setAttribute("code", 404);
-        request.getRequestDispatcher(request.getContextPath() + "/error").forward(request, response);
+        request.getRequestDispatcher("/error").forward(request, response);
     }
 
     @Override

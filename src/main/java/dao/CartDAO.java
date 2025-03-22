@@ -73,7 +73,7 @@ public final class CartDAO {
             }
         }
 
-        private static final String GET_CART_BY_USER = "SELECT TOP 1 FROM tblCart WHERE userId = ?1";
+        private static final String GET_CART_BY_USER = "SELECT TOP 1 * FROM tblCart WHERE userId = ?1";
 
         public static synchronized Cart getCartByUser(int userId) throws SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
