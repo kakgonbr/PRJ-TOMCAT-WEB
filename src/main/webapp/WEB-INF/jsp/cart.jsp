@@ -17,7 +17,7 @@
     <jsp:attribute name="body">
         <h2>Cart Items</h2>
         <table border="1">
-            <c:forEach var="cartItem" items="cartItems">
+            <c:forEach var="cartItem" items="${cartItems}">
                 <th>
                     <td>Image</td>
                     <td>Name</td>
@@ -33,7 +33,7 @@
                         <td>
                             <img src="${pageContext.request.contextPath}/resources/${cartItem.productWrapper.thumbnail}" alt="">
                         </td>
-                        <%-- <td>
+                        <td>
                             ${cartItem.productWrapper.name}
                         </td>
                         <td>
@@ -65,7 +65,7 @@
                         </td>
                         <td>
                             <a href="${pageContext.request.contextPath}/cart?action=remove&id=${cartItem.id}">Remove</a>
-                        </td> --%>
+                        </td>
                     </tr>
                 </tbody>
             </c:forEach>
