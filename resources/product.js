@@ -95,17 +95,40 @@ function fetchByShop() {
   fetchProducts(null, filter ? filter.value : 0, shopId);
 }
 
+document.addEventListener("DOMContentLoaded", function () {
+  // Lấy giá trị shopId từ một phần tử trên trang (nếu có)
+  var shopId = document.getElementById("shopIdInput") 
+               ? document.getElementById("shopIdInput").value 
+               : null;
+
+  // Kiểm tra nếu shopId không null thì tự động tải sản phẩm khả dụng ban đầu
+  if (shopId) {
+    fetchProductsShop(shopId, true); // Mặc định hiển thị sản phẩm có status = true
+  }
+
+  // Gắn sự kiện cho nút "View Deleted Products"
+  document.getElementById("viewDeletedBtn").addEventListener("click", function () {
+    fetchProductsShop(shopId, false);
+  });
+
+  // Gắn sự kiện cho nút "View Available Products"
+  document.getElementById("viewAvailableBtn").addEventListener("click", function () {
+    fetchProductsShop(shopId, true);
+  });
+});
+
 function fetchProductsShop(shopId, status) {
+  if (!shopId) {
+    console.error("shopId is not defined");
+    return;
+  }
+
   var url = new URL(
     "https://" + location.host + contextPath + "/ajax/products"
   );
 
-  if (shopId) {
-    url.searchParams.append("shopId", shopId);
-  } if (status) {
-    url.searchParams.append("status", status ? "true" : "false"); //fetch into T or F
-
-  }
+  url.searchParams.append("shopId", shopId);
+  url.searchParams.append("status", status ? "true" : "false"); // Chuyển status thành 'true' hoặc 'false'
 
   fetch(url.toString())
     .then((response) => response.json())
@@ -116,10 +139,9 @@ function fetchProductsShop(shopId, status) {
 
       data.forEach((item) => {
         let row = document.createElement("tr");
-        let cell;
 
         // Shop
-        cell = document.createElement("td");
+        let cell = document.createElement("td");
         let link = document.createElement("a");
         link.href = contextPath + "/shop?shopId=" + item.shop.id;
         link.textContent = item.shop.name;
@@ -153,6 +175,7 @@ function fetchProductsShop(shopId, status) {
         if (item.status === true) {
           let editButton = document.createElement("button");
           editButton.textContent = "Edit";
+          editButton.className = "btn btn-warning me-2";
           editButton.onclick = function () {
             window.location.href =
               contextPath + "/product?action=edit&productId=" + item.id;
@@ -161,6 +184,7 @@ function fetchProductsShop(shopId, status) {
 
           let deleteButton = document.createElement("button");
           deleteButton.textContent = "Delete";
+          deleteButton.className = "btn btn-danger";
           deleteButton.onclick = function () {
             if (confirm("Are you sure you want to delete this product?")) {
               fetch(contextPath + "/product", {
@@ -169,13 +193,14 @@ function fetchProductsShop(shopId, status) {
                   "Content-Type": "application/x-www-form-urlencoded",
                 },
                 body: "action=delete&productId=" + encodeURIComponent(item.id),
-              }).then(() => fetchProductsShop(shopId, true)); // Refresh list
+              }).then(() => fetchProductsShop(shopId, true)); // Refresh danh sách
             }
           };
           cell.appendChild(deleteButton);
         } else {
           let restoreButton = document.createElement("button");
           restoreButton.textContent = "Restore";
+          restoreButton.className = "btn btn-success";
           restoreButton.onclick = function () {
             if (confirm("Do you want to restore this product?")) {
               fetch(contextPath + "/product", {
@@ -184,7 +209,7 @@ function fetchProductsShop(shopId, status) {
                   "Content-Type": "application/x-www-form-urlencoded",
                 },
                 body: "action=restore&productId=" + encodeURIComponent(item.id),
-              }).then(() => fetchProductsShop(shopId, false)); // Refresh list
+              }).then(() => fetchProductsShop(shopId, false)); // Refresh danh sách
             }
           };
           cell.appendChild(restoreButton);
