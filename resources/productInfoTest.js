@@ -175,7 +175,7 @@ function updateSelection() {
     });
 
     if (matchingItem && matchingItem.stock > 0) {
-        console.log("Selected Product Item:", matchingItem);
+        // console.log("Selected Product Item:", matchingItem);
         
         const productItemIdInput = document.getElementById("productItemId");
         const price = document.getElementById("price-counter");
@@ -187,7 +187,7 @@ function updateSelection() {
         
         updateQuantity(0);
     } else {
-        console.log("No matching product available.");
+        // console.log("No matching product available.");
         
         const price = document.getElementById("price-counter");
         const productItemIdInput = document.getElementById("productItemId");

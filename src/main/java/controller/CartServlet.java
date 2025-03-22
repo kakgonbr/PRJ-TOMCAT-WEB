@@ -109,8 +109,8 @@ public class CartServlet extends HttpServlet {
             Integer preexistingItem = null;
             for (final model.CartItem item : cart.getCartItemList()) {
                 // debug logs
-                service.Logging.logger.info("In cart: cart item {}, product item {}", item.getId(), item.getProductItemId().getId());
-                if (item.getProductItemId().getId() == productItem.getId()) {
+                service.Logging.logger.info("In cart: cart item {}, product item {}, comparing to {}", item.getId(), item.getProductItemId().getId(), productItem.getId());
+                if (item.getProductItemId().getId().equals(productItem.getId())) {
                     service.Logging.logger.info("Found: cart item {}, product item {}", item.getId(), item.getProductItemId().getId());
                     preexistingItem = item.getId();
                     
