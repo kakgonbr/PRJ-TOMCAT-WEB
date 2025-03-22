@@ -66,7 +66,7 @@ async function fetchCategories() {
 }
 
 function generateCategoryHTML(category, parentId = "categoriesCollapseContent") {
-    let categoryId = `category${category.id}`;
+    let categoryId = `${category.id}`;
     let collapseId = `collapse${category.id}`;
     
     let html = `<div class="form-check">
@@ -106,3 +106,6 @@ function renderCategories(categories) {
 document.addEventListener("DOMContentLoaded", () => {
     fetchCategories();
 });
+
+
+
