@@ -26,11 +26,15 @@ function moveSlider(direction) {
 
 let inputQuantity;
 let lastValidValue;
+let currentMaxQuantity;
 
 function updateQuantity(change) {
     let quantity = parseInt(inputQuantity.value);
     quantity += change;
-    if (quantity < 1) {
+    if (quantity > currentMaxQuantity) {
+        quantity = currentMaxQuantity;
+    }
+    else if (quantity < 1) {
         quantity = 1;
     }
     inputQuantity.value = quantity;
@@ -126,9 +130,22 @@ function updateSelection() {
         );
     });
 
-    if (matchingItem) {
+    if (matchingItem && matchingItem.stock > 0) {
         console.log("Selected Product Item:", matchingItem);
+        
+        const productItemIdInput = document.getElementById("productItemId");
+        productItemIdInput.value = matchingItem.id;
+
+        inputQuantity.value = matchingItem.price;
     } else {
         console.log("No matching product available.");
+        
+        const productItemIdInput = document.getElementById("productItemId");
+        productItemIdInput.value = "";
+        inputQuantity.value = "Out of stock";
     }
+
+    currentMaxQuantity = matchingItem.stock;
+
+    updateQuantity(0);
 }
