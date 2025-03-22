@@ -57,6 +57,18 @@ function getProductInfo(productId) {
         .then((response) => response.json())
         .then((data) => {
             productData = data;
+
+            document.getElementById("product-name").innerText = productData.name;
+            document.getElementById("product-desc").innerText = productData.description;
+
+            productData.productItems.forEach(item => {
+                item.customizations.forEach(customization => {
+                    if (!customizationMap[customization.name]) {
+                        customizationMap[customization.name] = new Set();
+                    }
+                    customizationMap[customization.name].add(customization.value + (customization.unit ? ' ' + customization.unit : ''));
+                });
+            });
         })
         .catch((error) => console.error("Error fetching data:", error));
 }
@@ -81,39 +93,48 @@ document.addEventListener("DOMContentLoaded", function () {
     lastValidValue = parseInt(inputQuantity.value);
     getProductInfo(productId);
 
-    productData.productItems.forEach(item => {
-        item.customizations.forEach(customization => {
-            if (!customizationMap[customization.name]) {
-                customizationMap[customization.name] = new Set();
-            }
-            customizationMap[customization.name].add(customization.value + (customization.unit ? ' ' + customization.unit : ''));
-        });
-    });
-
     const customizationContainer = document.getElementById("customizations");
     for (const [type, values] of Object.entries(customizationMap)) {
         const container = document.createElement("div");
-        container.classList.add("row");
         container.classList.add("customization-group");
-
+        
         const title = document.createElement("h3");
         title.textContent = type;
         container.appendChild(title);
-
+        
         const optionsContainer = document.createElement("div");
         optionsContainer.classList.add("options");
-
+        
         values.forEach(value => {
-            const button = document.createElement("button");
-            button.textContent = value;
-            button.classList.add("customization-option");
-            button.addEventListener("click", () => handleSelection(type, value));
-            optionsContainer.appendChild(button);
+            const optionDiv = document.createElement("div");
+            optionDiv.classList.add("option", "mb-2");
+            
+            const radio = document.createElement("input");
+            radio.type = "radio";
+            radio.name = type;
+            radio.value = value;
+            radio.classList.add("variation-value");
+            radio.addEventListener("change", () => handleSelection(type, value));
+            
+            const variationDiv = document.createElement("div");
+            variationDiv.classList.add("variation-value-name");
+            
+            const span = document.createElement("span");
+            span.classList.add("span");
+            span.textContent = value;
+            
+            variationDiv.appendChild(span);
+            optionDiv.appendChild(radio);
+            optionDiv.appendChild(variationDiv);
+            optionsContainer.appendChild(optionDiv);
         });
-
+        
         container.appendChild(optionsContainer);
         customizationContainer.appendChild(container);
     }
+
+    // Preselect first valid combination if available
+    preselect();
 });
 
 var selectedOptions = {};
@@ -137,15 +158,35 @@ function updateSelection() {
         productItemIdInput.value = matchingItem.id;
 
         inputQuantity.value = matchingItem.price;
+        currentMaxQuantity = matchingItem.stock;
+
+        updateQuantity(0);
     } else {
         console.log("No matching product available.");
         
         const productItemIdInput = document.getElementById("productItemId");
         productItemIdInput.value = "";
-        inputQuantity.value = "Out of stock";
+        inputQuantity.value = 0;
+
+        currentMaxQuantity = matchingItem.stock;
+
+        updateQuantity(0);
     }
 
-    currentMaxQuantity = matchingItem.stock;
+    
+}
 
-    updateQuantity(0);
+function preselect() {
+    const firstValidItem = productData.productItems.find(item => item.stock > 0);
+    if (firstValidItem) {
+        firstValidItem.customizations.forEach(cust => {
+            selectedOptions[cust.name] = cust.value + (cust.unit ? ' ' + cust.unit : '');
+            
+            const radioButton = document.querySelector(`input[name="${cust.name}"][value="${selectedOptions[cust.name]}"]`);
+            if (radioButton) {
+                radioButton.checked = true;
+            }
+        });
+        updateSelection();
+    }
 }

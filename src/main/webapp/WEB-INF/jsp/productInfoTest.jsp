@@ -51,6 +51,9 @@
           </div>
         </div>
         <div class="col-6 row">
+          <h1 class="my-3" id="product-name">Loading</h1>
+          <p class="text-start" id="product-desc">Loading</p>
+
           <div id="customizations">
 
           </div>
@@ -61,7 +64,6 @@
               <div class="quantity-btn" onclick="updateQuantity(-1)"><i class="bi bi-dash-lg"></i></div>
               <input type="text" class="quantity-input" id="quantity" name="quantity" value="1" min="1"
               autocomplete="off">
-                autocomplete="off">
               <div class="quantity-btn" onclick="updateQuantity(1)"><i class="bi bi-plus-lg"></i></div>
             </div>
             <button class="cartBtn" type="submit">
