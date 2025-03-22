@@ -1,120 +1,184 @@
-<%-- POSSIBLE REQUEST ATTRIBUTES: email, id, error, taken --%>
-<%-- POSSIBLE REQUEST PARAMETERS: username, email, phoneNumber, password --%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<t:genericpage title="">
+<t:genericpage title="Sign Up">
     <jsp:attribute name="head">
         <t:resources/>
+        <style>
+            /* Reset CSS */
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: "Poppins", sans-serif;
+            }
+
+            /* Body */
+            body {
+                background: linear-gradient(135deg, #f3f4f6, #d1d5db);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+            }
+
+            /* Title */
+            .title {
+                font-size: 28px;
+                font-weight: bold;
+                color: #333;
+                margin-bottom: 20px;
+            }
+
+            /* Signup Form */
+            .signup-form {
+                background: white;
+                padding: 25px;
+                width: 380px;
+                border-radius: 12px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+                text-align: center;
+            }
+
+            .signup-form label {
+                display: block;
+                font-weight: 600;
+                text-align: left;
+                margin-top: 12px;
+                color: #333;
+            }
+
+            /* Input Fields */
+            .signup-form input {
+                width: 100%;
+                padding: 12px;
+                margin-top: 5px;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                font-size: 14px;
+            }
+
+            .signup-form input:focus {
+                outline: none;
+                border-color: #007BFF;
+                box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+            }
+
+            /* Submit Button */
+            .submit-btn {
+                background: #007BFF;
+                color: white;
+                border: none;
+                padding: 12px;
+                margin-top: 20px;
+                width: 100%;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 16px;
+                transition: 0.3s;
+            }
+
+            .submit-btn:hover {
+                background: #0056b3;
+            }
+
+            /* Error Messages */
+            .error-container {
+                text-align: center;
+                margin-bottom: 15px;
+            }
+
+            .error-message {
+                color: red;
+                font-weight: bold;
+                font-size: 14px;
+            }
+
+            /* Footer */
+            .footer {
+                margin-top: 20px;
+                font-size: 12px;
+                color: #666;
+            }
+        </style>
     </jsp:attribute>
 
     <jsp:attribute name="header">
-        <%-- TODO: Add informative error messages telling the user accepted formats --%>
-        <c:if test="${error == 'db'}">
-            <h1>A DATABASE ERROR OCCURRED!</h1>
-        </c:if>
-        <c:if test="${error == 'username'}">
-            <h1>USERNAME ERROR!</h1>
-        </c:if>
-        <c:if test="${error == 'email'}">
-            <h1>EMAIL ERROR!</h1>
-        </c:if>
-        <c:if test="${error == 'password'}">
-            <h1>PASSWORD ERROR!</h1>
-        </c:if>
-        <c:if test="${error == 'phoneNumber'}">
-            <h1>PHONE NUMBER ERROR!</h1>
-        </c:if>
-        <c:if test="${taken == 'username'}">
-            <h1>USERNAME IS TAKEN!</h1>
-        </c:if>
-        <c:if test="${taken == 'email'}">
-            <h1>EMAIL IS TAKEN!</h1>
-        </c:if>
-        <c:if test="${taken == 'phoneNumber'}">
-            <h1>PHONE NUMBER IS TAKEN!</h1>
-        </c:if>
-        <h1>Sign up</h1>
+        <div class="error-container">
+            <c:if test="${error == 'db'}">
+                <p class="error-message">A DATABASE ERROR OCCURRED!</p>
+            </c:if>
+            <c:if test="${error == 'username'}">
+                <p class="error-message">Invalid Username!</p>
+            </c:if>
+            <c:if test="${error == 'email'}">
+                <p class="error-message">Invalid Email!</p>
+            </c:if>
+            <c:if test="${error == 'password'}">
+                <p class="error-message">Invalid Password!</p>
+            </c:if>
+            <c:if test="${error == 'phoneNumber'}">
+                <p class="error-message">Invalid Phone Number!</p>
+            </c:if>
+            <c:if test="${taken == 'username'}">
+                <p class="error-message">Username is already taken!</p>
+            </c:if>
+            <c:if test="${taken == 'email'}">
+                <p class="error-message">Email is already taken!</p>
+            </c:if>
+            <c:if test="${taken == 'phoneNumber'}">
+                <p class="error-message">Phone number is already taken!</p>
+            </c:if>
+        </div>
+        <h1 class="title">Sign Up</h1>
     </jsp:attribute>
 
     <jsp:attribute name="body">
-        <div class="container-fluid">
-            <div class="row vh-100">
-                <!-- left container -->
-                <div class="col-md-8 ps-5 pe-5">
-                    <div class="w-auto text-end mt-5">
-                        <a href="#" class="text-decoration-none" style="color: #6c63ff;">Already a member?
-                            <i class="bx bxs-user-circle" style="color: #6c63ff;"></i>
-                        </a>
-                    </div>
-                    <div class="mt-5 d-flex justify-content-between">
-                        <h2 class="d-inline-block w-100 me-5">Input your information</h2>
-                        <p class="text-muted fs-6">
-                            We need you to help us with some basic information for your account creation.
-                            Here are our <strong class="fw-bold">terms and conditions</strong>. Please read them carefully.
-                        </p>
-                    </div>
-                    <hr class="border-dark" style="border-style: dashed;">
+        <form action="${pageContext.request.contextPath}/signup" method="POST" class="signup-form">
+            <input type="hidden" name="googleId" value="${googleId}">
+            
+            <label>Username:</label>
+            <input type="text" name="username" value="${param.username}" required>
 
-                    <!-- form -->
-                    <form action="${pageContext.request.contextPath}/signup" method="POST">
-                        <div class="row d-flex justify-content-between">
-                            <input type="hidden" name="googleId" value="${googleId}">
-                            <p class="fs-0" style="color: #d7b3ff">Component</p>
+            <label>Email:</label>
+            <c:if test="${googleId == null || googleId == ''}">
+                <input type="email" name="email" value="${param.email}" required>
+            </c:if>
+            <c:if test="${googleId != null && googleId != ''}">
+                <input type="email" name="email" value="${email}" disabled>
+            </c:if>
 
-                            <!-- Username -->
-                            <div class="col-md-6 mb-4 pe-5">
-                                <p>Username:</p>
-                                <input type="text" name="username" value="${param.username}" class="form-control">
-                            </div>
+            <label>Phone Number:</label>
+            <input type="tel" name="phoneNumber" value="${param.phoneNumber}" required>
 
-                            <!-- Email -->
-                            <div class="col-md-6 mb-4 ps-5">
-                                <p>Work on email:</p>
-                                <c:choose>
-                                    <c:when test="${empty googleId}">
-                                        <input type="text" name="email" value="${param.email}" class="form-control">
-                                    </c:when>
-                                    <c:otherwise>
-                                        <input type="text" name="email" value="${email}" disabled class="form-control">
-                                    </c:otherwise>
-                                </c:choose>
-                            </div>
-                        </div>
+            <label>Password:</label>
+            <input type="password" name="password" value="${param.password}" required>
 
-                        <div class="row d-flex justify-content-between">
-                            <!-- Password -->
-                            <div class="col-md-6 mb-4 pe-5">
-                                <p>Password:</p>
-                                <input type="password" name="password" value="${param.password}" class="form-control">
-                            </div>
-
-                            <!-- Phone Number -->
-                            <div class="col-md-6 mb-4 ps-5">
-                                <p>Phone Number:</p>
-                                <input type="text" name="phoneNumber" value="${param.phoneNumber}" class="form-control">
-                            </div>
-                        </div>
-                        <!-- end form -->
-
-                        <hr class="border-dark" style="border-style: dashed;">
-                        <div class="d-flex justify-content-center">
-                            <button type="submit" class="btn btn-dark mt-5">Register</button>
-                        </div>
-                    </form>
-                </div>
-                <div class="img-container col-md-4">
-                    <img src="../images/register.png" class="img-fluid">
-                </div>
-            </div>
-        </div>
+            <input type="submit" value="Sign up" class="submit-btn" />
+        </form>
     </jsp:attribute>
 
     <jsp:attribute name="footer">
-        <t:footer/>
+        <div class="footer">
+        </div>
+       <div class="row text-center my-4">
+    <div class="col">
+        <a href="https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=https://kakgonbri.zapto.org:8443/prj/signup&prompt=select_account&response_type=code&client_id=691274987273-s4ooisq489ch7bp9ib1ttvp6cuhf1u96.apps.googleusercontent.com&scope=https://www.googleapis.com/auth/userinfo.email&access_type=offline">
+            <button class="btn btn-google shadow w-75 custom-outline-button">
+                <i class="bi bi-google me-2"></i> Google
+            </button>
+        </a>
+    </div>
+    <div class="col">
+        <a href="https://www.facebook.com/v22.0/dialog/oauth?fields=id,name,email&client_id=1292754858725836&redirect_uri=https://kakgonbri.zapto.org:8443/prj/signup?method=fb">
+            <button class="btn btn-facebook shadow w-75 custom-outline-button">
+                <i class="bi bi-facebook me-2"></i> Facebook
+            </button>
+        </a>
+    </div>
+</div>
+
     </jsp:attribute>
 </t:genericpage>
-
-<%-- POSSIBLE DESTINATIONS: /signup (POST) --%>
