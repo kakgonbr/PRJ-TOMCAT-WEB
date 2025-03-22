@@ -103,7 +103,7 @@ function fetchProductsShop(shopId, status) {
   if (shopId) {
     url.searchParams.append("shopId", shopId);
   }
-  url.searchParams.append("status", status); // Thêm status vào API call
+  url.searchParams.append("status", status ? "true" : "false"); //fetch into T or F
 
   fetch(url.toString())
     .then((response) => response.json())
@@ -148,7 +148,7 @@ function fetchProductsShop(shopId, status) {
         // Actions
         cell = document.createElement("td");
 
-        if (status === 1) {
+        if (item.status) {
           let editButton = document.createElement("button");
           editButton.textContent = "Edit";
           editButton.onclick = function () {
@@ -167,7 +167,7 @@ function fetchProductsShop(shopId, status) {
                   "Content-Type": "application/x-www-form-urlencoded",
                 },
                 body: "action=delete&productId=" + encodeURIComponent(item.id),
-              }).then(() => fetchProductsShop(shopId, 1)); // Refresh list
+              }).then(() => fetchProductsShop(shopId, true)); // Refresh list
             }
           };
           cell.appendChild(deleteButton);
@@ -182,7 +182,7 @@ function fetchProductsShop(shopId, status) {
                   "Content-Type": "application/x-www-form-urlencoded",
                 },
                 body: "action=restore&productId=" + encodeURIComponent(item.id),
-              }).then(() => fetchProductsShop(shopId, 0)); // Refresh list
+              }).then(() => fetchProductsShop(shopId, false)); // Refresh list
             }
           };
           cell.appendChild(restoreButton);
