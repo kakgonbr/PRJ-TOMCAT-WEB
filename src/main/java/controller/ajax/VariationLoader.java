@@ -18,20 +18,17 @@ public class VariationLoader extends HttpServlet {
         try {
             if (categoryId != null && !categoryId.isBlank()) {
                 service.Logging.logger.info("Fetching variations for category ID {}", categoryId);
-                
-                java.util.List<model.Variation> variations = dao.VariationDAO.VariationFetcher.getVariationsByCategoryId(Integer.parseInt(categoryId));
-                
-                // Ensure lazy-loaded collections are initialized
-                for (model.Variation v : variations) {
-                    v.getVariationValueList().size();
-                }
-                
-                java.util.List<model.VariationWrapper> variationWrappers = variations.stream()
+
+                java.util.List<model.VariationWrapper> variations = dao.VariationDAO.VariationFetcher
+                        .getVariationsByCategoryId(Integer.parseInt(categoryId))
+                        .stream()
                         .map(model.VariationWrapper::new)
                         .collect(Collectors.toList());
-                
-                String json = new com.google.gson.Gson().toJson(variationWrappers);
+
+                String json = new com.google.gson.Gson().toJson(variations);
+
                 service.Logging.logger.info("Sending back JSON {}", json);
+
                 response.getWriter().write(json);
                 return;
             }
