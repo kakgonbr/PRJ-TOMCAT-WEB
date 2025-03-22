@@ -491,8 +491,8 @@ BEGIN
 	JOIN recommendation ON tblProduct.id = recommendation.id
 	WHERE recommendation.similarity != 0 AND tblProduct.categoryId IN (SELECT id FROM category)
 	ORDER BY recommendation.similarity DESC
-	OFFSET @page * 10 ROWS
-    FETCH NEXT 10 ROWS ONLY
+	OFFSET @page * 12 ROWS
+    FETCH NEXT 12 ROWS ONLY
 
     DROP TABLE #result;
 END;
