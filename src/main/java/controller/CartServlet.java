@@ -57,6 +57,8 @@ public class CartServlet extends HttpServlet {
             default:
                 addToCart(request, response, productItemId, quantity, user);
         }
+
+        response.sendRedirect(request.getContextPath() + "/cart");
     }
 
     private static void updateQuantity(HttpServletRequest request, HttpServletResponse response, Integer cartItemId, Integer quantity, model.User user) throws ServletException, IOException {
@@ -81,11 +83,8 @@ public class CartServlet extends HttpServlet {
 
     private static void removeFromCart(HttpServletRequest request, HttpServletResponse response, Integer cartItemId, Integer quantity, model.User user) throws ServletException, IOException {
         try {
-            model.Cart cart = dao.CartDAO.CartFetcher.getCartByUser(user.getId(), false);
-
-            cart.getCartItemList().removeIf(ci -> ci.getId() == cartItemId);
-
-            dao.CartDAO.CartManager.updateCart(cart);
+            // careful, make sure the dao is both using status (or not) on all methods concerning visibility
+            dao.CartItemDAO.CartItemManager.deleteCartItem(cartItemId);
         } catch (java.sql.SQLException e) {
             service.Logging.logger.warn("FAILED TO REMOVE ITEM FROM CART, REASON: {}", e.getMessage());
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to remove item from cart");
