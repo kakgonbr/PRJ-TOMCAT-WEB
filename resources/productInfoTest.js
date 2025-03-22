@@ -31,7 +31,7 @@ let currentMaxQuantity;
 function updateQuantity(change) {
     let quantity = parseInt(inputQuantity.value);
     quantity += change;
-    if (quantity > currentMaxQuantity) {
+    if (quantity >= currentMaxQuantity) {
         quantity = currentMaxQuantity;
     }
     else if (quantity < 1) {
@@ -60,6 +60,19 @@ function getProductInfo(productId) {
 
             document.getElementById("product-name").innerText = productData.name;
             document.getElementById("product-desc").innerText = productData.description;
+            
+            let anchor = document.createElement("a");
+            anchor.href = contextPath + "/shop?shopId=" + item.shop.id;
+            anchor.innerText = productData.shop.name;
+            let heading = document.getElementById("product-shop");
+            heading.innerText = "Shop: ";
+            heading.appendChild(anchor);
+            
+            anchor = document.createElement("a");
+            anchor.href = contextPath + "/category?categoryId=" + productData.category.id;
+            anchor.innerText = productData.category.name;
+            heading = document.getElementById("product-category");
+            heading.appendChild(anchor);
 
             productData.productItems.forEach(item => {
                 item.customizations.forEach(customization => {

@@ -29,8 +29,8 @@ CREATE TABLE tblUser
 	credit money NOT NULL DEFAULT 0,
 	status bit NOT NULL DEFAULT 1,
 
-	displayName nvarchar(50) NOT NULL DEFAULT '',
-	profileStringResourceId varchar(30) NOT NULL,
+	displayName nvarchar(50),
+	profileStringResourceId varchar(30),
 	bio nvarchar(255),
 
 	CONSTRAINT fk_user_resourceId FOREIGN KEY (profileStringResourceId) REFERENCES tblResourceMap(id)
