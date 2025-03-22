@@ -212,7 +212,7 @@ async function fetchProductsHomePage() {
               <a href="https://kakgonbri.zapto.org:8443/prj/product?productId=${product.id}" class="text-dark text-decoration-none">
                   <div class="card">
                       <div class="position-relative">
-                          <img src="${product.thumbnail}" alt="${product.name}" loading="lazy" class="w-100">
+                          <img src="/prj/resources/${product.thumbnail}" alt="${product.name}" loading="lazy" class="w-100">
                       </div>
                       <div class="card-body d-flex flex-column justify-content-between">
                           <p class="card-title mt-3 fw-semibold blackLineUnderneath">${product.name}</p>
