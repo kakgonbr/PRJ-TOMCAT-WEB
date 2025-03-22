@@ -18,14 +18,14 @@
         
         <div class="col-5 d-flex align-items-center justify-content-end">
             <!--notification-->
-            <div class="ms-4">
+            <div class="ms-2">
                 <a href="#" class="p-2 text-decoration-none fs-5 logo rounded-pill">
                     <i class="bi bi-bell-fill"></i>
                     <span class="text-muted">Notification</span>
                 </a>
             </div>
             
-            <div class="ms-4">
+            <div class="ms-2">
                 <a href="#" class="p-2 text-decoration-none fs-5 logo rounded-pill">
                     <i class="bi bi-chat-fill"></i>
                     <span class="text-muted">Message</span>
@@ -34,7 +34,7 @@
             
             
             <c:if test="${user != null && user != ''}">
-            <div class="ms-4">
+            <div class="ms-2">
                 <!-- add user name here -->
                 <a class=" p-2 text-decoration-none fs-5 logo rounded-pill" href="#" id="navbarDropdown"
                     role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -56,14 +56,14 @@
             </div>
             </c:if>
             <c:if test="${user == null || user == ''}">
-                <div class="ms-4">
+                <div class="ms-2">
                 
                     <a href="${pageContext.request.contextPath}/login" class="p-2 text-decoration-none fs-5 logo rounded-pill">Log In</a>
                 
                 </div>
             </c:if>
             <!--cart-->
-            <div class="ms-4">
+            <div class="ms-2">
                 <a href="#" class="p-2 text-decoration-none fs-5 logo rounded-pill">
                     <i class="bi bi-bag-fill"></i>
                     <span class="text-muted">Cart</span>
