@@ -36,7 +36,7 @@
             <c:if test="${user != null && user != ''}">
             <div class="ms-4">
                 <!-- add user name here -->
-                <a class="nav-link dropdown-toggle p-2 text-decoration-none fs-5 logo rounded-pill" href="#" id="navbarDropdown"
+                <a class=" p-2 text-decoration-none fs-5 logo rounded-pill" href="#" id="navbarDropdown"
                     role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="bi bi-person-fill "></i>
                     <span class="text-muted">${user}</span>
