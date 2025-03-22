@@ -62,7 +62,7 @@ function getProductInfo(productId) {
             document.getElementById("product-desc").innerText = productData.description;
             
             let anchor = document.createElement("a");
-            anchor.href = contextPath + "/shop?shopId=" + item.shop.id;
+            anchor.href = contextPath + "/shop?shopId=" + productData.shop.id;
             anchor.innerText = productData.shop.name;
             let heading = document.getElementById("product-shop");
             heading.innerText = "Shop: ";
