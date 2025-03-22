@@ -29,7 +29,7 @@ public class CartServlet extends HttpServlet {
             request.setAttribute("cartItems", cart.getCartItemList().stream().map(model.CartItemWrapper::new).toList());
         } catch (java.sql.SQLException e) {
             service.Logging.logger.warn("FAILED TO GET CART ITEMS, REASON: {}", e.getMessage());
-            request.setAttribute("code", 404);
+            request.setAttribute("code", 500);
             request.getRequestDispatcher("/error").forward(request, response);
 
             return;
@@ -52,28 +52,22 @@ public class CartServlet extends HttpServlet {
         }
 
         try {
-            // Lấy sản phẩm từ cơ sở dữ liệu
             model.ProductItem productItem = dao.ProductDAO.ProductFetcher.getProductItem(productItemId);
 
-            // Kiểm tra số lượng sản phẩm có trong kho
             if (productItem.getStock() < quantity) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Quantity cannot exceed stock");
                 return;
             }
 
-            // Lấy giỏ hàng của người dùng
-            model.Cart cart = dao.CartDAO.CartFetcher.getCartByUser (user.getId());
+            model.Cart cart = dao.CartDAO.CartFetcher.getCartByUser(user.getId());
 
-            // Tạo một mục giỏ hàng mới
             model.CartItem cartItem = new model.CartItem();
             cartItem.setProductItemId(productItem);
             cartItem.setCartId(cart);
             cartItem.setQuantity(quantity);
 
-            // Thêm mục giỏ hàng vào cơ sở dữ liệu
-            //dao.CartItemDAO.CartItemManager.createCartItem(cartItem);
+            dao.CartItemDAO.CartItemManager.createCartItem(cartItem);
 
-            // Chuyển hướng về trang giỏ hàng
             response.sendRedirect(request.getContextPath() + "/cart");
         } catch (java.sql.SQLException e) {
             service.Logging.logger.warn("FAILED TO ADD ITEM TO CART, REASON: {}", e.getMessage());

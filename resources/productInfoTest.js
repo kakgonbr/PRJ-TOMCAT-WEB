@@ -72,6 +72,7 @@ function getProductInfo(productId) {
             anchor.href = contextPath + "/category?categoryId=" + productData.category.id;
             anchor.innerText = productData.category.name;
             heading = document.getElementById("product-category");
+            heading.innerText = "Category: ";
             heading.appendChild(anchor);
 
             productData.productItems.forEach(item => {
