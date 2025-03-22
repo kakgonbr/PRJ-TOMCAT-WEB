@@ -114,6 +114,10 @@
         <servlet-class>controller.CartServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>CartItemServlet</servlet-name>
+        <servlet-class>controller.CartItemServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>n_AdminCPServlet</servlet-name>
         <servlet-class>controller.AdminCPServlet</servlet-class>
     </servlet>
@@ -315,6 +319,10 @@
     <servlet-mapping>
         <servlet-name>CartServlet</servlet-name>
         <url-pattern>/cart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CartItemServlet</servlet-name>
+        <url-pattern>/cartitem</url-pattern>
     </servlet-mapping>
     <!-- FILTER DECLARATIONS -->
     <filter>

@@ -47,7 +47,7 @@ public class ProductItem implements Serializable {
     
     @Column(name = "stock")
     private Integer stock;
-    
+     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "price")
     private BigDecimal price;
     
@@ -65,7 +65,8 @@ public class ProductItem implements Serializable {
     private List<ProductCustomization> productCustomizationList;
     private String name;
 
-    public ProductItem() {}
+    public ProductItem() {
+    }
 
     public ProductItem(Integer id) {
         this.id = id;
@@ -75,14 +76,37 @@ public class ProductItem implements Serializable {
 }
 
     // Getters and Setters
-    public Integer getId() { return id; }
-    public void setId(Integer id) { this.id = id; }
-    public Integer getStock() { return stock; }
-    public void setStock(Integer stock) { this.stock = stock; }
-    public BigDecimal getPrice() { return price; }
-    public void setPrice(BigDecimal price) { this.price = price; }
-    public Product getProductId() { return productId; }
-    public void setProductId(Product productId) { this.productId = productId; }
+     public Integer getId() {
+         return id;
+     }
+ 
+     public void setId(Integer id) {
+         this.id = id;
+     }
+ 
+     public Integer getStock() {
+         return stock;
+     }
+ 
+     public void setStock(Integer stock) {
+         this.stock = stock;
+     }
+ 
+     public BigDecimal getPrice() {
+         return price;
+     }
+ 
+     public void setPrice(BigDecimal price) {
+         this.price = price;
+     }
+ 
+     public Product getProductId() {
+         return productId;
+     }
+ 
+     public void setProductId(Product productId) {
+         this.productId = productId;
+     }
 
     @XmlTransient
     public List<CartItem> getCartItemList() { return cartItemList; }
@@ -98,16 +122,18 @@ public class ProductItem implements Serializable {
 
     @Override
     public int hashCode() {
-        return (id != null ? id.hashCode() : 0);
-    }
+         int hash = 0;
+         hash += (id != null ? id.hashCode() : 0);
+         return hash;
+     }
 
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof ProductItem)) {
-            return false;
-        }
         ProductItem other = (ProductItem) object;
-        return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+             return false;
+         }
+         return true;
     }
 
     @Override
