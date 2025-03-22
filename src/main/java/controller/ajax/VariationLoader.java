@@ -12,6 +12,12 @@ public class VariationLoader extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("application/json");
 
+        // Log toàn bộ request
+        service.Logging.logger.info("Received request: {}", request.getRequestURI());
+        service.Logging.logger.info("Query Parameters: categoryId={}, variationId={}", 
+                                    request.getParameter("categoryId"), 
+                                    request.getParameter("variationId"));
+
         String categoryId = request.getParameter("categoryId");
         String variationId = request.getParameter("variationId");
 
@@ -27,7 +33,7 @@ public class VariationLoader extends HttpServlet {
 
                 String json = new com.google.gson.Gson().toJson(variations);
 
-                service.Logging.logger.info("Sending back JSON {}", json);
+                service.Logging.logger.info("Sending back JSON: {}", json);
 
                 response.getWriter().write(json);
                 return;
@@ -44,15 +50,18 @@ public class VariationLoader extends HttpServlet {
 
                 String json = new com.google.gson.Gson().toJson(variationValues);
 
-                service.Logging.logger.info("Sending back JSON {}", json);
+                service.Logging.logger.info("Sending back JSON: {}", json);
 
                 response.getWriter().write(json);
                 return;
             }
 
             service.Logging.logger.warn("No valid parameters provided for fetching variations");
+
         } catch (java.sql.SQLException e) {
-            service.Logging.logger.warn("FAILED TO FETCH VARIATIONS, REASON: {}", e.getMessage());
+            service.Logging.logger.error("FAILED TO FETCH VARIATIONS, REASON: {}", e.getMessage(), e);
+        } catch (NumberFormatException e) {
+            service.Logging.logger.error("Invalid number format for categoryId or variationId: {}", e.getMessage(), e);
         }
     }
 

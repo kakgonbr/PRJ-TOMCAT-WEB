@@ -157,7 +157,6 @@ public class AddProductServlet extends HttpServlet {
             String unit = request.getParameter("unit");
             String datatype = request.getParameter("datatype");
 
-            // Kiểm tra dữ liệu đầu vào
             if (variationName == null || variationOptions == null || datatype == null
                     || variationName.trim().isEmpty() || variationOptions.trim().isEmpty() || datatype.trim().isEmpty()) {
                 request.setAttribute("error", "missing_fields");
@@ -166,10 +165,8 @@ public class AddProductServlet extends HttpServlet {
                 return;
             }
 
-            // Kiểm tra xem variation đã tồn tại chưa
             Integer variationId = dao.VariationDAO.VariationFetcher.getVariationIdByNameAndCategory(variationName, categoryId);
 
-            // Nếu không tìm thấy, tạo mới
             if (variationId == null) {
                 Variation variation = new Variation();
                 variation.setCategoryId(new Category(categoryId));
@@ -256,27 +253,48 @@ public class AddProductServlet extends HttpServlet {
             return;
         }
 
+        List<ProductItem> updatedItems = new ArrayList<>();
+        List<String> errors = new ArrayList<>();
+
         try {
-            List<ProductItem> updatedItems = new ArrayList<>();
             for (int i = 0; i < productItemIds.length; i++) {
-                int productItemId = Integer.parseInt(productItemIds[i]);
-                int stock = Integer.parseInt(stockValues[i]);
-                BigDecimal price = new BigDecimal(priceValues[i]);
+                try {
+                    int productItemId = Integer.parseInt(productItemIds[i]);
+                    int stock = Integer.parseInt(stockValues[i]);
+                    BigDecimal price = new BigDecimal(priceValues[i]);
 
-                // Tạo đối tượng ProductItem với ID hiện có
-                ProductItem productItem = new ProductItem();
-                productItem.setId(productItemId);
-                productItem.setStock(stock);
-                productItem.setPrice(price);
+                    // Kiểm tra số âm
+                    if (stock < 0) {
+                        errors.add("Stock for product item ID " + productItemId + " cannot be negative.");
+                    }
+                    if (price.compareTo(BigDecimal.ZERO) < 0) {
+                        errors.add("Price for product item ID " + productItemId + " cannot be negative.");
+                    }
 
-                updatedItems.add(productItem);
+                    if (errors.isEmpty()) {
+                        ProductItem productItem = new ProductItem();
+                        productItem.setId(productItemId);
+                        productItem.setStock(stock);
+                        productItem.setPrice(price);
+                        updatedItems.add(productItem);
+                    }
+
+                } catch (NumberFormatException e) {
+                    errors.add("Invalid number format for stock or price at item " + (i + 1));
+                }
             }
 
-            // Cập nhật danh sách ProductItem
+            if (!errors.isEmpty()) {
+                request.setAttribute("errorMessages", errors);
+                request.getRequestDispatcher(config.Config.JSPMapper.SET_STOCK_AND_PRICE).forward(request, response);
+                return;
+            }
+
             int productId = (Integer) request.getSession().getAttribute("productId");
             dao.ProductDAO.ProductManager.updateMultipleProductItems(productId, updatedItems);
 
             response.sendRedirect(request.getContextPath() + "/shophome");
+
         } catch (Exception ex) {
             request.setAttribute("error", "Stock and price update error");
             request.getRequestDispatcher(config.Config.JSPMapper.ERROR_JSP).forward(request, response);
