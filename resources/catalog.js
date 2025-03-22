@@ -120,43 +120,63 @@ async function fetchCategoriesHeader() {
 
 function generateTabContent(category) {
     let tabId = `tab${category.id}`;
-    let html = `<div class="tab-pane" id="${tabId}">
+    let html = `<div class="tab-pane fade" id="${tabId}" role="tabpanel">
                     <div class="row">`;
-    
+
     category.children.forEach(child => {
-        let childId = `child${child.id}`;
         html += `<div class="col">
                     <a href="#" class="text-decoration-none text-dark blackLineUnderneath">
                         <h5 class="mt-3">${child.name}</h5>
                     </a>
-                    <ul class="list-unstyled">`;
-        
-        child.children.forEach(grandchild => {
-            html += `<li><a href="#" class="text-decoration-none text-dark blackLineUnderneath">${grandchild.name}</a></li>`;
-        });
-        
-        html += `</ul>
+                    ${generateSubCategoryList(child.children)}
                 </div>`;
     });
+
+    html += `</div></div>`;
+    return html;
+}
+
+function generateSubCategoryList(children) {
+    if (children.length === 0) return "";
     
-    html += `</div>
-            </div>`;
+    let html = `<ul class="list-unstyled">`;
+    children.forEach(child => {
+        html += `<li>
+                    <a href="#" class="text-decoration-none text-dark blackLineUnderneath">${child.name}</a>
+                    ${generateSubCategoryList(child.children)}
+                 </li>`;
+    });
+    html += `</ul>`;
+    
     return html;
 }
 
 function renderTabs(categories) {
+    let tabsContainer = document.getElementById("categoryTabs");
     let tabContentContainer = document.querySelector(".tab-content");
-    if (!tabContentContainer) return;
-    
-    let html = "";
+
+    if (!tabsContainer || !tabContentContainer) return;
+
+    let tabsHtml = "";
+    let contentHtml = "";
+
     categories.forEach((category, index) => {
         let activeClass = index === 0 ? "active" : "";
-        html += `<div class="tab-pane ${activeClass}" id="tab${category.id}">
-                    ${generateTabContent(category)}
-                </div>`;
+        let ariaSelected = index === 0 ? "true" : "false";
+
+        // Tabs (nav)
+        tabsHtml += `<li class="nav-item">
+                        <a class="nav-link ${activeClass}" id="tab${category.id}-tab" data-bs-toggle="tab" href="#tab${category.id}" role="tab" aria-controls="tab${category.id}" aria-selected="${ariaSelected}">${category.name}</a>
+                     </li>`;
+
+        // Tab Content
+        contentHtml += `<div class="tab-pane fade ${activeClass}" id="tab${category.id}" role="tabpanel">
+                            ${generateTabContent(category)}
+                        </div>`;
     });
-    
-    tabContentContainer.innerHTML = html;
+
+    tabsContainer.innerHTML = tabsHtml;
+    tabContentContainer.innerHTML = contentHtml;
 }
 
 // Fetch categories and generate the UI
