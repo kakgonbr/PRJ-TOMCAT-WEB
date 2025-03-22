@@ -66,7 +66,7 @@ async function fetchCategories() {
 }
 
 function generateCategoryHTML(category, parentId = "categoriesCollapseContent") {
-    let categoryId = `category${category.id}`;
+    let categoryId = `${category.id}`;
     let collapseId = `collapse${category.id}`;
     
     let html = `<div class="form-check">
@@ -106,3 +106,58 @@ function renderCategories(categories) {
 document.addEventListener("DOMContentLoaded", () => {
     fetchCategories();
 });
+
+/*header */
+async function fetchCategoriesHeader() {
+    try {
+        let response = await fetch('https://kakgonbri.zapto.org:8443/prj/ajax/category?categoryId=0');
+        let data = await response.json();
+        renderTabs(data.children);
+    } catch (error) {
+        console.error('Error fetching category data:', error);
+    }
+}
+
+function generateTabContent(category) {
+    let tabId = `tab${category.id}`;
+    let html = `<div class="tab-pane" id="${tabId}">
+                    <div class="row">`;
+    
+    category.children.forEach(child => {
+        let childId = `child${child.id}`;
+        html += `<div class="col">
+                    <a href="#" class="text-decoration-none text-dark blackLineUnderneath">
+                        <h5 class="mt-3">${child.name}</h5>
+                    </a>
+                    <ul class="list-unstyled">`;
+        
+        child.children.forEach(grandchild => {
+            html += `<li><a href="#" class="text-decoration-none text-dark blackLineUnderneath">${grandchild.name}</a></li>`;
+        });
+        
+        html += `</ul>
+                </div>`;
+    });
+    
+    html += `</div>
+            </div>`;
+    return html;
+}
+
+function renderTabs(categories) {
+    let tabContentContainer = document.querySelector(".tab-content");
+    if (!tabContentContainer) return;
+    
+    let html = "";
+    categories.forEach((category, index) => {
+        let activeClass = index === 0 ? "active" : "";
+        html += `<div class="tab-pane ${activeClass}" id="tab${category.id}">
+                    ${generateTabContent(category)}
+                </div>`;
+    });
+    
+    tabContentContainer.innerHTML = html;
+}
+
+// Fetch categories and generate the UI
+document.addEventListener("DOMContentLoaded", fetchCategoriesHeader);
