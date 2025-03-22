@@ -324,6 +324,10 @@
         <servlet-name>CartItemServlet</servlet-name>
         <url-pattern>/cartitem</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>n_VariationLoader</servlet-name>
+        <url-pattern>/ajax/variation</url-pattern>
+    </servlet-mapping>
     <!-- FILTER DECLARATIONS -->
     <filter>
         <filter-name>n_MaintenanceFilter</filter-name>
@@ -358,10 +362,6 @@
     </error-page> -->
     <!-- ENDPOINTS -->
     <!-- ChatEndPoint AT /chat OR ws://kakgonbri.zapto.org/prj/chat-->
-    <servlet-mapping>
-        <servlet-name>n_VariationLoader</servlet-name>
-        <url-pattern>/ajax/variation</url-pattern>
-    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
