@@ -79,3 +79,12 @@ function handleAccordionSearch(searchBoxId, accordionContainerId) {
         }
     });
 }
+function applyVariation() {
+    let selectedVariation = document.querySelector("input[name='variation']:checked");
+    if (selectedVariation) {
+        variationId = selectedVariation.value;
+        fetchVariationValues(variationId);
+    } else {
+        console.error("No variation selected");
+    }
+}

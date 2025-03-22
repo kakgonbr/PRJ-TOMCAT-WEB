@@ -6,6 +6,7 @@
     <jsp:attribute name="head">
         <t:resources/>
         <script src="${pageContext.request.contextPath}/resources/filter_js"></script>
+        <script src="${pageContext.request.contextPath}/resources/shop_js"></script>
 
         <script>
             var contextPath = "${pageContext.request.contextPath}";
@@ -19,6 +20,7 @@
                 }
                 fetchVariations(categoryId);
                 fetchVariationValues(variationId);
+                applyVariation();
             });
 
             function toggleNewVariationForm() {
@@ -84,10 +86,10 @@
             <label>Choose Variation:</label>
             <div id="variationFilter"></div> 
             
-             <button type="button" onclick="fetchVariationValues()" class="btn btn-warning">Apply Variation</button>
+             <button type="button" onclick="applyVariation()" class="btn btn-warning">Apply Variation</button>
              
             <label>Choose Variation Values:</label>
-            <div id="variationValueFilter"></div> 
+            <div id="variationValueFilter"></div>
 
             <button type="button" onclick="toggleNewVariationForm()">Add New Variation</button><br>
 
