@@ -32,7 +32,7 @@ function createCategoryElement(category) {
 }
 
 function fetchVariations(categoryId) {
-    var url = new URL(contextPath + "/ajax/variation");
+    var url = new URL(contextPath + "/ajax/variation?categoryId=" + categoryId);
 
     if (categoryId) {
         url.searchParams.append("categoryId", categoryId);
