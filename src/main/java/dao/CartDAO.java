@@ -2,6 +2,8 @@ package dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.NoResultException;
+
 import java.sql.SQLException;
 import java.util.List;
 import model.Cart;
@@ -76,6 +78,8 @@ public final class CartDAO {
         public static synchronized Cart getCartByUser(int userId) throws SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 return (Cart) em.createNativeQuery(GET_CART_BY_USER, model.Cart.class).setParameter(1, userId).getSingleResult();
+            } catch (NoResultException e) {
+                return null;
             } catch (Exception e) {
                 throw new SQLException(e);
             }

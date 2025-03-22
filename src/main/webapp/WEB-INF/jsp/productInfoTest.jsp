@@ -52,6 +52,8 @@
         </div>
         <div class="col-6 row">
           <h1 class="my-3" id="product-name">Loading</h1>
+          <h3 class="my-3" id="product-shop">Loading</h2>
+          <h3 class="my-3" id="product-category">Loading</h2>
           <p class="text-start" id="product-desc">Loading</p>
 
           <div class="my-3" id="customizations">

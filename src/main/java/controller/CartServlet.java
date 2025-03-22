@@ -10,9 +10,26 @@ public class CartServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            request.setAttribute("cartItems", dao.CartDAO.CartFetcher.getCart(((model.User)request.getSession(false).getAttribute("user")).getId()).getCartItemList().stream().map(model.CartItemWrapper::new).toList());
+            // should have made cart items reference user instead
+
+            model.User user = (model.User)request.getSession(false).getAttribute("user");
+
+            model.Cart cart = dao.CartDAO.CartFetcher.getCartByUser(user.getId());
+
+            if (cart == null) {
+                cart = new model.Cart();
+
+                cart.setUserId(user);
+
+                dao.CartDAO.CartManager.createCart(cart);
+            }
+
+            request.setAttribute("cartItems", cart.getCartItemList().stream().map(model.CartItemWrapper::new).toList());
         } catch (java.sql.SQLException e) {
             service.Logging.logger.warn("FAILED TO GET CART ITEMS, REASON: {}", e.getMessage());
+            request.setAttribute("code", 404);
+            request.getRequestDispatcher(request.getContextPath() + "/error").forward(request, response);
+
             return;
         }
 
