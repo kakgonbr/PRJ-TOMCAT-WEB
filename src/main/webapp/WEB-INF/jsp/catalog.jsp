@@ -69,15 +69,11 @@
                 </div>
                 <div class="dropdown-menu border-0 shadow p-3 overflow-auto my-3 dropdown-menu-hover" >
                     <div class="container">
-                        <ul class="nav nav-tabs d-flex align-items-center justify-content-center text-dark">
-                            
-                        </ul>
-                
+                        <div class="nav nav-tabs d-flex align-items-center justify-content-center text-dark">
+                            <ul class="nav nav-tabs" id="categoryTabs"></ul>
+                        </div>
                         <div class="row">
-                            
-                            <div class="tab-content">
-                                
-                            </div>
+                            <div class="tab-content"></div>
                         </div>
                     </div>
                 </div>

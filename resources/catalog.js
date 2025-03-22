@@ -119,66 +119,81 @@ async function fetchCategoriesHeader() {
 }
 
 function generateTabContent(category) {
-    let tabId = `child${category.id}`;
-    let html = `<div class="tab-pane fade" id="${tabId}">
+    let tabId = `content${category.id}`;
+    let html = `<div class="category-content" id="${tabId}" style="display: none;">
                     <div class="row">`;
-
+    
     category.children.forEach(child => {
         html += `<div class="col">
                     <a href="#" class="text-decoration-none text-dark blackLineUnderneath">
                         <h5 class="mt-3">${child.name}</h5>
                     </a>
-                    ${generateSubCategoryList(child.children)}
+                    <ul class="list-unstyled">`;
+        
+        child.children.forEach(grandchild => {
+            html += `<li><a href="#" class="text-decoration-none text-dark blackLineUnderneath">${grandchild.name}</a></li>`;
+        });
+        
+        html += `</ul>
                 </div>`;
     });
-
-    html += `</div></div>`;
-    return html;
-}
-
-function generateSubCategoryList(children) {
-    if (children.length === 0) return "";
     
-    let html = `<ul class="">`;
-    children.forEach(child => {
-        html += `<li>
-                    <a href="#" class="text-decoration-none text-dark blackLineUnderneath">${child.name}</a>
-                    ${generateSubCategoryList(child.children)}
-                 </li>`;
-    });
-    html += `</ul>`;
-    
+    html += `</div>
+            </div>`;
     return html;
 }
 
 function renderTabs(categories) {
-    let navTabsContainer = document.querySelector(".nav.nav-tabs");
-    let tabContentContainer = document.querySelector(".tab-content");
+    let tabContainer = document.getElementById("categoryTabs");
+    let contentContainer = document.querySelector(".tab-content");
+    
+    if (!tabContainer || !contentContainer) return;
 
-    if (!navTabsContainer || !tabContentContainer) return;
-
-    let tabsHtml = "";
+    let tabHtml = "";
     let contentHtml = "";
 
     categories.forEach((category, index) => {
         let activeClass = index === 0 ? "active" : "";
-        let tabId = `child${category.id}`;
+        let tabId = `content${category.id}`;
 
-        // Thêm các tab chính (nav-item)
-        tabsHtml += `<li class="nav-item">
-                        <a class="nav-link ${activeClass} text-dark" href="#${tabId}" data-bs-toggle="tab">${category.name}</a>
-                     </li>`;
+        // Tạo nút tab
+        tabHtml += `<li class="nav-item">
+                        <a class="nav-link ${activeClass} text-dark" href="#" data-tab="${tabId}">${category.name}</a>
+                    </li>`;
 
-        // Thêm nội dung của từng tab
-        contentHtml += `<div class="tab-pane fade ${activeClass}" id="${tabId}">
-                            ${generateTabContent(category)}
-                        </div>`;
+        // Tạo nội dung tương ứng
+        contentHtml += generateTabContent(category);
     });
 
-    navTabsContainer.innerHTML = tabsHtml;
-    tabContentContainer.innerHTML = contentHtml;
+    tabContainer.innerHTML = tabHtml;
+    contentContainer.innerHTML = contentHtml;
+
+    // Hiển thị nội dung đầu tiên mặc định
+    let firstContent = document.querySelector(".category-content");
+    if (firstContent) firstContent.style.display = "block";
+
+    // Gán sự kiện click cho tab
+    document.querySelectorAll("#categoryTabs .nav-link").forEach(tab => {
+        tab.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            // Ẩn tất cả nội dung
+            document.querySelectorAll(".category-content").forEach(content => {
+                content.style.display = "none";
+            });
+
+            // Hiển thị nội dung được chọn
+            let selectedContent = document.getElementById(this.getAttribute("data-tab"));
+            if (selectedContent) selectedContent.style.display = "block";
+
+            // Thay đổi tab active
+            document.querySelectorAll("#categoryTabs .nav-link").forEach(nav => nav.classList.remove("active"));
+            this.classList.add("active");
+        });
+    });
 }
 
-// Fetch categories and generate the UI
+// Fetch categories khi trang tải xong
 document.addEventListener("DOMContentLoaded", fetchCategoriesHeader);
+
 
