@@ -69,6 +69,15 @@ public final class VariationValueDAO {
                 throw new SQLException(e);
             }
         }
+        public static synchronized List<VariationValue> getVariationValuesByVariationId(int variationId) throws SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return em.createNamedQuery("VariationValue.findByVariationId", VariationValue.class)
+                        .setParameter("variationId", variationId)
+                        .getResultList();
+            } catch (Exception e) {
+                throw new SQLException(e);
+            }
+        }
 
         public static synchronized VariationValue getVariationValueByValue(String value) throws SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {

@@ -6,30 +6,54 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 public class VariationLoader extends HttpServlet {
-    /**
-     * For now, this is only used for retrieving a tree-like hierarchy of categories for the filter
-     */
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Integer variationId = request.getParameter("variationId") == null ? null : Integer.parseInt(request.getParameter("variationId"));
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("application/json");
+
+        String categoryId = request.getParameter("categoryId");
+        String variationId = request.getParameter("variationId");
 
         try {
+            if (categoryId != null && !categoryId.isBlank()) {
+                service.Logging.logger.info("Fetching variations for category ID {}", categoryId);
 
-            model.VariationWrapper wrapper = new model.VariationWrapper(dao.VariationDAO.VariationFetcher.getTopVariation(variationId == null ? 0 : variationId));
+                java.util.List<model.VariationWrapper> variations = dao.VariationDAO.VariationFetcher
+                        .getVariationsByCategoryId(Integer.parseInt(categoryId))
+                        .stream()
+                        .map(model.VariationWrapper::new)
+                        .collect(Collectors.toList());
 
+                String json = new com.google.gson.Gson().toJson(variations);
 
-            response.setContentType("application/json");
+                service.Logging.logger.info("Sending back JSON {}", json);
 
-            String json = new com.google.gson.Gson().toJson(wrapper);
+                response.getWriter().write(json);
+                return;
+            }
 
-            response.getWriter().write(json);
+            if (variationId != null && !variationId.isBlank()) {
+                service.Logging.logger.info("Fetching variation values for variation ID {}", variationId);
+
+                java.util.List<model.VariationValueWrapper> variationValues = dao.VariationValueDAO.VariationValueFetcher
+                        .getVariationValuesByVariationId(Integer.parseInt(variationId))
+                        .stream()
+                        .map(model.VariationValueWrapper::new)
+                        .collect(Collectors.toList());
+
+                String json = new com.google.gson.Gson().toJson(variationValues);
+
+                service.Logging.logger.info("Sending back JSON {}", json);
+
+                response.getWriter().write(json);
+                return;
+            }
+
+            service.Logging.logger.warn("No valid parameters provided for fetching variations");
         } catch (java.sql.SQLException e) {
-            service.Logging.logger.warn("FAILED TO GET VARIATION, REASON: {}", e.getMessage());
-
-            return;
-        }        
+            service.Logging.logger.warn("FAILED TO FETCH VARIATIONS, REASON: {}", e.getMessage());
+        }
     }
 
     @Override
