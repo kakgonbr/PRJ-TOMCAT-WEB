@@ -311,7 +311,7 @@ public class ProductDAO {
                         }
 
                         // customization's VariationValue gets its ID assigned here.
-                        em.persist(variationValue);
+                        variationValue = em.merge(variationValue);
 
                         em.persist(customization);
                     }
