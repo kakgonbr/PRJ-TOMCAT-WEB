@@ -36,20 +36,5 @@
             </table>
             <button type="submit">Save All</button>
         </form>
-
-        <div id="popup" class="popup">
-            <h3>Edit Stock & Price</h3>
-            <p>Product: <span id="productName"></span></p>
-            <form action="${pageContext.request.contextPath}/addproduct" method="post">
-                <input type="hidden" name="action" value="setStockAndPrice">
-                <input type="hidden" id="productId" name="productItemId">
-                <label>Stock:</label>
-                <input type="number" id="stock" name="stock" min="0"><br>
-                <label>Price:</label>
-                <input type="number" id="price" name="price" min="0" step="0.01"><br>
-                <button type="submit">Save</button>
-                <button type="button" onclick="closePopup()">Cancel</button>
-            </form>
-        </div>
     </jsp:attribute>
 </t:genericpage>
