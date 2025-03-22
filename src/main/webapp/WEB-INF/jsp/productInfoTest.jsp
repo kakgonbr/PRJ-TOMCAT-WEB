@@ -45,8 +45,8 @@
                 class="img-slider rounded" onmouseover="changeImage(this)">
               <img
                 src="https://raw.githubusercontent.com/HoanghoDev/youtube_v2/main/auto_slider/images/slider2_6.png"
-                class="img-slider rounded" onmouseover="changeImage(this)">
-            </div> --%>
+                class="img-slider rounded" onmouseover="changeImage(this)"> --%>
+            </div>
             <button class="slider-btn right" onclick="moveSlider(1)"><i class="bi bi-chevron-right"></i></button>
           </div>
         </div>
