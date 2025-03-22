@@ -201,7 +201,7 @@ function preselect() {
 
 function getImages() {
     if (!productData) return;
-    const current = document.getElementById("product-images-container");
+    const current = document.getElementById("current-image");
     current.innerHTML = "";
 
     const img = document.createElement("img");
