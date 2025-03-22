@@ -26,6 +26,7 @@
                 <td>Price</td>
                 <td>Stock</td>
                 <td>Customization</td>
+                <td>Action</td>
             </th>
             <c:forEach var="cartItem" items="${cartItems}">
                 <tbody>
@@ -50,7 +51,12 @@
                             </c:choose>
                         </td>
                         <td>
-                            ${cartItem.quantity}
+                            <form action="${pageContext.request.contextPath}/cart" method="POST">
+                                <input type="hidden" name="action" value="update">
+                                <input type="hidden" name="productItemId" value="${cartItem.id}">
+                                <input type="number" name="quantity" min="1" value="${cartItem.quantity}">
+                                <button type="submit">Update Quantity</button>
+                            </form>
                         </td>
                         <td>
                             ${cartItem.productItem.price}
@@ -64,7 +70,11 @@
                             </c:forEach>
                         </td>
                         <td>
-                            <a href="${pageContext.request.contextPath}/cart?action=remove&id=${cartItem.id}">Remove</a>
+                            <form action="${pageContext.request.contextPath}/cart" method="POST">
+                                <input type="hidden" name="action" value="remove">
+                                <input type="hidden" name="productItemId" value="${cartItem.id}">
+                                <button type="submit">Remove</button>
+                            </form>
                         </td>
                     </tr>
                 </tbody>
