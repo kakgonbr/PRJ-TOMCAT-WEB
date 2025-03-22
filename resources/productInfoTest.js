@@ -164,9 +164,11 @@ function updateSelection() {
         console.log("Selected Product Item:", matchingItem);
         
         const productItemIdInput = document.getElementById("productItemId");
-        productItemIdInput.value = matchingItem.id;
+        const price = document.getElementById("price-counter");
 
-        inputQuantity.value = matchingItem.price;
+        productItemIdInput.value = matchingItem.id;
+        price.innerText = matchingItem.price + "$";
+
         currentMaxQuantity = matchingItem.stock;
 
         updateQuantity(0);
@@ -175,6 +177,7 @@ function updateSelection() {
         
         const productItemIdInput = document.getElementById("productItemId");
         productItemIdInput.value = 0;
+        inputQuantity.value = 0;
 
         currentMaxQuantity = 0;
 
