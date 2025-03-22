@@ -97,17 +97,18 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function postFetch() {
-    const customizationContainer = document.getElementById("customizations");
     for (const [type, values] of Object.entries(customizationMap)) {
-        const container = document.createElement("div");
-        container.classList.add("customization-group");
+        const container = document.getElementById("customizations");
+        container.classList.add("my-3");
         
-        const title = document.createElement("h3");
+        const title = document.createElement("h4");
+        title.classList.add("fw-semibold mb-3");
+        title.classList.add("mb-3");
         title.textContent = type;
         container.appendChild(title);
         
         const optionsContainer = document.createElement("div");
-        optionsContainer.classList.add("options");
+        optionsContainer.classList.add("variation");
         
         values.forEach(value => {
             const optionDiv = document.createElement("div");
@@ -134,7 +135,6 @@ function postFetch() {
         });
         
         container.appendChild(optionsContainer);
-        customizationContainer.appendChild(container);
     }
 
     preselect();
@@ -169,9 +169,8 @@ function updateSelection() {
         
         const productItemIdInput = document.getElementById("productItemId");
         productItemIdInput.value = "";
-        inputQuantity.value = 0;
 
-        currentMaxQuantity = matchingItem.stock;
+        currentMaxQuantity = 0;
 
         updateQuantity(0);
     }

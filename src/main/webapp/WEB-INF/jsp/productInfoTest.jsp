@@ -54,7 +54,7 @@
           <h1 class="my-3" id="product-name">Loading</h1>
           <p class="text-start" id="product-desc">Loading</p>
 
-          <div id="customizations">
+          <div class="my-3" id="customizations">
 
           </div>
           <input type="text" class="form-control-plaintext fs-3 fw-semibold" id="price" name="price">
