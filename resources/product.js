@@ -102,8 +102,10 @@ function fetchProductsShop(shopId, status) {
 
   if (shopId) {
     url.searchParams.append("shopId", shopId);
+  } if (status) {
+    url.searchParams.append("status", status ? "true" : "false"); //fetch into T or F
+
   }
-  url.searchParams.append("status", status ? "true" : "false"); //fetch into T or F
 
   fetch(url.toString())
     .then((response) => response.json())
@@ -148,7 +150,7 @@ function fetchProductsShop(shopId, status) {
         // Actions
         cell = document.createElement("td");
 
-        if (item.status) {
+        if (item.status === true) {
           let editButton = document.createElement("button");
           editButton.textContent = "Edit";
           editButton.onclick = function () {
