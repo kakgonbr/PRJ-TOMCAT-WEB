@@ -76,6 +76,19 @@ function getProductInfo(productId) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+    inputQuantity = document.getElementById('quantity');
+
+    inputQuantity.addEventListener('input', function () {
+        const currentValue = this.value;
+        if (currentValue === '' || isNaN(currentValue) || parseInt(currentValue) < 1) {
+            this.value = lastValidValue;
+        } else {
+            lastValidValue = parseInt(currentValue);
+        }
+    });
+
+    lastValidValue = parseInt(inputQuantity.value);
+
     getProductInfo(productId);
 });
 
@@ -131,18 +144,6 @@ function postFetch() {
     if (sliderImages.length > 0) {
         sliderImages[0].classList.add('active');
     }
-    inputQuantity = document.getElementById('quantity');
-
-    inputQuantity.addEventListener('input', function () {
-        const currentValue = this.value;
-        if (currentValue === '' || isNaN(currentValue) || parseInt(currentValue) < 1) {
-            this.value = lastValidValue;
-        } else {
-            lastValidValue = parseInt(currentValue);
-        }
-    });
-
-    lastValidValue = parseInt(inputQuantity.value);
 }
 
 var selectedOptions = {};
