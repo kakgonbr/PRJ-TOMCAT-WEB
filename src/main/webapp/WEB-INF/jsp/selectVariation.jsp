@@ -9,10 +9,12 @@
 
         <script>
             var contextPath = "${pageContext.request.contextPath}";
-            var shopId = "${sessionScope.shopId}";
+            var categoryId = "${sessionScope.categoryId}";
 
             document.addEventListener("DOMContentLoaded", function () {
-                fetchVariation();
+                if (categoryId) {
+                    fetchVariations(categoryId);
+                }
             });
 
             function toggleNewVariationForm() {
@@ -20,7 +22,6 @@
                 form.style.display = (form.style.display === "none" || form.style.display === "") ? "block" : "none";
             }
 
-            // Hiển thị Variation đã chọn
             function updateSelectedVariations() {
                 let container = document.getElementById("selectedVariations");
                 container.innerHTML = "";
@@ -78,6 +79,9 @@
             <label>Choose Variation:</label>
             <div id="variationFilter"></div> 
 
+            <label>Choose Variation Values:</label>
+            <div id="variationValueFilter"></div> 
+
             <button type="button" onclick="toggleNewVariationForm()">Add New Variation</button><br>
 
             <div id="newVariationForm" style="display: none;">
@@ -87,9 +91,6 @@
                 <label for="variationOptions">Options (comma-separated):</label>
                 <input type="text" id="variationOptions" name="variationOptions"><br>
             </div>
-
-            <h3>Selected Variations:</h3>
-            <div id="variationFilter"></div>
 
             <label for="datatype">Data Type:</label>
             <select name="datatype" id="datatype">

@@ -6,6 +6,7 @@ import jakarta.persistence.NoResultException;
 import java.sql.SQLException;
 import java.util.List;
 import model.Variation;
+import org.hibernate.Hibernate;
 
 public final class VariationDAO {
 
@@ -88,19 +89,17 @@ public final class VariationDAO {
             }
         }
 
-        public static synchronized Variation getTopVariation(int id) throws SQLException {
+        public static synchronized model.Variation getTopVariation(int id) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                Variation variation = em.createNamedQuery("Variation.findById", Variation.class)
-                        .setParameter("id", id)
-                        .getSingleResult();
-
-                variation.getVariationValueList().size();
+                model.Variation variation = em.find(model.Variation.class, id);
+                Hibernate.initialize(variation.getVariationValueList());               
 
                 return variation;
+
             } catch (Exception e) {
-                throw new SQLException(e);
+                throw new java.sql.SQLException(e);
             }
-        }
+        } // public static synchronized model.Product getProductDetails
 
         public static synchronized List<Variation> getVariations() throws SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
@@ -114,6 +113,15 @@ public final class VariationDAO {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 return em.createNamedQuery("Variation.findByDatatype", Variation.class)
                         .setParameter("datatype", datatype)
+                        .getResultList();
+            } catch (Exception e) {
+                throw new SQLException(e);
+            }
+        }
+        public static synchronized List<Variation> getVariationsByCategoryId(int categoryId) throws SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return em.createNamedQuery("Variation.findByCategoryId", Variation.class)
+                        .setParameter("categoryId", categoryId)
                         .getResultList();
             } catch (Exception e) {
                 throw new SQLException(e);
