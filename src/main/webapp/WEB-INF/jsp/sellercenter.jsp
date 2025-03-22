@@ -32,6 +32,9 @@
 
     <jsp:attribute name="body">
         <div class="container-fluid">
+            <c:if test="${not empty error}">
+            <div class="alert alert-danger">${error}</div>
+        </c:if>
 
             <div class="row">
                 <!-- Sidebar -->
