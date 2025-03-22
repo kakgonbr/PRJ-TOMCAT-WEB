@@ -69,6 +69,8 @@ function getProductInfo(productId) {
                     customizationMap[customization.name].add(customization.value + (customization.unit ? ' ' + customization.unit : ''));
                 });
             });
+
+            postFetch();
         })
         .catch((error) => console.error("Error fetching data:", error));
 }
@@ -92,7 +94,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     lastValidValue = parseInt(inputQuantity.value);
     getProductInfo(productId);
+});
 
+function postFetch() {
     const customizationContainer = document.getElementById("customizations");
     for (const [type, values] of Object.entries(customizationMap)) {
         const container = document.createElement("div");
@@ -133,9 +137,8 @@ document.addEventListener("DOMContentLoaded", function () {
         customizationContainer.appendChild(container);
     }
 
-    // Preselect first valid combination if available
     preselect();
-});
+}
 
 var selectedOptions = {};
 
