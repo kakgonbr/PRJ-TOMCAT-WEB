@@ -28,9 +28,9 @@ import java.io.Serializable;
 @Table(name = "tblCartItem")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "CartItem.findAll", query = "SELECT c FROM CartItem c"),
-    @NamedQuery(name = "CartItem.findById", query = "SELECT c FROM CartItem c WHERE c.id = :id"),
-    @NamedQuery(name = "CartItem.findByQuantity", query = "SELECT c FROM CartItem c WHERE c.quantity = :quantity")})
+        @NamedQuery(name = "CartItem.findAll", query = "SELECT c FROM CartItem c"),
+        @NamedQuery(name = "CartItem.findById", query = "SELECT c FROM CartItem c WHERE c.id = :id"),
+        @NamedQuery(name = "CartItem.findByQuantity", query = "SELECT c FROM CartItem c WHERE c.quantity = :quantity")})
 public class CartItem implements Serializable {
 
     @Basic(optional = false)
@@ -107,7 +107,7 @@ public class CartItem implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        
+
         if (!(object instanceof CartItem)) {
             return false;
         }
@@ -130,5 +130,5 @@ public class CartItem implements Serializable {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-    
+
 }

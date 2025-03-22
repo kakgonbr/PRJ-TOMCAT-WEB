@@ -1,81 +1,75 @@
 package dao;
 
+import model.CartItem;
+import model.Cart;
+import model.ProductItem;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Query;
-import model.CartItem;
+import jakarta.persistence.Persistence;
+import java.sql.SQLException;
+import java.util.List;
 
 public class CartItemDAO {
-    public static class CartItemManager {
-        public static synchronized void createCartItem(CartItem cartItem) throws java.sql.SQLException {
-            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                EntityTransaction et = em.getTransaction();
 
-                try {
-                    et.begin();
-                    em.persist(cartItem);
-                    et.commit();
-                } catch (Exception e) {
-                    if (et.isActive()) {
-                        et.rollback();
-                    }
-                    throw new java.sql.SQLException(e);
-                }
+    private EntityManager entityManager;
+
+    public CartItemDAO() {
+        entityManager = Persistence.createEntityManagerFactory("YourPersistenceUnitName").createEntityManager();
+    }
+
+    public void createCartItem(CartItem cartItem) throws SQLException {
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            entityManager.persist(cartItem);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
             }
+            throw new SQLException("Error creating CartItem: " + e.getMessage());
         }
+    }
 
-        public static synchronized CartItem getCartItem(int id) throws java.sql.SQLException {
-            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                return em.find(CartItem.class, id);
-            } catch (Exception e) {
-                throw new java.sql.SQLException(e);
+    public CartItem getItemById(Integer id) {
+        return entityManager.find(CartItem.class, id);
+    }
+
+    public List<CartItem> getAllItemsByCartId(Integer cartId) {
+        return entityManager.createNamedQuery("CartItem.findByCartId", CartItem.class)
+                .setParameter("cartId", cartId)
+                .getResultList();
+    }
+
+    public void updateCartItem(CartItem cartItem) throws SQLException {
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            entityManager.merge(cartItem);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
             }
+            throw new SQLException("Error updating CartItem: " + e.getMessage());
         }
+    }
 
-        public static synchronized void updateCartItem(CartItem cartItem) throws java.sql.SQLException {
-            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                EntityTransaction et = em.getTransaction();
-
-                try {
-                    et.begin();
-                    em.merge(cartItem);
-                    et.commit();
-                } catch (Exception e) {
-                    if (et.isActive()) {
-                        et.rollback();
-                    }
-                    throw new java.sql.SQLException(e);
-                }
+    public void deleteCartItem(Integer id) throws SQLException {
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            CartItem cartItem = getItemById(id);
+            if (cartItem != null) {
+                entityManager.remove(cartItem);
             }
-        }
-
-        public static synchronized void deleteCartItem(int id) throws java.sql.SQLException {
-            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                EntityTransaction et = em.getTransaction();
-
-                try {
-                    et.begin();
-                    CartItem cartItem = em.find(CartItem.class, id);
-                    if (cartItem != null) {
-                        em.remove(cartItem);
-                    }
-                    et.commit();
-                } catch (Exception e) {
-                    if (et.isActive()) {
-                        et.rollback();
-                    }
-                    throw new java.sql.SQLException(e);
-                }
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
             }
-        }
-
-        public static synchronized java.util.List<CartItem> getAllCartItems() throws java.sql.SQLException {
-            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                Query query = em.createQuery("SELECT c FROM CartItem c", CartItem.class);
-                return query.getResultList();
-            } catch (Exception e) {
-                throw new java.sql.SQLException(e);
-            }
+            throw new SQLException("Error deleting CartItem: " + e.getMessage());
         }
     }
 }
