@@ -11,7 +11,7 @@ public class SearchServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String categoryId= request.getParameter("categoryId");
         if(categoryId == null)
-            request.setAttribute("categoryId", 0);
+            request.setAttribute("categoryId", "0");
         else
             request.setAttribute("categoryId", categoryId);
 
