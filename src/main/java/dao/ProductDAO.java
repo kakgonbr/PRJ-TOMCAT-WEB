@@ -306,7 +306,7 @@ public class ProductDAO {
                     for (final model.ProductCustomization customization : customizations) {
                         model.VariationValue variationValue = customization.getVariationValueId();
 
-                        if (em.find(model.Variation.class, variationValue) == null) {
+                        if (em.find(model.Variation.class, variationValue.getVariationId().getId()) == null) {
                             continue;
                         }
 
