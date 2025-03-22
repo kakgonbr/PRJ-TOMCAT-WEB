@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/productInfoTest_css">
     <script>
       var contextPath = "${pageContext.request.contextPath}";
-      var productId = ${ param.productId };
+      var productId = ${param.productId};
     </script>
   </jsp:attribute>
 
@@ -20,7 +20,7 @@
     <main class="container my-5">
       <div class="row ">
         <div class="col-6 row">
-          <div class="col-12 rounded mx-auto mb-2" style="max-width: 620px;">
+          <div class="col-12 rounded mx-auto mb-2" id="current-image" style="max-width: 620px;">
             <%-- <img id="mainImage" class="rounded"
               src="https://raw.githubusercontent.com/HoanghoDev/youtube_v2/main/auto_slider/images/slider2_1.png"
               alt="Product Image" style="width: 100%; object-fit: cover;"> --%>

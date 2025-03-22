@@ -200,14 +200,22 @@ function preselect() {
 }
 
 function getImages() {
+    if (!productData) return;
+    const current = document.getElementById("product-images-container");
+    current.innerHTML = "";
+
+    const img = document.createElement("img");
+    img.src = contextPath + "/resources/" + productData.thumbnail;
+    img.classList.add("rounded");
+    img.style = "width: 100%; object-fit: cover;";
+
+    current.appendChild(img);
+
     const container = document.getElementById("product-images-container");
     container.innerHTML = "";
 
-    if (!productData) return;
 
-    const images = [productData.profileResource, ...productData.productImages];
-
-    images.forEach((imageSrc) => {
+    productData.productImages.forEach((imageSrc) => {
         const img = document.createElement("img");
         img.src = contextPath + "/resources/" + imageSrc;
         img.classList.add("img-slider", "rounded");
