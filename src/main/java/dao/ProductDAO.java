@@ -282,7 +282,8 @@ public class ProductDAO {
                 try {
                     et.begin();
 
-                    em.createNativeQuery(MARK_PRODUCT_DELETE).setParameter(0, productId);
+                    em.createNativeQuery(MARK_PRODUCT_DELETE).setParameter(1, productId)
+                    .executeUpdate();
 
                     et.commit();
                 } catch (Exception e) {
