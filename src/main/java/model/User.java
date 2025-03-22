@@ -120,6 +120,7 @@ public class User implements Serializable {
     @Column(name = "isAdmin")
     private Boolean isAdmin;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @NotNull
     @Column(name = "credit")
     private BigDecimal credit;
     @JoinColumn(name = "profileStringResourceId", referencedColumnName = "id")

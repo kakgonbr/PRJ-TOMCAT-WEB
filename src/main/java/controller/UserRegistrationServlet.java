@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Map;
 import org.apache.hc.client5.http.ClientProtocolException;
 import com.google.gson.JsonElement;
@@ -177,6 +178,7 @@ public class UserRegistrationServlet extends HttpServlet {
             user.setGoogleId(googleId); // In the database, this doesn't need to be unique, because for every id ther eis only 1 corresponding email.
             user.setStatus(true);
             user.setIsAdmin(false);
+            user.setCredit(BigDecimal.valueOf(0));
 
             dao.UserDAO.UserManager.createUser(user);
         } catch (java.sql.SQLException e) {
