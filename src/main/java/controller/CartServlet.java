@@ -19,12 +19,7 @@ public class CartServlet extends HttpServlet {
             model.Cart cart = dao.CartDAO.CartFetcher.getCartByUser(user.getId(), true);
 
             if (cart == null) {
-                cart = new model.Cart();
-                cart.setCartItemList(new java.util.ArrayList<>());
-
-                cart.setUserId(user);
-
-                dao.CartDAO.CartManager.createCart(cart);
+                cart = createCart(user);
             }
 
             request.setAttribute("cartItems", cart.getCartItemList().stream().map(model.CartItemWrapper::new).toList());
@@ -107,15 +102,22 @@ public class CartServlet extends HttpServlet {
 
             model.Cart cart = dao.CartDAO.CartFetcher.getCartByUser(user.getId(), false);
 
+            if (cart == null) {
+                cart = createCart(user);
+            }
+
             Integer preexistingItem = null;
             for (final model.CartItem item : cart.getCartItemList()) {
+                // debug logs
+                service.Logging.logger.info("In cart: cart item {}, product item {}", item.getId(), item.getProductItemId().getId());
                 if (item.getProductItemId().getId() == productItem.getId()) {
+                    service.Logging.logger.info("Found: cart item {}, product item {}", item.getId(), item.getProductItemId().getId());
                     preexistingItem = item.getId();
-
+                    
                     break;
                 }
             }
-
+            
             model.CartItem cartItem;
             if (preexistingItem == null) {
                 cartItem = new model.CartItem();
@@ -134,11 +136,20 @@ public class CartServlet extends HttpServlet {
 
                 dao.CartItemDAO.CartItemManager.updateCartItem(cartItem);
             }
-
-            response.sendRedirect(request.getContextPath() + "/cart");
         } catch (java.sql.SQLException e) {
             service.Logging.logger.warn("FAILED TO ADD ITEM TO CART, REASON: {}", e.getMessage());
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to add item to cart");
         }
+    }
+
+    private static model.Cart createCart(model.User user) throws java.sql.SQLException {
+        model.Cart cart = new model.Cart();
+        cart.setCartItemList(new java.util.ArrayList<>());
+
+        cart.setUserId(user);
+
+        dao.CartDAO.CartManager.createCart(cart);
+
+        return cart;
     }
 }
