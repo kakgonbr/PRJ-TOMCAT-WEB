@@ -501,6 +501,7 @@ GO
 
 INSERT INTO tblResourceMap
 VALUES
+('cart_css', 'cart.css'),
 ('shop_js', 'shop.js'),
 ('test_png', 'test.png'),
 ('main_css', 'main.css'),
