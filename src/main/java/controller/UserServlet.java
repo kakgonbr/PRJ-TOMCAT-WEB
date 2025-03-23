@@ -61,11 +61,11 @@ public class UserServlet extends HttpServlet {
                 case "credit":
                     // uh
                 break;
-                case "image":
+                case "profilePic":
                     String saved = service.FileUploadService.saveFile(request.getPart("image"), user.getUsername());
 
                     if (saved != null) {
-                        user.setProfileStringResourceId(dao.ResourceDAO.addMapping("usr_" + user.getUsername(), saved));
+                        user.setProfileStringResourceId(dao.ResourceDAO.overrideMapping("usr_" + user.getUsername(), saved));
                         dao.UserDAO.UserManager.updateUser(user);
                         request.setAttribute("changed", "Profile Picture");
                     }
