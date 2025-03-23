@@ -66,6 +66,7 @@ function createVariationElement(variation) {
     radio.dataset.name = variation.name;
 
     radio.addEventListener("change", function () {
+        document.getElementById("selectedVariationId").value = variation.id;
         fetchVariationValues(variation.id);
     });
 
@@ -141,23 +142,20 @@ function applyVariation() {
         return;
     }
 
-    let variationId = selectedVariation.value;
+    let variationId = selectedVariation.value; // Lấy ID thay vì tên
     let variationName = selectedVariation.dataset.name;
     let selectedValues = Array.from(document.querySelectorAll(`input[name="variationValue"]:checked`))
-        .map(value => value.dataset.name);
+        .map(value => value.value); // Lấy ID của giá trị variation
 
     if (selectedValues.length === 0) {
         alert("Please select at least one variation value.");
         return;
     }
 
-    selectedVariations.push({ variationName, values: selectedValues });
+    selectedVariations.push({ variationId, variationName, values: selectedValues });
     renderVariationTable();
 }
 
-function showNewVariationForm() {
-    document.getElementById("newVariationForm").style.display = "block";
-}
 
 function addNewVariation() {
     let newVariationName = document.getElementById("variationName").value.trim();
@@ -224,30 +222,66 @@ function renderVariationTable() {
     });
 }
 
+var selectedVariations = [];
+
+function updateSelectedVariations() {
+    selectedVariations = []; // Reset danh sách mỗi khi cập nhật
+
+    let variationId = document.querySelector('input[name="variation"]:checked');
+    if (!variationId) {
+        console.error("Chưa chọn variation!");
+        return;
+    }
+
+    let selectedValues = [];
+    document.querySelectorAll('input[name="variationValue"]:checked').forEach(checkbox => {
+        selectedValues.push(checkbox.value);
+    });
+
+    if (selectedValues.length === 0) {
+        console.error("Chưa chọn giá trị variation!");
+        return;
+    }
+
+    selectedVariations.push({
+        variationId: variationId.value,
+        values: selectedValues
+    });
+
+    console.log("Danh sách selectedVariations:", selectedVariations);
+}
+
 function submitVariations() {
     let form = document.getElementById("selectVariationForm");
 
+    // Xóa các input ẩn cũ trước khi thêm mới
     document.querySelectorAll(".dynamic-input").forEach(e => e.remove());
 
+    let formData = new FormData(form);
+
     selectedVariations.forEach(variation => {
-        let variationInput = document.createElement("input");
-        variationInput.type = "hidden";
-        variationInput.name = "variation"; 
-        variationInput.value = variation.variationName;
-        variationInput.classList.add("dynamic-input");
-        form.appendChild(variationInput);
+        formData.append("variation", variation.variationName); // Lưu variation name
+        formData.append("datatype", variation.datatype); // Lưu datatype
+        formData.append("unit", variation.unit); // Lưu unit
 
         variation.values.forEach(value => {
-            let valueInput = document.createElement("input");
-            valueInput.type = "hidden";
-            valueInput.name = "variationValue"; 
-            valueInput.value = value;
-            valueInput.classList.add("dynamic-input");
-            form.appendChild(valueInput);
+            formData.append("variationValue", value); // Lưu từng giá trị variationValue
         });
     });
 
-    form.submit();
+    // Debug: Kiểm tra dữ liệu trước khi gửi
+    for (let [key, value] of formData.entries()) {
+        console.log(`Debug - ${key}: ${value}`);
+    }
+
+    fetch(form.action, {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => console.log("Server response:", data))
+    .catch(error => console.error("Error:", error));
 }
+
 
 
