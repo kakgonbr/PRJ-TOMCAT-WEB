@@ -94,7 +94,7 @@ function fetchOrders(shopId) {
     .then((data) => {
       let tableBody = document.getElementById("orderTable");
       tableBody.innerHTML =
-        "<tr><th>User Name</th><th>Product Name</th><th>Total Price</th><th>Order Date</th><th>Shipping Cost</th></tr>";
+        "<tr><th>User Name</th><th>Product Name</th><th>Quantity</th><th>Total Price</th><th>Shipping Cost</th></tr>";
 
       data.forEach((item) => {
         let row = document.createElement("tr");
@@ -110,12 +110,11 @@ function fetchOrders(shopId) {
         row.appendChild(cell);
 
         cell = document.createElement("td");
-        cell.textContent = item.totalPrice.toFixed(2) + " $"; // Giá tổng
+        cell.textContent = item.quantity;
         row.appendChild(cell);
 
         cell = document.createElement("td");
-        let orderDate = new Date(item.date);
-        cell.textContent = orderDate.toLocaleDateString(); // Ngày đặt hàng
+        cell.textContent = item.totalPrice.toFixed(2) + " $"; // Giá tổng
         row.appendChild(cell);
 
         cell = document.createElement("td");

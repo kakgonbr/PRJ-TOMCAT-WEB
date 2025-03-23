@@ -118,7 +118,7 @@
                     <div class="tab-content mt-3">
                         <div id="all" class="tab-pane fade show active">
                             <button onclick="fetchOrders(shopId);" class="btn btn-primary">View Order</button> 
-                            <table class="table table-bordered" id="orderTable">                                                              
+                            <table class="table table-bordered mt-3" id="orderTable">                                                              
                             </table>
                         </div>
                     </div>

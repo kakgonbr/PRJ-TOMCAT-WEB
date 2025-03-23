@@ -23,7 +23,7 @@ public class OrderLoader extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         String shopIdStr = request.getParameter("shopId");
-        System.out.println("DEBUG: Received shopId = " + shopIdStr); // Debug đầu vào
+        System.out.println("DEBUG: Received shopId = " + shopIdStr);
 
         if (shopIdStr == null || shopIdStr.isBlank()) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing shopId");
@@ -32,23 +32,11 @@ public class OrderLoader extends HttpServlet {
 
         try {
             int shopId = Integer.parseInt(shopIdStr);
-            System.out.println("DEBUG: Parsed shopId = " + shopId); // Debug sau khi parse
+            System.out.println("DEBUG: Parsed shopId = " + shopId);
 
-            java.util.List<Object[]> rawData = dao.OrderDAO.OrderManager.getOrderItemsByShop(shopId);
+            java.util.List<model.dto.OrderedItemDTO> orderItems = dao.OrderDAO.OrderManager.getOrderItemsByShop(shopId);
 
-            java.util.List<model.dto.OrderedItemDTO> orderItems = new java.util.ArrayList<>();
-            for (Object[] row : rawData) {
-                model.dto.OrderedItemDTO dto = new model.dto.OrderedItemDTO(
-                        row[0] != null ? (String) row[0] : "", // userName
-                        row[1] != null ? (String) row[1] : "", // productName
-                        row[2] != null ? (Double) row[2] : 0.0, // totalPrice
-                        row[3] != null ? (java.util.Date) row[3] : new java.util.Date(), // date
-                        row[4] != null ? (Double) row[4] : 0.0 // shippingCost
-                );
-                orderItems.add(dto);
-            }
-
-            System.out.println("DEBUG: Returning " + orderItems.size() + " items."); // Debug số lượng items
+            System.out.println("DEBUG: Returning " + orderItems.size() + " items.");
             String json = new com.google.gson.Gson().toJson(orderItems);
             response.getWriter().write(json);
 
@@ -56,7 +44,7 @@ public class OrderLoader extends HttpServlet {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid shopId");
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error fetching order items");
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error fetching order items: " + e.getMessage());
         }
     }
 

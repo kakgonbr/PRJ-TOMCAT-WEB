@@ -4,7 +4,7 @@ import org.hibernate.Hibernate;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
-import model.CartItem;
+import java.util.stream.Collectors;
 import model.ProductOrder;
 
 public class OrderDAO {
@@ -79,30 +79,24 @@ public class OrderDAO {
             }
         } // public static synchronized void markCompleted
         private static final String SELECT_ORDER_ITEMS_BY_SHOP
-                = "SELECT u.displayName AS userName, p.name AS productName, oi.totalPrice, o.date, oi.shippingCost "
-                + "FROM tblOrderedItem oi "
-                + "JOIN tblProductItem pi ON oi.productItemId = pi.id "
-                + "JOIN tblProduct p ON pi.productId = p.id "
-                + "JOIN tblOrder o ON oi.orderId = o.id "
-                + "JOIN tblUser u ON o.userId = u.id "
+                = "SELECT u.username AS userName, p.name AS productName, oi.quantity, oi.totalPrice, oi.shippingCost \n"
+                + "FROM tblOrderedItem oi \n"
+                + "JOIN tblProductItem pi ON oi.productItemId = pi.id \n"
+                + "JOIN tblProduct p ON pi.productId = p.id \n"
+                + "JOIN tblOrder o ON oi.orderId = o.id \n"
+                + "JOIN tblUser u ON o.userId = u.id \n"
                 + "WHERE p.shopId = ? AND p.shopId IS NOT NULL";
 
-        public static java.util.List<Object[]> getOrderItemsByShop(int shopId) throws java.sql.SQLException {
+        public static java.util.List<model.dto.OrderedItemDTO> getOrderItemsByShop(int shopId) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                System.out.println("DEBUG: Querying shopId = " + shopId); // Debug Shop ID
-
                 java.util.List<Object[]> result = em.createNativeQuery(SELECT_ORDER_ITEMS_BY_SHOP)
                         .setParameter(1, shopId)
                         .getResultList();
-
-                System.out.println("DEBUG: Query returned " + result.size() + " rows."); // Debug số lượng kết quả
-                return result;
-            } catch (Exception e) {
-                e.printStackTrace();  // In lỗi ra console
-                throw new java.sql.SQLException(e);
+                return result.stream()
+                        .map(row -> new model.dto.OrderedItemDTO(row))
+                        .collect(Collectors.toList());
             }
         }
-
         /**
          * DO NOT EDIT. This method is for deleting orders that did not go
          * through.<br></br>
@@ -221,7 +215,7 @@ public class OrderDAO {
 
                         // service.Logging.logger.info("Deleting from tblCartItem id {}", item.getId());
                         em.createNativeQuery(DELETE_FROM_CART_ITEM).setParameter(1, item.getId()).executeUpdate();
-                        
+
                         // service.Logging.logger.info("Updating product item id {}, new stock {}", item.getProductItem().getId(), item.getQuantity());
                         em.createNativeQuery(REMOVE_FROM_PRODUCT_ITEM).setParameter(1, item.getQuantity()).setParameter(2, item.getProductItem().getId()).executeUpdate();
                     }
