@@ -57,7 +57,7 @@
             </div>
 
             <div class="ms-2">
-                <a href="#" class="p-2 text-decoration-none fs-5 logo rounded-pill">
+                <a href="${pageContext.request.contextPath}/chat" class="p-2 text-decoration-none fs-5 logo rounded-pill">
                     <i class="bi bi-chat-fill"></i>
                     <span class="text-muted">Message</span>
                 </a>
