@@ -5,7 +5,7 @@
 <t:genericpage title="Select Variation">
     <jsp:attribute name="head">
         <t:resources/>
-        <script src="${pageContext.request.contextPath}/resources/variation_js"></script>
+        <script src="${pageContext.request.contextPath}/resources/filter_js"></script>
         <script src="${pageContext.request.contextPath}/resources/shop_js"></script>
 
         <script>
