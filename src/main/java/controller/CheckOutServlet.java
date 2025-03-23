@@ -48,6 +48,7 @@ public class CheckOutServlet extends HttpServlet {
                     order.setUserId(user);
                     order.setDate(new java.util.Date());
                     order.setPromotionId(promotion);
+                    order.setStatus(false);
                     int orderId = dao.OrderDAO.OrderManager.createOrder(order);
 
                     model.Cart cart = dao.CartDAO.CartFetcher.getCartByUser(user.getId(), true);

@@ -2,6 +2,7 @@
 
 <%@attribute name="user" required="false" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <div class="container">
     <div class="row my-2">
