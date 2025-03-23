@@ -39,12 +39,17 @@ public class CheckOutServlet extends HttpServlet {
         try {
             switch (action) {
                 case "proceed":
-                    // messy
+                    //
                     int order = dao.OrderDAO.OrderManager.createOrder(new model.ProductOrder());
 
                     model.Cart cart = dao.CartDAO.CartFetcher.getCartByUser(user.getId(), true);
 
-                    dao.OrderDAO.OrderedItemManager.transferFromCart(order, cart.getCartItemList(), dao.PromotionDAO.PromotionFetcher.getPromotion(promotionId));
+                    model.Promotion promotion = null;
+                    if (promotionId != null) {
+                        promotion = dao.PromotionDAO.PromotionFetcher.getPromotion(promotionId);
+                    }
+
+                    dao.OrderDAO.OrderedItemManager.transferFromCart(order, cart.getCartItemList(), promotion);
 
                     dao.OrderDAO.OrderManager.updatePrice(order);
 

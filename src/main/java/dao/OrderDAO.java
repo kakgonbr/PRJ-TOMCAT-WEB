@@ -128,10 +128,12 @@ public class OrderDAO {
                         em.createNativeQuery(INSERT_INTO_ORDER).setParameter(1, orderId).setParameter(2, item.getId())
                                 .setParameter(3, item.getQuantity())
                                 .setParameter(4,
-                                        promotion.getType()
-                                                ? item.getProductItemId().getPrice().longValue() - promotion.getValue()
-                                                : item.getProductItemId().getPrice().longValue()
-                                                        * (100.0 - promotion.getValue()) / 100.0)
+                                        promotion == null ? item.getProductItemId().getPrice().longValue()
+                                                : (promotion.getType()
+                                                        ? item.getProductItemId().getPrice().longValue()
+                                                                - promotion.getValue()
+                                                        : item.getProductItemId().getPrice().longValue()
+                                                                * (100.0 - promotion.getValue()) / 100.0))
                                 .executeUpdate();
 
                         em.createNativeQuery(DELETE_FROM_CART_ITEM).setParameter(1, item.getId()).executeUpdate();
