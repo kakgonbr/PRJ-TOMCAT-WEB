@@ -261,7 +261,9 @@ function submitVariations() {
             form.appendChild(valueInput);
         });
     });
-
+    document.querySelectorAll("input[name='variationValue']").forEach(input => {
+        console.log("Hidden input:", input.value);
+    });
     form.submit();
 }
 
