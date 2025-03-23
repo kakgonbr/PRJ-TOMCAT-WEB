@@ -79,7 +79,8 @@
 
                 <label for="unit">Unit:</label>
                 <input type="text" id="unit" name="unit"><br>
-                <button type="button" onclick="applyVariation()">Add</button><br><br>
+                
+                <button type="button" onclick="addNewVariation()">Save New Variation</button>
             </div>
 
             <h3>Selected Variations</h3>
@@ -87,9 +88,9 @@
                 <thead>
                     <tr>
                         <th>Variation Name</th>
+                        <th>Values</th>
                         <th>Datatype</th>
                         <th>Unit</th>
-                        <th>Values</th>
                         <th>Action</th>
                     </tr>
                 </thead>
