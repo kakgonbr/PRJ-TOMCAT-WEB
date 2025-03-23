@@ -95,7 +95,7 @@ public final class VariationValueDAO {
         }
 
         private static final String GET_VARIATION_BY_VALUE_AND_VARIATION
-                = "SELECT * FROM VariationValue WHERE value = ? AND variation_id = ?";
+                = "SELECT * FROM tblVariationValue WHERE value = ? AND variation_id = ?";
 
         public static synchronized VariationValue getVariationValueByValueAndVariation(String value, int variationId) throws SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
