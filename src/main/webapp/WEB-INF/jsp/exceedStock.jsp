@@ -13,7 +13,7 @@
     </jsp:attribute>
 
     <jsp:attribute name="body">
-        <div class="container rounded my-3 p-3">
+        <div class="container rounded my-3 p-3 cart-container">
             <h2 class="text-xl font-bold mb-4">The following items have invalid quantity:</h2>
             <table class="cart-table">
                 <thead>
