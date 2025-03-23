@@ -34,7 +34,7 @@ function createCategoryElement(category) {
 function fetchVariations(categoryId) {
     var url = new URL(
         "https://" + location.host + contextPath + "/ajax/variation"
-      );
+    );
 
     if (categoryId) {
         url.searchParams.append("categoryId", categoryId);
@@ -56,56 +56,58 @@ function fetchVariations(categoryId) {
         .catch(error => console.error("Error fetching variations:", error));
 }
 
-    function createVariationElement(variation) {
-        let li = document.createElement("li");
-        let label = document.createElement("label");
-        let radio = document.createElement("input");
-        radio.type = "radio";
-        radio.name = "variation";
-        radio.value = variation.id;
-        radio.dataset.name = variation.name;
+function createVariationElement(variation) {
+    let li = document.createElement("li");
+    let label = document.createElement("label");
+    let radio = document.createElement("input");
+    radio.type = "radio";
+    radio.name = "variation";
+    radio.value = variation.id;
+    radio.dataset.name = variation.name;
 
-        radio.addEventListener("change", function () {
-            fetchVariationValues(variation.id);
-        });
+    radio.addEventListener("change", function () {
+        fetchVariationValues(variation.id);
+    });
 
-        label.appendChild(radio);
-        label.appendChild(document.createTextNode(" " + variation.name));
-        li.appendChild(label);
+    label.appendChild(radio);
+    label.appendChild(document.createTextNode(" " + variation.name));
+    li.appendChild(label);
 
-        return li;
-    }
+    return li;
+}
 
 function fetchVariationValues(variationId) {
     var url = new URL(
         "https://" + location.host + contextPath + "/ajax/variation"
-      );
+    );
 
     if (variationId) {
         url.searchParams.append("variationId", variationId);
     }
 
     fetch(url.toString())
-    .then(response => response.json())
-    .then(data => {
-        let variationValueContainer = document.getElementById("variationValueFilter");
-        variationValueContainer.innerHTML = "";
+        .then(response => response.json())
+        .then(data => {
+            console.log("Dữ liệu nhận được:", data);
 
-        let ul = document.createElement("ul");
+            let variationValueContainer = document.getElementById("variationValueFilter");
+            variationValueContainer.innerHTML = "";
 
-        // 🔹 Tìm variation có ID khớp
-        let variation = data.find(v => v.id == variationId);
-        if (variation && variation.values) {
-            variation.values.forEach(value => {
-                ul.appendChild(createVariationValueElement(value));
-            });
-        } else {
-            console.error("Không tìm thấy values cho variationId:", variationId);
-        }
+            let ul = document.createElement("ul");
+            let variation = data.filter(v => v.id == variationId)[0];
 
-        variationValueContainer.appendChild(ul);
-    })
-    .catch(error => console.error("Error", error));
+            if (variation && variation.values && variation.values.length > 0) {
+                variation.values.forEach(value => {
+                    ul.appendChild(createVariationValueElement(value));
+                });
+            } else {
+                console.error("Không tìm thấy values cho variationId:", variationId, "Dữ liệu API:", data);
+            }
+
+            variationValueContainer.appendChild(ul);
+        })
+        .catch(error => console.error("Lỗi khi lấy giá trị biến thể:", error));
+
 }
 
 function createVariationValueElement(value) {
