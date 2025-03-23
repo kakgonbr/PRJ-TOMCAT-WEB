@@ -152,8 +152,8 @@ public class AddProductServlet extends HttpServlet {
                 return;
             }
 
-            String variationName = request.getParameter("variationName");
-            String variationOptions = request.getParameter("variationOptions");
+            String variationName = request.getParameter("variation");
+            String variationOptions = request.getParameter("variationValue");
             String unit = request.getParameter("unit");
             String datatype = request.getParameter("datatype");
 
