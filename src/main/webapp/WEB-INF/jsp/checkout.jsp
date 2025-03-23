@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -18,8 +18,9 @@
 
     <jsp:attribute name="body">
         <c:set var="total" value="0" />
-        <h1>Order Review:</h1>
-        <table class="cart-table">
+        <div class="container rounded my-3 p-3 cart-container">
+            <h2 class="text-xl font-bold mb-4">Order Review:</h2>
+            <table class="cart-table">
                 <thead>
                     <tr>
                         <th>Image</th>
@@ -27,7 +28,7 @@
                         <th>Shop</th>
                         <th>Promotion</th>
                         <th>Quantity</th>
-                        <th>Price</th>
+                        <th>Price (Per Item)</th>
                         <th>Stock</th>
                         <th>Customization</th>
                     </tr>
@@ -36,7 +37,8 @@
                     <c:forEach var="cartItem" items="${cartItems}">
                         <tr>
                             <td>
-                                <img src="${pageContext.request.contextPath}/resources/${cartItem.productWrapper.thumbnail}" alt="Product Image">
+                                <img src="${pageContext.request.contextPath}/resources/${cartItem.productWrapper.thumbnail}"
+                                    alt="Product Image">
                             </td>
                             <td>${cartItem.productWrapper.name}</td>
                             <td>${cartItem.productWrapper.shop.name}</td>
@@ -53,29 +55,55 @@
                             <td>
                                 ${cartItem.quantity}
                             </td>
-                            <td>${cartItem.productItem.price}</td>
+                            <td>
+                                <!-- Someone optimize this, save to variables or something -->
+                                <c:choose>
+                                    <c:when test="${cartItem.productWrapper.promotion != null && cartItem.productWrapper.promotion.type}">
+                                        ${(cartItem.productItem.price - cartItem.productWrapper.promotion.value) * cartItem.quantity}
+                                    </c:when>
+                                    <c:when test="${cartItem.productWrapper.promotion != null && !cartItem.productWrapper.promotion.type}">
+                                        ${(cartItem.productItem.price * (100.0 - cartItem.productWrapper.promotion.value) / 100.0) * cartItem.quantity}
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${cartItem.productItem.price * cartItem.quantity}
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
                             <td>${cartItem.productItem.stock}</td>
                             <td>
-                                <c:forEach var="customization" items="${cartItem.productItem.customizations}">
-                                    <p>${customization.name}: ${customization.value} ${customization.unit}</p>
+                                <c:forEach var="customization"
+                                    items="${cartItem.productItem.customizations}">
+                                    <p>${customization.name}: ${customization.value}
+                                        ${customization.unit}</p>
                                 </c:forEach>
                             </td>
                         </tr>
                         <c:choose>
-                            <c:when test="${cartItem.productWrapper.promotion.type}">
-                                <c:set var="total" value="${total + (cartItem.productItem.price - cartItem.productWrapper.promotion.value)}" />
+                            <c:when test="${cartItem.productWrapper.promotion == null}">
+                                <c:set var="total" value="${(total + cartItem.productItem.price) * cartItem.quantity}"/>
                             </c:when>
                             <c:otherwise>
-                                <c:set var="total" value="${total + (cartItem.productItem.price * (100.0 - cartItem.productWrapper.promotion.value) / 100.0)}" />
+                                <c:choose>
+                                    <c:when test="${cartItem.productWrapper.promotion.type}">
+                                        <c:set var="total"
+                                            value="${(total + (cartItem.productItem.price - cartItem.productWrapper.promotion.value)) * cartItem.quantity}" />
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:set var="total"
+                                            value="${(total + (cartItem.productItem.price * (100.0 - cartItem.productWrapper.promotion.value) / 100.0)) * cartItem.quantity}" />
+                                    </c:otherwise>
+                                </c:choose>
                             </c:otherwise>
                         </c:choose>
                     </c:forEach>
                 </tbody>
             </table>
+        </div>
         <form>
             <div class="address-container">
                 <label for="address">Địa chỉ</label>
-                <input type="text" id="address" name="address" required placeholder="Nhập địa chỉ của bạn" autocomplete="off">
+                <input type="text" id="address" name="address" required placeholder="Nhập địa chỉ của bạn"
+                    autocomplete="off">
                 <div id="suggestions" class="suggestions"></div>
             </div>
         </form>
@@ -92,7 +120,8 @@
                             <c:otherwise>
                                 - ${promotion.value} %
                             </c:otherwise>
-                        </c:choose>] ${promotion.name} - Expires on ${promotion.expireDate}</option>
+                        </c:choose>] ${promotion.name} - Expires on ${promotion.expireDate}
+                    </option>
                 </c:forEach>
             </select>
             <button type="submit">Apply</button>
@@ -103,14 +132,15 @@
             </c:when>
             <c:otherwise>
                 <p>Active promotion: [
-                        <c:choose>
-                            <c:when test="${activePromotion.type}">
-                                - ${activePromotion.value} VND
-                            </c:when>
-                            <c:otherwise>
-                                - ${activePromotion.value} %
-                            </c:otherwise>
-                        </c:choose>] ${activePromotion.name} - Expires on ${activePromotion.expireDate}</p>
+                    <c:choose>
+                        <c:when test="${activePromotion.type}">
+                            - ${activePromotion.value} VND
+                        </c:when>
+                        <c:otherwise>
+                            - ${activePromotion.value} %
+                        </c:otherwise>
+                    </c:choose>] ${activePromotion.name} - Expires on ${activePromotion.expireDate}
+                </p>
                 <c:choose>
                     <c:when test="${activePromotion.type}">
                         <p>Final Price: ${total - activePromotion.value}</p>
@@ -131,7 +161,7 @@
     </jsp:attribute>
 
     <jsp:attribute name="footer">
-        <t:footer/>
+        <t:footer />
         <script>
             const addressInput = document.getElementById('address');
             const suggestionsContainer = document.getElementById('suggestions');
@@ -140,42 +170,38 @@
                 let timeout;
                 return function executedFunc(...args) {
                     clearTimeout(timeout);
-                    timeout= setTimeout(() => {clearTimeout(timeout);func(...args);}, wait);
+                    timeout = setTimeout(() => { clearTimeout(timeout); func(...args); }, wait);
                 };
             }
 
-            const search = debounce((query) =>
-            {
-                if(query.length < 2 || /^\W+$/.test(query)) {
-                    suggestionsContainer.style.display= 'none';
+            const search = debounce((query) => {
+                if (query.length < 2 || /^\W+$/.test(query)) {
+                    suggestionsContainer.style.display = 'none';
                     return;
                 }
-                
+
                 //var url = new URL('https://' + location.host + contextPath + '/ajax/map?action=auto&query=' + encodeURIComponent(query));
-                let url= 'https://kakgonbri.zapto.org:8443/prj/ajax/map?action=auto&query='+encodeURIComponent(query);
+                let url = 'https://kakgonbri.zapto.org:8443/prj/ajax/map?action=auto&query=' + encodeURIComponent(query);
                 fetch(url)
-                .then(response => response.json())
-                .then(data => 
-                {
-                    if(data.status === 'OK') {
-                        suggestionsContainer.innerHTML='';
-                        suggestionsContainer.style.display= 'block';
-                        data.predictions.forEach(prediction => 
-                        {
-                            const div = document.createElement('div');
-                            div.className = 'suggestion-item';
-                            div.textContent = prediction.description;
-                            div.addEventListener('click', () => 
-                            {
-                                addressInput.value = prediction.description;
-                                suggestionsContainer.style.display = 'none';
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'OK') {
+                            suggestionsContainer.innerHTML = '';
+                            suggestionsContainer.style.display = 'block';
+                            data.predictions.forEach(prediction => {
+                                const div = document.createElement('div');
+                                div.className = 'suggestion-item';
+                                div.textContent = prediction.description;
+                                div.addEventListener('click', () => {
+                                    addressInput.value = prediction.description;
+                                    suggestionsContainer.style.display = 'none';
+                                });
+                                suggestionsContainer.appendChild(div);
                             });
-                            suggestionsContainer.appendChild(div);
-                        });
-                    }
-                })  
-                .catch(error => console.error('Error:', error));
-            },300);
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }, 300);
 
             addressInput.addEventListener('input', (e) => search(e.target.value));
         </script>
