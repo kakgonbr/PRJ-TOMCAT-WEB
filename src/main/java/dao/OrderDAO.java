@@ -97,7 +97,6 @@ public class OrderDAO {
                         .collect(Collectors.toList());
             }
         }
-
         /**
          * DO NOT EDIT. This method is for deleting orders that did not go
          * through.<br></br>
