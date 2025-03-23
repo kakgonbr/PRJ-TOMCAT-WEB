@@ -364,5 +364,25 @@ public class ProductDAO {
             }
 
         } // public static synchronized void addProductItem
+
+        public static synchronized void updateProductItem(model.ProductItem productItem) throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                EntityTransaction et = em.getTransaction();
+
+                try {
+                    et.begin();
+
+                    em.merge(productItem);
+
+                    et.commit();
+                } catch (Exception e) {
+                    if (et.isActive()) {
+                        et.rollback();
+                    }
+
+                    throw new java.sql.SQLException(e);
+                }
+            }
+        } // public static synchronized void updateProductItem
     }
 }

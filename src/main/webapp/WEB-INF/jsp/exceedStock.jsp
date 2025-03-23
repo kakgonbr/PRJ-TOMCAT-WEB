@@ -14,7 +14,7 @@
 
     <jsp:attribute name="body">
         <div class="container rounded my-3 p-3 cart-container">
-            <h2 class="text-xl font-bold mb-4">🛒 Your Shopping Cart</h2>
+            <h2 class="text-xl font-bold mb-4">The following items have invalid quantity:</h2>
             <table class="cart-table">
                 <thead>
                     <tr>
@@ -26,11 +26,10 @@
                         <th>Price</th>
                         <th>Stock</th>
                         <th>Customization</th>
-                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <c:forEach var="cartItem" items="${cartItems}">
+                    <c:forEach var="cartItem" items="${exceed}">
                         <tr>
                             <td>
                                 <img src="${pageContext.request.contextPath}/resources/${cartItem.productWrapper.thumbnail}" alt="Product Image">
@@ -48,12 +47,7 @@
                                 </c:choose>
                             </td>
                             <td>
-                                <form action="${pageContext.request.contextPath}/cart" method="POST">
-                                    <input type="hidden" name="action" value="update">
-                                    <input type="hidden" name="productItemId" value="${cartItem.id}">
-                                    <input type="number" name="quantity" min="1" value="${cartItem.quantity}" class="border rounded px-2 py-1 w-16">
-                                    <button type="submit" class="btn shadow custom-outline-button">Update</button>
-                                </form>
+                                ${cartItem.quantity}
                             </td>
                             <td>${cartItem.productItem.price}</td>
                             <td>${cartItem.productItem.stock}</td>
@@ -61,13 +55,6 @@
                                 <c:forEach var="customization" items="${cartItem.productItem.customizations}">
                                     <p>${customization.name}: ${customization.value} ${customization.unit}</p>
                                 </c:forEach>
-                            </td>
-                            <td>
-                                <form action="${pageContext.request.contextPath}/cart" method="POST">
-                                    <input type="hidden" name="action" value="remove">
-                                    <input type="hidden" name="productItemId" value="${cartItem.id}">
-                                    <button type="submit" class="btn shadow custom-outline-button">Remove</button>
-                                </form>
                             </td>
                         </tr>
                     </c:forEach>

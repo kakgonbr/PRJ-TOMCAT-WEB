@@ -5,6 +5,7 @@
 package model;
 
 import jakarta.persistence.Basic;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -70,7 +71,7 @@ public class ProductOrder implements Serializable {
     private User userId;
     @Column(name = "status")
     private Boolean status;
-    @OneToMany(mappedBy = "orderId")
+    @OneToMany(mappedBy = "orderId", cascade = CascadeType.REMOVE)
     private List<OrderedItem> orderedItemList;
 
     public ProductOrder() {
