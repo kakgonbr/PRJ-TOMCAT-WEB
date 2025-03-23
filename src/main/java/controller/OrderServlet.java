@@ -11,6 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -37,14 +38,22 @@ public class OrderServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        
-    } 
+     protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        HttpSession session = request.getSession();
+        Integer shopId = (Integer) session.getAttribute("shopId");
+
+        if (shopId == null) {
+            response.sendRedirect(request.getContextPath() + "/error.jsp?message=Missing shop ID");
+            return;
+        }
+        request.getRequestDispatcher(config.Config.JSPMapper.SHOP_ORDER).forward(request, response);
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        
+            throws ServletException, IOException {
+        doGet(request, response);
     }
 }
