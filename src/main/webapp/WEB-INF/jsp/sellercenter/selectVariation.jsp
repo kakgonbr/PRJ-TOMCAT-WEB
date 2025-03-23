@@ -67,18 +67,18 @@
 
             <div id="newVariationForm" style="display: none;">
                 <label for="variationName">Variation Name:</label>
-                <input type="text" id="variationName" name="variation"><br>
+                <input type="text" id="variationName"><br>
 
                 <label for="variationOptions">Options (comma-separated):</label>
-                <input type="text" id="variationValues" name="variationValue"><br>
+                <input type="text" id="variationValues"><br>
                 <label for="datatype">Data Type:</label>
-                <select id="datatype" name="datatype">
+                <select id="datatype">
                     <option value="string">String</option>
                     <option value="integer">Integer</option>
                 </select><br>
 
                 <label for="unit">Unit:</label>
-                <input type="text" id="unit" name="unit"><br>
+                <input type="text" id="unit"><br>
                 
                 <button type="button" onclick="addNewVariation()">Save New Variation</button>
             </div>
