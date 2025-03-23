@@ -17,14 +17,6 @@ public class OrderedItemDTO {
         private BigDecimal totalPrice;
         private BigDecimal shippingCost;
         private int quantity;
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
         public OrderedItemDTO() {}
 
     public OrderedItemDTO(Object[] row) {
@@ -39,6 +31,7 @@ public class OrderedItemDTO {
         model.OrderedItem orderedItem = new model.OrderedItem();
         orderedItem.setTotalPrice(totalPrice);
         orderedItem.setShippingCost(shippingCost);
+        orderedItem.setQuantity(quantity);
         return orderedItem;
     }
 
@@ -73,5 +66,13 @@ public class OrderedItemDTO {
 
     public void setShippingCost(BigDecimal shippingCost) {
         this.shippingCost = shippingCost;
+    }
+    
+        public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

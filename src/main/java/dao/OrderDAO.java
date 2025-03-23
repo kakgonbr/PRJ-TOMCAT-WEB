@@ -79,7 +79,7 @@ public class OrderDAO {
             }
         } // public static synchronized void markCompleted
         private static final String SELECT_ORDER_ITEMS_BY_SHOP
-                = "SELECT u.displayName AS userName, p.name AS productName, oi.quantity, oi.totalPrice, oi.shippingCost \n"
+                = "SELECT u.username AS userName, p.name AS productName, oi.quantity, oi.totalPrice, oi.shippingCost \n"
                 + "FROM tblOrderedItem oi \n"
                 + "JOIN tblProductItem pi ON oi.productItemId = pi.id \n"
                 + "JOIN tblProduct p ON pi.productId = p.id \n"

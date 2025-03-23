@@ -94,7 +94,7 @@ function fetchOrders(shopId) {
     .then((data) => {
       let tableBody = document.getElementById("orderTable");
       tableBody.innerHTML =
-        "<tr><th>User Name</th><th>Product Name</th><th>Total Price</th><th>Shipping Cost</th></tr>";
+        "<tr><th>User Name</th><th>Product Name</th><th>Quantity</th><th>Total Price</th><th>Shipping Cost</th></tr>";
 
       data.forEach((item) => {
         let row = document.createElement("tr");
@@ -107,6 +107,10 @@ function fetchOrders(shopId) {
 
         cell = document.createElement("td");
         cell.textContent = item.productName; // Tên sản phẩm
+        row.appendChild(cell);
+
+        cell = document.createElement("td");
+        cell.textContent = item.quantity;
         row.appendChild(cell);
 
         cell = document.createElement("td");
