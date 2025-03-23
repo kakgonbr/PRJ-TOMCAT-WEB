@@ -157,6 +157,10 @@
         <servlet-name>SearchServlet</servlet-name>
         <servlet-class>controller.SearchServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>OrderServlet</servlet-name>
+        <servlet-class>controller.OrderServlet</servlet-class>
+    </servlet>
     <!-- SERVLET MAPPINGS -->
     <!-- TEMPLATE:
    <servlet-mapping>
@@ -179,6 +183,10 @@
     <servlet>
         <servlet-name>n_VariationLoader</servlet-name>
         <servlet-class>controller.ajax.VariationLoader</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OrderLoader</servlet-name>
+        <servlet-class>controller.ajax.OrderLoader</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>n_LoginServlet</servlet-name>
@@ -298,7 +306,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>n_ShopHomeServlet</servlet-name>
-        <url-pattern>/shophome</url-pattern>
+        <url-pattern>/sellercenter/shophome</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ShopRegisterationServlet</servlet-name>
@@ -310,7 +318,11 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>n_AddProductServlet</servlet-name>
-        <url-pattern>/addproduct</url-pattern>
+        <url-pattern>/sellercenter/addproduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderServlet</servlet-name>
+        <url-pattern>/sellercenter/order</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SearchServlet</servlet-name>
@@ -362,6 +374,10 @@
     </error-page> -->
     <!-- ENDPOINTS -->
     <!-- ChatEndPoint AT /chat OR ws://kakgonbri.zapto.org/prj/chat-->
+    <servlet-mapping>
+        <servlet-name>OrderLoader</servlet-name>
+        <url-pattern>/ajax/order</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

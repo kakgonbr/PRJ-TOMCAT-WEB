@@ -22,7 +22,7 @@
             </div>
         </c:if>
 
-        <form action="${pageContext.request.contextPath}/addproduct" method="post">
+        <form action="${pageContext.request.contextPath}/sellercenter/addproduct" method="post">
             <input type="hidden" name="action" value="setStockAndPrice">
             <table border="1">
                 <tr>

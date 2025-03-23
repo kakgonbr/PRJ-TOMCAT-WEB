@@ -3,12 +3,13 @@
 <%@attribute name="user" required="false" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <div class="container">
     <div class="row my-2">
         <div class="col-2 d-flex align-items-center">
             <a href="${pageContext.request.contextPath}/shopauth"
-                class="text-decoration-none text-dark fs-5">
+               class="text-decoration-none text-dark fs-5">
                 <i class="bi bi-shop"></i>
                 <span class="text-muted"> Seller center</span>
             </a>
@@ -29,22 +30,22 @@
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="bd-theme-text" style="">
                     <li>
                         <button type="button" id="button-theme-light"
-                            class="dropdown-item d-flex align-items-center button-switch-theme"
-                            data-bs-theme-value="light" aria-pressed="false">
+                                class="dropdown-item d-flex align-items-center button-switch-theme"
+                                data-bs-theme-value="light" aria-pressed="false">
                             Light
                         </button>
                     </li>
                     <li>
                         <button type="button" id="button-theme-dark"
-                            class="dropdown-item d-flex align-items-center button-switch-theme"
-                            data-bs-theme-value="dark" aria-pressed="false">
+                                class="dropdown-item d-flex align-items-center button-switch-theme"
+                                data-bs-theme-value="dark" aria-pressed="false">
                             Dark (WIP)
                         </button>
                     </li>
                     <li>
                         <button type="button" id="button-theme-system"
-                            class="dropdown-item d-flex align-items-center button-switch-theme"
-                            data-bs-theme-value="system" aria-pressed="true">
+                                class="dropdown-item d-flex align-items-center button-switch-theme"
+                                data-bs-theme-value="system" aria-pressed="true">
                             Auto
                         </button>
                     </li>
@@ -68,21 +69,21 @@
                 <div class="ms-2">
                     <!-- add user name here -->
                     <a class=" p-2 text-decoration-none fs-5 logo rounded-pill" href="#" id="navbarDropdown"
-                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                       role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-person-fill "></i>
                         <span class="text-muted">${user}</span>
 
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item"
-                                href="${pageContext.request.contextPath}/user">Profile</a></li>
+                               href="${pageContext.request.contextPath}/user">Profile</a></li>
                         <li><a class="dropdown-item" href="#">Something</a></li>
                         <li>
                             <hr class="dropdown-divider" />
                         </li>
                         <li>
                             <a class="dropdown-item"
-                                href="${pageContext.request.contextPath}/login?action=logout">Logout</a>
+                               href="${pageContext.request.contextPath}/login?action=logout">Logout</a>
                         </li>
                     </ul>
                 </div>
@@ -91,22 +92,25 @@
                 <div class="ms-2">
 
                     <a href="${pageContext.request.contextPath}/login"
-                        class="p-2 text-decoration-none fs-5 logo rounded-pill">Log In</a>
+                       class="p-2 text-decoration-none fs-5 logo rounded-pill">Log In</a>
 
                 </div>
             </c:if>
             <!--cart-->
-            <div class="ms-2">
-                <a href="${pageContext.request.contextPath}/cart" class="p-2 text-decoration-none fs-5 logo rounded-pill">
-                    <i class="bi bi-bag-fill"></i>
-                    <span class="text-muted">Cart</span>
-                </a>
-            </div>
+            <!--            check if not in user path, disable cart function-->
+            <c:if test="${not fn:contains(pageContext.request.requestURI, 'sellercenter')}">
+                <div class="ms-2">
+                    <a href="${pageContext.request.contextPath}/cart" class="p-2 text-decoration-none fs-5 logo rounded-pill">
+                        <i class="bi bi-bag-fill"></i>
+                        <span class="text-muted">Cart</span>
+                    </a>
+                </div>
+            </c:if>
         </div>
     </div>
     <div class="row" style="position: relative;">
         <div class="col-2 fs-5 fw-semibold dropdown dropdown-full-width" data-bs-toggle="dropdown"
-            aria-expanded="false" type="button" id="category">
+             aria-expanded="false" type="button" id="category">
             <i class="bi bi-list"></i>
             <span>CATEGORY</span>
         </div>
@@ -122,11 +126,11 @@
         </div>
         <div class="col-7 mx-auto">
             <form class="input-group ms-2 rounded y w-75" style="background-color: rgb(248, 246, 246);"
-                action="${pageContext.request.contextPath}/search">
+                  action="${pageContext.request.contextPath}/search">
                 <input type="text" class="form-control border-0 rounded"
-                    placeholder="Search for items and brands" aria-label="Search" data-bs-toggle="dropdown"
-                    aria-expanded="false" style="background-color: rgb(248, 246, 246);" name="query"
-                    id="searchBar" autocomplete="off">
+                       placeholder="Search for items and brands" aria-label="Search" data-bs-toggle="dropdown"
+                       aria-expanded="false" style="background-color: rgb(248, 246, 246);" name="query"
+                       id="searchBar" autocomplete="off">
                 <input type="hidden" name="categoryId">
                 <div class="btn  border-0 rounded clear-btn">
                     <i class="bi bi-x-circle-fill"></i>

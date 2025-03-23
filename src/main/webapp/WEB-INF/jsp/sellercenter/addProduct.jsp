@@ -30,7 +30,7 @@
             <div>${error}</div>
         </c:if>
 
-        <form id="addProductForm" action="${pageContext.request.contextPath}/addproduct" method="post">
+        <form id="addProductForm" action="${pageContext.request.contextPath}/sellercenter/addproduct" method="post">
             <input type="hidden" name="action" value="addProduct">
 
             <label for="productName">Product Name:</label>

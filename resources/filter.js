@@ -86,7 +86,12 @@ function fetchVariationValues(variationId) {
     }
 
     fetch(url.toString())
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             console.log("Dữ liệu nhận được:", data);
 
@@ -94,10 +99,10 @@ function fetchVariationValues(variationId) {
             variationValueContainer.innerHTML = "";
 
             let ul = document.createElement("ul");
-            let variation = data.filter(v => v.id == variationId)[0];
 
-            if (variation && variation.values && variation.values.length > 0) {
-                variation.values.forEach(value => {
+            // Fix: Ensure we find the correct variation
+            if (data.length > 0) {
+                data.forEach(value => {
                     ul.appendChild(createVariationValueElement(value));
                 });
             } else {
@@ -127,12 +132,105 @@ function createVariationValueElement(value) {
     return li;
 }
 
+var selectedVariations = [];
+
 function applyVariation() {
     let selectedVariation = document.querySelector("input[name='variation']:checked");
-    if (selectedVariation) {
-        variationId = selectedVariation.value;
-        fetchVariationValues(variationId);
-    } else {
-        console.error("No variation selected");
+    if (!selectedVariation) {
+        alert("Please select a variation.");
+        return;
     }
+
+    let variationId = selectedVariation.value;
+    let variationName = selectedVariation.dataset.name;
+    let selectedValues = Array.from(document.querySelectorAll(`input[name="variationValue"]:checked`))
+        .map(value => value.dataset.name);
+
+    if (selectedValues.length === 0) {
+        alert("Please select at least one variation value.");
+        return;
+    }
+
+    selectedVariations.push({ variationName, values: selectedValues });
+    renderVariationTable();
 }
+
+function showNewVariationForm() {
+    document.getElementById("newVariationForm").style.display = "block";
+}
+
+function addNewVariation() {
+    let newVariationName = document.getElementById("variationName").value.trim();
+    let newVariationValues = document.getElementById("variationValues").value.trim().split(",");
+    let newVariationDatatype = document.getElementById("datatype").value.trim();
+    let newVariationUnit = document.getElementById("uunit").value.trim();
+
+    if (!newVariationName || !newVariationDatatype || !newVariationUnit || newVariationValues.length === 0) {
+        alert("Please fill in all fields.");
+        return;
+    }
+
+    selectedVariations.push({
+        variationName: newVariationName,
+        datatype: newVariationDatatype,
+        unit: newVariationUnit,
+        values: newVariationValues
+    });
+
+    renderVariationTable();
+
+    document.getElementById("variationName").value = "";
+    document.getElementById("variationDatatype").value = "";
+    document.getElementById("variationUnit").value = "";
+    document.getElementById("variationValue").value = "";
+    document.getElementById("newVariationForm").style.display = "none";
+}
+
+function renderVariationTable() {
+    let tableBody = document.getElementById("variationTableBody");
+    tableBody.innerHTML = "";
+
+    selectedVariations.forEach((variation, index) => {
+        let row = document.createElement("tr");
+
+        let nameCell = document.createElement("td");
+        nameCell.textContent = variation.variationName;
+
+        let valuesCell = document.createElement("td");
+        valuesCell.textContent = variation.values.join(", ");
+
+        let datatypeCell = document.createElement("td");
+        datatypeCell.textContent = variation.datatype || "N/A";
+
+        let unitCell = document.createElement("td");
+        unitCell.textContent = variation.unit || "N/A";
+
+
+        let actionCell = document.createElement("td");
+        let removeButton = document.createElement("button");
+        removeButton.textContent = "Remove";
+        removeButton.onclick = function () {
+            selectedVariations.splice(index, 1);
+            renderVariationTable();
+        };
+        actionCell.appendChild(removeButton);
+
+        row.appendChild(nameCell);
+        row.appendChild(valuesCell);
+        row.appendChild(datatypeCell);
+        row.appendChild(unitCell);
+        row.appendChild(actionCell);
+        tableBody.appendChild(row);
+    });
+}
+
+function submitVariations() {
+    let form = document.getElementById("selectVariationForm");
+    let hiddenInput = document.createElement("input");
+    hiddenInput.type = "hidden";
+    hiddenInput.name = "selectedVariations";
+    hiddenInput.value = JSON.stringify(selectedVariations);
+    form.appendChild(hiddenInput);
+    form.submit();
+}
+

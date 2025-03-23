@@ -54,7 +54,7 @@ public class AddProductServlet extends HttpServlet {
         String action = request.getParameter("action");
 
         if (action == null) {
-            response.sendRedirect(request.getContextPath() + "/shophome");
+            response.sendRedirect(request.getContextPath() + "/sellercenter/shophome");
             return;
         }
 
@@ -70,7 +70,7 @@ public class AddProductServlet extends HttpServlet {
                     handleSetStockAndPrice(request, response);
                     break;
                 default:
-                    response.sendRedirect(request.getContextPath() + "/shophome");
+                    response.sendRedirect(request.getContextPath() + "/sellercenter/shophome");
             }
         } catch (SQLException e) {
             request.setAttribute("error", "db_error");
@@ -131,7 +131,7 @@ public class AddProductServlet extends HttpServlet {
             selectedProducts.add(product);
             session.setAttribute("selectedProducts", selectedProducts);
 
-            response.sendRedirect(request.getContextPath() + "/addproduct?action=selectVariation");
+            response.sendRedirect(request.getContextPath() + "/sellercenter/addproduct?action=selectVariation");
 
         } catch (SQLException e) {
             request.setAttribute("error", "db");
@@ -148,12 +148,12 @@ public class AddProductServlet extends HttpServlet {
             Integer productId = (Integer) session.getAttribute("productId");
             Integer categoryId = (Integer) session.getAttribute("categoryId");
             if (categoryId == null) {
-                response.sendRedirect(request.getContextPath() + "/shophome");
+                response.sendRedirect(request.getContextPath() + "/sellercenter/shophome");
                 return;
             }
 
-            String variationName = request.getParameter("variationName");
-            String variationOptions = request.getParameter("variationOptions");
+            String variationName = request.getParameter("variation");
+            String variationOptions = request.getParameter("variationValue");
             String unit = request.getParameter("unit");
             String datatype = request.getParameter("datatype");
 
@@ -232,7 +232,7 @@ public class AddProductServlet extends HttpServlet {
                 }
             }
             session.setAttribute("selectedProductItems", productItemList);
-            response.sendRedirect(request.getContextPath() + "/addproduct?action=setStockAndPrice");
+            response.sendRedirect(request.getContextPath() + "/sellercenter/addproduct?action=setStockAndPrice");
 
         } catch (SQLException e) {
             request.setAttribute("error", "Unexpected database error: " + e.getMessage());
@@ -299,7 +299,7 @@ public class AddProductServlet extends HttpServlet {
             int productId = (Integer) request.getSession().getAttribute("productId");
             dao.ProductDAO.ProductManager.updateMultipleProductItems(productId, updatedItems);
 
-            response.sendRedirect(request.getContextPath() + "/shophome");
+            response.sendRedirect(request.getContextPath() + "/sellercenter/shophome");
 
         } catch (Exception ex) {
             request.setAttribute("error", "Stock and price update error");

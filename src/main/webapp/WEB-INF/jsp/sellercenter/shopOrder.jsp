@@ -1,7 +1,7 @@
 <%-- 
-    Document   : sellercenter
-    Created on : Mar 19, 2025, 4:28:21 PM
-    Author     : THTN0
+    Document   : shopOrder
+    Created on : Mar 23, 2025, 9:16:14 PM
+    Author     : hoahtm
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -11,15 +11,13 @@
 <t:genericpage title="Seller Center">
     <jsp:attribute name="head">
         <t:resources/>
-
-        <script src="${pageContext.request.contextPath}/resources/product_js"></script>
         <script src="${pageContext.request.contextPath}/resources/shop_js"></script>
 
         <script>
             var contextPath = "${pageContext.request.contextPath}";
             var shopId = "${sessionScope.shopId}";
             document.addEventListener("DOMContentLoaded", function () {
-                fetchProductsShop(shopId, true);
+                fetchOrders(shopId);
                 handleAccordionSearch("searchBox", "menuAccordion");
             });
         </script>
@@ -46,8 +44,23 @@
 
                         <!-- Accordion Menu -->
                         <div class="accordion fs-6" id="menuAccordion">
-
-
+                            <!-- Order Section -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseOrder">
+                                        Order
+                                    </button>
+                                </h2>
+                                <div id="collapseOrder" class="accordion-collapse collapse">
+                                    <div class="accordion-body">
+                                        <a href="${pageContext.request.contextPath}/sellercenter/order" class="list-group-item list-group-item-action pb-3">📦 My
+                                            order</a>
+                                        <!--                                    <a href="../html/return-refund-cancle.html" class="list-group-item list-group-item-action fs-6">🔄
+                                                                                Return/Refund/Cancel</a>-->
+                                    </div>
+                                </div>
+                            </div>
                             <!-- Product Section -->
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
@@ -58,9 +71,9 @@
                                 </h2>
                                 <div id="collapseProduct" class="accordion-collapse collapse">
                                     <div class="accordion-body">
-                                        <a href="${pageContext.request.contextPath}/shophome" class="list-group-item list-group-item-action pb-3">🛍 My
+                                        <a href="${pageContext.request.contextPath}/sellercenter/shophome" class="list-group-item list-group-item-action pb-3">🛍 My
                                             Products</a>
-                                        <a href="${pageContext.request.contextPath}/addproduct" class="list-group-item list-group-item-action">➕ Add Product</a>
+                                        <a href="${pageContext.request.contextPath}/sellercenter/addproduct" class="list-group-item list-group-item-action">➕ Add Product</a>
                                     </div>
                                 </div>
                             </div>
@@ -104,9 +117,8 @@
                 <main class="col-md-10 p-4">
                     <div class="tab-content mt-3">
                         <div id="all" class="tab-pane fade show active">
-                            <table class="table table-bordered" id="productTableShop">
-                                <button onclick="fetchProductsShop(shopId, true);" class="btn btn-primary">View Available Products</button>
-                                <button onclick="fetchProductsShop(shopId, false);" class="btn btn-danger">View Deleted Products</button>
+                            <button onclick="fetchOrders(shopId);" class="btn btn-primary">View Order</button> 
+                            <table class="table table-bordered" id="orderTable">                                                              
                             </table>
                         </div>
                     </div>
