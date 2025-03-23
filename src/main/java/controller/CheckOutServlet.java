@@ -39,22 +39,26 @@ public class CheckOutServlet extends HttpServlet {
         try {
             switch (action) {
                 case "proceed":
-                    int order = dao.OrderDAO.OrderManager.createOrder(new model.ProductOrder());
-
-                    model.Cart cart = dao.CartDAO.CartFetcher.getCartByUser(user.getId(), true);
-
+                    // what a mess
                     model.Promotion promotion = null;
                     if (promotionId != null) {
                         promotion = dao.PromotionDAO.PromotionFetcher.getPromotion(promotionId);
                     }
+                    model.ProductOrder order = new model.ProductOrder();
+                    order.setUserId(user);
+                    order.setDate(new java.util.Date());
+                    order.setPromotionId(promotion);
+                    int orderId = dao.OrderDAO.OrderManager.createOrder(order);
 
-                    dao.OrderDAO.OrderedItemManager.transferFromCart(order, cart.getCartItemList(), promotion);
+                    model.Cart cart = dao.CartDAO.CartFetcher.getCartByUser(user.getId(), true);
 
-                    dao.OrderDAO.OrderManager.updatePrice(order);
+                    dao.OrderDAO.OrderedItemManager.transferFromCart(orderId, cart.getCartItemList().stream().map(model.CartItemWrapper::new).toList());
 
-                    model.ProductOrder dbOrder = dao.OrderDAO.OrderManager.getOrder(order);
+                    dao.OrderDAO.OrderManager.updatePrice(orderId);
 
-                    response.sendRedirect(service.vnpay.PortalService.getLink(request.getRemoteAddr(), "", dbOrder.getFinalPrice().longValue() * 100, "vn", Integer.toString(order)));
+                    model.ProductOrder dbOrder = dao.OrderDAO.OrderManager.getOrder(orderId);
+
+                    response.sendRedirect(service.vnpay.PortalService.getLink(request.getRemoteAddr(), "", dbOrder.getFinalPrice().longValue() * 100, "vn", Integer.toString(orderId)));
                     return;
                 case "apply":
     

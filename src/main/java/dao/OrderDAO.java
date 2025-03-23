@@ -32,7 +32,8 @@ public class OrderDAO {
 
         public static synchronized ProductOrder getOrder(int id) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                return em.createNamedQuery("ProductOrder.findById", ProductOrder.class).setParameter("id", id).getSingleResult();
+                return em.createNamedQuery("ProductOrder.findById", ProductOrder.class).setParameter("id", id)
+                        .getSingleResult();
             } catch (Exception e) {
                 throw new java.sql.SQLException(e);
             }
@@ -116,24 +117,25 @@ public class OrderDAO {
          * @return
          * @throws java.sql.SQLException
          */
-        public static synchronized void transferFromCart(int orderId, java.util.List<CartItem> items,
-                model.Promotion promotion) throws java.sql.SQLException {
+        public static synchronized void transferFromCart(int orderId, java.util.List<model.CartItemWrapper> items)
+                throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 EntityTransaction et = em.getTransaction();
 
                 try {
                     et.begin();
 
-                    for (final model.CartItem item : items) {
+                    for (final model.CartItemWrapper item : items) {
                         em.createNativeQuery(INSERT_INTO_ORDER).setParameter(1, orderId).setParameter(2, item.getId())
                                 .setParameter(3, item.getQuantity())
-                                .setParameter(4,
-                                        promotion == null ? item.getProductItemId().getPrice().longValue()
-                                                : (promotion.getType()
-                                                        ? item.getProductItemId().getPrice().longValue()
-                                                                - promotion.getValue()
-                                                        : item.getProductItemId().getPrice().longValue()
-                                                                * (100.0 - promotion.getValue()) / 100.0)).setParameter(5, 0) // TODO: ADD SHIPPING COST
+                                .setParameter(4, item.getProductWrapper().getPromotion() == null
+                                        ? item.getProductItem().getPrice()
+                                        : (item.getProductWrapper().getPromotion().getType()
+                                                ? item.getProductItem().getPrice()
+                                                        - item.getProductWrapper().getPromotion().getValue()
+                                                : item.getProductItem().getPrice()
+                                                        * (100.0 - item.getProductWrapper().getPromotion().getValue())
+                                                        / 100.0))
                                 .executeUpdate();
 
                         em.createNativeQuery(DELETE_FROM_CART_ITEM).setParameter(1, item.getId()).executeUpdate();
