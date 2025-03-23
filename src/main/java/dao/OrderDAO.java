@@ -4,10 +4,7 @@ import org.hibernate.Hibernate;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.stream.Collectors;
-import model.CartItem;
 import model.ProductOrder;
 
 public class OrderDAO {
@@ -82,37 +79,22 @@ public class OrderDAO {
             }
         } // public static synchronized void markCompleted
         private static final String SELECT_ORDER_ITEMS_BY_SHOP
-                = "SELECT u.displayName AS userName, p.name AS productName, oi.totalPrice, oi.shippingCost "
-                + "FROM tblOrderedItem oi "
-                + "JOIN tblProductItem pi ON oi.productItemId = pi.id "
-                + "JOIN tblProduct p ON pi.productId = p.id "
-                + "JOIN tblOrder o ON oi.orderId = o.id "
-                + "JOIN tblUser u ON o.userId = u.id "
+                = "SELECT u.displayName AS userName, p.name AS productName, oi.quantity, oi.totalPrice, oi.shippingCost \n"
+                + "FROM tblOrderedItem oi \n"
+                + "JOIN tblProductItem pi ON oi.productItemId = pi.id \n"
+                + "JOIN tblProduct p ON pi.productId = p.id \n"
+                + "JOIN tblOrder o ON oi.orderId = o.id \n"
+                + "JOIN tblUser u ON o.userId = u.id \n"
                 + "WHERE p.shopId = ? AND p.shopId IS NOT NULL";
 
-        public static java.util.List<model.OrderedItem> getOrderItemsByShop(int shopId) throws java.sql.SQLException {
+        public static java.util.List<model.dto.OrderedItemDTO> getOrderItemsByShop(int shopId) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                System.out.println("DEBUG: Querying shopId = " + shopId);
-
                 java.util.List<Object[]> result = em.createNativeQuery(SELECT_ORDER_ITEMS_BY_SHOP)
                         .setParameter(1, shopId)
                         .getResultList();
-
-                System.out.println("DEBUG: Query returned " + result.size() + " rows.");
-                return result.stream().map(row -> {
-                    model.OrderedItem item = new model.OrderedItem();
-                    model.ProductOrder productOrder = em.find(model.ProductOrder.class, (Integer) row[0]);
-                    item.setOrderId(productOrder);
-                    model.ProductItem productItem = em.find(model.ProductItem.class, (Integer) row[1]);
-                    item.setProductItemId(productItem);
-                    item.setTotalPrice(row[2] != null ? new BigDecimal(row[2].toString()) : BigDecimal.ZERO);
-                    item.setShippingCost(row[4] != null ? new BigDecimal(row[3].toString()) : BigDecimal.ZERO);
-
-                    return item;
-                }).collect(Collectors.toList());
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new java.sql.SQLException(e);
+                return result.stream()
+                        .map(row -> new model.dto.OrderedItemDTO(row))
+                        .collect(Collectors.toList());
             }
         }
 

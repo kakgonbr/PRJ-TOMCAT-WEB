@@ -16,19 +16,23 @@ public class OrderedItemDTO {
         private String productName;
         private BigDecimal totalPrice;
         private BigDecimal shippingCost;
+        private int quantity;
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
         public OrderedItemDTO() {}
 
-    public OrderedItemDTO(model.OrderedItem orderedItem) {
-        if (orderedItem != null) {
-            model.ProductOrder order = orderedItem.getOrderId();
-            model.Product product = (orderedItem.getProductItemId() != null) ? orderedItem.getProductItemId().getProductId() : null;
-            model.User user = (order != null) ? order.getUserId() : null;
-
-            this.userName = (user != null) ? user.getDisplayName() : null;
-            this.productName = (product != null) ? product.getName() : null;
-            this.totalPrice = (orderedItem.getTotalPrice() != null) ? orderedItem.getTotalPrice() : BigDecimal.ZERO;
-            this.shippingCost = (orderedItem.getShippingCost() != null) ? orderedItem.getShippingCost() : BigDecimal.ZERO;
-        }
+    public OrderedItemDTO(Object[] row) {
+        this.userName = row[0] != null ? row[0].toString() : null;
+        this.productName = row[1] != null ? row[1].toString() : null;
+        this.quantity = row[2] != null ? ((Number) row[2]).intValue() : 0;
+        this.totalPrice = row[3] != null ? new BigDecimal(row[3].toString()) : BigDecimal.ZERO;
+        this.shippingCost = row[4] != null ? new BigDecimal(row[4].toString()) : BigDecimal.ZERO;
     }
 
     public model.OrderedItem toOrderedItem() {

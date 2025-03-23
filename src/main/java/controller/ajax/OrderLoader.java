@@ -9,8 +9,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.stream.Collectors;
-import model.dto.OrderedItemDTO;
 
 /**
  *
@@ -25,7 +23,7 @@ public class OrderLoader extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         String shopIdStr = request.getParameter("shopId");
-        System.out.println("DEBUG: Received shopId = " + shopIdStr); // Debug đầu vào
+        System.out.println("DEBUG: Received shopId = " + shopIdStr);
 
         if (shopIdStr == null || shopIdStr.isBlank()) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing shopId");
@@ -36,13 +34,9 @@ public class OrderLoader extends HttpServlet {
             int shopId = Integer.parseInt(shopIdStr);
             System.out.println("DEBUG: Parsed shopId = " + shopId);
 
-            java.util.List<model.OrderedItem> rawData = dao.OrderDAO.OrderManager.getOrderItemsByShop(shopId);
+            java.util.List<model.dto.OrderedItemDTO> orderItems = dao.OrderDAO.OrderManager.getOrderItemsByShop(shopId);
 
-            java.util.List<OrderedItemDTO> orderItems = rawData.stream()
-                    .map(OrderedItemDTO::new)
-                    .collect(Collectors.toList());
-
-            System.out.println("DEBUG: Returning " + orderItems.size() + " items."); // Debug số lượng items
+            System.out.println("DEBUG: Returning " + orderItems.size() + " items.");
             String json = new com.google.gson.Gson().toJson(orderItems);
             response.getWriter().write(json);
 
@@ -50,7 +44,7 @@ public class OrderLoader extends HttpServlet {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid shopId");
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error fetching order items");
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error fetching order items: " + e.getMessage());
         }
     }
 
