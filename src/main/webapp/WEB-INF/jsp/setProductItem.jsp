@@ -10,6 +10,17 @@
 
     <jsp:attribute name="body">
         <h2>Set Stock & Price</h2>
+        <!-- Hiển thị lỗi -->
+        <c:if test="${not empty requestScope.errorMessages}">
+            <div style="color: red; border: 1px solid red; padding: 10px; margin-bottom: 10px;">
+                <strong>Errors:</strong>
+                <ul>
+                    <c:forEach var="error" items="${requestScope.errorMessages}">
+                        <li>${error}</li>
+                    </c:forEach>
+                </ul>
+            </div>
+        </c:if>
 
         <form action="${pageContext.request.contextPath}/addproduct" method="post">
             <input type="hidden" name="action" value="setStockAndPrice">

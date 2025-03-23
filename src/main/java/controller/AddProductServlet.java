@@ -263,7 +263,6 @@ public class AddProductServlet extends HttpServlet {
                     int stock = Integer.parseInt(stockValues[i]);
                     BigDecimal price = new BigDecimal(priceValues[i]);
 
-                    // Kiểm tra số âm
                     if (stock < 0) {
                         errors.add("Stock for product item ID " + productItemId + " cannot be negative.");
                     }
@@ -271,13 +270,15 @@ public class AddProductServlet extends HttpServlet {
                         errors.add("Price for product item ID " + productItemId + " cannot be negative.");
                     }
 
-                    if (errors.isEmpty()) {
-                        ProductItem productItem = new ProductItem();
-                        productItem.setId(productItemId);
-                        productItem.setStock(stock);
-                        productItem.setPrice(price);
-                        updatedItems.add(productItem);
+                    if (!errors.isEmpty()) {
+                        continue;
                     }
+
+                    ProductItem productItem = new ProductItem();
+                    productItem.setId(productItemId);
+                    productItem.setStock(stock);
+                    productItem.setPrice(price);
+                    updatedItems.add(productItem);
 
                 } catch (NumberFormatException e) {
                     errors.add("Invalid number format for stock or price at item " + (i + 1));
@@ -286,6 +287,11 @@ public class AddProductServlet extends HttpServlet {
 
             if (!errors.isEmpty()) {
                 request.setAttribute("errorMessages", errors);
+
+                request.setAttribute("productItemIds", productItemIds);
+                request.setAttribute("stockValues", stockValues);
+                request.setAttribute("priceValues", priceValues);
+
                 request.getRequestDispatcher(config.Config.JSPMapper.SET_STOCK_AND_PRICE).forward(request, response);
                 return;
             }
