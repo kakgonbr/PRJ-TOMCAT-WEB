@@ -44,40 +44,65 @@ function fetchVariations(categoryId) {
             let variationContainer = document.getElementById("variationFilter");
             variationContainer.innerHTML = "";
 
+            let table = document.createElement("table");
+            table.className = "table table-striped table-bordered";
+
+            let thead = document.createElement("thead");
+            thead.innerHTML = `
+                <tr class="table-dark">
+                    <th>Select</th>
+                    <th>Variation Name</th>
+                    <th>Data Type</th>
+                    <th>Unit</th>
+                </tr>
+            `;
+            table.appendChild(thead);
+
+            // Tạo phần thân bảng
+            let tbody = document.createElement("tbody");
+
             data.forEach(variation => {
-                variationContainer.appendChild(createVariationElement(variation));
+                tbody.appendChild(createVariationElement(variation));
             });
+
+            table.appendChild(tbody);
+            variationContainer.appendChild(table);
         })
         .catch(error => console.error("Error fetching variations:", error));
 }
-
 function createVariationElement(variation) {
-    let container = document.createElement("div");
-    container.className = "form-check"; // Sử dụng Bootstrap để hiển thị đẹp hơn
+    let tr = document.createElement("tr");
 
-    let checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.className = "form-check-input";
-    checkbox.name = "variation";
-    checkbox.value = variation.id;
-    checkbox.dataset.name = variation.name;
+    let selectTd = document.createElement("td");
+    let radio = document.createElement("input");
+    radio.type = "radio";
+    radio.name = "variation";
+    radio.value = variation.id;
+    radio.dataset.name = variation.name;
 
-    checkbox.addEventListener("change", function () {
-        fetchVariationValues(getSelectedVariations());
+    radio.addEventListener("change", function () {
+        fetchVariationValues(variation.id);
     });
 
-    let label = document.createElement("label");
-    label.className = "form-check-label";
+    selectTd.appendChild(radio);
+    tr.appendChild(selectTd);
 
-    let unitText = variation.unit ? ` (${variation.unit})` : "";
-    let dataTypeText = variation.datatype ? ` [${variation.datatype}]` : "";
-    
-    label.appendChild(document.createTextNode(variation.name + unitText + dataTypeText));
+    // Tên variation
+    let nameTd = document.createElement("td");
+    nameTd.textContent = variation.name;
+    tr.appendChild(nameTd);
 
-    container.appendChild(checkbox);
-    container.appendChild(label);
+    // Datatype
+    let dataTypeTd = document.createElement("td");
+    dataTypeTd.textContent = variation.datatype || "N/A";
+    tr.appendChild(dataTypeTd);
 
-    return container;
+    // Unit
+    let unitTd = document.createElement("td");
+    unitTd.textContent = variation.unit || "N/A";
+    tr.appendChild(unitTd);
+
+    return tr;
 }
 
 function fetchVariationValues(variationId) {
@@ -228,47 +253,15 @@ function renderVariationTable() {
     });
 }
 
-function submitVariations() { 
+function submitVariations() {
     let form = document.getElementById("selectVariationForm");
-
-    // Xóa các input ẩn cũ trước khi thêm mới
-    document.querySelectorAll(".dynamic-input").forEach(e => e.remove());
-
-    selectedVariations.forEach((variation, index) => {
-        let variationNameInput = document.createElement("input");
-        variationNameInput.type = "hidden";
-        variationNameInput.name = "variation";
-        variationNameInput.value = variation.variationName;
-        variationNameInput.classList.add("dynamic-input");
-        form.appendChild(variationNameInput);
-
-        let datatypeInput = document.createElement("input");
-        datatypeInput.type = "hidden";
-        datatypeInput.name = "datatype";
-        datatypeInput.value = variation.datatype;
-        datatypeInput.classList.add("dynamic-input");
-        form.appendChild(datatypeInput);
-
-        let unitInput = document.createElement("input");
-        unitInput.type = "hidden";
-        unitInput.name = "unit";
-        unitInput.value = variation.unit;
-        unitInput.classList.add("dynamic-input");
-        form.appendChild(unitInput);
-
-        variation.values.forEach(value => {
-            let valueInput = document.createElement("input");
-            valueInput.type = "hidden";
-            valueInput.name = "variationValue";
-            valueInput.value = value;
-            valueInput.classList.add("dynamic-input");
-            form.appendChild(valueInput);
-        });
-    });
-
+    let hiddenInput = document.createElement("input");
+    hiddenInput.type = "hidden";
+    hiddenInput.name = "selectedVariations";
+    hiddenInput.value = JSON.stringify(selectedVariations);
+    form.appendChild(hiddenInput);
     form.submit();
 }
-
 
 
 
