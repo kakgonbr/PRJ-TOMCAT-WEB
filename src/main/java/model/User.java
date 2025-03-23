@@ -51,6 +51,7 @@ public class User implements Serializable {
 
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -81,6 +82,14 @@ public class User implements Serializable {
     @Size(max = 255)
     @Column(name = "facebookId")
     private String facebookId;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Basic(optional = false)
+    @NotNull()
+    private BigDecimal credit;
+    @Basic(optional = false)
+    @NotNull()
+    @Column(name = "status")
+    private boolean status;
     @Size(max = 50)
     @Column(name = "displayName")
     private String displayName;
@@ -119,15 +128,9 @@ public class User implements Serializable {
     private Integer id;
     @Column(name = "isAdmin")
     private Boolean isAdmin;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @NotNull
-    @Column(name = "credit")
-    private BigDecimal credit;
     @JoinColumn(name = "profileStringResourceId", referencedColumnName = "id")
     @ManyToOne
     private ResourceMap profileStringResourceId;
-    @Column(name = "status")
-    private Boolean status;
 
     public User() {
     }
@@ -161,13 +164,6 @@ public class User implements Serializable {
         this.isAdmin = isAdmin;
     }
 
-    public BigDecimal getCredit() {
-        return credit;
-    }
-
-    public void setCredit(BigDecimal credit) {
-        this.credit = credit;
-    }
 
 
     public ResourceMap getProfileStringResourceId() {
@@ -204,13 +200,6 @@ public class User implements Serializable {
     }
 
     
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
 
     @XmlTransient
     public Collection<Shop> getShopCollection() {
@@ -230,77 +219,6 @@ public class User implements Serializable {
         this.promotionCollection = promotionCollection;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getPersistentCookie() {
-        return persistentCookie;
-    }
-
-    public void setPersistentCookie(String persistentCookie) {
-        this.persistentCookie = persistentCookie;
-    }
-
-    public String getGoogleId() {
-        return googleId;
-    }
-
-    public void setGoogleId(String googleId) {
-        this.googleId = googleId;
-    }
-
-    public String getFacebookId() {
-        return facebookId;
-    }
-
-    public void setFacebookId(String facebookId) {
-        this.facebookId = facebookId;
-    }
-
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
-    public String getBio() {
-        return bio;
-    }
-
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
 
     @XmlTransient
     public List<ChatBox> getChatBoxList() {
@@ -390,6 +308,94 @@ public class User implements Serializable {
 
     public void setOnholdCreditList(List<OnholdCredit> onholdCreditList) {
         this.onholdCreditList = onholdCreditList;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPersistentCookie() {
+        return persistentCookie;
+    }
+
+    public void setPersistentCookie(String persistentCookie) {
+        this.persistentCookie = persistentCookie;
+    }
+
+    public String getGoogleId() {
+        return googleId;
+    }
+
+    public void setGoogleId(String googleId) {
+        this.googleId = googleId;
+    }
+
+    public String getFacebookId() {
+        return facebookId;
+    }
+
+    public void setFacebookId(String facebookId) {
+        this.facebookId = facebookId;
+    }
+
+    public BigDecimal getCredit() {
+        return credit;
+    }
+
+    public void setCredit(BigDecimal credit) {
+        this.credit = credit;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
     }
     
 }

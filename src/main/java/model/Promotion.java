@@ -123,13 +123,6 @@ public class Promotion implements Serializable {
     }
 
 
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
 
 
     public User getCreatorId() {
@@ -207,6 +200,14 @@ public class Promotion implements Serializable {
 
     public void setValue(int value) {
         this.value = value;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
 
     public Date getExpireDate() {

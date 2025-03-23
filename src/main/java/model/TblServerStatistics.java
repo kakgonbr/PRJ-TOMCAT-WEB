@@ -95,13 +95,6 @@ public class TblServerStatistics implements Serializable {
         this.id = id;
     }
 
-    public Date getDay() {
-        return day;
-    }
-
-    public void setDay(Date day) {
-        this.day = day;
-    }
 
     public Integer getTotalMoneyEarned() {
         return totalMoneyEarned;
@@ -206,6 +199,14 @@ public class TblServerStatistics implements Serializable {
     @Override
     public String toString() {
         return "model.TblServerStatistics[ id=" + id + " ]";
+    }
+
+    public Date getDay() {
+        return day;
+    }
+
+    public void setDay(Date day) {
+        this.day = day;
     }
     
 }

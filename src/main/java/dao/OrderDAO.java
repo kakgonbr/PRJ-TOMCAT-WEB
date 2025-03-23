@@ -66,7 +66,7 @@ public class OrderDAO {
 
         public static synchronized boolean isCompleted(int id) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                return em.createNamedQuery("ProductOrder.findById", ProductOrder.class).getSingleResult().getStatus();
+                return em.createNamedQuery("ProductOrder.findById", ProductOrder.class).getSingleResult().isStatus();
             } catch (Exception e) {
                 throw new java.sql.SQLException(e);
             }
@@ -100,10 +100,13 @@ public class OrderDAO {
                     throw new java.sql.SQLException(e);
                 }
             }
-        }
+        } // public static synchronized void updatePrice
     } // public static class OrderManager
 
     public static class OrderedItemManager {
+        private static final String INSERT_INTO_ORDER = "INSERT INTO tblOrderedItem (orderId, productItemId, quantity, totalPrice, shippingCost) VALUES (?1, ?2, ?3, ?4, ?5)";
+        private static final String DELETE_FROM_CART_ITEM = "DELETE FROM tblCartItem WHERE id = ?1";
+
         /**
          * Try to verify that these items belong to the correct cart and the correct
          * user before calling.<br>
@@ -113,10 +116,37 @@ public class OrderDAO {
          * @return
          * @throws java.sql.SQLException
          */
-        public static synchronized int transferFromCart(int orderId, java.util.List<CartItem> items)
-                throws java.sql.SQLException {
-            // TODO: IMPLEMENT THIS AFTER CART AND CART DAO
-            throw new java.sql.SQLException("NOT IMPLEMENTED");
+        public static synchronized void transferFromCart(int orderId, java.util.List<CartItem> items,
+                model.Promotion promotion) throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                EntityTransaction et = em.getTransaction();
+
+                try {
+                    et.begin();
+
+                    for (final model.CartItem item : items) {
+                        em.createNativeQuery(INSERT_INTO_ORDER).setParameter(1, orderId).setParameter(2, item.getId())
+                                .setParameter(3, item.getQuantity())
+                                .setParameter(4,
+                                        promotion.getType()
+                                                ? item.getProductItemId().getPrice().longValue() - promotion.getValue()
+                                                : item.getProductItemId().getPrice().longValue()
+                                                        * (100.0 - promotion.getValue()) / 100.0)
+                                .executeUpdate();
+
+                        em.createNativeQuery(DELETE_FROM_CART_ITEM).setParameter(1, item.getId()).executeUpdate();
+                    }
+
+                    et.commit();
+                } catch (Exception e) {
+                    if (et.isActive()) {
+                        et.rollback();
+                    }
+
+                    throw new java.sql.SQLException(e);
+                }
+            }
         } // public static synchronized void transferFromCart
+
     }
 }

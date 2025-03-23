@@ -38,7 +38,7 @@ import java.util.List;
     @NamedQuery(name = "VariationValue.findByValue", query = "SELECT v FROM VariationValue v WHERE v.value = :value")})
 public class VariationValue implements Serializable {
 
-    @Size(max = 15)
+    @Size(max = 32)
     @Column(name = "value")
     private String value;
 

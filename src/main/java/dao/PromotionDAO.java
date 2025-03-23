@@ -14,9 +14,19 @@ import jakarta.persistence.EntityTransaction;
 public class PromotionDAO {
 
     public static class PromotionFetcher {
+        // private static final String GET_AVAILABLE_FOR_USER = "SELECT * FROM tblPromotion WHERE ofAdmin = 1 AND tblPromotion.id NOT IN (SELECT promotionId from tblPromotionUsage WHERE userId = ?1)";
+
+        // public static synchronized java.util.List<model.Promotion> getAvaialblePromotionsFor(int userId) throws java.sql.SQLException {
+        //     try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+        //         return em.createNativeQuery(GET_AVAILABLE_FOR_USER, model.Promotion.class).setParameter(1, userId).getResultList();
+        //     } catch (Exception e) {
+        //         throw new java.sql.SQLException(e);
+        //     }
+        // } // public static synchronized java.util.List<model.Promotion> getAvaialblePromotionsFor
+
         private static final String CHECK_PROMOTION_USAGE
                 = "SELECT CASE WHEN EXISTS ("
-                + "SELECT 1 FROM tblOrder "
+                + "SELECT * FROM tblOrder "
                 + "WHERE userId = ?1 AND promotionId = ?2"
                 + ") THEN 1 ELSE 0 END";
 
@@ -33,13 +43,22 @@ public class PromotionDAO {
 
         private static final String CHECK_AVAILABLE_PROMOTIONS
                 = "SELECT * FROM tblPromotion WHERE expireDate >= GETDATE() "
-                + "AND (ofAdmin = 1 OR creatorId = ?1)";
+                + "AND ofAdmin = 1 AND tblPromotion.id NOT IN (SELECT promotionID FROM tblOrder WHERE userId = ?1)";
 
         public static synchronized java.util.List<model.Promotion> checkAvailablePromotions(int userID) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 return em.createNativeQuery(CHECK_AVAILABLE_PROMOTIONS, model.Promotion.class)
                         .setParameter(1, userID)
                         .getResultList();
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
+            }
+        }
+
+        public static synchronized model.Promotion getPromotion(int promotionId) throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return em.createNamedQuery("Promotion.findById", model.Promotion.class)
+                        .setParameter("id", promotionId).getSingleResult();
             } catch (Exception e) {
                 throw new java.sql.SQLException(e);
             }

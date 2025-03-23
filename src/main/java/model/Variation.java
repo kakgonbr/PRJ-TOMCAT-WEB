@@ -44,12 +44,14 @@ public class Variation implements Serializable {
     @Size(max = 30)
     @Column(name = "name")
     private String name;
-    @Size(max = 10)
+    @Basic(optional = false)
+    @NotNull()
+    @Size(min = 1, max = 10)
     @Column(name = "datatype")
-    @NotNull
     private String datatype;
-    @Size(max = 10)
+    @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 10)
     @Column(name = "unit")
     private String unit;
     @Column(name = "status")

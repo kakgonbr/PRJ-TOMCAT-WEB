@@ -29,6 +29,7 @@
     <class>model.User</class>
     <class>model.Product</class>
     <class>model.TblServerStatistics</class>
+    <class>model.TblPromotionUsage</class>
     <properties>
       <property name="jakarta.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
       <property name="hibernate.hbm2ddl.auto" value="validate"/>
