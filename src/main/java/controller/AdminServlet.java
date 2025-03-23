@@ -39,6 +39,9 @@ public class AdminServlet extends HttpServlet {
             case "calculateTFIDF":
                 calculateTFIDF();
             break;
+            case "cleanup":
+                cleanup();
+            break;
         }
 
         doGet(request, response);
@@ -62,5 +65,17 @@ public class AdminServlet extends HttpServlet {
             
             return;
         }
+    }
+
+    private static void cleanup() {
+        try {
+            service.FileCleanupJob.cleanup();
+        } catch (IOException | java.sql.SQLException e) {
+            service.Logging.logger.error("FAILED TO CLEAN UP FILES, REASON: {}", e.getMessage());
+            
+            return;
+        }
+
+        service.Logging.logger.info("Cleanup Job completed at: {}", java.time.LocalDateTime.now().format(config.Config.Time.outputFormatTime));
     }
 }

@@ -20,8 +20,7 @@
         <div class="col-7 d-flex align-items-center justify-content-end">
 
             <div class="ms-2">
-                <a class="p-2 text-decoration-none fs-5 logo rounded-pill" href="#" id="navbarDropdown"
-                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="p-2 text-decoration-none fs-5 logo rounded-pill" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="bi bi-circle-half"></i>
                     <span class="text-muted">Theme</span>
 
@@ -97,7 +96,7 @@
             </c:if>
             <!--cart-->
             <div class="ms-2">
-                <a href="#" class="p-2 text-decoration-none fs-5 logo rounded-pill">
+                <a href="${pageContext.request.contextPath}/cart" class="p-2 text-decoration-none fs-5 logo rounded-pill">
                     <i class="bi bi-bag-fill"></i>
                     <span class="text-muted">Cart</span>
                 </a>

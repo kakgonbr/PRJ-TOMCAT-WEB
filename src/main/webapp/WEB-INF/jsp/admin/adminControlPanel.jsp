@@ -45,6 +45,10 @@
                 <input type="hidden" name="action" value="calculateTFIDF" />
                 <input type="submit" value="Calculate TFIDF" />
             </form>
+            <form action="${pageContext.request.contextPath}/admin" method="POST">
+                <input type="hidden" name="action" value="cleanup" />
+                <input type="submit" value="Clean up files" />
+            </form>
         </div>
 
         <div class="table-container">

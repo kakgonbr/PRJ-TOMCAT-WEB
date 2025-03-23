@@ -511,7 +511,7 @@ VALUES
 ('log_js', 'log.js'),
 ('product_js', 'product.js'),
 ('chart_js', 'customChart.js'),
-('userMain_css', 'userMain.css'),
+-- ('userMain_css', 'userMain.css'),
 ('login_css', 'login.css'),
 ('cp_js', 'controlPanel.js'),
 ('filter_js', 'filter.js'),

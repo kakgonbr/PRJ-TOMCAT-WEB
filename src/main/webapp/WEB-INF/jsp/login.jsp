@@ -12,7 +12,7 @@
         </script>
 
         <t:resources />
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/userMain_css">
+        <%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/main_css"> --%>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/login_css">
     </jsp:attribute>
 
