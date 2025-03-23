@@ -32,9 +32,7 @@ function createCategoryElement(category) {
 }
 
 function fetchVariations(categoryId) {
-    var url = new URL(
-        "https://" + location.host + contextPath + "/ajax/variation"
-    );
+    var url = new URL("https://" + location.host + contextPath + "/ajax/variation");
 
     if (categoryId) {
         url.searchParams.append("categoryId", categoryId);
@@ -46,34 +44,40 @@ function fetchVariations(categoryId) {
             let variationContainer = document.getElementById("variationFilter");
             variationContainer.innerHTML = "";
 
-            let ul = document.createElement("ul");
             data.forEach(variation => {
-                ul.appendChild(createVariationElement(variation));
+                variationContainer.appendChild(createVariationElement(variation));
             });
-
-            variationContainer.appendChild(ul);
         })
         .catch(error => console.error("Error fetching variations:", error));
 }
 
 function createVariationElement(variation) {
-    let li = document.createElement("li");
-    let label = document.createElement("label");
-    let radio = document.createElement("input");
-    radio.type = "radio";
-    radio.name = "variation";
-    radio.value = variation.id;
-    radio.dataset.name = variation.name;
+    let container = document.createElement("div");
+    container.className = "form-check"; // Sử dụng Bootstrap để hiển thị đẹp hơn
 
-    radio.addEventListener("change", function () {
-        fetchVariationValues(variation.id);
+    let checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.className = "form-check-input";
+    checkbox.name = "variation";
+    checkbox.value = variation.id;
+    checkbox.dataset.name = variation.name;
+
+    checkbox.addEventListener("change", function () {
+        fetchVariationValues(getSelectedVariations());
     });
 
-    label.appendChild(radio);
-    label.appendChild(document.createTextNode(" " + variation.name));
-    li.appendChild(label);
+    let label = document.createElement("label");
+    label.className = "form-check-label";
 
-    return li;
+    let unitText = variation.unit ? ` (${variation.unit})` : "";
+    let dataTypeText = variation.datatype ? ` [${variation.datatype}]` : "";
+    
+    label.appendChild(document.createTextNode(variation.name + unitText + dataTypeText));
+
+    container.appendChild(checkbox);
+    container.appendChild(label);
+
+    return container;
 }
 
 function fetchVariationValues(variationId) {
