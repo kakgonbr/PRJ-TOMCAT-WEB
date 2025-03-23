@@ -61,7 +61,7 @@ public class UserServlet extends HttpServlet {
                 case "credit":
                     // uh
                 break;
-                case "image":
+                case "profilePic":
                     String saved = service.FileUploadService.saveFile(request.getPart("image"), user.getUsername());
 
                     if (saved != null) {

@@ -22,8 +22,9 @@
             <p>Changed ${changed}.</p>
         </c:if> --%>
         <p>Profile: </p>
-        <img src="${pageContext.request.contextPath}/resources/${sessionScope.user.profileStringResourceId}">
+        <img src="${pageContext.request.contextPath}/resources/${sessionScope.user.profileStringResourceId.id}">
         <form action="${pageContext.request.contextPath}/user" method="POST">
+            <input type="hidden" name="action" value="profilePic">
             <input type="file" name="image">
             <input type="submit" value="Update" />
         </form>
