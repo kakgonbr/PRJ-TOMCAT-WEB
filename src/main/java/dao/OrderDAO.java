@@ -79,13 +79,13 @@ public class OrderDAO {
             }
         } // public static synchronized void markCompleted
         private static final String SELECT_ORDER_ITEMS_BY_SHOP
-                = "SELECT u.name AS userName, p.name AS productName, oi.totalPrice, o.date, oi.shippingCost "
+                = "SELECT u.displayName AS userName, p.name AS productName, oi.totalPrice, o.date, oi.shippingCost "
                 + "FROM tblOrderedItem oi "
                 + "JOIN tblProductItem pi ON oi.productItemId = pi.id "
                 + "JOIN tblProduct p ON pi.productId = p.id "
                 + "JOIN tblOrder o ON oi.orderId = o.id "
                 + "JOIN tblUser u ON o.userId = u.id "
-                + "WHERE p.shopId = ?";
+                + "WHERE p.shopId = ? AND p.shopId IS NOT NULL";
 
         public static java.util.List<Object[]> getOrderItemsByShop(int shopId) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
