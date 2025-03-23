@@ -94,15 +94,14 @@ public final class VariationValueDAO {
             }
         }
 
-       
         public static synchronized VariationValue getVariationValueByValueAndVariation(String value, int variationId) throws SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 return em.createNamedQuery("VariationValue.findByValueAndVariation", VariationValue.class)
-                        .setParameter(1, value)
-                        .setParameter(2, variationId)
+                        .setParameter("value", value)
+                        .setParameter("variationId", variationId)
                         .getSingleResult();
             } catch (NoResultException e) {
-                return null; 
+                return null;
             } catch (Exception e) {
                 throw new SQLException(e);
             }
