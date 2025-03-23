@@ -27,7 +27,8 @@
     </jsp:attribute>
 
     <jsp:attribute name="header">
-        <t:nav search="true" mainNav="true" user="${sessionScope.user.username}" activePage="shophome"/>
+        <%-- <t:nav search="true" mainNav="true" user="${sessionScope.user.username}" activePage="shophome"/> --%>
+        <t:userHeader user="${sessionScope.user.username}" />
     </jsp:attribute>
 
     <jsp:attribute name="body">

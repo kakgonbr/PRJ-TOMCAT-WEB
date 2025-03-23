@@ -10,7 +10,17 @@ public class FileCleanupJob implements Runnable {
     @Override
     public void run() {
         service.Logging.logger.info("Cleanup Job started at: {}", java.time.LocalDateTime.now().format(config.Config.Time.outputFormatTime));
-        
+
+        try {
+            cleanup();
+        } catch (IOException | java.sql.SQLException e) {
+            service.Logging.logger.error("FAILED TO CLEAN UP FILES, REASON: {}", e.getMessage());
+        }
+
+        service.Logging.logger.info("Cleanup Job completed at: {}", java.time.LocalDateTime.now().format(config.Config.Time.outputFormatTime));
+    }
+
+    public static void cleanup() throws IOException, java.sql.SQLException{
         try (Stream<Path> paths = Files.walk(Paths.get(config.Config.Resources.ROOT_DIR))) {
             java.util.HashSet<String> systemPaths = new java.util.HashSet<>(dao.ResourceDAO.getAllResources().stream().map(model.ResourceMap::getSystemPath).toList());
 
@@ -36,11 +46,6 @@ public class FileCleanupJob implements Runnable {
                     service.Logging.logger.warn("Failed to delete file {}, reason: {}", p.getFileName().toString(), e.getMessage());
                 }
             });
-        } catch (IOException | java.sql.SQLException e) {
-            service.Logging.logger.error("FAILED TO CLEAN UP FILES, REASON: {}", e.getMessage());
-        }
-
-
-        service.Logging.logger.info("Cleanup Job completed at: {}", java.time.LocalDateTime.now().format(config.Config.Time.outputFormatTime));
+        }        
     }
 }
