@@ -248,7 +248,8 @@ public class AddProductServlet extends HttpServlet {
                 dao.ProductDAO.ProductManager.addCustomizations(productId, customizations);
                 productItemList.add(productItem);
             }
-
+            request.setAttribute("allVariationValues", allVariationValues);
+            request.setAttribute("combinations", combinations);
             session.setAttribute("selectedProductItems", productItemList);
             response.sendRedirect(request.getContextPath() + "/sellercenter/addproduct?action=setStockAndPrice");
 
