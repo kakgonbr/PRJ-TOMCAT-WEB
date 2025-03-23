@@ -56,28 +56,30 @@ function fetchVariations(categoryId) {
         .catch(error => console.error("Error fetching variations:", error));
 }
 
-function createVariationElement(variation) {
-    let li = document.createElement("li");
-    let label = document.createElement("label");
-    let radio = document.createElement("input");
-    radio.type = "radio";
-    radio.name = "variation";
-    radio.value = variation.id;
-    radio.dataset.name = variation.name;
+    function createVariationElement(variation) {
+        let li = document.createElement("li");
+        let label = document.createElement("label");
+        let radio = document.createElement("input");
+        radio.type = "radio";
+        radio.name = "variation";
+        radio.value = variation.id;
+        radio.dataset.name = variation.name;
 
-    radio.addEventListener("change", function () {
-        fetchVariationValues(variation.id);
-    });
+        radio.addEventListener("change", function () {
+            fetchVariationValues(variation.id);
+        });
 
-    label.appendChild(radio);
-    label.appendChild(document.createTextNode(" " + variation.name));
-    li.appendChild(label);
+        label.appendChild(radio);
+        label.appendChild(document.createTextNode(" " + variation.name));
+        li.appendChild(label);
 
-    return li;
-}
+        return li;
+    }
 
 function fetchVariationValues(variationId) {
-    "https://" + location.host + contextPath + "/ajax/variation"
+    var url = new URL(
+        "https://" + location.host + contextPath + "/ajax/variation"
+      );
 
     if (variationId) {
         url.searchParams.append("variationId", variationId);
