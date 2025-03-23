@@ -165,7 +165,7 @@ public class AddProductServlet extends HttpServlet {
                 return;
             }
 
-            List<ProductItem> productItemList = new ArrayList<>();
+            List<List<VariationValue>> allVariationValues = new ArrayList<>();
 
             for (int i = 0; i < variationNames.length; i++) {
                 String variationName = variationNames[i].trim();
@@ -197,80 +197,56 @@ public class AddProductServlet extends HttpServlet {
                     }
                 }
 
-                session.setAttribute("variationId", variationId);
+                List<VariationValue> variationValues = new ArrayList<>();
+                String[] optionsArray = variationOptions.split("\\s*,\\s*");
 
-                // Xử lý danh sách variation values
-//            for (String value : optionsArray) {
-//                value = value.trim();
-//                if (!value.isEmpty()) {
-//                    VariationValue variationValue = dao.VariationValueDAO.VariationValueFetcher.getVariationValueByValue(value);
-//
-//                    if (variationValue == null) {
-//                        variationValue = new VariationValue();
-//                        variationValue.setVariationId(new Variation(variationId));
-//                        variationValue.setValue(value);
-//                        try {
-//                            dao.VariationValueDAO.VariationValueManager.createVariationValue(variationValue);
-//                        } catch (SQLException e) {
-//                            request.setAttribute("error", "Database error while saving variation value: " + e.getMessage());
-//                            request.getRequestDispatcher(config.Config.JSPMapper.SELECT_VARIATION).forward(request, response);
-//                            return;
-//                        }
-//
-//                        variationValue = dao.VariationValueDAO.VariationValueFetcher.getVariationValueByValue(value);
-//                    }
-//
-//                    ProductItem productItem = new ProductItem();
-//                    productItem.setProductId(new Product(productId));
-//                    productItem.setStock(0);
-//                    productItem.setPrice(BigDecimal.ZERO);
-//
-//                    productItem = dao.ProductDAO.ProductManager.addProductItem(productItem);
-//                    int productItemId = productItem.getId();
-//                    productItem.setId(productItemId);
-//
-//                    ProductCustomization productCustomization = new ProductCustomization();
-//                    productCustomization.setProductItemId(new ProductItem(productItemId));
-//                    productCustomization.setVariationValueId(variationValue);
-//
-//                    List<ProductCustomization> customizations = new ArrayList<>();
-//                    customizations.add(productCustomization);
-//
-//                    dao.ProductDAO.ProductManager.addCustomizations(productId, customizations);
-//
-//                    productItemList.add(productItem);
-//                }
-//            }
-                List<List<String>> allVariationValues = new ArrayList<>();
+                for (String value : optionsArray) {
+                    value = value.trim();
+                    if (!value.isEmpty()) {
+                        VariationValue variationValue = dao.VariationValueDAO.VariationValueFetcher.getVariationValueByValueAndVariation(value, variationId);
 
-                for (int j = 0; j < variationNames.length; j++) {
-                    String[] optionsArray = variationOptionsList[i].split("\\s*,\\s*");
-                    allVariationValues.add(Arrays.asList(optionsArray));
-                }
+                        if (variationValue == null) {
+                            variationValue = new VariationValue();
+                            variationValue.setVariationId(new Variation(variationId));
+                            variationValue.setValue(value);
+                            dao.VariationValueDAO.VariationValueManager.createVariationValue(variationValue);
 
-                List<List<String>> combinations = generateCombinations(allVariationValues);
+                            variationValue = dao.VariationValueDAO.VariationValueFetcher.getVariationValueByValueAndVariation(value, variationId);
+                        }
 
-                for (List<String> combination : combinations) {
-                    ProductItem productItem = new ProductItem();
-                    productItem.setProductId(new Product(productId));
-                    productItem.setStock(0);
-                    productItem.setPrice(BigDecimal.ZERO);
-                    productItem = dao.ProductDAO.ProductManager.addProductItem(productItem);
-
-                    int productItemId = productItem.getId();
-                    productItem.setId(productItemId);
-
-                    for (String value : combination) {
-                        VariationValue variationValue = dao.VariationValueDAO.VariationValueFetcher.getVariationValueByValue(value);
-                        ProductCustomization productCustomization = new ProductCustomization();
-                        productCustomization.setProductItemId(new ProductItem(productItemId));
-                        productCustomization.setVariationValueId(variationValue);
-
-                        dao.ProductDAO.ProductManager.addCustomizations(productId, Arrays.asList(productCustomization));
+                        variationValues.add(variationValue);
                     }
-
-                    productItemList.add(productItem);
                 }
+
+                allVariationValues.add(variationValues);
+            }
+
+            // 🔥 Generate all possible combinations of variation values
+            List<List<VariationValue>> combinations = generateCombinations(allVariationValues);
+
+            List<ProductItem> productItemList = new ArrayList<>();
+
+            for (List<VariationValue> combination : combinations) {
+                ProductItem productItem = new ProductItem();
+                productItem.setProductId(new Product(productId));
+                productItem.setStock(0);
+                productItem.setPrice(BigDecimal.ZERO);
+                productItem = dao.ProductDAO.ProductManager.addProductItem(productItem);
+
+                int productItemId = productItem.getId();
+                productItem.setId(productItemId);
+
+                List<ProductCustomization> customizations = new ArrayList<>();
+
+                for (VariationValue variationValue : combination) {
+                    ProductCustomization productCustomization = new ProductCustomization();
+                    productCustomization.setProductItemId(productItem);
+                    productCustomization.setVariationValueId(variationValue);
+                    customizations.add(productCustomization);
+                }
+
+                dao.ProductDAO.ProductManager.addCustomizations(productId, customizations);
+                productItemList.add(productItem);
             }
 
             session.setAttribute("selectedProductItems", productItemList);
@@ -282,18 +258,18 @@ public class AddProductServlet extends HttpServlet {
         }
     }
 
-    public static List<List<String>> generateCombinations(List<List<String>> lists) {
-        List<List<String>> result = new ArrayList<>();
+    public static List<List<VariationValue>> generateCombinations(List<List<VariationValue>> lists) {
+        List<List<VariationValue>> result = new ArrayList<>();
         generateCombinationsHelper(lists, result, new ArrayList<>(), 0);
         return result;
     }
 
-    private static void generateCombinationsHelper(List<List<String>> lists, List<List<String>> result, List<String> current, int index) {
+    private static void generateCombinationsHelper(List<List<VariationValue>> lists, List<List<VariationValue>> result, List<VariationValue> current, int index) {
         if (index == lists.size()) {
             result.add(new ArrayList<>(current));
             return;
         }
-        for (String value : lists.get(index)) {
+        for (VariationValue value : lists.get(index)) {
             current.add(value);
             generateCombinationsHelper(lists, result, current, index + 1);
             current.remove(current.size() - 1);

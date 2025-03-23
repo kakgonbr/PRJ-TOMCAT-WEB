@@ -11,9 +11,10 @@ import java.sql.SQLException;
 import java.util.List;
 import model.VariationValue;
 
-
 public final class VariationValueDAO {
+
     public static final class VariationValueManager {
+
         public static synchronized void createVariationValue(VariationValue variationValue) throws SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 EntityTransaction et = em.getTransaction();
@@ -60,6 +61,7 @@ public final class VariationValueDAO {
     }
 
     public static final class VariationValueFetcher {
+
         public static synchronized VariationValue getVariationValue(int id) throws SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 return em.createNamedQuery("VariationValue.findById", VariationValue.class)
@@ -69,6 +71,7 @@ public final class VariationValueDAO {
                 throw new SQLException(e);
             }
         }
+
         public static synchronized List<VariationValue> getVariationValuesByVariationId(int variationId) throws SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 return em.createNamedQuery("VariationValue.findByVariationId", VariationValue.class)
@@ -86,6 +89,22 @@ public final class VariationValueDAO {
                         .getSingleResult();
             } catch (NoResultException e) {
                 return null;
+            } catch (Exception e) {
+                throw new SQLException(e);
+            }
+        }
+
+        private static final String GET_VARIATION_BY_VALUE_AND_VARIATION
+                = "SELECT * FROM VariationValue WHERE value = ? AND variation_id = ?";
+
+        public static synchronized VariationValue getVariationValueByValueAndVariation(String value, int variationId) throws SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return (VariationValue) em.createNativeQuery(GET_VARIATION_BY_VALUE_AND_VARIATION, VariationValue.class)
+                        .setParameter(1, value)
+                        .setParameter(2, variationId)
+                        .getSingleResult();
+            } catch (NoResultException e) {
+                return null; 
             } catch (Exception e) {
                 throw new SQLException(e);
             }
