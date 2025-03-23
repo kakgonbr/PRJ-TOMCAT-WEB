@@ -32,7 +32,7 @@ public class OrderDAO {
 
         public static synchronized ProductOrder getOrder(int id) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                return em.createNamedQuery("ProductOrder.findById", ProductOrder.class).getSingleResult();
+                return em.createNamedQuery("ProductOrder.findById", ProductOrder.class).setParameter("id", id).getSingleResult();
             } catch (Exception e) {
                 throw new java.sql.SQLException(e);
             }
