@@ -2,13 +2,18 @@ package controller;
 
 import java.io.IOException;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 /**
  * Used for displaying user information
  */
+@MultipartConfig(
+    fileSizeThreshold = 1024 * 1024, // 1
+    maxFileSize = 1024 * 1024 * 10, // 10
+    maxRequestSize = 1024 * 1024 * 50 // 50
+)
 public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -56,6 +61,14 @@ public class UserServlet extends HttpServlet {
                 case "credit":
                     // uh
                 break;
+                case "image":
+                    String saved = service.FileUploadService.saveFile(request.getPart("image"), user.getUsername());
+
+                    if (saved != null) {
+                        user.setProfileStringResourceId(dao.ResourceDAO.addMapping("usr_" + user.getUsername(), saved));
+                        dao.UserDAO.UserManager.updateUser(user);
+                        request.setAttribute("changed", "Profile Picture");
+                    }
             }
         } catch (java.sql.SQLException | NullPointerException e) {
             service.Logging.logger.warn("FAILED TO CHANGE USER {} INFORMATION, REASON: {}", user.getUsername(), e.getMessage());;
