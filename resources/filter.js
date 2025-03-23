@@ -45,7 +45,7 @@ function fetchVariations(categoryId) {
         .then(data => {
             let variationContainer = document.getElementById("variationFilter");
             variationContainer.innerHTML = "";
-            
+
             let ul = document.createElement("ul");
             data.forEach(variation => {
                 ul.appendChild(createVariationElement(variation));
@@ -65,6 +65,10 @@ function createVariationElement(variation) {
     radio.value = variation.id;
     radio.dataset.name = variation.name;
 
+    radio.addEventListener("change", function () {
+        fetchVariationValues(variation.id);
+    });
+
     label.appendChild(radio);
     label.appendChild(document.createTextNode(" " + variation.name));
     li.appendChild(label);
@@ -80,19 +84,26 @@ function fetchVariationValues(variationId) {
     }
 
     fetch(url.toString())
-        .then(response => response.json())
-        .then(data => {
-            let variationValueContainer = document.getElementById("variationValueFilter");
-            variationValueContainer.innerHTML = "";
-            
-            let ul = document.createElement("ul");
-            data.forEach(value => {
+    .then(response => response.json())
+    .then(data => {
+        let variationValueContainer = document.getElementById("variationValueFilter");
+        variationValueContainer.innerHTML = "";
+
+        let ul = document.createElement("ul");
+
+        // 🔹 Tìm variation có ID khớp
+        let variation = data.find(v => v.id == variationId);
+        if (variation && variation.values) {
+            variation.values.forEach(value => {
                 ul.appendChild(createVariationValueElement(value));
             });
+        } else {
+            console.error("Không tìm thấy values cho variationId:", variationId);
+        }
 
-            variationValueContainer.appendChild(ul);
-        })
-        .catch(error => console.error("Error fetching variation values:", error));
+        variationValueContainer.appendChild(ul);
+    })
+    .catch(error => console.error("Error", error));
 }
 
 function createVariationValueElement(value) {
@@ -103,6 +114,8 @@ function createVariationValueElement(value) {
     radio.name = "variationValue";
     radio.value = value.id;
     radio.dataset.name = value.value;
+    radio.dataset.parent = value.variationId;
+
     label.appendChild(radio);
     label.appendChild(document.createTextNode(" " + value.value));
     li.appendChild(label);

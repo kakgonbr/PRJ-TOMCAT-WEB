@@ -7,7 +7,7 @@
 <div class="container">
     <div class="row my-2">
         <div class="col-2 d-flex align-items-center">
-            <a href="${pageContext.request.contextPath}/prj/shopauth"
+            <a href="${pageContext.request.contextPath}/shopauth"
                 class="text-decoration-none text-dark fs-5">
                 <i class="bi bi-shop"></i>
                 <span class="text-muted"> Seller center</span>
