@@ -9,6 +9,7 @@
             var contextPath = "${pageContext.request.contextPath}";
         </script>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/checkout_css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/cart_css">
     </jsp:attribute>
 
     <jsp:attribute name="header">
@@ -18,65 +19,59 @@
     <jsp:attribute name="body">
         <c:set var="total" value="0" />
         <h1>Order Review:</h1>
-        <table border="1">
-            <tr>
-                <td>Image</td>
-                <td>Name</td>
-                <td>Shop</td>
-                <td>Promotion</td>
-                <td>Quantity</td>
-                <td>Price</td>
-                <td>Stock</td>
-                <td>Customization</td>
-            </tr>
-            <tbody>
-                <c:forEach var="cartItem" items="${cartItems}">
+        <table class="cart-table">
+                <thead>
                     <tr>
-                        <td>
-                            <img src="${pageContext.request.contextPath}/resources/${cartItem.productWrapper.thumbnail}" alt="">
-                        </td>
-                        <td>
-                            ${cartItem.productWrapper.name}
-                        </td>
-                        <td>
-                            ${cartItem.productWrapper.shop.name}
-                        </td>
-                        <td>
-                            <c:choose>
-                                <c:when test="${cartItem.productWrapper.promotion.type}">
-                                    - ${cartItem.productWrapper.promotion.value} VND
-                                </c:when>
-                                <c:otherwise>
-                                    - ${cartItem.productWrapper.promotion.value} %
-                                </c:otherwise>
-                            </c:choose>
-                        </td>
-                        <td>
-                            ${cartItem.quantity}
-                        </td>
-                        <td>
-                            ${cartItem.productItem.price}
-                        </td>
-                        <td>
-                            ${cartItem.productItem.stock}
-                        </td>
-                        <td>
-                            <c:forEach var="customization" items="${cartItem.productItem.customizations}">
-                                <p>${customization.name}: ${customization.value} ${customization.unit}</p><br></br>
-                            </c:forEach>
-                        </td>
+                        <th>Image</th>
+                        <th>Product</th>
+                        <th>Shop</th>
+                        <th>Promotion</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Customization</th>
                     </tr>
-                    <c:choose>
-                        <c:when test="${cartItem.productWrapper.promotion.type}">
-                            <c:set var="total" value="${total + (cartItem.productItem.price - cartItem.productWrapper.promotion.value)}" />
-                        </c:when>
-                        <c:otherwise>
-                            <c:set var="total" value="${total + (cartItem.productItem.price * (100.0 - cartItem.productWrapper.promotion.value) / 100.0)}" />
-                        </c:otherwise>
-                    </c:choose>
-                </c:forEach>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <c:forEach var="cartItem" items="${cartItems}">
+                        <tr>
+                            <td>
+                                <img src="${pageContext.request.contextPath}/resources/${cartItem.productWrapper.thumbnail}" alt="Product Image">
+                            </td>
+                            <td>${cartItem.productWrapper.name}</td>
+                            <td>${cartItem.productWrapper.shop.name}</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${cartItem.productWrapper.promotion.type}">
+                                        - ${cartItem.productWrapper.promotion.value} VND
+                                    </c:when>
+                                    <c:otherwise>
+                                        - ${cartItem.productWrapper.promotion.value} %
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
+                            <td>
+                                ${cartItem.quantity}
+                            </td>
+                            <td>${cartItem.productItem.price}</td>
+                            <td>${cartItem.productItem.stock}</td>
+                            <td>
+                                <c:forEach var="customization" items="${cartItem.productItem.customizations}">
+                                    <p>${customization.name}: ${customization.value} ${customization.unit}</p>
+                                </c:forEach>
+                            </td>
+                        </tr>
+                        <c:choose>
+                            <c:when test="${cartItem.productWrapper.promotion.type}">
+                                <c:set var="total" value="${total + (cartItem.productItem.price - cartItem.productWrapper.promotion.value)}" />
+                            </c:when>
+                            <c:otherwise>
+                                <c:set var="total" value="${total + (cartItem.productItem.price * (100.0 - cartItem.productWrapper.promotion.value) / 100.0)}" />
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+                </tbody>
+            </table>
         <form>
             <div class="address-container">
                 <label for="address">Địa chỉ</label>
@@ -87,6 +82,7 @@
         <form action="${pageContext.request.contextPath}/checkout" method="POST">
             <input type="hidden" name="action" value="apply">
             <select name="promotionId">
+                <option value="">None</option>
                 <c:forEach var="promotion" items="${promotions}">
                     <option value="${promotion.id}">[
                         <c:choose>

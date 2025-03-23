@@ -7,7 +7,7 @@ import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 
 public class SchedulerListener implements ServletContextListener {
-    private ScheduledExecutorService scheduler;
+    private static ScheduledExecutorService scheduler;
 
     @Override
     public void contextInitialized(ServletContextEvent event) {
@@ -23,4 +23,7 @@ public class SchedulerListener implements ServletContextListener {
         scheduler.shutdownNow();
     }
 
+    public static ScheduledExecutorService getScheduler() {
+        return scheduler;
+    }
 }
