@@ -60,7 +60,7 @@ public class CheckOutServlet extends HttpServlet {
                 case "apply":
     
                     // only way we can tell if the user has modified the promotion on client
-                    if (promotionId != null && !dao.PromotionDAO.PromotionFetcher.checkPromotionUsage(user.getId(), promotionId)) {
+                    if (promotionId != null && dao.PromotionDAO.PromotionFetcher.checkPromotionUsage(user.getId(), promotionId) == null) {
                         // doesnt get applied here, let the client send it to the proceed case then apply
                         request.setAttribute("activePromotion", dao.PromotionDAO.PromotionFetcher.getPromotion(promotionId));
                     }

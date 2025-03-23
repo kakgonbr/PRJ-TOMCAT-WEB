@@ -6,6 +6,7 @@ package dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.NoResultException;
 
 /**
  *
@@ -24,18 +25,22 @@ public class PromotionDAO {
         //     }
         // } // public static synchronized java.util.List<model.Promotion> getAvaialblePromotionsFor
 
-        private static final String CHECK_PROMOTION_USAGE
-                = "SELECT CASE WHEN EXISTS ("
-                + "SELECT * FROM tblOrder "
-                + "WHERE userId = ?1 AND promotionId = ?2"
-                + ") THEN 1 ELSE 0 END";
-
-        public static synchronized boolean checkPromotionUsage(int userID, int promotionID) throws java.sql.SQLException {
+        private static final String CHECK_PROMOTION_USAGE = "SELECT * FROM tblOrder WHERE userId = ?1 AND promotionId = ?2";
+        /**
+         * Returns an object indicating that the promotion is used in an order by a user, null otherwise
+         * @param userID
+         * @param promotionID
+         * @return
+         * @throws java.sql.SQLException
+         */
+        public static synchronized Object checkPromotionUsage(int userID, int promotionID) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                return (boolean) em.createNativeQuery(CHECK_PROMOTION_USAGE)
-                        .setParameter(1, userID)
-                        .setParameter(2, promotionID)
-                        .getSingleResult();
+                return em.createNativeQuery(CHECK_PROMOTION_USAGE)
+                                        .setParameter(1, userID)
+                                        .setParameter(2, promotionID)
+                                        .getSingleResult(); //?????????????????
+            } catch (NoResultException e) {
+                return null;
             } catch (Exception e) {
                 throw new java.sql.SQLException(e);
             }
