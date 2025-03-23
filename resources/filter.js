@@ -64,6 +64,8 @@ function createVariationElement(variation) {
     radio.name = "variation";
     radio.value = variation.id;
     radio.dataset.name = variation.name;
+    radio.dataset.datatype = variation.datatype || "N/A";
+    radio.dataset.unit = variation.unit || "N/A";
 
     radio.addEventListener("change", function () {
         fetchVariationValues(variation.id);
@@ -273,7 +275,7 @@ function submitVariations() {
     });
 
     form.submit();
-}
+}   
 
 
 
