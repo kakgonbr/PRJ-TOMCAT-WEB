@@ -5,13 +5,12 @@
 <t:genericpage title="Select Variation">
     <jsp:attribute name="head">
         <t:resources/>
-        <script src="${pageContext.request.contextPath}/resources/filter_js"></script>
+        <script src="${pageContext.request.contextPath}/resources/variation_js"></script>
         <script src="${pageContext.request.contextPath}/resources/shop_js"></script>
 
         <script>
             var contextPath = "${pageContext.request.contextPath}";
             var categoryId = "${sessionScope.categoryId}";
-            var variationId = null;
 
             document.addEventListener("DOMContentLoaded", function () {
                 if (!categoryId) {
@@ -19,34 +18,7 @@
                     return;
                 }
                 fetchVariations(categoryId);
-                fetchVariationValues(variationId);
-                applyVariation();
             });
-
-            function toggleNewVariationForm() {
-                let form = document.getElementById("newVariationForm");
-                form.style.display = (form.style.display === "none" || form.style.display === "") ? "block" : "none";
-            }
-
-            function updateSelectedVariations() {
-                let container = document.getElementById("selectedVariations");
-                container.innerHTML = "";
-
-                document.querySelectorAll("input[name='variation']:checked").forEach(variation => {
-                    let div = document.createElement("div");
-                    div.innerHTML = `<strong>${variation.dataset.name}</strong>`;
-
-                    let ul = document.createElement("ul");
-                    document.querySelectorAll(`input[name="variationValue"][data-parent="${variation.value}"]:checked`).forEach(value => {
-                        let li = document.createElement("li");
-                        li.textContent = value.dataset.name;
-                        ul.appendChild(li);
-                    });
-
-                    div.appendChild(ul);
-                    container.appendChild(div);
-                });
-            }
         </script>            
     </jsp:attribute>
 
@@ -57,7 +29,6 @@
 
     <jsp:attribute name="body">
         <h2>Select Variations</h2>
-        <p>Debug: Category ID from session = ${sessionScope.categoryId}</p>
         <c:if test="${not empty error}">
             <div style="color: red; font-weight: bold; padding: 10px; border: 1px solid red; background-color: #ffe6e6;">
                 <c:choose>
@@ -86,32 +57,46 @@
 
             <label>Choose Variation:</label>
             <div id="variationFilter"></div> 
-            
-             <button type="button" onclick="applyVariation()" class="btn btn-warning">Apply Variation</button>
-             
+
             <label>Choose Variation Values:</label>
             <div id="variationValueFilter"></div>
+            <button type="button" onclick="applyVariation()">Apply Variation</button><br><br>
 
-            <button type="button" onclick="toggleNewVariationForm()">Add New Variation</button><br>
+            <h3>Add New Variation</h3>
+            <button type="button" onclick="showNewVariationForm()">+ Add New Variation</button>
 
             <div id="newVariationForm" style="display: none;">
                 <label for="variationName">Variation Name:</label>
-                <input type="text" id="variationName" name="variationName"><br>
+                <input type="text" id="variationName" name="variation"><br>
 
                 <label for="variationOptions">Options (comma-separated):</label>
-                <input type="text" id="variationOptions" name="variationOptions"><br>
+                <input type="text" id="variationValues" name="variationValue"><br>
+                <label for="datatype">Data Type:</label>
+                <select name="datatype" id="datatype">
+                    <option value="string">String</option>
+                    <option value="integer">Integer</option>
+                </select><br>
+
+                <label for="unit">Unit:</label>
+                <input type="text" id="unit" name="unit"><br>
             </div>
 
-            <label for="datatype">Data Type:</label>
-            <select name="datatype" id="datatype">
-                <option value="string">String</option>
-                <option value="integer">Integer</option>
-            </select><br>
+            <h3>Selected Variations</h3>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Variation Name</th>
+                        <th>Datatype</th>
+                        <th>Unit</th>
+                        <th>Values</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="variationTableBody"></tbody>
+            </table>
 
-            <label for="unit">Unit:</label>
-            <input type="text" id="unit" name="unit"><br>
-
-            <button type="submit">Save Variations</button>
+            <br>
+            <button type="button" onclick="submitVariations()">Save Variations</button>
         </form>
     </jsp:attribute>
 
