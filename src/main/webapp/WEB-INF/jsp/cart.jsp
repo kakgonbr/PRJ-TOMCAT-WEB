@@ -11,13 +11,13 @@
     </jsp:attribute>
 
     <jsp:attribute name="header">
-
+        <t:userHeader user="${sessionScope.user.username}" />
     </jsp:attribute>
 
     <jsp:attribute name="body">
         <h2>Cart Items</h2>
         <table border="1">
-            <th>
+            <tr>
                 <td>Image</td>
                 <td>Name</td>
                 <td>Shop</td>
@@ -27,9 +27,9 @@
                 <td>Stock</td>
                 <td>Customization</td>
                 <td>Action</td>
-            </th>
-            <c:forEach var="cartItem" items="${cartItems}">
-                <tbody>
+            </tr>
+            <tbody>
+                <c:forEach var="cartItem" items="${cartItems}">
                     <tr>
                         <td>
                             <img src="${pageContext.request.contextPath}/resources/${cartItem.productWrapper.thumbnail}" alt="">
@@ -77,8 +77,8 @@
                             </form>
                         </td>
                     </tr>
-                </tbody>
-            </c:forEach>
+                </c:forEach>
+            </tbody>
         </table>
         <a href="${pageContext.request.contextPath}/checkout">To Checkout</a>
     </jsp:attribute>

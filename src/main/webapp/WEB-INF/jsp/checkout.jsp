@@ -11,10 +11,12 @@
     </jsp:attribute>
 
     <jsp:attribute name="header">
-    
+        <t:userHeader user="${sessionScope.user.username}" />
     </jsp:attribute>
 
     <jsp:attribute name="body">
+        <h1>Order Review:</h1>
+
         <form>
             <div class="address-container">
                 <label for="address">Địa chỉ</label>

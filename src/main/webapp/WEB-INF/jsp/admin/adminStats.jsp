@@ -22,7 +22,9 @@
     </jsp:attribute>
 
     <jsp:attribute name="header">
+        <t:error error="${error}" />
         <h1>Admin page.</h1>
+        <a href="${pageContext.request.contextPath}/admin/cp">To Control Panel</a>
     </jsp:attribute>
 
     <jsp:attribute name="body">

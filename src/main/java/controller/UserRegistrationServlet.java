@@ -102,7 +102,7 @@ public class UserRegistrationServlet extends HttpServlet {
         // validations!!!!!!1
         
         if (username == null || !misc.Utils.Validator.username(username)) {
-            request.setAttribute("error", "username");
+            request.setAttribute("error", "Username can only contain upper, lowercase letters, numbers, '-' and '_'.");
 
             request.getRequestDispatcher(config.Config.JSPMapper.SIGNUP_JSP).forward(request, response);
             
@@ -110,7 +110,7 @@ public class UserRegistrationServlet extends HttpServlet {
         }
 
         if (email == null || !misc.Utils.Validator.email(email)) {
-            request.setAttribute("error", "email");
+            request.setAttribute("error", "Email must follow the standard email format.");
 
             request.getRequestDispatcher(config.Config.JSPMapper.SIGNUP_JSP).forward(request, response);
             
@@ -118,7 +118,7 @@ public class UserRegistrationServlet extends HttpServlet {
         }
 
         if (phoneNumber == null || !misc.Utils.Validator.phoneNumber(phoneNumber)) {
-            request.setAttribute("error", "phoneNumber");
+            request.setAttribute("error", "Phone number can start with 0 for +84, or +** for other regions, and 9 digits after the region.");
 
             request.getRequestDispatcher(config.Config.JSPMapper.SIGNUP_JSP).forward(request, response);
             
@@ -132,7 +132,7 @@ public class UserRegistrationServlet extends HttpServlet {
         phoneNumber = phoneNumber.replaceAll("\\s+", "");
 
         if (password == null || !misc.Utils.Validator.password(password)) {
-            request.setAttribute("error", "password");
+            request.setAttribute("error", "Password must be between 8 and 16 characters, contain atleast 1 number, 1 uppercase letter, 1 lowercase letter and 1 non-alphanumeric character.");
 
             request.getRequestDispatcher(config.Config.JSPMapper.SIGNUP_JSP).forward(request, response);
             
@@ -145,7 +145,7 @@ public class UserRegistrationServlet extends HttpServlet {
 
         try {
             if (!dao.UserDAO.UserFetcher.checkUserName(username)) {
-                request.setAttribute("taken", "username");
+                request.setAttribute("error", "Username is already taken.");
     
                 request.getRequestDispatcher(config.Config.JSPMapper.SIGNUP_JSP).forward(request, response);
                 
@@ -153,7 +153,7 @@ public class UserRegistrationServlet extends HttpServlet {
             }
             
             if (!dao.UserDAO.UserFetcher.checkEmail(email)) {
-                request.setAttribute("taken", "email");
+                request.setAttribute("error", "Email is already taken.");
     
                 request.getRequestDispatcher(config.Config.JSPMapper.SIGNUP_JSP).forward(request, response);
                 
@@ -161,7 +161,7 @@ public class UserRegistrationServlet extends HttpServlet {
             }
 
             if (!dao.UserDAO.UserFetcher.checkPhonenumber(phoneNumber)) {
-                request.setAttribute("taken", "phoneNumber");
+                request.setAttribute("error", "Phone number is already taken.");
     
                 request.getRequestDispatcher(config.Config.JSPMapper.SIGNUP_JSP).forward(request, response);
                 

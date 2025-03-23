@@ -159,8 +159,8 @@ public class AddProductServlet extends HttpServlet {
 
             if (variationName == null || variationOptions == null || datatype == null
                     || variationName.trim().isEmpty() || variationOptions.trim().isEmpty() || datatype.trim().isEmpty()) {
-                request.setAttribute("error", "missing_fields");
-                request.setAttribute("errorMessage", "Some required fields are missing. Please check and try again.");
+                request.setAttribute("error", "Some required fields are missing. Please check and try again.");
+                // request.setAttribute("errorMessage", "Some required fields are missing. Please check and try again.");
                 request.getRequestDispatcher(config.Config.JSPMapper.SELECT_VARIATION).forward(request, response);
                 return;
             }
@@ -178,8 +178,8 @@ public class AddProductServlet extends HttpServlet {
                 variationId = dao.VariationDAO.VariationFetcher.getVariationIdByNameAndCategory(variationName, categoryId);
 
                 if (variationId == null) {
-                    request.setAttribute("error", "variation_creation_failed");
-                    request.setAttribute("errorMessage", "Failed to create variation. Please try again.");
+                    request.setAttribute("error", "Failed to create variation. Please try again.");
+                    // request.setAttribute("errorMessage", "Failed to create variation. Please try again.");
                     request.getRequestDispatcher(config.Config.JSPMapper.SELECT_VARIATION).forward(request, response);
                     return;
                 }
@@ -202,8 +202,8 @@ public class AddProductServlet extends HttpServlet {
                         try {
                             dao.VariationValueDAO.VariationValueManager.createVariationValue(variationValue);
                         } catch (SQLException e) {
-                            request.setAttribute("error", "db_error");
-                            request.setAttribute("errorMessage", "Database error while saving variation value: " + e.getMessage());
+                            request.setAttribute("error", "Database error while saving variation value: " + e.getMessage());
+                            // request.setAttribute("errorMessage", "Database error while saving variation value: " + e.getMessage());
                             request.getRequestDispatcher(config.Config.JSPMapper.SELECT_VARIATION).forward(request, response);
                             return;
                         }
@@ -235,8 +235,8 @@ public class AddProductServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/addproduct?action=setStockAndPrice");
 
         } catch (SQLException e) {
-            request.setAttribute("error", "db_error");
-            request.setAttribute("errorMessage", "Unexpected database error: " + e.getMessage());
+            request.setAttribute("error", "Unexpected database error: " + e.getMessage());
+            // request.setAttribute("errorMessage", "Unexpected database error: " + e.getMessage());
             request.getRequestDispatcher(config.Config.JSPMapper.SELECT_VARIATION).forward(request, response);
         }
     }
@@ -285,7 +285,7 @@ public class AddProductServlet extends HttpServlet {
             }
 
             if (!errors.isEmpty()) {
-                request.setAttribute("errorMessages", errors);
+                request.setAttribute("error", errors);
                 request.getRequestDispatcher(config.Config.JSPMapper.SET_STOCK_AND_PRICE).forward(request, response);
                 return;
             }

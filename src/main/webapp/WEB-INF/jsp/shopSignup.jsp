@@ -15,7 +15,7 @@
     </jsp:attribute>
 
     <jsp:attribute name="header">
-        <c:if test="${error == 'db'}">
+        <%-- <c:if test="${error == 'db'}">
             <h1>A DATABASE ERROR OCCURRED!</h1>
         </c:if>
         <c:if test="${error == 'shopName'}">
@@ -23,7 +23,8 @@
         </c:if>
         <c:if test="${error == 'address'}">
             <h1>address invalid!</h1>
-        </c:if>
+        </c:if> --%>
+        <t:error error="${error}" />
     </jsp:attribute>
 
     <jsp:attribute name="body">

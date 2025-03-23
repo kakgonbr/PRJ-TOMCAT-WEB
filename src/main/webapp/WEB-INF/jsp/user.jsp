@@ -11,16 +11,16 @@
     </jsp:attribute>
 
     <jsp:attribute name="header">
-
+        <t:error error="${error}" />
     </jsp:attribute>
 
     <jsp:attribute name="body">
-        <c:if test="${error != null && error !=''}">
+        <%-- <c:if test="${error != null && error !=''}">
             <p>Error: ${error}.</p>
         </c:if>
         <c:if test="${changed != null && changed != ''}">
             <p>Changed ${changed}.</p>
-        </c:if>
+        </c:if> --%>
         <label>Username:</label>
         <input type="text" name="username" value="${sessionScope.user.username}" disabled>
         <form action="${pageContext.request.contextPath}/user" method="POST">

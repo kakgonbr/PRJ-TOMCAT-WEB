@@ -104,7 +104,6 @@ public class AdminCPServlet extends HttpServlet {
                         request.getRequestDispatcher(config.Config.JSPMapper.ADMIN_EDIT_PROMOTION).forward(request, response);
                         break;
                     }
-                    // TODO: IMPLEMENT
                 break;
             }
         } catch (java.sql.SQLException e) {

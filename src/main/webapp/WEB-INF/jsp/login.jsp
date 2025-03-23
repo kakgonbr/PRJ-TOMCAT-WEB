@@ -18,6 +18,8 @@
 
     <jsp:attribute name="header">
         <%-- <t:nav /> --%>
+        <t:error error="${error}" />
+        <t:error error="${param.reason}" />
     </jsp:attribute>
 
     <jsp:attribute name="body">
