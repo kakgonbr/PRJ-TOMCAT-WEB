@@ -98,7 +98,7 @@
             </c:if>
             <!--cart-->
             <!--            check if not in user path, disable cart function-->
-            <c:if test="${not fn:contains(pageContext.request.requestURI, '/sellercenter/')}">
+            <c:if test="${not fn:contains(pageContext.request.requestURI, 'sellercenter')}">
                 <div class="ms-2">
                     <a href="${pageContext.request.contextPath}/cart" class="p-2 text-decoration-none fs-5 logo rounded-pill">
                         <i class="bi bi-bag-fill"></i>
