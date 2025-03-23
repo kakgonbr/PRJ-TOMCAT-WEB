@@ -26,7 +26,7 @@ public class ResourceDAO {
         }
     }
 
-    public static synchronized void addMapping(String name, String path) throws java.sql.SQLException {
+    public static synchronized model.ResourceMap addMapping(String name, String path) throws java.sql.SQLException {
         try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
             EntityTransaction et = em.getTransaction();
 
@@ -40,6 +40,8 @@ public class ResourceDAO {
                 em.persist(map);
 
                 et.commit();
+
+                return map;
             } catch (Exception e) {
                 if (et.isActive()) {
                     et.rollback();

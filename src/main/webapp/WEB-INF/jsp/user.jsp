@@ -21,6 +21,12 @@
         <c:if test="${changed != null && changed != ''}">
             <p>Changed ${changed}.</p>
         </c:if> --%>
+        <p>Profile: </p>
+        <img src="${pageContext.request.contextPath}/resources/${sessionScope.user.profileStringResourceId}">
+        <form action="${pageContext.request.contextPath}/user" method="POST">
+            <input type="file" name="image">
+            <input type="submit" value="Update" />
+        </form>
         <label>Username:</label>
         <input type="text" name="username" value="${sessionScope.user.username}" disabled>
         <form action="${pageContext.request.contextPath}/user" method="POST">
