@@ -77,7 +77,7 @@ function getProductInfo(productId) {
 
             let container = document.getElementById("promotion-container");
             header = document.createElement("h3");
-            header.innerText = "Active Promotion:" + productData.promotion.name + " : - " + productData.promotion.value + (productData.promotion.type ? "$" : "%");
+            header.innerText = productData.promotion.name + " : - " + productData.promotion.value + (productData.promotion.type ? "$" : "%");
             container.appendChild(header);
 
             header = document.createElement("h3");
