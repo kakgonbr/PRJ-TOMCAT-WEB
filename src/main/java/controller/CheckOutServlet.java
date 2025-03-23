@@ -15,8 +15,26 @@ public class CheckOutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         model.User user = (model.User) request.getSession(false).getAttribute("user");
 
+        
         try {
-            request.setAttribute("cartItems", dao.CartDAO.CartFetcher.getCartByUser(user.getId(), true).getCartItemList().stream().map(model.CartItemWrapper::new).toList());
+            java.util.List<model.CartItemWrapper> cartItems = dao.CartDAO.CartFetcher.getCartByUser(user.getId(), true).getCartItemList().stream().map(model.CartItemWrapper::new).toList();
+            request.setAttribute("cartItems", cartItems);
+
+            java.util.List<model.CartItemWrapper> exceedStock = new java.util.ArrayList<>();
+            for (final model.CartItemWrapper cartItem : cartItems) {
+                if (cartItem.getQuantity() > cartItem.getProductItem().getStock()) {
+                    exceedStock.add(cartItem);
+                }
+            }
+
+            if (exceedStock.size() > 0) {
+                request.setAttribute("exceed", exceedStock);
+
+                request.getRequestDispatcher(config.Config.JSPMapper.EXCEED_STOCK).forward(request, response);
+
+                return;
+            }
+
             request.setAttribute("promotions", dao.PromotionDAO.PromotionFetcher.checkAvailablePromotions(user.getId()).stream().map(model.PromotionWrapper::new).toList());
         } catch (java.sql.SQLException e) {
             service.Logging.logger.warn("FAILED TO GET AVAILABLE PROMOTIONS FOR USER {}", user.getId());
@@ -36,6 +54,10 @@ public class CheckOutServlet extends HttpServlet {
             return;
         }
 
+        // the entity manager is controlled at the data access level, so is the transaction.
+        // if anything here breaks mid way through, there isn't a quick way to roll back.
+        // terrible architectural decision if you ask me
+        model.ProductOrder order = null;
         try {
             switch (action) {
                 case "proceed":
@@ -44,7 +66,7 @@ public class CheckOutServlet extends HttpServlet {
                     if (promotionId != null) {
                         promotion = dao.PromotionDAO.PromotionFetcher.getPromotion(promotionId);
                     }
-                    model.ProductOrder order = new model.ProductOrder();
+                    order = new model.ProductOrder();
                     order.setUserId(user);
                     order.setDate(new java.util.Date());
                     order.setPromotionId(promotion);
@@ -53,6 +75,7 @@ public class CheckOutServlet extends HttpServlet {
 
                     model.Cart cart = dao.CartDAO.CartFetcher.getCartByUser(user.getId(), true);
 
+                    // the moment this goes through, item stock will be deducted
                     dao.OrderDAO.OrderedItemManager.transferFromCart(orderId, cart.getCartItemList().stream().map(model.CartItemWrapper::new).toList());
 
                     dao.OrderDAO.OrderManager.updatePrice(orderId);
@@ -71,6 +94,13 @@ public class CheckOutServlet extends HttpServlet {
                 break;
             }
         } catch (java.sql.SQLException e) {
+            // this is just awful
+            if (order != null) {
+                try {
+                    dao.OrderDAO.OrderManager.deleteOrder(order.getId());
+                } catch (java.sql.SQLException e1) {;
+                }
+            }
             service.Logging.logger.info("Action {} on cart by user {} resulted in {}", action, user.getId(), e.getMessage());
             request.setAttribute("error", "Something went wrong, try again.");
         } 

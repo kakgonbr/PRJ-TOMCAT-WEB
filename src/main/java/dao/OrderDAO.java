@@ -1,5 +1,7 @@
 package dao;
 
+import org.hibernate.Hibernate;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import model.CartItem;
@@ -30,13 +32,23 @@ public class OrderDAO {
             }
         } // public static synchronized int createOrder
 
-        public static synchronized ProductOrder getOrder(int id) throws java.sql.SQLException {
+        public static synchronized ProductOrder getOrder(int id, boolean fetch) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                return em.createNamedQuery("ProductOrder.findById", ProductOrder.class).setParameter("id", id)
-                        .getSingleResult();
+                ProductOrder order = em.createNamedQuery("ProductOrder.findById", ProductOrder.class).setParameter("id", id)
+                .getSingleResult();
+
+                if (fetch) {
+                    Hibernate.initialize(order.getOrderedItemList());
+                }
+                
+                return order;
             } catch (Exception e) {
                 throw new java.sql.SQLException(e);
             }
+        } // public static synchronized ProductOrder getOrder
+
+        public static synchronized ProductOrder getOrder(int id) throws java.sql.SQLException {
+            return getOrder(id, false);
         } // public static synchronized ProductOrder getOrder
 
         public static synchronized void markCompleted(int id) throws java.sql.SQLException {
@@ -65,6 +77,33 @@ public class OrderDAO {
             }
         } // public static synchronized void markCompleted
 
+        /**
+         * DO NOT EDIT. This method is for deleting orders that did not go through.<br></br>
+         * The status column ONLY indicates that the order is still awaiting payment.<br></br>
+         * For orders without payment, they are invalid and must be removed.
+         * @param id
+         * @throws java.sql.SQLException
+         */
+        public static synchronized void deleteOrder(int id) throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                EntityTransaction et = em.getTransaction();
+
+                try {
+                    et.begin();
+
+                    em.remove(em.find(model.ProductOrder.class, id));
+
+                    et.commit();
+                } catch (Exception e) {
+                    if (et.isActive()) {
+                        et.rollback();
+                    }
+
+                    throw new java.sql.SQLException(e);
+                }
+            }
+        }
+
         public static synchronized boolean isCompleted(int id) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 return em.createNamedQuery("ProductOrder.findById", ProductOrder.class).getSingleResult().isStatus();
@@ -73,9 +112,9 @@ public class OrderDAO {
             }
         } // public static synchronized boolean isCompleted
 
-        private static final String UPDATE_ORDER_PRICE = "UPDATE tblOrder SET finalPrice = (SELECT SUM(totalPrice + shippingCost) FROM tblOrderedItem WHERE orderId = ?1) WHERE id = ?2";
+        private static final String UPDATE_ORDER_PRICE = "WITH total AS ( SELECT SUM(totalPrice + shippingCost) AS total FROM tblOrderedItem WHERE orderId = ?1) UPDATE tblOrder SET finalPrice = (SELECT CASE WHEN p.id IS NULL THEN t.total WHEN p.type = 1 THEN t.total - p.value WHEN p.type = 0 THEN t.total * (1 - p.value / 100.0) ELSE t.total END FROM total t LEFT JOIN tblOrder o ON o.id = ?1 LEFT JOIN tblPromotion p ON p.id = o.promotionId ) WHERE id = ?1;";
 
-        /**
+      /**
          * Call this after every request the user made to add items from cart to order.
          * 
          * @param id
@@ -88,7 +127,7 @@ public class OrderDAO {
                 try {
                     et.begin();
 
-                    if (em.createNativeQuery(UPDATE_ORDER_PRICE).setParameter(1, id).setParameter(2, id)
+                    if (em.createNativeQuery(UPDATE_ORDER_PRICE).setParameter(1, id)
                             .executeUpdate() != 1)
                         throw new java.sql.SQLException("CANNOT UPDATE THE PRICE OF ORDER, THE UPDATE COUNT IS NOT 1");
 
@@ -107,6 +146,7 @@ public class OrderDAO {
     public static class OrderedItemManager {
         private static final String INSERT_INTO_ORDER = "INSERT INTO tblOrderedItem (orderId, productItemId, quantity, totalPrice, shippingCost) VALUES (?1, ?2, ?3, ?4, ?5)";
         private static final String DELETE_FROM_CART_ITEM = "DELETE FROM tblCartItem WHERE id = ?1";
+        private static final String REMOVE_FROM_PRODUCT_ITEM = "UPDATE tblProductItem SET stock = ((SELECT stock FROM tblproductItem WHERE id = ?2) - ?1) WHERE id = ?2";
 
         /**
          * Try to verify that these items belong to the correct cart and the correct
@@ -139,6 +179,8 @@ public class OrderDAO {
                                 .executeUpdate();
 
                         em.createNativeQuery(DELETE_FROM_CART_ITEM).setParameter(1, item.getId()).executeUpdate();
+
+                        em.createNativeQuery(REMOVE_FROM_PRODUCT_ITEM).setParameter(1, item.getQuantity()).setParameter(2, item.getProductItem().getId());
                     }
 
                     et.commit();

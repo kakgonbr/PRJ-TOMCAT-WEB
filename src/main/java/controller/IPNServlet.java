@@ -43,6 +43,8 @@ public class IPNServlet extends HttpServlet {
         String date = request.getParameter("vnp_PayDate");
 
         String signValue = config.VNPConfig.hashAllFields(fields);
+
+        boolean success = false;
         if (signValue.equals(vnp_SecureHash)) {
             service.Logging.logger.info("Order {}, amount {}, date {}", orderId, paidAmount, date);
 
@@ -50,6 +52,7 @@ public class IPNServlet extends HttpServlet {
                 if ("00".equals(request.getParameter("vnp_ResponseCode"))) {
                     try {
                         dao.OrderDAO.OrderManager.markCompleted(orderId);
+                        success = true;
                     } catch (java.sql.SQLException e) {
                         service.Logging.logger.error("FAILED TO MARK ORDER {} AS COMPLETED, REASON: {}", orderId, e.getMessage());
 
@@ -74,6 +77,10 @@ public class IPNServlet extends HttpServlet {
         } else {
             service.Logging.logger.info("Order {}'s checksum does not match.", orderId);
         }
+
+        if (!success) {
+            deleteUponFailure(orderId);
+        }
     }
 
     @Override
@@ -91,6 +98,17 @@ public class IPNServlet extends HttpServlet {
             service.Logging.logger.warn("The order {} does not exist, or retrieving it has resulted in an error, reason: {}", id, e.getMessage());
 
             return false;
+        }
+    }
+
+    private static void deleteUponFailure(int orderId) {
+        try {
+            service.OrderConcurrencyService.removeFromOrder(orderId);
+
+            dao.OrderDAO.OrderManager.deleteOrder(orderId);
+
+        } catch (java.sql.SQLException e) {
+            service.Logging.logger.error("FAILED TO DELETE ORDER ID {}, REASON: {}", orderId, e.getMessage());
         }
     }
 }

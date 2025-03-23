@@ -22,7 +22,24 @@ public class CartServlet extends HttpServlet {
                 cart = createCart(user);
             }
 
-            request.setAttribute("cartItems", cart.getCartItemList().stream().map(model.CartItemWrapper::new).toList());
+            java.util.List<model.CartItemWrapper> cartItems = cart.getCartItemList().stream().map(model.CartItemWrapper::new).toList();
+
+            request.setAttribute("cartItems", cartItems);
+
+            java.util.List<model.CartItemWrapper> exceedStock = new java.util.ArrayList<>();
+            for (final model.CartItemWrapper cartItem : cartItems) {
+                if (cartItem.getQuantity() > cartItem.getProductItem().getStock()) {
+                    exceedStock.add(cartItem);
+                }
+            }
+
+            if (exceedStock.size() > 0) {
+                request.setAttribute("exceed", exceedStock);
+
+                request.getRequestDispatcher(config.Config.JSPMapper.EXCEED_STOCK).forward(request, response);
+
+                return;
+            }
         } catch (java.sql.SQLException e) {
             service.Logging.logger.warn("FAILED TO GET CART ITEMS, REASON: {}", e.getMessage());
             request.setAttribute("code", 500);

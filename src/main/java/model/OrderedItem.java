@@ -7,6 +7,7 @@ package model;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -60,7 +61,7 @@ public class OrderedItem implements Serializable {
     @ManyToOne
     private ProductOrder orderId;
     @JoinColumn(name = "productItemId", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private ProductItem productItemId;
 
     public OrderedItem() {

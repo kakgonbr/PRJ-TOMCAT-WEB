@@ -175,7 +175,8 @@ create table tblProductItem
 	stock int,
 	price money,
 
-	constraint fk_productitem_product foreign key (productId) references tblProduct(id)
+	constraint fk_productitem_product foreign key (productId) references tblProduct(id),
+	CONSTRAINT ck_productitem_stock CHECK (stock >= 0)
 )
 
 create table tblProductCustomization
