@@ -53,18 +53,17 @@ function fetchVariations(categoryId) {
       }
 
       let table = document.createElement(
-        "table table-striped table-hover table-bordered align-middle"
+        "table"
       );
       table.classList.add("variation-table"); // Apply CSS class
 
       let thead = document.createElement("thead");
-      thead.className = "table-dark";
       thead.innerHTML = `
                 <tr>
-                    <th scope="col">Select</th>
-                    <th scope="col">Variation Name</th>
-                    <th scope="col">Data Type</th>
-                    <th scope="col">Unit</th>
+                    <th">Select</th>
+                    <th>Variation Name</th>
+                    <th">Data Type</th>
+                    <th>Unit</th>
                 </tr>
             `;
       table.appendChild(thead);
