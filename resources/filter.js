@@ -274,7 +274,6 @@ function submitVariations() {
 
     form.submit();
 }
-}
 
 
 
