@@ -412,7 +412,7 @@ BEGIN
         SELECT c.id FROM tblCategory c
         JOIN category ch ON c.parent_id = ch.id
 		)
-        SELECT TOP 10 * FROM tblProduct WHERE tblProduct.categoryId IN (SELECT id FROM category) ORDER BY NEWId();
+        SELECT TOP 12 * FROM tblProduct WHERE tblProduct.categoryId IN (SELECT id FROM category) ORDER BY NEWId();
         RETURN;
     END
 
@@ -511,7 +511,7 @@ VALUES
 ('log_js', 'log.js'),
 ('product_js', 'product.js'),
 ('chart_js', 'customChart.js'),
-('userMain_css', 'userMain.css'),
+-- ('userMain_css', 'userMain.css'),
 ('login_css', 'login.css'),
 ('cp_js', 'controlPanel.js'),
 ('filter_js', 'filter.js'),

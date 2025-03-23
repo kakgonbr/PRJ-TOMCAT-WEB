@@ -80,7 +80,7 @@ public class LoginServlet extends HttpServlet {
             service.Logging.logger.warn("Log in failed for request {}, tried: {} and {}. Reason: {}",
                     request.getRequestId(), userOrEmail, password, e.getMessage());
 
-            request.setAttribute("reason", "invalid");
+            request.setAttribute("error", "Invalid login credentials.");
 
             doGet(request, response);
 

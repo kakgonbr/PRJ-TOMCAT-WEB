@@ -75,14 +75,16 @@ function getProductInfo(productId) {
             header.innerText = "Category: ";
             header.appendChild(anchor);
 
-            let container = document.getElementById("promotion-container");
-            header = document.createElement("h3");
-            header.innerText = "Active Promotion:" + productData.promotion.name + " : - " + productData.promotion.value + (productData.promotion.type ? "$" : "%");
-            container.appendChild(header);
-
-            header = document.createElement("h3");
-            header.innerText = "Expire on: " + productData.promotion.expireDate;
-            container.appendChild(header);
+            if (productData.promotion) {
+                let container = document.getElementById("promotion-container");
+                header = document.createElement("h3");
+                header.innerText = productData.promotion.name + " : - " + productData.promotion.value + (productData.promotion.type ? "$" : "%");
+                container.appendChild(header);
+    
+                header = document.createElement("h3");
+                header.innerText = "Expire on: " + productData.promotion.expireDate;
+                container.appendChild(header);
+            }
 
             productData.productItems.forEach(item => {
                 item.customizations.forEach(customization => {
@@ -190,8 +192,14 @@ function updateSelection() {
         const price = document.getElementById("price-counter");
         
         productItemIdInput.value = matchingItem.id;
-        price.innerText = matchingItem.price + "$";
-        
+
+        // productData.promotion.value + (productData.promotion.type ? "$" : "%")
+        if (matchingItem.promotion) {
+            price.innerHTML = "<del>" + matchingItem.price + "$</del>" + " " + (matchingItem.promotion.type ? matchingItem.price - parseInt(matchingItem.promotion.value) : matchingItem.price * (100.0 - parseInt(matchingItem.promotion.value)) / 100.0) + "$";
+        } else {
+            price.innerHTML = matchingItem.price + "$";
+        }
+
         currentMaxQuantity = matchingItem.stock;
         
         updateQuantity(0);
@@ -202,7 +210,7 @@ function updateSelection() {
         const productItemIdInput = document.getElementById("productItemId");
 
         productItemIdInput.value = 0;
-        price.innerText = "Out of Stock";
+        price.innerHTML = "Out of Stock";
         currentMaxQuantity = 0;
 
         updateQuantity(0);

@@ -48,6 +48,8 @@ public class Shop implements Serializable {
     @Size(max = 100)
     @Column(name = "address")
     private String address;
+    @OneToMany(mappedBy = "shopId")
+    private List<ShopStatistics> shopStatisticsList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -167,6 +169,15 @@ public class Shop implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    @XmlTransient
+    public List<ShopStatistics> getShopStatisticsList() {
+        return shopStatisticsList;
+    }
+
+    public void setShopStatisticsList(List<ShopStatistics> shopStatisticsList) {
+        this.shopStatisticsList = shopStatisticsList;
     }
     
 }

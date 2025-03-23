@@ -132,7 +132,7 @@ public class ProductOrder implements Serializable {
         this.status = status;
     }
 
-    public Boolean getStatus() {
+    public Boolean isStatus() {
         return status;
     }
 

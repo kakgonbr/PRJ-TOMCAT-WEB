@@ -62,8 +62,6 @@ public class IPNServlet extends HttpServlet {
                         return;
                     }
 
-
-
                     service.Logging.logger.info("Order {} was successful.", orderId);
                 } else {
                     // Xử lý/Cập nhật tình trạng giao dịch thanh toán "Không thành công"
@@ -88,7 +86,7 @@ public class IPNServlet extends HttpServlet {
         try {
             model.ProductOrder order = dao.OrderDAO.OrderManager.getOrder(id);
 
-            return !order.getStatus() && order.getFinalPrice() == amount; // false (order not yet completed) -> true AND amount matches (true)
+            return !order.isStatus() && order.getFinalPrice().longValue() == amount.longValue(); // false (order not yet completed) -> true AND amount matches (true)
         } catch (java.sql.SQLException e) {
             service.Logging.logger.warn("The order {} does not exist, or retrieving it has resulted in an error, reason: {}", id, e.getMessage());
 

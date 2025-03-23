@@ -36,5 +36,9 @@ function startupTheme() {
         .addEventListener('change', () => setTheme());
 }
 
+function closeError() {
+    document.getElementById("error-container").remove();
+}
+
 // can be dangerous
 document.addEventListener("DOMContentLoaded", startupTheme);

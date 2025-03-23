@@ -2,7 +2,6 @@ package controller;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.math.BigDecimal;
 import org.apache.commons.beanutils.BeanUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -104,7 +103,6 @@ public class AdminCPServlet extends HttpServlet {
                         request.getRequestDispatcher(config.Config.JSPMapper.ADMIN_EDIT_PROMOTION).forward(request, response);
                         break;
                     }
-                    // TODO: IMPLEMENT
                 break;
             }
         } catch (java.sql.SQLException e) {

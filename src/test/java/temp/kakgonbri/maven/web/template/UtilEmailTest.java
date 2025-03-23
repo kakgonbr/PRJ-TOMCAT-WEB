@@ -11,6 +11,7 @@ public class UtilEmailTest {
 
         Assertions.assertTrue(misc.Utils.Validator.email("abc@example.com"));
         Assertions.assertTrue(misc.Utils.Validator.email("abc@example.com.vn"));
+        Assertions.assertTrue(misc.Utils.Validator.email("abcdef@gmail.com"));
         
         Assertions.assertFalse(misc.Utils.Validator.email("yes@hello.com."));
         Assertions.assertFalse(misc.Utils.Validator.email("abc@example@example.com"));

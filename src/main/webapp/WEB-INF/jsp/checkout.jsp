@@ -4,6 +4,7 @@
 
 <t:genericpage title="Checkout">
     <jsp:attribute name="head">
+        <t:resources />
         <script>
             var contextPath = "${pageContext.request.contextPath}";
         </script>
@@ -11,16 +12,125 @@
     </jsp:attribute>
 
     <jsp:attribute name="header">
-    
+        <t:userHeader user="${sessionScope.user.username}" />
     </jsp:attribute>
 
     <jsp:attribute name="body">
+        <c:set var="total" value="0" />
+        <h1>Order Review:</h1>
+        <table border="1">
+            <tr>
+                <td>Image</td>
+                <td>Name</td>
+                <td>Shop</td>
+                <td>Promotion</td>
+                <td>Quantity</td>
+                <td>Price</td>
+                <td>Stock</td>
+                <td>Customization</td>
+            </tr>
+            <tbody>
+                <c:forEach var="cartItem" items="${cartItems}">
+                    <tr>
+                        <td>
+                            <img src="${pageContext.request.contextPath}/resources/${cartItem.productWrapper.thumbnail}" alt="">
+                        </td>
+                        <td>
+                            ${cartItem.productWrapper.name}
+                        </td>
+                        <td>
+                            ${cartItem.productWrapper.shop.name}
+                        </td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${cartItem.productWrapper.promotion.type}">
+                                    - ${cartItem.productWrapper.promotion.value} VND
+                                </c:when>
+                                <c:otherwise>
+                                    - ${cartItem.productWrapper.promotion.value} %
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
+                        <td>
+                            ${cartItem.quantity}
+                        </td>
+                        <td>
+                            ${cartItem.productItem.price}
+                        </td>
+                        <td>
+                            ${cartItem.productItem.stock}
+                        </td>
+                        <td>
+                            <c:forEach var="customization" items="${cartItem.productItem.customizations}">
+                                <p>${customization.name}: ${customization.value} ${customization.unit}</p><br></br>
+                            </c:forEach>
+                        </td>
+                    </tr>
+                    <c:choose>
+                        <c:when test="${cartItem.productWrapper.promotion.type}">
+                            <c:set var="total" value="${total + (cartItem.productItem.price - cartItem.productWrapper.promotion.value)}" />
+                        </c:when>
+                        <c:otherwise>
+                            <c:set var="total" value="${total + (cartItem.productItem.price * (100.0 - cartItem.productWrapper.promotion.value) / 100.0)}" />
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+            </tbody>
+        </table>
         <form>
             <div class="address-container">
                 <label for="address">Địa chỉ</label>
                 <input type="text" id="address" name="address" required placeholder="Nhập địa chỉ của bạn" autocomplete="off">
                 <div id="suggestions" class="suggestions"></div>
             </div>
+        </form>
+        <form action="${pageContext.request.contextPath}/checkout" method="POST">
+            <input type="hidden" name="action" value="apply">
+            <select name="promotionId">
+                <c:forEach var="promotion" items="${promotions}">
+                    <option value="${promotion.id}">[
+                        <c:choose>
+                            <c:when test="${promotion.type}">
+                                - ${promotion.value} VND
+                            </c:when>
+                            <c:otherwise>
+                                - ${promotion.value} %
+                            </c:otherwise>
+                        </c:choose>] ${promotion.name} - Expires on ${promotion.expireDate}</option>
+                </c:forEach>
+            </select>
+            <button type="submit">Apply</button>
+        </form>
+        <c:choose>
+            <c:when test="${activePromotion == null}">
+                <p>Final Price: ${total}</p>
+            </c:when>
+            <c:otherwise>
+                <p>Active promotion: [
+                        <c:choose>
+                            <c:when test="${activePromotion.type}">
+                                - ${activePromotion.value} VND
+                            </c:when>
+                            <c:otherwise>
+                                - ${activePromotion.value} %
+                            </c:otherwise>
+                        </c:choose>] ${activePromotion.name} - Expires on ${activePromotion.expireDate}</p>
+                <c:choose>
+                    <c:when test="${activePromotion.type}">
+                        <p>Final Price: ${total - activePromotion.value}</p>
+                    </c:when>
+                    <c:otherwise>
+                        <p>Final Price: ${total * (100.0 - activePromotion.value) / 100.0}</p>
+                    </c:otherwise>
+                </c:choose>
+            </c:otherwise>
+        </c:choose>
+        <form action="${pageContext.request.contextPath}/checkout" method="POST">
+            <input type="hidden" name="action" value="proceed">
+            <c:if test="${activePromotion != null}">
+                <input type="hidden" name="promotionId" value="${activePromotion.id}">
+            </c:if>
+            <button type="submit">Proceed to Payment</button>
         </form>
     </jsp:attribute>
 

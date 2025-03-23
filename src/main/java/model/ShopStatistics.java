@@ -10,6 +10,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
@@ -27,6 +29,10 @@ import java.io.Serializable;
     @NamedQuery(name = "ShopStatistics.findAll", query = "SELECT s FROM ShopStatistics s"),
     @NamedQuery(name = "ShopStatistics.findById", query = "SELECT s FROM ShopStatistics s WHERE s.id = :id")})
 public class ShopStatistics implements Serializable {
+
+    @JoinColumn(name = "shopId", referencedColumnName = "id")
+    @ManyToOne
+    private Shop shopId;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -73,6 +79,14 @@ public class ShopStatistics implements Serializable {
     @Override
     public String toString() {
         return "model.ShopStatistics[ id=" + id + " ]";
+    }
+
+    public Shop getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Shop shopId) {
+        this.shopId = shopId;
     }
     
 }

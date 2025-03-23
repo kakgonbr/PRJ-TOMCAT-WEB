@@ -52,6 +52,8 @@ public class CartServlet extends HttpServlet {
             default:
                 addToCart(request, response, productItemId, quantity, user);
         }
+
+        doGet(request, response);
     }
 
     private static void updateQuantity(HttpServletRequest request, HttpServletResponse response, Integer cartItemId, Integer quantity, model.User user) throws ServletException, IOException {
@@ -62,18 +64,20 @@ public class CartServlet extends HttpServlet {
             model.CartItem cartItem = dao.CartItemDAO.CartItemManager.getCartItem(cartItemId);
             
             if (cartItem.getProductItemId().getStock() < quantity) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Quantity cannot exceed stock");
+                // response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Quantity cannot exceed stock");
+                request.setAttribute("error", "Quantity cannot exceed stock");
                 return;
             }
             
             cartItem.setQuantity(quantity);
             dao.CartItemDAO.CartItemManager.updateCartItem(cartItem);
 
-            // annoying, but having sendError in the catch section causes this method not to guarantee redirection
-            response.sendRedirect(request.getContextPath() + "/cart");
+            // // annoying, but having sendError in the catch section causes this method not to guarantee redirection
+            // response.sendRedirect(request.getContextPath() + "/cart");
         } catch (java.sql.SQLException e) {
             service.Logging.logger.warn("FAILED TO UPDATE QUANTITY, REASON: {}", e.getMessage());
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to update quantity");
+            // response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to update quantity");
+            request.setAttribute("error", "Failed to update quantity");
         }
     }
 
@@ -81,10 +85,11 @@ public class CartServlet extends HttpServlet {
         try {
             // careful, make sure the dao is both using status (or not) on all methods concerning visibility
             dao.CartItemDAO.CartItemManager.deleteCartItem(cartItemId);
-            response.sendRedirect(request.getContextPath() + "/cart");
+            // response.sendRedirect(request.getContextPath() + "/cart");
         } catch (java.sql.SQLException e) {
             service.Logging.logger.warn("FAILED TO REMOVE ITEM FROM CART, REASON: {}", e.getMessage());
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to remove item from cart");
+            // response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to remove item from cart");
+            request.setAttribute("error", "Failed to remove item from cart");
         }
     }
 
@@ -98,7 +103,8 @@ public class CartServlet extends HttpServlet {
             model.ProductItem productItem = dao.ProductDAO.ProductFetcher.getProductItem(productItemId);
 
             if (productItem.getStock() < quantity) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Quantity cannot exceed stock");
+                // response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Quantity cannot exceed stock");
+                request.setAttribute("error", "Quantity cannot exceed stock");
                 return;
             }
 
@@ -139,10 +145,11 @@ public class CartServlet extends HttpServlet {
                 dao.CartItemDAO.CartItemManager.updateCartItem(cartItem);
             }
 
-            response.sendRedirect(request.getContextPath() + "/cart");
+            // response.sendRedirect(request.getContextPath() + "/cart");
         } catch (java.sql.SQLException e) {
             service.Logging.logger.warn("FAILED TO ADD ITEM TO CART, REASON: {}", e.getMessage());
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to add item to cart");
+            // response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to add item to cart");
+            request.setAttribute("error", "Failed to add item to cart");
         }
     }
 

@@ -106,7 +106,7 @@
     </jsp:attribute>
 
     <jsp:attribute name="header">
-        <div class="error-container">
+        <%-- <div class="error-container">
             <c:if test="${error == 'db'}">
                 <p class="error-message">A DATABASE ERROR OCCURRED!</p>
             </c:if>
@@ -131,7 +131,8 @@
             <c:if test="${taken == 'phoneNumber'}">
                 <p class="error-message">Phone number is already taken!</p>
             </c:if>
-        </div>
+        </div> --%>
+        <t:error error="${error}" />
         <h1 class="title">Sign Up</h1>
     </jsp:attribute>
 
