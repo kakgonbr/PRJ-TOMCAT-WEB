@@ -205,7 +205,7 @@ function addNewVariation() {
     let newVariationName = document.getElementById("variationName").value.trim();
     let newVariationValues = document.getElementById("variationValues").value.trim().split(",");
     let newVariationDatatype = document.getElementById("datatype").value.trim();
-    let newVariationUnit = document.getElementById("uunit").value.trim();
+    let newVariationUnit = document.getElementById("unit").value.trim();
 
     if (!newVariationName || !newVariationDatatype || !newVariationUnit || newVariationValues.length === 0) {
         alert("Please fill in all fields.");
