@@ -142,19 +142,29 @@ function applyVariation() {
         return;
     }
 
-    let variationId = selectedVariation.value; // Lấy ID thay vì tên
-    let variationName = selectedVariation.dataset.name;
+    let variationId = selectedVariation.value; // Lấy ID
+    let variationName = selectedVariation.dataset.name; // Lấy tên từ `data-name`
+    let datatype = selectedVariation.dataset.datatype || "N/A"; // Lấy kiểu dữ liệu từ `data-datatype`
+    let unit = selectedVariation.dataset.unit || "N/A"; // Lấy đơn vị từ `data-unit`
+
     let selectedValues = Array.from(document.querySelectorAll(`input[name="variationValue"]:checked`))
-        .map(value => value.value); // Lấy ID của giá trị variation
+        .map(value => value.value);
 
     if (selectedValues.length === 0) {
         alert("Please select at least one variation value.");
         return;
     }
 
-    selectedVariations.push({ variationId, variationName, values: selectedValues });
+    // Kiểm tra tránh thêm trùng variation
+    if (selectedVariations.some(v => v.variationId === variationId)) {
+        alert("This variation has already been selected!");
+        return;
+    }
+
+    selectedVariations.push({ variationId, variationName, datatype, unit, values: selectedValues });
     renderVariationTable();
 }
+
 
 
 function addNewVariation() {
@@ -260,12 +270,12 @@ function submitVariations() {
     let formData = new FormData(form);
 
     selectedVariations.forEach(variation => {
-        formData.append("variation", variation.variationName); // Lưu variation name
-        formData.append("datatype", variation.datatype); // Lưu datatype
-        formData.append("unit", variation.unit); // Lưu unit
+        formData.append("variation", variation.variationId); // Gửi variation ID
+        formData.append("datatype", variation.datatype); // Gửi datatype
+        formData.append("unit", variation.unit); // Gửi unit
 
         variation.values.forEach(value => {
-            formData.append("variationValue", value); // Lưu từng giá trị variationValue
+            formData.append("variationValue", value); // Gửi từng variationValue
         });
     });
 
@@ -279,9 +289,13 @@ function submitVariations() {
         body: formData
     })
     .then(response => response.text())
-    .then(data => console.log("Server response:", data))
+    .then(data => {
+        console.log("Server response:", data);
+        alert("Variations saved successfully!");
+    })
     .catch(error => console.error("Error:", error));
 }
+
 
 
 
