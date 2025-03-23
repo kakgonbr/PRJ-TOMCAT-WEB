@@ -120,14 +120,15 @@ function fetchVariationValues(variationId) {
 function createVariationValueElement(value) {
     let li = document.createElement("li");
     let label = document.createElement("label");
-    let radio = document.createElement("input");
-    radio.type = "radio";
-    radio.name = "variationValue";
-    radio.value = value.id;
-    radio.dataset.name = value.value;
-    radio.dataset.parent = value.variationId;
+    let checkbox = document.createElement("input");
 
-    label.appendChild(radio);
+    checkbox.type = "checkbox";  // Cho phép chọn nhiều giá trị
+    checkbox.name = "variationValue";
+    checkbox.value = value.id;
+    checkbox.dataset.name = value.value;
+    checkbox.dataset.parent = value.variationId;
+
+    label.appendChild(checkbox);
     label.appendChild(document.createTextNode(" " + value.value));
     li.appendChild(label);
 
