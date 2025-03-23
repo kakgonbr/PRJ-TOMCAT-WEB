@@ -34,7 +34,7 @@ public class ResourceMap implements Serializable {
 
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 127)
     @Column(name = "systemPath")
     private String systemPath;
 
@@ -42,7 +42,7 @@ public class ResourceMap implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 30)
+    @Size(min = 1, max = 127)
     @Column(name = "id")
     private String id;
     @OneToMany(mappedBy = "profileStringResourceId")
