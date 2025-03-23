@@ -106,9 +106,7 @@ function createVariationElement(variation) {
 }
 
 function fetchVariationValues(variationId) {
-    var url = new URL(
-        "https://" + location.host + contextPath + "/ajax/variation"
-    );
+    var url = new URL("https://" + location.host + contextPath + "/ajax/variation");
 
     if (variationId) {
         url.searchParams.append("variationId", variationId);
@@ -127,38 +125,53 @@ function fetchVariationValues(variationId) {
             let variationValueContainer = document.getElementById("variationValueFilter");
             variationValueContainer.innerHTML = "";
 
-            let ul = document.createElement("ul");
+            let table = document.createElement("table");
+            table.className = "table table-striped table-bordered";
 
-            // Fix: Ensure we find the correct variation
+            let thead = document.createElement("thead");
+            thead.innerHTML = `
+                <tr class="table-dark">
+                    <th>Select</th>
+                    <th>Value Name</th>
+                </tr>
+            `;
+            table.appendChild(thead);
+
+            let tbody = document.createElement("tbody");
+
             if (data.length > 0) {
                 data.forEach(value => {
-                    ul.appendChild(createVariationValueElement(value));
+                    tbody.appendChild(createVariationValueElement(value));
                 });
             } else {
                 console.error("Không tìm thấy values cho variationId:", variationId, "Dữ liệu API:", data);
             }
 
-            variationValueContainer.appendChild(ul);
+            table.appendChild(tbody);
+            variationValueContainer.appendChild(table);
         })
         .catch(error => console.error("Lỗi khi lấy giá trị biến thể:", error));
-
 }
 
 function createVariationValueElement(value) {
-    let li = document.createElement("li");
-    let label = document.createElement("label");
-    let radio = document.createElement("input");
-    radio.type = "radio";
-    radio.name = "variationValue";
-    radio.value = value.id;
-    radio.dataset.name = value.value;
-    radio.dataset.parent = value.variationId;
+    let tr = document.createElement("tr");
 
-    label.appendChild(radio);
-    label.appendChild(document.createTextNode(" " + value.value));
-    li.appendChild(label);
+    let selectTd = document.createElement("td");
+    let checkbox = document.createElement("input");
+    checkbox.type = "checkbox"; // Cho phép chọn nhiều values
+    checkbox.name = "variationValue";
+    checkbox.value = value.id;
+    checkbox.dataset.name = value.value;
+    checkbox.dataset.parent = value.variationId;
 
-    return li;
+    selectTd.appendChild(checkbox);
+    tr.appendChild(selectTd);
+
+    let nameTd = document.createElement("td");
+    nameTd.textContent = value.value;
+    tr.appendChild(nameTd);
+
+    return tr;
 }
 
 var selectedVariations = [];
@@ -180,12 +193,15 @@ function applyVariation() {
         return;
     }
 
-    selectedVariations.push({ variationName, values: selectedValues });
-    renderVariationTable();
-}
+    // Kiểm tra nếu variation này đã có trong danh sách thì cập nhật giá trị
+    let existingVariation = selectedVariations.find(v => v.variationName === variationName);
+    if (existingVariation) {
+        existingVariation.values = selectedValues;
+    } else {
+        selectedVariations.push({ variationName, values: selectedValues });
+    }
 
-function showNewVariationForm() {
-    document.getElementById("newVariationForm").style.display = "block";
+    renderVariationTable();
 }
 
 function addNewVariation() {
@@ -216,41 +232,43 @@ function addNewVariation() {
 }
 
 function renderVariationTable() {
-    let tableBody = document.getElementById("variationTableBody");
-    tableBody.innerHTML = "";
+    let resultContainer = document.getElementById("selectedVariations");
+    resultContainer.innerHTML = "";
 
-    selectedVariations.forEach((variation, index) => {
-        let row = document.createElement("tr");
+    if (selectedVariations.length === 0) {
+        resultContainer.innerHTML = "<p>No variations selected.</p>";
+        return;
+    }
 
-        let nameCell = document.createElement("td");
-        nameCell.textContent = variation.variationName;
+    let table = document.createElement("table");
+    table.className = "table table-striped table-bordered";
 
-        let valuesCell = document.createElement("td");
-        valuesCell.textContent = variation.values.join(", ");
+    let thead = document.createElement("thead");
+    thead.innerHTML = `
+        <tr class="table-dark">
+            <th>Variation</th>
+            <th>Selected Values</th>
+        </tr>
+    `;
+    table.appendChild(thead);
 
-        let datatypeCell = document.createElement("td");
-        datatypeCell.textContent = variation.datatype || "N/A";
+    let tbody = document.createElement("tbody");
+    selectedVariations.forEach(variation => {
+        let tr = document.createElement("tr");
 
-        let unitCell = document.createElement("td");
-        unitCell.textContent = variation.unit || "N/A";
+        let nameTd = document.createElement("td");
+        nameTd.textContent = variation.variationName;
+        tr.appendChild(nameTd);
 
+        let valuesTd = document.createElement("td");
+        valuesTd.textContent = variation.values.join(", ");
+        tr.appendChild(valuesTd);
 
-        let actionCell = document.createElement("td");
-        let removeButton = document.createElement("button");
-        removeButton.textContent = "Remove";
-        removeButton.onclick = function () {
-            selectedVariations.splice(index, 1);
-            renderVariationTable();
-        };
-        actionCell.appendChild(removeButton);
-
-        row.appendChild(nameCell);
-        row.appendChild(valuesCell);
-        row.appendChild(datatypeCell);
-        row.appendChild(unitCell);
-        row.appendChild(actionCell);
-        tableBody.appendChild(row);
+        tbody.appendChild(tr);
     });
+
+    table.appendChild(tbody);
+    resultContainer.appendChild(table);
 }
 
 function submitVariations() {
