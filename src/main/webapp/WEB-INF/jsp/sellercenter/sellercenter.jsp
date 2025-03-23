@@ -32,7 +32,6 @@
     </jsp:attribute>
 
     <jsp:attribute name="body">
-        <p>Request URI: ${pageContext.request.requestURI}</p>
         <div class="container-fluid">
             <c:if test="${not empty error}">
                 <div class="alert alert-danger">${error}</div>

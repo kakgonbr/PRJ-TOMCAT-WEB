@@ -127,8 +127,4 @@
             </div>
         </div>
     </jsp:attribute>
-
-    <jsp:attribute name="footer">
-        <t:footer/>
-    </jsp:attribute>
 </t:genericpage>
