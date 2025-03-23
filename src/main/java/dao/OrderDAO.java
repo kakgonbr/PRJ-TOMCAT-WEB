@@ -85,14 +85,20 @@ public class OrderDAO {
                 + "JOIN tblProduct p ON pi.productId = p.id "
                 + "JOIN tblOrder o ON oi.orderId = o.id "
                 + "JOIN tblUser u ON o.userId = u.id "
-                + "WHERE p.shopId = ?1";
+                + "WHERE p.shopId = ?";
 
         public static java.util.List<Object[]> getOrderItemsByShop(int shopId) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                return em.createNativeQuery(SELECT_ORDER_ITEMS_BY_SHOP)
+                System.out.println("DEBUG: Querying shopId = " + shopId); // Debug Shop ID
+
+                java.util.List<Object[]> result = em.createNativeQuery(SELECT_ORDER_ITEMS_BY_SHOP)
                         .setParameter(1, shopId)
                         .getResultList();
+
+                System.out.println("DEBUG: Query returned " + result.size() + " rows."); // Debug số lượng kết quả
+                return result;
             } catch (Exception e) {
+                e.printStackTrace();  // In lỗi ra console
                 throw new java.sql.SQLException(e);
             }
         }
