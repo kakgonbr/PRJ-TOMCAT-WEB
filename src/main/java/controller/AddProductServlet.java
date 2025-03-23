@@ -141,32 +141,43 @@ public class AddProductServlet extends HttpServlet {
             request.getRequestDispatcher(config.Config.JSPMapper.ADD_PRODUCT).forward(request, response);
         }
     }
-
     private void handleSelectVariation(HttpServletRequest request, HttpServletResponse response, HttpSession session)
-            throws ServletException, IOException {
-        try {
-            Integer productId = (Integer) session.getAttribute("productId");
-            Integer categoryId = (Integer) session.getAttribute("categoryId");
-            if (categoryId == null) {
-                response.sendRedirect(request.getContextPath() + "/sellercenter/shophome");
-                return;
-            }
+        throws ServletException, IOException {
+    try {
+        Integer productId = (Integer) session.getAttribute("productId");
+        Integer categoryId = (Integer) session.getAttribute("categoryId");
+        if (categoryId == null) {
+            response.sendRedirect(request.getContextPath() + "/sellercenter/shophome");
+            return;
+        }
 
-            String variationName = request.getParameter("variation");
-            String variationOptions = request.getParameter("variationValue");
-            String unit = request.getParameter("unit");
-            String datatype = request.getParameter("datatype");
+        String[] variationNames = request.getParameterValues("variation");
+        String[] variationOptionsList = request.getParameterValues("variationValue");
+        String[] units = request.getParameterValues("unit");
+        String[] datatypes = request.getParameterValues("datatype");
 
-            if (variationName == null || variationOptions == null || datatype == null
-                    || variationName.trim().isEmpty() || variationOptions.trim().isEmpty() || datatype.trim().isEmpty()) {
-                request.setAttribute("error", "Some required fields are missing. Please check and try again.");
-                // request.setAttribute("errorMessage", "Some required fields are missing. Please check and try again.");
+        if (variationNames == null || variationOptionsList == null || datatypes == null
+                || variationNames.length == 0 || variationOptionsList.length == 0 || datatypes.length == 0) {
+            request.setAttribute("error", "Some required fields are missing. Please check and try again.");
+            request.getRequestDispatcher(config.Config.JSPMapper.SELECT_VARIATION).forward(request, response);
+            return;
+        }
+
+        List<ProductItem> productItemList = new ArrayList<>();
+
+        for (int i = 0; i < variationNames.length; i++) {
+            String variationName = variationNames[i].trim();
+            String variationOptions = variationOptionsList[i].trim();
+            String unit = (units != null && units.length > i) ? units[i].trim() : null;
+            String datatype = (datatypes != null && datatypes.length > i) ? datatypes[i].trim() : null;
+
+            if (variationName.isEmpty() || variationOptions.isEmpty() || datatype.isEmpty()) {
+                request.setAttribute("error", "Some variation fields are empty. Please check and try again.");
                 request.getRequestDispatcher(config.Config.JSPMapper.SELECT_VARIATION).forward(request, response);
                 return;
             }
 
             Integer variationId = dao.VariationDAO.VariationFetcher.getVariationIdByNameAndCategory(variationName, categoryId);
-
             if (variationId == null) {
                 Variation variation = new Variation();
                 variation.setCategoryId(new Category(categoryId));
@@ -179,7 +190,6 @@ public class AddProductServlet extends HttpServlet {
 
                 if (variationId == null) {
                     request.setAttribute("error", "Failed to create variation. Please try again.");
-                    // request.setAttribute("errorMessage", "Failed to create variation. Please try again.");
                     request.getRequestDispatcher(config.Config.JSPMapper.SELECT_VARIATION).forward(request, response);
                     return;
                 }
@@ -189,7 +199,6 @@ public class AddProductServlet extends HttpServlet {
 
             // Xử lý danh sách variation values
             String[] optionsArray = variationOptions.split("\\s*,\\s*");
-            List<ProductItem> productItemList = new ArrayList<>();
             for (String value : optionsArray) {
                 value = value.trim();
                 if (!value.isEmpty()) {
@@ -203,13 +212,13 @@ public class AddProductServlet extends HttpServlet {
                             dao.VariationValueDAO.VariationValueManager.createVariationValue(variationValue);
                         } catch (SQLException e) {
                             request.setAttribute("error", "Database error while saving variation value: " + e.getMessage());
-                            // request.setAttribute("errorMessage", "Database error while saving variation value: " + e.getMessage());
                             request.getRequestDispatcher(config.Config.JSPMapper.SELECT_VARIATION).forward(request, response);
                             return;
                         }
 
                         variationValue = dao.VariationValueDAO.VariationValueFetcher.getVariationValueByValue(value);
                     }
+
                     ProductItem productItem = new ProductItem();
                     productItem.setProductId(new Product(productId));
                     productItem.setStock(0);
@@ -231,15 +240,117 @@ public class AddProductServlet extends HttpServlet {
                     productItemList.add(productItem);
                 }
             }
-            session.setAttribute("selectedProductItems", productItemList);
-            response.sendRedirect(request.getContextPath() + "/sellercenter/addproduct?action=setStockAndPrice");
-
-        } catch (SQLException e) {
-            request.setAttribute("error", "Unexpected database error: " + e.getMessage());
-            // request.setAttribute("errorMessage", "Unexpected database error: " + e.getMessage());
-            request.getRequestDispatcher(config.Config.JSPMapper.SELECT_VARIATION).forward(request, response);
         }
+
+        session.setAttribute("selectedProductItems", productItemList);
+        response.sendRedirect(request.getContextPath() + "/sellercenter/addproduct?action=setStockAndPrice");
+
+    } catch (SQLException e) {
+        request.setAttribute("error", "Unexpected database error: " + e.getMessage());
+        request.getRequestDispatcher(config.Config.JSPMapper.SELECT_VARIATION).forward(request, response);
     }
+}
+
+
+//    private void handleSelectVariation(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+//            throws ServletException, IOException {
+//        try {
+//            Integer productId = (Integer) session.getAttribute("productId");
+//            Integer categoryId = (Integer) session.getAttribute("categoryId");
+//            if (categoryId == null) {
+//                response.sendRedirect(request.getContextPath() + "/sellercenter/shophome");
+//                return;
+//            }
+//
+//            String variationName = request.getParameter("variation");
+//            String variationOptions = request.getParameter("variationValue");
+//            String unit = request.getParameter("unit");
+//            String datatype = request.getParameter("datatype");
+//
+//            if (variationName == null || variationOptions == null || datatype == null
+//                    || variationName.trim().isEmpty() || variationOptions.trim().isEmpty() || datatype.trim().isEmpty()) {
+//                request.setAttribute("error", "Some required fields are missing. Please check and try again.");
+//                // request.setAttribute("errorMessage", "Some required fields are missing. Please check and try again.");
+//                request.getRequestDispatcher(config.Config.JSPMapper.SELECT_VARIATION).forward(request, response);
+//                return;
+//            }
+//
+//            Integer variationId = dao.VariationDAO.VariationFetcher.getVariationIdByNameAndCategory(variationName, categoryId);
+//
+//            if (variationId == null) {
+//                Variation variation = new Variation();
+//                variation.setCategoryId(new Category(categoryId));
+//                variation.setName(variationName);
+//                variation.setDatatype(datatype);
+//                variation.setUnit(unit);
+//
+//                dao.VariationDAO.VariationManager.createVariation(variation);
+//                variationId = dao.VariationDAO.VariationFetcher.getVariationIdByNameAndCategory(variationName, categoryId);
+//
+//                if (variationId == null) {
+//                    request.setAttribute("error", "Failed to create variation. Please try again.");
+//                    // request.setAttribute("errorMessage", "Failed to create variation. Please try again.");
+//                    request.getRequestDispatcher(config.Config.JSPMapper.SELECT_VARIATION).forward(request, response);
+//                    return;
+//                }
+//            }
+//
+//            session.setAttribute("variationId", variationId);
+//
+//            // Xử lý danh sách variation values
+//            String[] optionsArray = variationOptions.split("\\s*,\\s*");
+//            List<ProductItem> productItemList = new ArrayList<>();
+//            for (String value : optionsArray) {
+//                value = value.trim();
+//                if (!value.isEmpty()) {
+//                    VariationValue variationValue = dao.VariationValueDAO.VariationValueFetcher.getVariationValueByValue(value);
+//
+//                    if (variationValue == null) {
+//                        variationValue = new VariationValue();
+//                        variationValue.setVariationId(new Variation(variationId));
+//                        variationValue.setValue(value);
+//                        try {
+//                            dao.VariationValueDAO.VariationValueManager.createVariationValue(variationValue);
+//                        } catch (SQLException e) {
+//                            request.setAttribute("error", "Database error while saving variation value: " + e.getMessage());
+//                            request.setAttribute("errorMessage", "Database error while saving variation value: " + e.getMessage());
+//                            request.getRequestDispatcher(config.Config.JSPMapper.SELECT_VARIATION).forward(request, response);
+//                            return;
+//                        }
+//
+//                        variationValue = dao.VariationValueDAO.VariationValueFetcher.getVariationValueByValue(value);
+//                    }
+//
+//                    ProductItem productItem = new ProductItem();
+//                    productItem.setProductId(new Product(productId));
+//                    productItem.setStock(0);
+//                    productItem.setPrice(BigDecimal.ZERO);
+//
+//                    productItem = dao.ProductDAO.ProductManager.addProductItem(productItem);
+//                    int productItemId = productItem.getId();
+//                    productItem.setId(productItemId);
+//
+//                    ProductCustomization productCustomization = new ProductCustomization();
+//                    productCustomization.setProductItemId(new ProductItem(productItemId));
+//                    productCustomization.setVariationValueId(variationValue);
+//
+//                    List<ProductCustomization> customizations = new ArrayList<>();
+//                    customizations.add(productCustomization);
+//
+//                    dao.ProductDAO.ProductManager.addCustomizations(productId, customizations);
+//
+//                    productItemList.add(productItem);
+//                }
+//            }
+//            session.setAttribute("selectedProductItems", productItemList);
+//            response.sendRedirect(request.getContextPath() + "/sellercenter/addproduct?action=setStockAndPrice");
+//
+//        } catch (SQLException e) {
+//            request.setAttribute("error", "Unexpected database error: " + e.getMessage());
+//            // request.setAttribute("errorMessage", "Unexpected database error: " + e.getMessage());
+//            request.getRequestDispatcher(config.Config.JSPMapper.SELECT_VARIATION).forward(request, response);
+//        }
+//    }
 
     private void handleSetStockAndPrice(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
