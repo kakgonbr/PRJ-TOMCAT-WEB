@@ -212,12 +212,43 @@ function fetchVariations(categoryId) {
     renderVariationTable();
   }
   
-  function submitVariations() {
+  function submitVariations() { 
     let form = document.getElementById("selectVariationForm");
-    let hiddenInput = document.createElement("input");
-    hiddenInput.type = "hidden";
-    hiddenInput.name = "selectedVariations";
-    hiddenInput.value = JSON.stringify(selectedVariations);
-    form.appendChild(hiddenInput);
+
+    // Xóa các input ẩn cũ trước khi thêm mới
+    document.querySelectorAll(".dynamic-input").forEach(e => e.remove());
+
+    selectedVariations.forEach((variation, index) => {
+        let variationNameInput = document.createElement("input");
+        variationNameInput.type = "hidden";
+        variationNameInput.name = "variation";
+        variationNameInput.value = variation.variationName;
+        variationNameInput.classList.add("dynamic-input");
+        form.appendChild(variationNameInput);
+
+        let datatypeInput = document.createElement("input");
+        datatypeInput.type = "hidden";
+        datatypeInput.name = "datatype";
+        datatypeInput.value = variation.datatype;
+        datatypeInput.classList.add("dynamic-input");
+        form.appendChild(datatypeInput);
+
+        let unitInput = document.createElement("input");
+        unitInput.type = "hidden";
+        unitInput.name = "unit";
+        unitInput.value = variation.unit;
+        unitInput.classList.add("dynamic-input");
+        form.appendChild(unitInput);
+
+        variation.values.forEach(value => {
+            let valueInput = document.createElement("input");
+            valueInput.type = "hidden";
+            valueInput.name = "variationValue";
+            valueInput.value = value;
+            valueInput.classList.add("dynamic-input");
+            form.appendChild(valueInput);
+        });
+    });
+
     form.submit();
-  }
+}
