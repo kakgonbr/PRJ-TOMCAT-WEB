@@ -101,10 +101,8 @@ function fetchVariationValues(variationId) {
             let ul = document.createElement("ul");
 
             // Fix: Ensure we find the correct variation
-            let variation = data.find(v => v.id == variationId);
-
-            if (variation && variation.values && variation.values.length > 0) {
-                variation.values.forEach(value => {
+            if (data.length > 0) {
+                data.forEach(value => {
                     ul.appendChild(createVariationValueElement(value));
                 });
             } else {
