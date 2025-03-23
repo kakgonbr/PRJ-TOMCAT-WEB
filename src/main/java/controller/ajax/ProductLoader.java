@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 public class ProductLoader extends HttpServlet {
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // specific product
@@ -35,6 +36,7 @@ public class ProductLoader extends HttpServlet {
         String recommendations = request.getParameter("query");
         Integer category = request.getParameter("category") == null || request.getParameter("category").isBlank() ? 0 : Integer.parseInt(request.getParameter("category"));
         String shopId = request.getParameter("shopId");
+        String statusParam = request.getParameter("status");
 
         try {
             if (recommendations == null || recommendations.isBlank()) {
@@ -55,9 +57,22 @@ public class ProductLoader extends HttpServlet {
                         .collect(Collectors.toList()); // let page be 0 for nowa
 
             } else {
-                service.Logging.logger.info("Getting shop products for shop {}", shopId);
+                if (statusParam != null && !statusParam.isBlank()) {
+                    boolean status = Boolean.parseBoolean(statusParam);
+                    service.Logging.logger.info("Getting shop products for shop {} with status {}", shopId, status);
 
-                products = dao.ProductDAO.ProductFetcher.getShopProductsByCategory(Integer.parseInt(shopId), category).stream().map(model.ProductWrapper::new).collect(Collectors.toList());
+                    products = dao.ProductDAO.ProductFetcher
+                            .getShopProductsByStatus(Integer.parseInt(shopId), status)
+                            .stream().map(model.ProductWrapper::new)
+                            .collect(Collectors.toList());
+                } else {
+                    service.Logging.logger.info("Getting shop products for shop {}", shopId);
+
+                    products = dao.ProductDAO.ProductFetcher
+                            .getShopProductsByCategory(Integer.parseInt(shopId), category)
+                            .stream().map(model.ProductWrapper::new)
+                            .collect(Collectors.toList());
+                }
             }
 
             String json = new com.google.gson.Gson().toJson(products);
@@ -73,7 +88,6 @@ public class ProductLoader extends HttpServlet {
     }
 
     //fetch product from shop
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

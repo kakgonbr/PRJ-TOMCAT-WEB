@@ -31,13 +31,27 @@ function createCategoryElement(category) {
     return li;
 }
 
-function fetchVariation() {
-    fetch(contextPath + "/ajax/variation")
+function fetchVariations(categoryId) {
+    var url = new URL(
+        "https://" + location.host + contextPath + "/ajax/variation"
+      );
+
+    if (categoryId) {
+        url.searchParams.append("categoryId", categoryId);
+    }
+
+    fetch(url.toString())
         .then(response => response.json())
         .then(data => {
-            let treeContainer = document.getElementById("variationFilter");
-            treeContainer.innerHTML = "";
-            treeContainer.appendChild(createVariationElement(data));
+            let variationContainer = document.getElementById("variationFilter");
+            variationContainer.innerHTML = "";
+            
+            let ul = document.createElement("ul");
+            data.forEach(variation => {
+                ul.appendChild(createVariationElement(variation));
+            });
+
+            variationContainer.appendChild(ul);
         })
         .catch(error => console.error("Error fetching variations:", error));
 }
@@ -45,44 +59,63 @@ function fetchVariation() {
 function createVariationElement(variation) {
     let li = document.createElement("li");
     let label = document.createElement("label");
+    let radio = document.createElement("input");
+    radio.type = "radio";
+    radio.name = "variation";
+    radio.value = variation.id;
+    radio.dataset.name = variation.name;
 
-    // Tạo checkbox cho Variation
-    let checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.name = "variation";
-    checkbox.value = variation.id;
-
-    label.appendChild(checkbox);
+    label.appendChild(radio);
     label.appendChild(document.createTextNode(" " + variation.name));
     li.appendChild(label);
 
-    // Nếu có danh sách VariationValue (con), thêm vào
-    if (variation.variationValues && variation.variationValues.length > 0) {
-        let ul = document.createElement("ul");
-        ul.style.display = "none"; // Ẩn danh sách con ban đầu
+    return li;
+}
 
-        variation.variationValues.forEach(value => {
-            let valueLi = document.createElement("li");
+function fetchVariationValues(variationId) {
+    "https://" + location.host + contextPath + "/ajax/variation"
 
-            let valueLabel = document.createElement("label");
-            let valueCheckbox = document.createElement("input");
-            valueCheckbox.type = "checkbox";
-            valueCheckbox.name = "variationValue";
-            valueCheckbox.value = value.id;
-
-            valueLabel.appendChild(valueCheckbox);
-            valueLabel.appendChild(document.createTextNode(" " + value.value));
-            valueLi.appendChild(valueLabel);
-
-            ul.appendChild(valueLi);
-        });
-        li.appendChild(ul);
-
-        // Khi chọn Variation, hiển thị danh sách VariationValue
-        checkbox.addEventListener("change", function () {
-            ul.style.display = checkbox.checked ? "block" : "none";
-        });
+    if (variationId) {
+        url.searchParams.append("variationId", variationId);
     }
 
+    fetch(url.toString())
+        .then(response => response.json())
+        .then(data => {
+            let variationValueContainer = document.getElementById("variationValueFilter");
+            variationValueContainer.innerHTML = "";
+            
+            let ul = document.createElement("ul");
+            data.forEach(value => {
+                ul.appendChild(createVariationValueElement(value));
+            });
+
+            variationValueContainer.appendChild(ul);
+        })
+        .catch(error => console.error("Error fetching variation values:", error));
+}
+
+function createVariationValueElement(value) {
+    let li = document.createElement("li");
+    let label = document.createElement("label");
+    let radio = document.createElement("input");
+    radio.type = "radio";
+    radio.name = "variationValue";
+    radio.value = value.id;
+    radio.dataset.name = value.value;
+    label.appendChild(radio);
+    label.appendChild(document.createTextNode(" " + value.value));
+    li.appendChild(label);
+
     return li;
+}
+
+function applyVariation() {
+    let selectedVariation = document.querySelector("input[name='variation']:checked");
+    if (selectedVariation) {
+        variationId = selectedVariation.value;
+        fetchVariationValues(variationId);
+    } else {
+        console.error("No variation selected");
+    }
 }

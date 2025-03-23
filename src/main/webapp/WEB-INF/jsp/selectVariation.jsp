@@ -6,13 +6,21 @@
     <jsp:attribute name="head">
         <t:resources/>
         <script src="${pageContext.request.contextPath}/resources/filter_js"></script>
+        <script src="${pageContext.request.contextPath}/resources/shop_js"></script>
 
         <script>
             var contextPath = "${pageContext.request.contextPath}";
-            var shopId = "${sessionScope.shopId}";
+            var categoryId = "${sessionScope.categoryId}";
+            var variationId = null;
 
             document.addEventListener("DOMContentLoaded", function () {
-                fetchVariation();
+                if (!categoryId) {
+                    console.error("Category ID is missing in session");
+                    return;
+                }
+                fetchVariations(categoryId);
+                fetchVariationValues(variationId);
+                applyVariation();
             });
 
             function toggleNewVariationForm() {
@@ -20,7 +28,6 @@
                 form.style.display = (form.style.display === "none" || form.style.display === "") ? "block" : "none";
             }
 
-            // Hiển thị Variation đã chọn
             function updateSelectedVariations() {
                 let container = document.getElementById("selectedVariations");
                 container.innerHTML = "";
@@ -49,6 +56,7 @@
 
     <jsp:attribute name="body">
         <h2>Select Variations</h2>
+        <p>Debug: Category ID from session = ${sessionScope.categoryId}</p>
         <c:if test="${not empty error}">
             <div style="color: red; font-weight: bold; padding: 10px; border: 1px solid red; background-color: #ffe6e6;">
                 <c:choose>
@@ -77,6 +85,11 @@
 
             <label>Choose Variation:</label>
             <div id="variationFilter"></div> 
+            
+             <button type="button" onclick="applyVariation()" class="btn btn-warning">Apply Variation</button>
+             
+            <label>Choose Variation Values:</label>
+            <div id="variationValueFilter"></div>
 
             <button type="button" onclick="toggleNewVariationForm()">Add New Variation</button><br>
 
@@ -87,9 +100,6 @@
                 <label for="variationOptions">Options (comma-separated):</label>
                 <input type="text" id="variationOptions" name="variationOptions"><br>
             </div>
-
-            <h3>Selected Variations:</h3>
-            <div id="variationFilter"></div>
 
             <label for="datatype">Data Type:</label>
             <select name="datatype" id="datatype">

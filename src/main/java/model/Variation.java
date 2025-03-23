@@ -7,6 +7,7 @@ package model;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -36,6 +37,7 @@ import java.util.List;
     @NamedQuery(name = "Variation.findByName", query = "SELECT v FROM Variation v WHERE v.name = :name"),
     @NamedQuery(name = "Variation.findByDatatype", query = "SELECT v FROM Variation v WHERE v.datatype = :datatype"),
     @NamedQuery(name = "Variation.findByUnit", query = "SELECT v FROM Variation v WHERE v.unit = :unit"),
+    @NamedQuery(name = "Variation.findByCategoryId", query = "SELECT v FROM Variation v WHERE v.categoryId.id = :categoryId"),
     @NamedQuery(name = "Variation.findByNameAndCategory", query = "SELECT v.id FROM Variation v WHERE v.name = :name AND v.categoryId.id = :categoryId")})
 public class Variation implements Serializable {
 
@@ -63,7 +65,7 @@ public class Variation implements Serializable {
     @ManyToOne
     @NotNull
     private Category categoryId;
-    @OneToMany(mappedBy = "variationId")
+    @OneToMany(mappedBy = "variationId", fetch = FetchType.EAGER)
     private List<VariationValue> variationValueList;
 
     public Variation() {

@@ -93,6 +93,21 @@ public class ProductDAO {
             }
         }
 
+        private static final String GET_PRODUCTS_FROM_SHOP_BY_STATUS
+                = "SELECT * FROM tblProduct WHERE shopId = ?1 AND status = ?2";
+
+        public static synchronized java.util.List<model.Product> getShopProductsByStatus(int shopId, boolean status)
+                throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return em.createNativeQuery(GET_PRODUCTS_FROM_SHOP_BY_STATUS, model.Product.class)
+                        .setParameter(1, shopId)
+                        .setParameter(2, status)
+                        .getResultList();
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
+            }
+        }
+
         private static final String GET_PRODUCTS_BY_NAME_AND_SHOP = "SELECT id FROM tblProduct p WHERE p.name = :name AND p.shopId = :shopId";
 
         public static synchronized Integer getProductByNameAndShop(String name, int shopId) throws java.sql.SQLException {
@@ -283,7 +298,7 @@ public class ProductDAO {
                     et.begin();
 
                     em.createNativeQuery(MARK_PRODUCT_DELETE).setParameter(1, productId)
-                    .executeUpdate();
+                            .executeUpdate();
 
                     et.commit();
                 } catch (Exception e) {
