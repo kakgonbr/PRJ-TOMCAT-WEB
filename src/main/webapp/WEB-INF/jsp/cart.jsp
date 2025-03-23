@@ -80,6 +80,7 @@
                 </tbody>
             </c:forEach>
         </table>
+        <a href="${pageContext.request.contextPath}/checkout">To Checkout</a>
     </jsp:attribute>
 
     <jsp:attribute name="footer">

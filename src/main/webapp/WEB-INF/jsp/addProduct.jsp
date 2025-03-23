@@ -18,7 +18,8 @@
     </jsp:attribute>
 
     <jsp:attribute name="header">
-        <t:nav mainNav="true" user="${sessionScope.user.username}" activePage="addProduct"/>
+        <%-- <t:nav mainNav="true" user="${sessionScope.user.username}" activePage="addProduct"/> --%>
+        <t:userHeader user="${sessionScope.user.username}" />
     </jsp:attribute>
 
     <jsp:attribute name="body">

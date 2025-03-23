@@ -75,14 +75,16 @@ function getProductInfo(productId) {
             header.innerText = "Category: ";
             header.appendChild(anchor);
 
-            let container = document.getElementById("promotion-container");
-            header = document.createElement("h3");
-            header.innerText = productData.promotion.name + " : - " + productData.promotion.value + (productData.promotion.type ? "$" : "%");
-            container.appendChild(header);
-
-            header = document.createElement("h3");
-            header.innerText = "Expire on: " + productData.promotion.expireDate;
-            container.appendChild(header);
+            if (productData.promotion) {
+                let container = document.getElementById("promotion-container");
+                header = document.createElement("h3");
+                header.innerText = productData.promotion.name + " : - " + productData.promotion.value + (productData.promotion.type ? "$" : "%");
+                container.appendChild(header);
+    
+                header = document.createElement("h3");
+                header.innerText = "Expire on: " + productData.promotion.expireDate;
+                container.appendChild(header);
+            }
 
             productData.productItems.forEach(item => {
                 item.customizations.forEach(customization => {

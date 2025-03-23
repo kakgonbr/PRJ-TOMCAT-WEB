@@ -412,7 +412,7 @@ BEGIN
         SELECT c.id FROM tblCategory c
         JOIN category ch ON c.parent_id = ch.id
 		)
-        SELECT TOP 10 * FROM tblProduct WHERE tblProduct.categoryId IN (SELECT id FROM category) ORDER BY NEWId();
+        SELECT TOP 12 * FROM tblProduct WHERE tblProduct.categoryId IN (SELECT id FROM category) ORDER BY NEWId();
         RETURN;
     END
 
