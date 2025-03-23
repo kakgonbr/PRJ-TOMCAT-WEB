@@ -86,7 +86,12 @@ function fetchVariationValues(variationId) {
     }
 
     fetch(url.toString())
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             console.log("Dữ liệu nhận được:", data);
 
@@ -94,7 +99,9 @@ function fetchVariationValues(variationId) {
             variationValueContainer.innerHTML = "";
 
             let ul = document.createElement("ul");
-            let variation = data.filter(v => v.id == variationId)[0];
+
+            // Fix: Ensure we find the correct variation
+            let variation = data.find(v => v.id == variationId);
 
             if (variation && variation.values && variation.values.length > 0) {
                 variation.values.forEach(value => {
