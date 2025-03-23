@@ -51,6 +51,39 @@ public class ResourceDAO {
             }
         }
     }
+    
+    public static synchronized model.ResourceMap overrideMapping(String name, String path) throws java.sql.SQLException {
+        try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+            EntityTransaction et = em.getTransaction();
+
+            try {
+                et.begin();
+
+                model.ResourceMap dbMap = em.find(model.ResourceMap.class, name);
+
+                if (dbMap == null) {
+                    model.ResourceMap map = new model.ResourceMap();
+                    map.setId(name);
+                    map.setSystemPath(path);
+    
+                    em.persist(map);
+
+                    return map;
+                } else {
+                    dbMap.setSystemPath(path);
+                }
+                
+                et.commit();
+                return dbMap;
+            } catch (Exception e) {
+                if (et.isActive()) {
+                    et.rollback();
+                }
+
+                throw new java.sql.SQLException(e);
+            }
+        }
+    }
 
     public static synchronized void editMapping(model.ResourceMap map) throws java.sql.SQLException {
         try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
