@@ -58,9 +58,9 @@
                                 </h2>
                                 <div id="collapseProduct" class="accordion-collapse collapse">
                                     <div class="accordion-body">
-                                        <a href="${pageContext.request.contextPath}/shophome" class="list-group-item list-group-item-action pb-3">🛍 My
+                                        <a href="${pageContext.request.contextPath}/sellercenter/shophome" class="list-group-item list-group-item-action pb-3">🛍 My
                                             Products</a>
-                                        <a href="${pageContext.request.contextPath}/addproduct" class="list-group-item list-group-item-action">➕ Add Product</a>
+                                        <a href="${pageContext.request.contextPath}/sellercenter/addproduct" class="list-group-item list-group-item-action">➕ Add Product</a>
                                     </div>
                                 </div>
                             </div>
