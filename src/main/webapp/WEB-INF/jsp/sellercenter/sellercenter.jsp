@@ -47,8 +47,23 @@
 
                         <!-- Accordion Menu -->
                         <div class="accordion fs-6" id="menuAccordion">
-
-
+                            <!-- Order Section -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseOrder">
+                                        Order
+                                    </button>
+                                </h2>
+                                <div id="collapseOrder" class="accordion-collapse collapse">
+                                    <div class="accordion-body">
+                                        <a href="${pageContext.request.contextPath}/sellercenter/order" class="list-group-item list-group-item-action pb-3">📦 My
+                                            order</a>
+                                        <!--                                    <a href="../html/return-refund-cancle.html" class="list-group-item list-group-item-action fs-6">🔄
+                                                                                Return/Refund/Cancel</a>-->
+                                    </div>
+                                </div>
+                            </div>
                             <!-- Product Section -->
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
