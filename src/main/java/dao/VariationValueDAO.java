@@ -94,12 +94,10 @@ public final class VariationValueDAO {
             }
         }
 
-        private static final String GET_VARIATION_BY_VALUE_AND_VARIATION
-                = "SELECT * FROM tblVariationValue WHERE value = ? AND variation_id = ?";
-
+       
         public static synchronized VariationValue getVariationValueByValueAndVariation(String value, int variationId) throws SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                return (VariationValue) em.createNativeQuery(GET_VARIATION_BY_VALUE_AND_VARIATION, VariationValue.class)
+                return em.createNamedQuery("VariationValue.findByValueAndVariation", VariationValue.class)
                         .setParameter(1, value)
                         .setParameter(2, variationId)
                         .getSingleResult();
