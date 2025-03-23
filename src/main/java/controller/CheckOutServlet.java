@@ -39,7 +39,6 @@ public class CheckOutServlet extends HttpServlet {
         try {
             switch (action) {
                 case "proceed":
-                    //
                     int order = dao.OrderDAO.OrderManager.createOrder(new model.ProductOrder());
 
                     model.Cart cart = dao.CartDAO.CartFetcher.getCartByUser(user.getId(), true);

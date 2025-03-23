@@ -133,7 +133,7 @@ public class OrderDAO {
                                                         ? item.getProductItemId().getPrice().longValue()
                                                                 - promotion.getValue()
                                                         : item.getProductItemId().getPrice().longValue()
-                                                                * (100.0 - promotion.getValue()) / 100.0))
+                                                                * (100.0 - promotion.getValue()) / 100.0)).setParameter(5, 0) // TODO: ADD SHIPPING COST
                                 .executeUpdate();
 
                         em.createNativeQuery(DELETE_FROM_CART_ITEM).setParameter(1, item.getId()).executeUpdate();
