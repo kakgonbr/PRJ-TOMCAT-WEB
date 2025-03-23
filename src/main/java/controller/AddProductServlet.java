@@ -156,8 +156,8 @@ public class AddProductServlet extends HttpServlet {
         String[] units = request.getParameterValues("unit");
         String[] datatypes = request.getParameterValues("datatype");
 
-        if (variationNames == null || variationOptionsList == null || datatypes == null
-                || variationNames.length == 0 || variationOptionsList.length == 0 || datatypes.length == 0) {
+        if (variationNames == null || variationOptionsList == null
+                || variationNames.length == 0 || variationOptionsList.length == 0) {
             request.setAttribute("error", "Some required fields are missing. Please check and try again.");
             request.getRequestDispatcher(config.Config.JSPMapper.SELECT_VARIATION).forward(request, response);
             return;
@@ -171,7 +171,7 @@ public class AddProductServlet extends HttpServlet {
             String unit = (units != null && units.length > i) ? units[i].trim() : null;
             String datatype = (datatypes != null && datatypes.length > i) ? datatypes[i].trim() : null;
 
-            if (variationName.isEmpty() || variationOptions.isEmpty() || datatype.isEmpty()) {
+            if (variationName.isEmpty() || variationOptions.isEmpty()) {
                 request.setAttribute("error", "Some variation fields are empty. Please check and try again.");
                 request.getRequestDispatcher(config.Config.JSPMapper.SELECT_VARIATION).forward(request, response);
                 return;
