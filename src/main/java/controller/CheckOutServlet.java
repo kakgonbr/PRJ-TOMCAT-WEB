@@ -20,18 +20,7 @@ public class CheckOutServlet extends HttpServlet {
             java.util.List<model.CartItemWrapper> cartItems = dao.CartDAO.CartFetcher.getCartByUser(user.getId(), true).getCartItemList().stream().map(model.CartItemWrapper::new).toList();
             request.setAttribute("cartItems", cartItems);
 
-            java.util.List<model.CartItemWrapper> exceedStock = new java.util.ArrayList<>();
-            for (final model.CartItemWrapper cartItem : cartItems) {
-                if (cartItem.getQuantity() > cartItem.getProductItem().getStock()) {
-                    exceedStock.add(cartItem);
-                }
-            }
-
-            if (exceedStock.size() > 0) {
-                request.setAttribute("exceed", exceedStock);
-
-                request.getRequestDispatcher(config.Config.JSPMapper.EXCEED_STOCK).forward(request, response);
-
+            if (checkExceed(request, response, cartItems)) {
                 return;
             }
 
@@ -62,6 +51,12 @@ public class CheckOutServlet extends HttpServlet {
             switch (action) {
                 case "proceed":
                     // what a mess
+                    model.Cart cart = dao.CartDAO.CartFetcher.getCartByUser(user.getId(), true);
+
+                    if (checkExceed(request, response, cart.getCartItemList().stream().map(model.CartItemWrapper::new).toList())) {
+                        return;
+                    }
+
                     model.Promotion promotion = null;
                     if (promotionId != null) {
                         promotion = dao.PromotionDAO.PromotionFetcher.getPromotion(promotionId);
@@ -72,8 +67,6 @@ public class CheckOutServlet extends HttpServlet {
                     order.setPromotionId(promotion);
                     order.setStatus(false);
                     int orderId = dao.OrderDAO.OrderManager.createOrder(order);
-
-                    model.Cart cart = dao.CartDAO.CartFetcher.getCartByUser(user.getId(), true);
 
                     // the moment this goes through, item stock will be deducted
                     dao.OrderDAO.OrderedItemManager.transferFromCart(orderId, cart.getCartItemList().stream().map(model.CartItemWrapper::new).toList());
@@ -115,5 +108,24 @@ public class CheckOutServlet extends HttpServlet {
             request.setAttribute("error", "Something went wrong, try again.");
         } 
         doGet(request, response);
+    }
+
+    private static boolean checkExceed(HttpServletRequest request, HttpServletResponse response, java.util.List<model.CartItemWrapper> cartItems) throws ServletException, IOException {
+        java.util.List<model.CartItemWrapper> exceedStock = new java.util.ArrayList<>();
+        for (final model.CartItemWrapper cartItem : cartItems) {
+            if (cartItem.getQuantity() > cartItem.getProductItem().getStock()) {
+                exceedStock.add(cartItem);
+            }
+        }
+
+        if (exceedStock.size() > 0) {
+            request.setAttribute("exceed", exceedStock);
+
+            request.getRequestDispatcher(config.Config.JSPMapper.EXCEED_STOCK).forward(request, response);
+
+            return true;
+        }
+
+        return false;
     }
 }
