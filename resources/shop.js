@@ -81,48 +81,60 @@ function handleAccordionSearch(searchBoxId, accordionContainerId) {
 }
 
 function fetchOrders(shopId) {
-  if (!shopId) {
-    console.error("Missing shopId");
-    return;
+    if (!shopId) {
+      console.error("Missing shopId");
+      return;
+    }
+  
+    var url = new URL("https://" + location.host + contextPath + "/ajax/order");
+    url.searchParams.append("shopId", shopId);
+  
+    fetch(url.toString())
+      .then((response) => response.json())
+      .then((data) => {
+        let tableContainer = document.getElementById("orderTable");
+        tableContainer.innerHTML = ""; 
+  
+        let table = document.createElement("table");
+        table.className = "table table-striped table-hover table-bordered";
+  
+        let thead = document.createElement("thead");
+        thead.className = "table-dark"; 
+        thead.innerHTML = `
+          <tr>
+            <th scope="col">User Name</th>
+            <th scope="col">Product Name</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Total Price</th>
+            <th scope="col">Shipping Cost</th>
+          </tr>
+        `;
+        table.appendChild(thead);
+  
+        // Tạo phần thân bảng
+        let tbody = document.createElement("tbody");
+  
+        data.forEach((item) => {
+          let row = document.createElement("tr");
+  
+          row.innerHTML = `
+            <td>${item.userName}</td>
+            <td>${item.productName}</td>
+            <td class="text-center">${item.quantity}</td>
+            <td class="text-end">${item.totalPrice.toFixed(2)} $</td>
+            <td class="text-end">${item.shippingCost.toFixed(2)} $</td>
+          `;
+  
+          tbody.appendChild(row);
+        });
+  
+        table.appendChild(tbody);
+  
+        let responsiveDiv = document.createElement("div");
+        responsiveDiv.className = "table-responsive";
+        responsiveDiv.appendChild(table);
+  
+        tableContainer.appendChild(responsiveDiv);
+      })
+      .catch((error) => console.error("Error fetching orders:", error));
   }
-
-  var url = new URL("https://" + location.host + contextPath + "/ajax/order");
-  url.searchParams.append("shopId", shopId);
-
-  fetch(url.toString())
-    .then((response) => response.json())
-    .then((data) => {
-      let tableBody = document.getElementById("orderTable");
-      tableBody.innerHTML =
-        "<tr><th>User Name</th><th>Product Name</th><th>Quantity</th><th>Total Price</th><th>Shipping Cost</th></tr>";
-
-      data.forEach((item) => {
-        let row = document.createElement("tr");
-
-        let cell;
-
-        cell = document.createElement("td");
-        cell.textContent = item.userName; // Tên người đặt hàng
-        row.appendChild(cell);
-
-        cell = document.createElement("td");
-        cell.textContent = item.productName; // Tên sản phẩm
-        row.appendChild(cell);
-
-        cell = document.createElement("td");
-        cell.textContent = item.quantity;
-        row.appendChild(cell);
-
-        cell = document.createElement("td");
-        cell.textContent = item.totalPrice.toFixed(2) + " $"; // Giá tổng
-        row.appendChild(cell);
-
-        cell = document.createElement("td");
-        cell.textContent = item.shippingCost.toFixed(2) + " $"; // Phí vận chuyển
-        row.appendChild(cell);
-
-        tableBody.appendChild(row);
-      });
-    })
-    .catch((error) => console.error("Error fetching orders:", error));
-}
