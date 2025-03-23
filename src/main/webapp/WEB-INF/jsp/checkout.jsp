@@ -108,13 +108,13 @@
             <c:otherwise>
                 <p>Active promotion: [
                         <c:choose>
-                            <c:when test="${promotion.type}">
-                                - ${promotion.value} VND
+                            <c:when test="${activePromotion.type}">
+                                - ${activePromotion.value} VND
                             </c:when>
                             <c:otherwise>
-                                - ${promotion.value} %
+                                - ${activePromotion.value} %
                             </c:otherwise>
-                        </c:choose>] ${promotion.name} - Expires on ${promotion.expireDate}</p>
+                        </c:choose>] ${activePromotion.name} - Expires on ${activePromotion.expireDate}</p>
                 <c:choose>
                     <c:when test="${activePromotion.type}">
                         <p>Final Price: ${total - activePromotion.value}</p>

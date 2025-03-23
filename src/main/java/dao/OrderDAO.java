@@ -135,7 +135,7 @@ public class OrderDAO {
                                                         - item.getProductWrapper().getPromotion().getValue()
                                                 : item.getProductItem().getPrice()
                                                         * (100.0 - item.getProductWrapper().getPromotion().getValue())
-                                                        / 100.0))
+                                                        / 100.0)).setParameter(5, 0) // TODO: ADD SHIPPING COST
                                 .executeUpdate();
 
                         em.createNativeQuery(DELETE_FROM_CART_ITEM).setParameter(1, item.getId()).executeUpdate();
