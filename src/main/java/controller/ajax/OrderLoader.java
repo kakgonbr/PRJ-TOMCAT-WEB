@@ -9,6 +9,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.stream.Collectors;
+import model.dto.OrderedItemDTO;
 
 /**
  *
@@ -32,21 +34,13 @@ public class OrderLoader extends HttpServlet {
 
         try {
             int shopId = Integer.parseInt(shopIdStr);
-            System.out.println("DEBUG: Parsed shopId = " + shopId); // Debug sau khi parse
+            System.out.println("DEBUG: Parsed shopId = " + shopId);
 
-            java.util.List<Object[]> rawData = dao.OrderDAO.OrderManager.getOrderItemsByShop(shopId);
+            java.util.List<model.OrderedItem> rawData = dao.OrderDAO.OrderManager.getOrderItemsByShop(shopId);
 
-            java.util.List<model.dto.OrderedItemDTO> orderItems = new java.util.ArrayList<>();
-            for (Object[] row : rawData) {
-                model.dto.OrderedItemDTO dto = new model.dto.OrderedItemDTO(
-                        row[0] != null ? (String) row[0] : "", // userName
-                        row[1] != null ? (String) row[1] : "", // productName
-                        row[2] != null ? (Double) row[2] : 0.0, // totalPrice
-                        row[3] != null ? (java.util.Date) row[3] : new java.util.Date(), // date
-                        row[4] != null ? (Double) row[4] : 0.0 // shippingCost
-                );
-                orderItems.add(dto);
-            }
+            java.util.List<OrderedItemDTO> orderItems = rawData.stream()
+                    .map(OrderedItemDTO::new)
+                    .collect(Collectors.toList());
 
             System.out.println("DEBUG: Returning " + orderItems.size() + " items."); // Debug số lượng items
             String json = new com.google.gson.Gson().toJson(orderItems);
