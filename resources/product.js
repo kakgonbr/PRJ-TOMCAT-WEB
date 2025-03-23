@@ -123,103 +123,95 @@ function fetchProductsShop(shopId, status) {
     return;
   }
 
-  var url = new URL(
-    "https://" + location.host + contextPath + "/ajax/products"
-  );
-
+  var url = new URL("https://" + location.host + contextPath + "/ajax/products");
   url.searchParams.append("shopId", shopId);
-  url.searchParams.append("status", status ? "true" : "false"); // Chuyển status thành 'true' hoặc 'false'
+  url.searchParams.append("status", status ? "true" : "false");
 
   fetch(url.toString())
     .then((response) => response.json())
     .then((data) => {
-      let tableBody = document.getElementById("productTableShop");
-      tableBody.innerHTML =
-        "<tr><th>Shop</th><th>Category</th><th>Name</th><th>Description</th><th>Actions</th></tr>";
+      let tableContainer = document.getElementById("productTableShopContainer");
+      tableContainer.innerHTML = ""; 
+
+      let table = document.createElement("table");
+      table.className = "table table-striped table-hover table-bordered align-middle";
+
+      let thead = document.createElement("thead");
+      thead.className = "table-dark"; 
+      thead.innerHTML = `
+        <tr>
+          <th scope="col">Shop</th>
+          <th scope="col">Category</th>
+          <th scope="col">Name</th>
+          <th scope="col">Description</th>
+          <th scope="col" class="text-center">Actions</th>
+        </tr>
+      `;
+      table.appendChild(thead);
+
+      let tbody = document.createElement("tbody");
 
       data.forEach((item) => {
         let row = document.createElement("tr");
 
-        // Shop
-        let cell = document.createElement("td");
-        let link = document.createElement("a");
-        link.href = contextPath + "/shop?shopId=" + item.shop.id;
-        link.textContent = item.shop.name;
-        cell.appendChild(link);
-        row.appendChild(cell);
-
-        // Category
-        cell = document.createElement("td");
-        link = document.createElement("a");
-        link.href = contextPath + "/category?categoryId=" + item.category.id;
-        link.textContent = item.category.name;
-        cell.appendChild(link);
-        row.appendChild(cell);
-
-        // Name
-        cell = document.createElement("td");
-        link = document.createElement("a");
-        link.href = contextPath + "/product?productId=" + item.id;
-        link.textContent = item.name;
-        cell.appendChild(link);
-        row.appendChild(cell);
-
-        // Description
-        cell = document.createElement("td");
-        cell.textContent = item.description;
-        row.appendChild(cell);
-
-        // Actions
-        cell = document.createElement("td");
-
-        if (item.status === true) {
-          let editButton = document.createElement("button");
-          editButton.textContent = "Edit";
-          editButton.className = "btn btn-warning me-2";
-          editButton.onclick = function () {
-            window.location.href =
-              contextPath + "/product?action=edit&productId=" + item.id;
-          };
-          cell.appendChild(editButton);
-
-          let deleteButton = document.createElement("button");
-          deleteButton.textContent = "Delete";
-          deleteButton.className = "btn btn-danger";
-          deleteButton.onclick = function () {
-            if (confirm("Are you sure you want to delete this product?")) {
-              fetch(contextPath + "/product", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/x-www-form-urlencoded",
-                },
-                body: "action=delete&productId=" + encodeURIComponent(item.id),
-              }).then(() => fetchProductsShop(shopId, true)); // Refresh danh sách
+        row.innerHTML = `
+          <td><a href="${contextPath}/shop?shopId=${item.shop.id}" class="text-decoration-none">${item.shop.name}</a></td>
+          <td><a href="${contextPath}/category?categoryId=${item.category.id}" class="text-decoration-none">${item.category.name}</a></td>
+          <td><a href="${contextPath}/product?productId=${item.id}" class="text-decoration-none fw-bold">${item.name}</a></td>
+          <td class="text-wrap" style="max-width: 300px;">${item.description}</td>
+          <td class="text-center">
+            ${item.status
+              ? `
+                <button class="btn btn-warning btn-sm me-2" onclick="window.location.href='${contextPath}/product?action=edit&productId=${item.id}'">
+                  Edit
+                </button>
+                <button class="btn btn-danger btn-sm" onclick="deleteProduct(${item.id}, ${shopId})">
+                  Delete
+                </button>`
+              : `
+                <button class="btn btn-success btn-sm" onclick="restoreProduct(${item.id}, ${shopId})">
+                  Restore
+                </button>`
             }
-          };
-          cell.appendChild(deleteButton);
-        } else {
-          let restoreButton = document.createElement("button");
-          restoreButton.textContent = "Restore";
-          restoreButton.className = "btn btn-success";
-          restoreButton.onclick = function () {
-            if (confirm("Do you want to restore this product?")) {
-              fetch(contextPath + "/product", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/x-www-form-urlencoded",
-                },
-                body: "action=restore&productId=" + encodeURIComponent(item.id),
-              }).then(() => fetchProductsShop(shopId, false)); // Refresh danh sách
-            }
-          };
-          cell.appendChild(restoreButton);
-        }
+          </td>
+        `;
 
-        row.appendChild(cell);
-        tableBody.appendChild(row);
+        tbody.appendChild(row);
       });
+
+      table.appendChild(tbody);
+      //mobile responsive
+      let responsiveDiv = document.createElement("div");
+      responsiveDiv.className = "table-responsive";
+      responsiveDiv.appendChild(table);
+
+      tableContainer.appendChild(responsiveDiv);
     })
     .catch((error) => console.error("Error fetching data:", error));
+}
+
+function deleteProduct(productId, shopId) {
+  if (confirm("Are you sure you want to delete this product?")) {
+    fetch(contextPath + "/product", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: "action=delete&productId=" + encodeURIComponent(productId),
+    }).then(() => fetchProductsShop(shopId, true)); 
+  }
+}
+
+function restoreProduct(productId, shopId) {
+  if (confirm("Do you want to restore this product?")) {
+    fetch(contextPath + "/product", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: "action=restore&productId=" + encodeURIComponent(productId),
+    }).then(() => fetchProductsShop(shopId, false));
+  }
 }
 
 /*fetch products for home page */
