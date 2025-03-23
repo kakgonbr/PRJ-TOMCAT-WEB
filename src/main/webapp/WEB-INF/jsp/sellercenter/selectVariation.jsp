@@ -62,7 +62,7 @@
             <div id="variationValueFilter"></div>
             <button type="button" onclick="applyVariation()">Apply Variation</button><br><br>
 
-            <h3>Add New Variation</h3>
+            <h3>Or Add New Variation</h3>
             <button type="button" onclick="showNewVariationForm()">+ Add New Variation</button>
 
             <div id="newVariationForm" style="display: none;">
@@ -79,6 +79,7 @@
 
                 <label for="unit">Unit:</label>
                 <input type="text" id="unit" name="unit"><br>
+                <button type="button" onclick="applyVariation()">Add</button><br><br>
             </div>
 
             <h3>Selected Variations</h3>
