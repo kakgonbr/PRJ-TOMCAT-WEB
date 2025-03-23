@@ -68,6 +68,7 @@ public class ResourceDAO {
     
                     em.persist(map);
 
+                    et.commit();
                     return map;
                 } else {
                     dbMap.setSystemPath(path);
