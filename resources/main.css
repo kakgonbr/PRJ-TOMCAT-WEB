@@ -3,12 +3,16 @@
     --bs-custom-background-focus: #90CAF9;
 
     --bs-custom-content-focus: #FFFFFF;
+    
+    --bs-custom-container-focus: #f6f6f6;
 }
 
 [data-bs-theme="dark"] {
     --bs-custom-background-focus: #1976D2;
-
+    
     --bs-custom-content-focus: #303030;
+
+    --bs-custom-container-focus: #141719;
 }
 
 /* Messy, but what can I really do? */

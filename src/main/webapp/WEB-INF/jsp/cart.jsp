@@ -7,12 +7,7 @@
         <t:resources/>
         <style>
             .cart-container {
-                max-width: 1000px;
-                margin: auto;
-                padding: 20px;
-                background: #1e1e1e;
-                border-radius: 10px;
-                color: white;
+                background-color: var(--bs-custom-container-focus) !important;
             }
             .cart-table {
                 width: 100%;
@@ -31,18 +26,6 @@
                 height: 60px;
                 object-fit: cover;
                 border-radius: 5px;
-            }
-            .cart-actions button {
-                background: #3b82f6;
-                color: white;
-                padding: 5px 10px;
-                border-radius: 5px;
-                border: none;
-                cursor: pointer;
-                transition: 0.3s;
-            }
-            .cart-actions button:hover {
-                background: #2563eb;
             }
             .checkout-btn {
                 display: block;
@@ -67,7 +50,7 @@
     </jsp:attribute>
 
     <jsp:attribute name="body">
-        <div class="cart-container">
+        <div class="container rounded my-3 p-3">
             <h2 class="text-xl font-bold mb-4">🛒 Your Shopping Cart</h2>
             <table class="cart-table">
                 <thead>
@@ -106,7 +89,7 @@
                                     <input type="hidden" name="action" value="update">
                                     <input type="hidden" name="productItemId" value="${cartItem.id}">
                                     <input type="number" name="quantity" min="1" value="${cartItem.quantity}" class="border rounded px-2 py-1 w-16">
-                                    <button type="submit" class="cart-actions">Update</button>
+                                    <button type="submit" class="btn shadow custom-outline-button">Update</button>
                                 </form>
                             </td>
                             <td>${cartItem.productItem.price}</td>
@@ -120,7 +103,7 @@
                                 <form action="${pageContext.request.contextPath}/cart" method="POST">
                                     <input type="hidden" name="action" value="remove">
                                     <input type="hidden" name="productItemId" value="${cartItem.id}">
-                                    <button type="submit" class="cart-actions bg-red-500 hover:bg-red-600">Remove</button>
+                                    <button type="submit" class="btn shadow custom-outline-button">Remove</button>
                                 </form>
                             </td>
                         </tr>
