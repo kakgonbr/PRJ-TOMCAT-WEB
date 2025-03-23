@@ -226,11 +226,28 @@ function renderVariationTable() {
 
 function submitVariations() {
     let form = document.getElementById("selectVariationForm");
-    let hiddenInput = document.createElement("input");
-    hiddenInput.type = "hidden";
-    hiddenInput.name = "selectedVariations";
-    hiddenInput.value = JSON.stringify(selectedVariations);
-    form.appendChild(hiddenInput);
+
+    document.querySelectorAll(".dynamic-input").forEach(e => e.remove());
+
+    selectedVariations.forEach(variation => {
+        let variationInput = document.createElement("input");
+        variationInput.type = "hidden";
+        variationInput.name = "variation"; 
+        variationInput.value = variation.variationName;
+        variationInput.classList.add("dynamic-input");
+        form.appendChild(variationInput);
+
+        variation.values.forEach(value => {
+            let valueInput = document.createElement("input");
+            valueInput.type = "hidden";
+            valueInput.name = "variationValue"; 
+            valueInput.value = value;
+            valueInput.classList.add("dynamic-input");
+            form.appendChild(valueInput);
+        });
+    });
+
     form.submit();
 }
+
 
