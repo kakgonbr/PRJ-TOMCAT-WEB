@@ -275,6 +275,8 @@ function submitVariations() {
         });
     });
 
+    console.log("Dữ liệu gửi đi:", selectedVariations);
+
     form.submit();
 }   
 
