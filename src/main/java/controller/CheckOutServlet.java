@@ -47,7 +47,7 @@ public class CheckOutServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         model.User user = (model.User) request.getSession(false).getAttribute("user");
-        Integer promotionId = request.getParameter("promotionId") == null ? null : Integer.parseInt(request.getParameter("promotionId"));
+        Integer promotionId = request.getParameter("promotionId") == null || request.getParameter("promotionId").isBlank() ? null : Integer.parseInt(request.getParameter("promotionId"));
 
         if (action == null || action.isBlank()) {
             doGet(request, response);
@@ -83,6 +83,15 @@ public class CheckOutServlet extends HttpServlet {
                     model.ProductOrder dbOrder = dao.OrderDAO.OrderManager.getOrder(orderId);
 
                     response.sendRedirect(service.vnpay.PortalService.getLink(request.getRemoteAddr(), "", dbOrder.getFinalPrice().longValue() * 100, "vn", Integer.toString(orderId)));
+
+                    // messy, but vnpay doesnt always call the ipn servlet when the transaction fails
+                    listeners.SchedulerListener.getScheduler().schedule(() -> {
+                        try {
+                            service.OrderConcurrencyService.checkAndRemove(orderId);
+                        } catch (java.sql.SQLException e) {
+                            service.Logging.logger.error("SCHEDULED ORDER CHECK JOB FAILED, REASON: {}", e.getMessage());
+                        }
+                    }, 6, java.util.concurrent.TimeUnit.MINUTES);
                     return;
                 case "apply":
     
@@ -97,8 +106,9 @@ public class CheckOutServlet extends HttpServlet {
             // this is just awful
             if (order != null) {
                 try {
+                    service.OrderConcurrencyService.removeFromOrder(order.getId());
                     dao.OrderDAO.OrderManager.deleteOrder(order.getId());
-                } catch (java.sql.SQLException e1) {;
+                } catch (java.sql.SQLException e1) {
                 }
             }
             service.Logging.logger.info("Action {} on cart by user {} resulted in {}", action, user.getId(), e.getMessage());

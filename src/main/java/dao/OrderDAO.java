@@ -198,14 +198,14 @@ public class OrderDAO {
                     et.begin();
 
                     for (final model.CartItemWrapper item : items) {
-                        service.Logging.logger.info("Inserting into tblOrderedItem: orderId {}, productItemId {}, quantity {}, totalPrice {}, shippingCost {}", orderId, item.getProductItem().getId(), item.getQuantity(), item.getProductWrapper().getPromotion() == null
-                                ? item.getProductItem().getPrice()
-                                : (item.getProductWrapper().getPromotion().getType()
-                                ? item.getProductItem().getPrice()
-                                - item.getProductWrapper().getPromotion().getValue()
-                                : item.getProductItem().getPrice()
-                                * (100.0 - item.getProductWrapper().getPromotion().getValue())
-                                / 100.0), 0);
+                        // service.Logging.logger.info("Inserting into tblOrderedItem: orderId {}, productItemId {}, quantity {}, totalPrice {}, shippingCost {}", orderId, item.getProductItem().getId(), item.getQuantity(), item.getProductWrapper().getPromotion() == null
+                        // ? item.getProductItem().getPrice()
+                        // : (item.getProductWrapper().getPromotion().getType()
+                        //         ? item.getProductItem().getPrice()
+                        //                 - item.getProductWrapper().getPromotion().getValue()
+                        //         : item.getProductItem().getPrice()
+                        //                 * (100.0 - item.getProductWrapper().getPromotion().getValue())
+                        //                 / 100.0), 0);
 
                         em.createNativeQuery(INSERT_INTO_ORDER).setParameter(1, orderId).setParameter(2, item.getProductItem().getId())
                                 .setParameter(3, item.getQuantity())
@@ -219,10 +219,10 @@ public class OrderDAO {
                                         / 100.0)).setParameter(5, 0) // TODO: ADD SHIPPING COST
                                 .executeUpdate();
 
-                        service.Logging.logger.info("Deleting from tblCartItem id {}", item.getId());
+                        // service.Logging.logger.info("Deleting from tblCartItem id {}", item.getId());
                         em.createNativeQuery(DELETE_FROM_CART_ITEM).setParameter(1, item.getId()).executeUpdate();
-
-                        service.Logging.logger.info("Updating product item id {}, new stock {}", item.getProductItem().getId(), item.getQuantity());
+                        
+                        // service.Logging.logger.info("Updating product item id {}, new stock {}", item.getProductItem().getId(), item.getQuantity());
                         em.createNativeQuery(REMOVE_FROM_PRODUCT_ITEM).setParameter(1, item.getQuantity()).setParameter(2, item.getProductItem().getId()).executeUpdate();
                     }
 

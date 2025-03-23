@@ -17,4 +17,17 @@ public class OrderConcurrencyService {
             dao.ProductDAO.ProductManager.updateProductItem(productItem);
         }
     }
+
+    public static void checkAndRemove(int orderId) throws java.sql.SQLException {
+        service.Logging.logger.info("Checking order {}", orderId);
+        model.ProductOrder order = dao.OrderDAO.OrderManager.getOrder(orderId);
+        
+        if (order.isStatus()) {
+            service.Logging.logger.info("Order {} when through", orderId);
+            return;
+        }
+
+        service.Logging.logger.info("Removing order {}", orderId);
+        removeFromOrder(orderId);
+    }
 }
