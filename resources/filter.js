@@ -52,16 +52,19 @@ function fetchVariations(categoryId) {
         return;
       }
 
-      let table = document.createElement("table");
+      let table = document.createElement(
+        "table table-striped table-hover table-bordered align-middle"
+      );
       table.classList.add("variation-table"); // Apply CSS class
 
       let thead = document.createElement("thead");
+      thead.className = "table-dark";
       thead.innerHTML = `
                 <tr>
-                    <th>Select</th>
-                    <th>Variation Name</th>
-                    <th>Data Type</th>
-                    <th>Unit</th>
+                    <th scope="col">Select</th>
+                    <th scope="col">Variation Name</th>
+                    <th scope="col">Data Type</th>
+                    <th scope="col">Unit</th>
                 </tr>
             `;
       table.appendChild(thead);
@@ -186,6 +189,8 @@ function applyVariation() {
 
   let variationId = selectedVariation.value;
   let variationName = selectedVariation.dataset.name;
+  let variationDatatype = selectedVariation.dataset.datatype;
+  let variationUnit = selectedVariation.dataset.unit;
   let selectedValues = Array.from(
     document.querySelectorAll(`input[name="variationValue"]:checked`)
   ).map((value) => value.dataset.name);
@@ -195,7 +200,12 @@ function applyVariation() {
     return;
   }
 
-  selectedVariations.push({ variationName, values: selectedValues });
+  selectedVariations.push({
+    variationName,
+    values: selectedValues,
+    datatype: variationDatatype,
+    unit: variationUnit, 
+  });
   renderVariationTable();
 }
 
