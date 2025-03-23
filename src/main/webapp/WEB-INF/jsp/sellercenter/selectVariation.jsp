@@ -52,7 +52,7 @@
             </div>
         </c:if>
 
-        <form id="selectVariationForm" action="${pageContext.request.contextPath}/addproduct" method="post">
+        <form id="selectVariationForm" action="${pageContext.request.contextPath}/sellercenter/addproduct" method="post">
             <input type="hidden" name="action" value="selectVariation">
 
             <label>Choose Variation:</label>

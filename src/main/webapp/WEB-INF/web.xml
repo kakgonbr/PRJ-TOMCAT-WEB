@@ -298,7 +298,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>n_ShopHomeServlet</servlet-name>
-        <url-pattern>/shophome</url-pattern>
+        <url-pattern>/sellercenter/shophome</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ShopRegisterationServlet</servlet-name>
@@ -310,7 +310,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>n_AddProductServlet</servlet-name>
-        <url-pattern>/addproduct</url-pattern>
+        <url-pattern>/sellercenter/addproduct</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SearchServlet</servlet-name>

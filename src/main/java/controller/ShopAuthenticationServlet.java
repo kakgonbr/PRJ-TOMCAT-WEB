@@ -23,7 +23,7 @@ public class ShopAuthenticationServlet extends HttpServlet {
         service.Logging.logger.info("ShopAuthenticationServlet - Found shopId: " + shopId);
         if (shopId != -1) {
             session.setAttribute("shopId", shopId);
-            response.sendRedirect(request.getContextPath() + "/shophome");
+            response.sendRedirect(request.getContextPath() + "/sellercenter/shophome");
         } else {
             response.sendRedirect(request.getContextPath() + "/shop-signup");
         }

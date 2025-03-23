@@ -114,7 +114,7 @@ public class ProductServlet extends HttpServlet {
             }
 
             dao.ProductDAO.ProductManager.updateMultipleProductItems(productId, productItemList);
-            response.sendRedirect(request.getContextPath() + "/shophome");
+            response.sendRedirect(request.getContextPath() + "/sellercenter/shophome");
         } catch (NumberFormatException e) {
             service.Logging.logger.warn("Invalid input format: {}", e.getMessage());
             request.setAttribute("error", "Invalid number format." + e.getMessage());
@@ -131,7 +131,7 @@ public class ProductServlet extends HttpServlet {
         try {
             int productId = Integer.parseInt(productIdParam);
             dao.ProductDAO.ProductManager.deleteProduct(productId);
-            response.sendRedirect(request.getContextPath() + "/shophome");
+            response.sendRedirect(request.getContextPath() + "/sellercenter/shophome");
         } catch (NumberFormatException e) {
             request.setAttribute("error", "number format occur");
             request.getRequestDispatcher(config.Config.JSPMapper.SELLER_CENTER).forward(request, response);
@@ -152,7 +152,7 @@ public class ProductServlet extends HttpServlet {
                 dao.ProductDAO.ProductManager.editProduct(product);
             }
 
-            response.sendRedirect(request.getContextPath() + "/shophome");
+            response.sendRedirect(request.getContextPath() + "/sellercenter/shophome");
         } catch (NumberFormatException e) {
             request.setAttribute("error", "Invalid product ID format.");
             request.getRequestDispatcher(config.Config.JSPMapper.SELLER_CENTER).forward(request, response);
