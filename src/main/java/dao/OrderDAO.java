@@ -4,7 +4,12 @@ import org.hibernate.Hibernate;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+
+import java.sql.SQLException;
+import java.util.List;
 import java.util.stream.Collectors;
+
+import model.Cart;
 import model.ProductOrder;
 
 public class OrderDAO {
@@ -53,6 +58,16 @@ public class OrderDAO {
             return getOrder(id, false);
         } // public static synchronized ProductOrder getOrder
 
+
+        private static final String SELECT_ORDER_USER = "SELECT p FROM ProductOrder p WHERE p.userId = ?1 and p.status = ?2";
+        public static synchronized List<ProductOrder> getOrderFromUser(int userId, int status) throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return em.createNativeQuery(SELECT_ORDER_USER,ProductOrder.class).setParameter(1, userId).setParameter(2, status).getResultList();
+            } catch (Exception e) {
+                throw new SQLException(e);
+            }
+        }
+
         public static synchronized void markCompleted(int id) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 EntityTransaction et = em.getTransaction();
@@ -97,6 +112,7 @@ public class OrderDAO {
                         .collect(Collectors.toList());
             }
         }
+
         /**
          * DO NOT EDIT. This method is for deleting orders that did not go
          * through.<br></br>
@@ -231,5 +247,6 @@ public class OrderDAO {
             }
         } // public static synchronized void transferFromCart
 
+        
     }
 }
