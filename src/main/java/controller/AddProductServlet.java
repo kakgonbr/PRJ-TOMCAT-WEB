@@ -117,6 +117,9 @@ public class AddProductServlet extends HttpServlet {
                     model.VariationValue variationValue = new model.VariationValue();
                     variationValue.setVariationId(entry.getKey());
                     variationValue.setValue(entry.getValue()[i]);
+                    variationValue.setProductCustomizationList(customizations);
+                    
+                    customization.setProductItemId(productItem);
                     customization.setVariationValueId(variationValue);
 
                     customizations.add(customization);
@@ -124,6 +127,8 @@ public class AddProductServlet extends HttpServlet {
                 productItem.setProductCustomizationList(customizations);
 
                 service.Logging.logger.info("Adding product item: stock {}, price {}, customization list {}", productItem.getStock(), productItem.getPrice(), productItem.getProductCustomizationList());
+
+                productItem.setProductId(product);
 
                 productItems.add(productItem);
             }
