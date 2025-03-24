@@ -192,6 +192,10 @@
         <servlet-name>OrderLoader</servlet-name>
         <servlet-class>controller.ajax.OrderLoader</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PromotionServlet</servlet-name>
+        <servlet-class>controller.PromotionServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>n_LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -347,6 +351,10 @@
     <servlet-mapping>
         <servlet-name>UserOrderServlet</servlet-name>
         <url-pattern>/userorder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PromotionServlet</servlet-name>
+        <url-pattern>/promotion</url-pattern>
     </servlet-mapping>
     <!-- FILTER DECLARATIONS -->
     <filter>
