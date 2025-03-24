@@ -137,16 +137,13 @@ public class AddProductServlet extends HttpServlet {
             }
 
             product.setProductItemList(productItems);
-
-            dao.ProductDAO.ProductManager.addProduct(product);
+ 
+            product = dao.ProductDAO.ProductManager.addProduct(product);
 
             // service.Logging.logger.info("product from database: {}", product.getId());
-
             for (final model.ProductItem productItem : productItems) {
                 dao.ProductDAO.ProductManager.addProductItem(productItem);
-
                 for (final model.ProductCustomization customization : productItem.getProductCustomizationList()) {
-                    // service.Logging.logger.info("adding variation value, variation : {}, value: {}", customization.getVariationValueId().getVariationId(), customization.getVariationValueId().getValue());
                     try {
                         dao.VariationValueDAO.VariationValueManager.createVariationValue(customization.getVariationValueId());
                     } catch (java.sql.SQLException e) {
@@ -155,26 +152,9 @@ public class AddProductServlet extends HttpServlet {
                 }
                 dao.ProductDAO.ProductManager.addCustomizations(productItem.getProductCustomizationList());
             }
-
-            // // nesting, nesting, more nesting
-            // for (final model.ProductItem productItem : product.getProductItemList()) {
-            //     service.Logging.logger.info("adding product item: stocl: {}, price: {}", productItem.getStock(), productItem.getPrice());
-            //     dao.ProductDAO.ProductManager.addProductItem(productItem);
-            //     service.Logging.logger.info("adding customizations");
-            //     dao.ProductDAO.ProductManager.addCustomizations(product.getId(), productItem.getProductCustomizationList());
-                
-            //     for (final model.ProductCustomization customization : productItem.getProductCustomizationList()) {
-            //         service.Logging.logger.info("adding variation value, variation : {}, value: {}", customization.getVariationValueId().getVariationId(), customization.getVariationValueId().getValue());
-            //         try {
-            //             dao.VariationValueDAO.VariationValueManager.createVariationValue(customization.getVariationValueId());
-            //         } catch (java.sql.SQLException e) {
-            //             dao.VariationValueDAO.VariationValueManager.updateVariationValue(customization.getVariationValueId());
-            //         }
-            //     }
-            // }
         } catch (java.sql.SQLException | NumberFormatException e) {
             service.Logging.logger.warn("FAILED TO ADD PRODUCT, REASON: {}", e.getMessage());
-            service.Logging.logger.warn("StackTrace: ", (Object[]) e.getStackTrace());
+            service.Logging.logger.warn("StackTrace: ", e.getStackTrace().toString());
             request.setAttribute("error", e.getMessage());
 
             doGet(request, response);

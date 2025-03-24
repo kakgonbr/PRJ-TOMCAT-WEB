@@ -11,8 +11,6 @@
     <jsp:attribute name="head">
         <t:resources/>
         <script src="${pageContext.request.contextPath}/resources/shop_js"></script>
-        <script src="${pageContext.request.contextPath}/resources/filter_js"></script>
-
         <script>
             var contextPath = "${pageContext.request.contextPath}";
             document.addEventListener("DOMContentLoaded", function () {
@@ -97,8 +95,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label>Category:</label>
-                                <div id="categoryFilter"></div>
+                                <label>Category: ${product.category.name}</label>
                             </div>
 
                             <div class="mb-3">
