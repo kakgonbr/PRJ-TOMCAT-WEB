@@ -157,6 +157,7 @@ public class AddProductServlet extends HttpServlet {
                         dao.VariationValueDAO.VariationValueManager.updateVariationValue(customization.getVariationValueId());
                     }
                 }
+                service.Logging.logger.info("Adding customizations {}", productItem.getProductCustomizationList());
                 dao.ProductDAO.ProductManager.addCustomizations(productItem.getProductCustomizationList());
             }
 
