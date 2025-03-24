@@ -48,13 +48,16 @@
             <table id="variation-table" border="1">
                 <thead>
                     <tr>
-                    <th>test</th>
+                    <th>Product Item</th>
+                    <th>Stock</th>
+                    <th>Price</th>
                     </tr>
                 </thead>
                 <tbody>
                 </tbody>
             <table>
             <label onclick="addProductItem()">Add product item</label>
+            <button type="submit">Add</button>
         </form>
     </jsp:attribute>
 
