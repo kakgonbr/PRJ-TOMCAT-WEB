@@ -251,7 +251,9 @@ public class OrderDAO {
 
         public static synchronized List<OrderedItem> getOrderItemFromUser(int userId) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                return em.createNativeQuery(GET_ORDERITEMS,OrderedItem.class).setParameter(1, userId).getResultList();
+                List<OrderedItem> orderedItems = em.createNativeQuery(GET_ORDERITEMS,OrderedItem.class).setParameter(1, userId).getResultList();
+                service.Logging.logger.info("list of order items: "+ orderedItems.toString());
+                return orderedItems;
             } catch (Exception e) {
                 throw new SQLException(e);
             }
