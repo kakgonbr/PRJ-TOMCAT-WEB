@@ -18,9 +18,17 @@
         <script>
             var contextPath = "${pageContext.request.contextPath}";
             var shopId = "${sessionScope.shopId}";
+
             document.addEventListener("DOMContentLoaded", function () {
                 fetchProductsShop(shopId, true);
-                handleAccordionSearch("searchBox", "menuAccordion");
+
+                document.querySelector('[data-bs-target="#available"]').addEventListener("shown.bs.tab", function () {
+                    fetchProductsShop(shopId, true);
+                });
+
+                document.querySelector('[data-bs-target="#deleted"]').addEventListener("shown.bs.tab", function () {
+                    fetchProductsShop(shopId, false);
+                });
             });
         </script>
 
@@ -117,12 +125,29 @@
                     </div>
                 </nav>
                 <main class="col-md-10 p-4">
+                    <h1 style="color: #AD5378">My Product</h1>
+                    <ul class="nav nav-tabs" id="orderTabs">
+                        <li class="nav-item">
+                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#all">All</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#available">Available</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#deleted">Deleted</button>
+                        </li>
+                    </ul>
+
                     <div class="tab-content mt-3">
                         <div id="all" class="tab-pane fade show active">
                             <table class="table table-bordered" id="productTableShop">
-                                <button onclick="fetchProductsShop(shopId, true);" class="btn btn-primary">View Available Products</button>
-                                <button onclick="fetchProductsShop(shopId, false);" class="btn btn-danger">View Deleted Products</button>
                             </table>
+                        </div>
+                        <div id="available" class="tab-pane fade">
+                            <table class="table table-bordered" id="availableTable"></table>
+                        </div>
+                        <div id="deleted" class="tab-pane fade">
+                            <table class="table table-bordered" id="deletedTable"></table>
                         </div>
                     </div>
                 </main>
