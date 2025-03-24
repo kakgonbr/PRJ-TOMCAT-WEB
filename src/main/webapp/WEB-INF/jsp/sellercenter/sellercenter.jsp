@@ -128,9 +128,6 @@
                     <h1 style="color: #AD5378">My Product</h1>
                     <ul class="nav nav-tabs" id="orderTabs">
                         <li class="nav-item">
-                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#all">All</button>
-                        </li>
-                        <li class="nav-item">
                             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#available">Available</button>
                         </li>
                         <li class="nav-item">
@@ -139,10 +136,6 @@
                     </ul>
 
                     <div class="tab-content mt-3">
-                        <div id="all" class="tab-pane fade show active">
-                            <table class="table table-bordered" id="productTableShop">
-                            </table>
-                        </div>
                         <div id="available" class="tab-pane fade">
                             <table class="table table-bordered" id="availableTable"></table>
                         </div>
@@ -151,7 +144,6 @@
                         </div>
                     </div>
                 </main>
-
             </div>
         </div>
     </jsp:attribute>

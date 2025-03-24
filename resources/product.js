@@ -104,21 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Kiểm tra nếu shopId không null thì tự động tải sản phẩm khả dụng ban đầu
   if (shopId) {
     fetchProductsShop(shopId, true); // Mặc định hiển thị sản phẩm có status = true
-  }
-
-  // Gắn sự kiện cho nút "View Deleted Products"
-  document
-    .getElementById("viewDeletedBtn")
-    .addEventListener("click", function () {
-      fetchProductsShop(shopId, false);
-    });
-
-  // Gắn sự kiện cho nút "View Available Products"
-  document
-    .getElementById("viewAvailableBtn")
-    .addEventListener("click", function () {
-      fetchProductsShop(shopId, true);
-    });
+  };
 });
 
 function fetchProductsShop(shopId, status) {
@@ -127,49 +113,29 @@ function fetchProductsShop(shopId, status) {
     return;
   }
 
-  var url = new URL(
-    "https://" + location.host + contextPath + "/ajax/products"
-  );
+  var url = new URL("https://" + location.host + contextPath + "/ajax/products");
   url.searchParams.append("shopId", shopId);
-  url.searchParams.append(
-    "status",
-    status !== null ? (status ? "true" : "false") : "all"
-  ); // Hỗ trợ lấy cả hai trạng thái
+  url.searchParams.append("status", status ? "true" : "false");
 
   fetch(url.toString())
     .then((response) => response.json())
     .then((data) => {
-      let availableTable = document.getElementById("availableTable");
-      let deletedTable = document.getElementById("deletedTable");
-      let allTable = document.getElementById("productTableShop");
-
-      if (status === true) {
-        updateTable(availableTable, data);
-      } else if (status === false) {
-        updateTable(deletedTable, data);
-      } else {
-        // Nếu là "All", phân loại sản phẩm vào hai bảng
-        let availableProducts = data.filter((item) => item.status === true);
-        let deletedProducts = data.filter((item) => item.status === false);
-        updateTable(availableTable, availableProducts);
-        updateTable(deletedTable, deletedProducts);
-      }
+      let tableContainer = status ? document.getElementById("availableTable") : document.getElementById("deletedTable");
+      updateTable(tableContainer, data);
     })
     .catch((error) => console.error("Error fetching data:", error));
 }
 
-// Hàm cập nhật bảng theo dữ liệu sản phẩm
 function updateTable(tableContainer, data) {
   if (!tableContainer) return;
 
-  tableContainer.innerHTML = ""; // Xóa dữ liệu cũ
+  tableContainer.innerHTML = "";
 
   let responsiveDiv = document.createElement("div");
   responsiveDiv.className = "table-responsive";
 
   let table = document.createElement("table");
-  table.className =
-    "table table-striped table-hover table-bordered align-middle";
+  table.className = "table table-striped table-hover table-bordered align-middle";
 
   let thead = document.createElement("thead");
   thead.className = "table-dark";
@@ -189,38 +155,18 @@ function updateTable(tableContainer, data) {
   data.forEach((item) => {
     let row = document.createElement("tr");
     row.innerHTML = `
-      <td><a href="${contextPath}/shop?shopId=${
-      item.shop.id
-    }" class="text-decoration-none">${item.shop.name}</a></td>
-      <td><a href="${contextPath}/category?categoryId=${
-      item.category.id
-    }" class="text-decoration-none">${item.category.name}</a></td>
-      <td><a href="${contextPath}/product?productId=${
-      item.id
-    }" class="text-decoration-none fw-bold">${item.name}</a></td>
+      <td><a href="${contextPath}/shop?shopId=${item.shop.id}" class="text-decoration-none">${item.shop.name}</a></td>
+      <td><a href="${contextPath}/category?categoryId=${item.category.id}" class="text-decoration-none">${item.category.name}</a></td>
+      <td><a href="${contextPath}/product?productId=${item.id}" class="text-decoration-none fw-bold">${item.name}</a></td>
       <td class="text-wrap" style="max-width: 300px;">${item.description}</td>
       <td class="text-wrap" style="max-width: 300px;">
-        ${
-          item.promotion
-            ? `${item.promotion.name} : ${item.promotion.value} ${
-                item.promotion.type ? "$" : "%"
-              }`
-            : "No Promotion"
-        }
+        ${item.promotion ? `${item.promotion.name} : ${item.promotion.value} ${item.promotion.type ? "$" : "%"}` : "No Promotion"}
       </td>
       <td class="text-center">
-        ${
-          item.status
-            ? `<button class="btn btn-warning btn-sm me-2" onclick="window.location.href='${contextPath}/product?action=edit&productId=${item.id}'">
-              Edit
-            </button>
-            <button class="btn btn-danger btn-sm" onclick="deleteProduct(${item.id})">
-              Delete
-            </button>`
-            : `<button class="btn btn-success btn-sm" onclick="restoreProduct(${item.id})">
-              Restore
-            </button>`
-        }
+        ${item.status 
+          ? `<button class="btn btn-warning btn-sm me-2" onclick="window.location.href='${contextPath}/product?action=edit&productId=${item.id}'">Edit</button>
+             <button class="btn btn-danger btn-sm" onclick="deleteProduct(${item.id})">Delete</button>`
+          : `<button class="btn btn-success btn-sm" onclick="restoreProduct(${item.id})">Restore</button>`}
       </td>
     `;
     tbody.appendChild(row);
