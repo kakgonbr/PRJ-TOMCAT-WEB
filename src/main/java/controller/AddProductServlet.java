@@ -149,10 +149,11 @@ public class AddProductServlet extends HttpServlet {
                 dao.ProductDAO.ProductManager.addProductItem(productItem);
 
                 for (final model.ProductCustomization customization : productItem.getProductCustomizationList()) {
-                    service.Logging.logger.info("adding variation value, variation : {}, value: {}", customization.getVariationValueId().getVariationId(), customization.getVariationValueId().getValue());
+                    service.Logging.logger.info("adding variation value, variation : {}, value: {}, references {}", customization.getVariationValueId().getVariationId(), customization.getVariationValueId().getValue(), customization.getVariationValueId().getVariationId().getId());
                     try {
                         dao.VariationValueDAO.VariationValueManager.createVariationValue(customization.getVariationValueId());
                     } catch (java.sql.SQLException e) {
+                        service.Logging.logger.warn("Failed to add variation value, reason: {}", e.getMessage());
                         dao.VariationValueDAO.VariationValueManager.updateVariationValue(customization.getVariationValueId());
                     }
                 }
