@@ -332,7 +332,7 @@ public class ProductDAO {
                     et.begin();
 
                     for (final model.ProductCustomization customization : customizations) {
-                        if (em.find(model.ProductCustomization.class, customization.getId()) == null) {
+                        if (customization.getId() == null || em.find(model.ProductCustomization.class, customization.getId()) == null) {
                             em.persist(customization);
                         } else {
                             em.merge(customization);

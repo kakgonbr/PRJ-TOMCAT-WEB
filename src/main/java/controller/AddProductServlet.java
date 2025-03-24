@@ -119,7 +119,8 @@ public class AddProductServlet extends HttpServlet {
                 java.util.List<model.ProductCustomization> customizations = new java.util.ArrayList<>();
                 for (final java.util.Map.Entry<model.Variation, String[]> entry : variationValues.entrySet()) {
                     model.ProductCustomization customization = new model.ProductCustomization();
-                    model.VariationValue variationValue = new model.VariationValue();
+                    model.VariationValue variationValue = dao.VariationValueDAO.VariationValueFetcher.getVariationValueByValueAndVariation(entry.getValue()[i], entry.getKey().getId());
+                    variationValue = variationValue == null ? new model.VariationValue() : variationValue;
                     variationValue.setVariationId(entry.getKey());
                     variationValue.setValue(entry.getValue()[i]);
                     // variationValue.setProductCustomizationList(customizations);
