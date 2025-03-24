@@ -414,7 +414,7 @@ public class ProductDAO {
             }
         } // public static synchronized void updateProductItem
 
-        private static final String REMOVE_PRODUCT_IMAGE = "DELETE FROM tblProductImage WHERE imageStringResourceId = ?2";
+        private static final String REMOVE_PRODUCT_IMAGE = "DELETE FROM tblProductImage WHERE imageStringResourceId = ?1";
         private static final String REMOVE_FROM_RESOURCE = "DELETE FROM tblResourceMap WHERE id = ?1";
 
         public static synchronized void removeImage(String imageId) throws java.sql.SQLException {

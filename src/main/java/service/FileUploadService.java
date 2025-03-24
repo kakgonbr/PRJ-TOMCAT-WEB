@@ -2,13 +2,23 @@ package service;
 
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.Arrays;
+
 import jakarta.servlet.http.Part;
 
 public class FileUploadService {
     public static String saveFile(Part filePart, String hashBase) throws java.io.IOException {
         if (hashBase == null || filePart == null) return null;
 
-        String hashedFileName = sha256(hashBase) + getFileExtension(filePart);
+        String extension = getFileExtension(filePart);
+
+        if (Arrays.asList(config.Config.Resources.ALLOWED_FILE_EXTENSIONS).stream().noneMatch(a -> a.equals(extension))) {
+            service.Logging.logger.info("Extension {} is not allowed.", extension);
+
+            return "";
+        }
+
+        String hashedFileName = sha256(hashBase) + extension;
 
         String filePath = config.Config.Resources.ROOT_DIR + "/" + hashedFileName;
 

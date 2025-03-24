@@ -82,6 +82,7 @@ public final class Config {
     public static final class Resources {
 
         public static final String ROOT_DIR = "/prj/resources";
+        public static final String[] ALLOWED_FILE_EXTENSIONS = {".png", ".jpg", ".jpeg"};
     }
 
     public static final class MailConfig {
