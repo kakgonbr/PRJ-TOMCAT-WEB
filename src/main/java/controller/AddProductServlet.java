@@ -125,6 +125,8 @@ public class AddProductServlet extends HttpServlet {
                     productItem.setProductCustomizationList(customizations);
                 }
 
+                service.Logging.logger.info("Adding product item: stock {}, price {}, customization list {}", productItem.getStock(), productItem.getPrice(), productItem.getProductCustomizationList());
+
                 productItems.add(productItem);
             }
 
