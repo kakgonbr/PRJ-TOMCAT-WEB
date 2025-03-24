@@ -285,6 +285,7 @@ public class ProductServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         Integer shopIdValue = (Integer) session.getAttribute("shopId");
+//        String categoryParam = request.getParameter("categoryId");
         String productIdParam = request.getParameter("id");
         String productName = request.getParameter("name");
         String description = request.getParameter("description");
@@ -306,6 +307,17 @@ public class ProductServlet extends HttpServlet {
                 request.getRequestDispatcher(config.Config.JSPMapper.EDIT_PRODUCT).forward(request, response);
                 return;
             }
+
+//            int categoryIdInt = Integer.parseInt(categoryParam);
+//            model.Category category = dao.CategoryDAO.CategoryFetcher.getCategoryDetails(categoryIdInt);
+
+//            if (category == null) {
+//                request.setAttribute("error", "invalid_category");
+//                request.getRequestDispatcher(config.Config.JSPMapper.ADD_PRODUCT).forward(request, response);
+//
+//                return;
+//
+//            }
 
             Product product = dao.ProductDAO.ProductFetcher.getProductDetails(productId);
             if (product == null) {

@@ -39,6 +39,7 @@ public final class Config {
         public static final String PRODUCT_DETAILS = "/WEB-INF/jsp/productInfo.jsp";
         public static final String CATEGORY_DETAILS = "/WEB-INF/jsp/categoryInfo.jsp";
         public static final String SHOP_DETAILS = "/WEB-INF/jsp/shopInfo.jsp";
+        public static final String SHOP_OWNER_DETAILS = "/WEB-INF/jsp/sellercenter/shopDetail.jsp";
         public static final String SHOP_SIGNUP = "/WEB-INF/jsp/shopSignup.jsp";
         public static final String CHECKOUT = "/WEB-INF/jsp/checkout.jsp";
         public static final String SELLER_CENTER = "/WEB-INF/jsp/sellercenter/sellercenter.jsp";
@@ -58,6 +59,8 @@ public final class Config {
         public static final String USER_PROFILE = "/WEB-INF/jsp/userProfile.jsp";
         public static final String USER_ORDER = "/WEB-INF/jsp/userOrder.jsp";
         public static final String USER_ORDER_COMPLETE = "/WEB-INF/jsp/userOrderComplete.jsp";
+        public static final String SHOP_ADD_PROMOTION = "/WEB-INF/jsp/sellercenter/addPromotion.jsp";
+        public static final String SHOP_DISPLAY_PROMOTION = "/WEB-INF/jsp/sellercenter/displayPromotion.jsp";
     }
 
     public static final class CookieMapper {

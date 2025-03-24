@@ -14,7 +14,7 @@ public class ShopServlet extends HttpServlet {
         model.User user = session == null ? null : (model.User) session.getAttribute("user");
         model.Shop shop = null;
         int shopId = request.getParameter("shopId") == null ? -1 :Integer.parseInt(request.getParameter("shopId"));
-
+        int shopIdSession = Integer.parseInt((String) session.getAttribute("shopId"));
         try {
             if (shopId != -1) {
                 shop = dao.ShopDAO.ShopFetcher.getShop(shopId);
@@ -29,8 +29,8 @@ public class ShopServlet extends HttpServlet {
         }
 
         // special page for shop owner here
-        if (user != null && shop.getOwnerId().getId() == user.getId()) {
-            request.getRequestDispatcher(config.Config.JSPMapper.SHOP_DETAILS).forward(request, response);
+        if (user != null && shopIdSession == user.getId()) {
+            request.getRequestDispatcher(config.Config.JSPMapper.SHOP_OWNER_DETAILS).forward(request, response);
 
             return;
         }

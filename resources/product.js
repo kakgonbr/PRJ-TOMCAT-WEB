@@ -266,4 +266,22 @@ async function fetchProductsSearch() {
   }
 }
 
+function createProductElement(product) {
+  let li = document.createElement("li");
+
+  // Tạo checkbox để chọn sản phẩm
+  let checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.value = product.id;
+  checkbox.classList.add("product-checkbox");
+
+  // Nhãn hiển thị tên sản phẩm
+  let label = document.createElement("label");
+  label.appendChild(checkbox);
+  label.appendChild(document.createTextNode(" " + product.name));
+
+  li.appendChild(label);
+  return li;
+}
+
 
