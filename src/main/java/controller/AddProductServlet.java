@@ -1,6 +1,9 @@
 package controller;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.Arrays;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,22 +26,116 @@ public class AddProductServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Example parameter: (adding)
+        // action	"addProduct"
+        // name	"hello"
+        // description	"world"
+        // filter	"83"
+        // variation	[…]
+        //     0	"33"
+        //     1	"34"
+        // stock	[…]
+        //     0	"5"
+        //     1	"7"
+        // price	[…]
+        //     0	"213413131"
+        //     1	"21313131231312"
+        // 33	[…]
+        //     0	"12"
+        //     1	"128"
+        // 34	[…]
+        //     0	"white"
+        //     1	"black"
         HttpSession session = request.getSession();
         Integer shopId = (Integer) session.getAttribute("shopId");
-
+        
         if (shopId == null) {
             response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
+        // if an exception is thrown here, it is the user's fault, they have malformed the input data
+        String name = request.getParameter("name");
+        String description = request.getParameter("description");
+        Integer categoryId = Integer.parseInt(request.getParameter("filter"));
+        java.util.List<Integer> variationIds = Arrays.asList(request.getParameterValues("variation")).stream().map(Integer::parseInt).toList();
+        String[] stocks = request.getParameterValues("stock");
+        String[] prices = request.getParameterValues("price");
+        java.util.Map<model.Variation, String[]> variationValues = new java.util.HashMap<>();
 
-        String action = request.getParameter("action");
+        try {
+            // chjeck if the order is correct
+            for (final Integer variationId : variationIds) {
+                model.Variation variation = dao.VariationDAO.VariationFetcher.getVariation(variationId);
+                if (!variation.getCategoryId().getId().equals(categoryId)) {
+                    throw new java.sql.SQLException("Variation is not from the correct category");
+                }
 
-        if (action == null) {
+                String[] values = request.getParameterValues(variationId.toString());
+                for (final String value : values) {
+                    if (variation.getDatatype().equals("integer")) {
+                        Integer.parseInt(value);
+                    } else if (variation.getDatatype().equals("float")) {
+                        Double.parseDouble(value);
+                    }
+                }
+
+                variationValues.put(variation, values);
+            }
+            
+            if (stocks.length != prices.length || stocks.length < 1 || prices.length < 1 || variationIds.size() < 1) {
+                throw new java.sql.SQLException("MALFORMED INPUT, NUMBER OF INPUTED STOCK AND PRICE MUST MATCH, THERE MUST BE ATLEAST ONE PRODUCT ITEM, EACH CONTAINIGN ATLEAST ONE CUSTOMIZATION");
+            }
+            service.Logging.logger.info("name: {}", name);
+            service.Logging.logger.info("description: {}", description);
+            service.Logging.logger.info("category: {}", categoryId);
+            service.Logging.logger.info("varations: {}", variationIds);
+            service.Logging.logger.info("stock: {}", (Object[]) stocks);
+            service.Logging.logger.info("price: {}", (Object[]) prices);
+            service.Logging.logger.info("variation values: {}", variationValues);
+            
+            model.Product product = new model.Product();
+            product.setShopId(dao.ShopDAO.ShopFetcher.getShop(shopId));
+            product.setCategoryId(dao.CategoryDAO.CategoryFetcher.getCategory(categoryId));
+            product.setName(name);
+            product.setDescription(description);
+            // TODO: Add image here
+            product.setImageStringResourceId(null);
+            product.setStatus(true);
+
+            java.util.List<model.ProductItem> productItems = new java.util.ArrayList<>();
+
+            for (int i = 0; i < stocks.length; ++i) {
+                model.ProductItem productItem = new model.ProductItem();
+                productItem.setPrice(BigDecimal.valueOf(Long.parseLong(prices[i])));
+                productItem.setStock(Integer.parseInt(stocks[i]));
+
+                // go over variations, each product item must contain the same amount
+                // i is the index that represents the value of a productitem's variation
+                for (final java.util.Map.Entry<model.Variation, String[]> entry : variationValues.entrySet()) {
+                    java.util.List<model.ProductCustomization> customizations = new java.util.ArrayList<>();
+
+                    model.ProductCustomization customization = new model.ProductCustomization();
+                    model.VariationValue variationValue = new model.VariationValue();
+                    variationValue.setVariationId(entry.getKey());
+                    variationValue.setValue(entry.getValue()[i]);
+                    customization.setVariationValueId(variationValue);
+
+                    customizations.add(customization);
+
+                    productItem.setProductCustomizationList(customizations);
+                }
+
+                productItems.add(productItem);
+            }
+
+            product.setProductItemList(productItems);
+
+            dao.ProductDAO.ProductManager.addProduct(product);
+        } catch (java.sql.SQLException | NumberFormatException e) {
+            service.Logging.logger.warn("FAILED TO ADD PRODUCT, REASON: {}", e.getMessage());
+            request.setAttribute("error", e.getMessage());
+
             doGet(request, response);
-        }
-
-        switch(action) {
-
         }
     }
 

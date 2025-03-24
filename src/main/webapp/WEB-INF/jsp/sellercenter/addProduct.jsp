@@ -26,13 +26,9 @@
     <jsp:attribute name="body">
         <h2>Add Product</h2>
 
-        <%-- Hiển thị lỗi nếu có --%>
-        <c:if test="${not empty error}">
-            <div>${error}</div>
-        </c:if>
-
         <form id="addProductForm" action="${pageContext.request.contextPath}/sellercenter/addproduct" method="post">
-            <input type="hidden" name="action" value="addProduct">
+            <%-- TODO: ADD PRODUCT ID OF THE EDITING PRODUCT --%>
+            <input type="hidden" name="id" value=""> 
 
             <label for="productName">Product Name:</label>
             <input type="text" id="productName" name="name" required><br>

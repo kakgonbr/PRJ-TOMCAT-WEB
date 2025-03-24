@@ -40,7 +40,7 @@ function addProductItem() {
         let valueCell = document.createElement("td");
 
         let input = document.createElement("input");
-        input.name = `input-${variation.id}`;
+        input.name = `${variation.id}`;
         
         if (variation.datatype === "integer") {
             input.type = "number";
