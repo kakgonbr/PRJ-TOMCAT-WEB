@@ -97,7 +97,7 @@
                                     </button>
                                 </h2>
                                 <div id="collapseShop" class="accordion-collapse collapse">
-                                    <a href="${pageContext.request.contextPath}/shop" class="list-group-item list-group-item-action p-3">🏪    
+                                    <a href="${pageContext.request.contextPath}/shop?shopId=${sessionScope.shopId}" class="list-group-item list-group-item-action p-3">🏪    
                                         Shop
                                         Information</a>
                                 </div>
