@@ -131,6 +131,7 @@
                        placeholder="Search for items and brands" aria-label="Search" data-bs-toggle="dropdown"
                        aria-expanded="false" style="background-color: rgb(248, 246, 246);" name="query"
                        id="searchBar" autocomplete="off">
+                <input type="hidden" name="categoryId" value= "${0}">
                 <div class="btn  border-0 rounded clear-btn">
                     <i class="bi bi-x-circle-fill"></i>
                 </div>
