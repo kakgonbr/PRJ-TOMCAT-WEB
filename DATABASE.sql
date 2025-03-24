@@ -11,8 +11,8 @@ USE [PRJ-PROJECT-TEST]
 GO
 CREATE TABLE tblResourceMap
 (
-	id varchar(30) PRIMARY KEY,
-	systemPath varchar(50) NOT NULL
+	id varchar(127) PRIMARY KEY,
+	systemPath varchar(127) NOT NULL
 )
 
 CREATE TABLE tblUser
@@ -30,7 +30,7 @@ CREATE TABLE tblUser
 	status bit NOT NULL DEFAULT 1,
 
 	displayName nvarchar(50),
-	profileStringResourceId varchar(30),
+	profileStringResourceId varchar(127),
 	bio nvarchar(255),
 
 	CONSTRAINT fk_user_resourceId FOREIGN KEY (profileStringResourceId) REFERENCES tblResourceMap(id)
@@ -97,7 +97,7 @@ CREATE TABLE tblShop
 	ownerId int NOT NULL,
 	name nvarchar(30) NOT NULL,
 	address nvarchar(100),
-	profileStringResourceId varchar(30),
+	profileStringResourceId varchar(127),
 	visible bit DEFAULT 0,
 
 	CONSTRAINT fk_shop_resourceId FOREIGN KEY (profileStringResourceId) REFERENCES tblResourceMap(id),
@@ -108,7 +108,7 @@ CREATE TABLE tblCategory
 (
 	id int PRIMARY KEY IDENTITY(0, 1),
 	name nvarchar(30),
-	imageStringResourceId varchar(30),
+	imageStringResourceId varchar(127),
 	parent_id int
 
 	CONSTRAINT fk_category_resourceId FOREIGN KEY (imageStringResourceId) REFERENCES tblResourceMap(id),
@@ -149,7 +149,7 @@ CREATE TABLE tblProduct
 	name nvarchar(50) NOT NULL,
 	description nvarchar(255),
 	availablePromotionId int,
-	imageStringResourceId varchar(30),
+	imageStringResourceId varchar(127),
 	status bit,
 	
 	CONSTRAINT fk_product_resourceId FOREIGN KEY (imageStringResourceId) REFERENCES tblResourceMap(id),
@@ -162,7 +162,7 @@ CREATE TABLE tblProductImage
 (
 	id int PRIMARY KEY IDENTITY(1, 1),
 	productId int,
-	imageStringResourceId varchar(30),
+	imageStringResourceId varchar(127),
 
 	CONSTRAINT fk_productimage_resourceId FOREIGN KEY (imageStringResourceId) REFERENCES tblResourceMap(id),
 	CONSTRAINT fk_productimage_product FOREIGN KEY (productId) REFERENCES tblProduct
@@ -400,7 +400,7 @@ END;
 GO
 
 GO
-CREATE PROCEDURE GetRecommendation (@query NVARCHAR(400), @page int, @category int)
+CREATE PROCEDURE GetRecommendation (@query NVARCHAR(400), @page int, @category varchar(127))
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -408,7 +408,7 @@ BEGIN
 	IF @query IS NULL OR LTRIM(RTRIM(@query)) = ''
     BEGIN
 		WITH category AS (
-        SELECT id FROM tblCategory WHERE id = @category
+        SELECT id FROM tblCategory WHERE id IN (SELECT CAST(value AS INT) FROM STRING_SPLIT(@category, ',')) -- can cause troubles
         UNION ALL
         SELECT c.id FROM tblCategory c
         JOIN category ch ON c.parent_id = ch.id
@@ -482,7 +482,7 @@ BEGIN
 		GROUP BY iv.id
 	),
 	category AS (
-        SELECT id FROM tblCategory WHERE id = @category
+        SELECT id FROM tblCategory WHERE id IN (SELECT CAST(value AS INT) FROM STRING_SPLIT(@category, ','));
         UNION ALL
         SELECT c.id FROM tblCategory c
         JOIN category ch ON c.parent_id = ch.id
@@ -1448,4 +1448,3 @@ set categoryId = 3
 where categoryId is NULL;
 
 EXEC ComputeTFIdF
-SELECT * FROM tblVector

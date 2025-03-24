@@ -1,6 +1,7 @@
 package controller.ajax;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -34,7 +35,8 @@ public class ProductLoader extends HttpServlet {
         model.User user = session == null ? null : (model.User) session.getAttribute("user");
 
         String recommendations = request.getParameter("query");
-        Integer category = request.getParameter("category") == null || request.getParameter("category").isBlank() ? 0 : Integer.parseInt(request.getParameter("category"));
+        // Integer category = request.getParameter("category") == null || request.getParameter("category").isBlank() ? 0 : Integer.parseInt(request.getParameter("category"));
+        java.util.List<Integer> categories = Arrays.asList(request.getParameterValues("category")).stream().map(Integer::parseInt).toList();
         String shopId = request.getParameter("shopId");
         String statusParam = request.getParameter("status");
 
@@ -53,7 +55,7 @@ public class ProductLoader extends HttpServlet {
                 service.Logging.logger.info("Getting recommendations for query '{}'", recommendations);
 
                 products = dao.ProductDAO.ProductFetcher
-                        .getRecommendation(recommendations, 0, category).stream().map(model.ProductWrapper::new)
+                        .getRecommendation(recommendations, 0, categories).stream().map(model.ProductWrapper::new)
                         .collect(Collectors.toList()); // let page be 0 for nowa
 
             } else {
@@ -69,7 +71,7 @@ public class ProductLoader extends HttpServlet {
                     service.Logging.logger.info("Getting shop products for shop {}", shopId);
 
                     products = dao.ProductDAO.ProductFetcher
-                            .getShopProductsByCategory(Integer.parseInt(shopId), category)
+                            .getShopProductsByCategory(Integer.parseInt(shopId), categories)
                             .stream().map(model.ProductWrapper::new)
                             .collect(Collectors.toList());
                 }

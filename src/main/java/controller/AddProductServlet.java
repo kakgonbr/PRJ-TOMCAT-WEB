@@ -2,7 +2,6 @@ package controller;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.sql.SQLException;
 import java.util.Arrays;
 
 import jakarta.servlet.ServletException;
@@ -182,6 +181,8 @@ public class AddProductServlet extends HttpServlet {
 
             doGet(request, response);
         }
+
+        response.sendRedirect(request.getContextPath() + "/sellercenter/shophome");
     }
 
     // @Override
