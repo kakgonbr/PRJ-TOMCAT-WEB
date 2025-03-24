@@ -125,19 +125,25 @@ function fetchProductsShop(shopId, status) {
 
   var url = new URL("https://" + location.host + contextPath + "/ajax/products");
   url.searchParams.append("shopId", shopId);
-  url.searchParams.append("status", status ? "true" : "false");
+  url.searchParams.append("status", status ? "true" : "false"); // Chuyển status thành 'true' hoặc 'false'
 
   fetch(url.toString())
     .then((response) => response.json())
     .then((data) => {
-      let tableContainer = document.getElementById("productTableShopContainer");
-      tableContainer.innerHTML = ""; 
+      let tableContainer = document.getElementById("productTableShop");
+      tableContainer.innerHTML = ""; // Xóa dữ liệu cũ
 
+      // Bọc bảng trong div để hỗ trợ hiển thị trên mobile
+      let responsiveDiv = document.createElement("div");
+      responsiveDiv.className = "table-responsive";
+
+      // Tạo bảng Bootstrap
       let table = document.createElement("table");
       table.className = "table table-striped table-hover table-bordered align-middle";
 
+      // Tạo tiêu đề bảng
       let thead = document.createElement("thead");
-      thead.className = "table-dark"; 
+      thead.className = "table-dark";
       thead.innerHTML = `
         <tr>
           <th scope="col">Shop</th>
@@ -149,6 +155,7 @@ function fetchProductsShop(shopId, status) {
       `;
       table.appendChild(thead);
 
+      // Tạo phần thân bảng
       let tbody = document.createElement("tbody");
 
       data.forEach((item) => {
@@ -165,11 +172,23 @@ function fetchProductsShop(shopId, status) {
                 <button class="btn btn-warning btn-sm me-2" onclick="window.location.href='${contextPath}/product?action=edit&productId=${item.id}'">
                   Edit
                 </button>
-                <button class="btn btn-danger btn-sm" onclick="deleteProduct(${item.id}, ${shopId})">
+                <button class="btn btn-danger btn-sm" onclick="if (confirm('Are you sure you want to delete this product?')) {
+                  fetch('${contextPath}/product', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'action=delete&productId=${encodeURIComponent(item.id)}'
+                  }).then(() => fetchProductsShop(${shopId}, true));
+                }">
                   Delete
                 </button>`
               : `
-                <button class="btn btn-success btn-sm" onclick="restoreProduct(${item.id}, ${shopId})">
+                <button class="btn btn-success btn-sm" onclick="if (confirm('Do you want to restore this product?')) {
+                  fetch('${contextPath}/product', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'action=restore&productId=${encodeURIComponent(item.id)}'
+                  }).then(() => fetchProductsShop(${shopId}, false));
+                }">
                   Restore
                 </button>`
             }
@@ -180,38 +199,10 @@ function fetchProductsShop(shopId, status) {
       });
 
       table.appendChild(tbody);
-      //mobile responsive
-      let responsiveDiv = document.createElement("div");
-      responsiveDiv.className = "table-responsive";
       responsiveDiv.appendChild(table);
-
       tableContainer.appendChild(responsiveDiv);
     })
     .catch((error) => console.error("Error fetching data:", error));
-}
-
-function deleteProduct(productId, shopId) {
-  if (confirm("Are you sure you want to delete this product?")) {
-    fetch(contextPath + "/product", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: "action=delete&productId=" + encodeURIComponent(productId),
-    }).then(() => fetchProductsShop(shopId, true)); 
-  }
-}
-
-function restoreProduct(productId, shopId) {
-  if (confirm("Do you want to restore this product?")) {
-    fetch(contextPath + "/product", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: "action=restore&productId=" + encodeURIComponent(productId),
-    }).then(() => fetchProductsShop(shopId, false));
-  }
 }
 
 /*fetch products for home page */

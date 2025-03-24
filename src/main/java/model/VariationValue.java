@@ -35,6 +35,7 @@ import java.util.List;
     @NamedQuery(name = "VariationValue.findAll", query = "SELECT v FROM VariationValue v"),
     @NamedQuery(name = "VariationValue.findById", query = "SELECT v FROM VariationValue v WHERE v.id = :id"),
     @NamedQuery(name = "VariationValue.findByVariationId", query = "SELECT v FROM VariationValue v WHERE v.variationId.id = :variationId"),
+    @NamedQuery(name = "VariationValue.findByValueAndVariation", query = "SELECT v FROM VariationValue v WHERE v.value = :value AND v.variationId.id = :variationId"),
     @NamedQuery(name = "VariationValue.findByValue", query = "SELECT v FROM VariationValue v WHERE v.value = :value")})
 public class VariationValue implements Serializable {
 

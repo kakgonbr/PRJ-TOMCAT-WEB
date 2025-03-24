@@ -11,9 +11,10 @@ import java.sql.SQLException;
 import java.util.List;
 import model.VariationValue;
 
-
 public final class VariationValueDAO {
+
     public static final class VariationValueManager {
+
         public static synchronized void createVariationValue(VariationValue variationValue) throws SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 EntityTransaction et = em.getTransaction();
@@ -60,6 +61,7 @@ public final class VariationValueDAO {
     }
 
     public static final class VariationValueFetcher {
+
         public static synchronized VariationValue getVariationValue(int id) throws SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 return em.createNamedQuery("VariationValue.findById", VariationValue.class)
@@ -69,6 +71,7 @@ public final class VariationValueDAO {
                 throw new SQLException(e);
             }
         }
+
         public static synchronized List<VariationValue> getVariationValuesByVariationId(int variationId) throws SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 return em.createNamedQuery("VariationValue.findByVariationId", VariationValue.class)
@@ -83,6 +86,19 @@ public final class VariationValueDAO {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 return em.createNamedQuery("VariationValue.findByValue", VariationValue.class)
                         .setParameter("value", value)
+                        .getSingleResult();
+            } catch (NoResultException e) {
+                return null;
+            } catch (Exception e) {
+                throw new SQLException(e);
+            }
+        }
+
+        public static synchronized VariationValue getVariationValueByValueAndVariation(String value, int variationId) throws SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return em.createNamedQuery("VariationValue.findByValueAndVariation", VariationValue.class)
+                        .setParameter("value", value)
+                        .setParameter("variationId", variationId)
                         .getSingleResult();
             } catch (NoResultException e) {
                 return null;

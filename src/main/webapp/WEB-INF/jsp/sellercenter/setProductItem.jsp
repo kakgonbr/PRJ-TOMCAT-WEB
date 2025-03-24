@@ -9,6 +9,37 @@
     </jsp:attribute>
 
     <jsp:attribute name="body">
+        <h3>Debugging Product Variations</h3>
+
+        <h4>All Variation Values</h4>
+        <ul>
+            <c:forEach var="variationList" items="${requestScope.allVariationValues}">
+                <li>
+                    <strong>Variation:</strong>
+                    <c:forEach var="variationValue" items="${variationList}" varStatus="loop">
+                        ${variationValue.value}<c:if test="${!loop.last}">, </c:if>
+                    </c:forEach>
+                </li>
+            </c:forEach>
+        </ul>
+
+        <h4>Generated Combinations</h4>
+        <ul>
+            <c:forEach var="combination" items="${requestScope.combinations}">
+                <li>
+                    <c:forEach var="variationValue" items="${combination}" varStatus="loop">
+                        ${variationValue.value}<c:if test="${!loop.last}">, </c:if>
+                    </c:forEach>
+                </li>
+            </c:forEach>
+        </ul>
+
+        <h4>Created Product Items</h4>
+        <ul>
+            <c:forEach var="item" items="${sessionScope.selectedProductItems}">
+                <li>Product ID: ${item.productId.id}, Item ID: ${item.id}, Stock: ${item.stock}, Price: ${item.price}</li>
+                </c:forEach>
+        </ul>
         <h2>Set Stock & Price</h2>
         <!-- Hiển thị lỗi -->
         <c:if test="${not empty requestScope.errorMessages}">
@@ -17,7 +48,7 @@
                 <ul>
                     <c:forEach var="error" items="${requestScope.errorMessages}">
                         <li>${error}</li>
-                    </c:forEach>
+                        </c:forEach>
                 </ul>
             </div>
         </c:if>
