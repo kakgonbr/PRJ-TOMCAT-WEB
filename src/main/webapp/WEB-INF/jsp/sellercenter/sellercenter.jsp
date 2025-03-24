@@ -97,7 +97,7 @@
                                     </button>
                                 </h2>
                                 <div id="collapseShop" class="accordion-collapse collapse">
-                                    <a href="#" class="list-group-item list-group-item-action p-3">🏪    
+                                    <a href="${pageContext.request.contextPath}/shop" class="list-group-item list-group-item-action p-3">🏪    
                                         Shop
                                         Information</a>
                                 </div>
@@ -137,7 +137,7 @@
                     
                     <div class="tab-content mt-3">
                         <div id="productTableShop"></div>
-                        <div id="available" class="tab-pane fade">
+                        <div id="available" class="tab-pane fade show active">
                             <table class="table table-bordered" id="productTableShop"></table>
                         </div>
                         <div id="deleted" class="tab-pane fade">
