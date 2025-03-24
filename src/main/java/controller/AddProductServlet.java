@@ -86,13 +86,13 @@ public class AddProductServlet extends HttpServlet {
             if (stocks.length != prices.length || stocks.length < 1 || prices.length < 1 || variationIds.size() < 1) {
                 throw new java.sql.SQLException("MALFORMED INPUT, NUMBER OF INPUTED STOCK AND PRICE MUST MATCH, THERE MUST BE ATLEAST ONE PRODUCT ITEM, EACH CONTAINIGN ATLEAST ONE CUSTOMIZATION");
             }
-            service.Logging.logger.info("name: {}", name);
-            service.Logging.logger.info("description: {}", description);
-            service.Logging.logger.info("category: {}", categoryId);
-            service.Logging.logger.info("varations: {}", variationIds);
-            service.Logging.logger.info("stock: {}", (Object[]) stocks);
-            service.Logging.logger.info("price: {}", (Object[]) prices);
-            service.Logging.logger.info("variation values: {}", variationValues);
+            // service.Logging.logger.info("name: {}", name);
+            // service.Logging.logger.info("description: {}", description);
+            // service.Logging.logger.info("category: {}", categoryId);
+            // service.Logging.logger.info("varations: {}", variationIds);
+            // service.Logging.logger.info("stock: {}", (Object[]) stocks);
+            // service.Logging.logger.info("price: {}", (Object[]) prices);
+            // service.Logging.logger.info("variation values: {}", variationValues);
             
             model.Product product = new model.Product();
             product.setShopId(dao.ShopDAO.ShopFetcher.getShop(shopId));
@@ -132,7 +132,7 @@ public class AddProductServlet extends HttpServlet {
                 }
                 productItem.setProductCustomizationList(customizations);
 
-                service.Logging.logger.info("Adding product item: stock {}, price {}, customization list {}", productItem.getStock(), productItem.getPrice(), productItem.getProductCustomizationList());
+                // service.Logging.logger.info("Adding product item: stock {}, price {}, customization list {}", productItem.getStock(), productItem.getPrice(), productItem.getProductCustomizationList());
 
                 productItem.setProductId(product);
 
@@ -143,22 +143,22 @@ public class AddProductServlet extends HttpServlet {
 
             product = dao.ProductDAO.ProductManager.addProduct(product);
 
-            service.Logging.logger.info("product from database: {}", product.getId());
+            // service.Logging.logger.info("product from database: {}", product.getId());
 
 
             for (final model.ProductItem productItem : productItems) {
                 dao.ProductDAO.ProductManager.addProductItem(productItem);
 
                 for (final model.ProductCustomization customization : productItem.getProductCustomizationList()) {
-                    service.Logging.logger.info("adding variation value, variation : {}, value: {}, references {}", customization.getVariationValueId().getVariationId(), customization.getVariationValueId().getValue(), customization.getVariationValueId().getVariationId().getId());
+                    // service.Logging.logger.info("adding variation value, variation : {}, value: {}, references {}", customization.getVariationValueId().getVariationId(), customization.getVariationValueId().getValue(), customization.getVariationValueId().getVariationId().getId());
                     try {
                         dao.VariationValueDAO.VariationValueManager.createVariationValue(customization.getVariationValueId());
                     } catch (java.sql.SQLException e) {
-                        service.Logging.logger.warn("Failed to add variation value, reason: {}", e.getMessage());
+                        // service.Logging.logger.warn("Failed to add variation value, reason: {}", e.getMessage());
                         dao.VariationValueDAO.VariationValueManager.updateVariationValue(customization.getVariationValueId());
                     }
                 }
-                service.Logging.logger.info("Adding customizations {}", productItem.getProductCustomizationList());
+                // service.Logging.logger.info("Adding customizations {}", productItem.getProductCustomizationList());
                 dao.ProductDAO.ProductManager.addCustomizations(productItem.getProductCustomizationList());
             }
 

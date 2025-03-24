@@ -135,7 +135,7 @@
 
                             <div class="mb-3">
                                 <button type="submit" class="btn btn-primary">Save changes</button>
-                                <a href="${pageContext.request.contextPath}/shophome" class="btn btn-secondary">Hủy</a>
+                                <a href="${pageContext.request.contextPath}/sellercenter/shophome" class="btn btn-secondary">Hủy</a>
                             </div>
                         </form>
                     </div>
