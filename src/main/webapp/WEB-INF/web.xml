@@ -161,6 +161,10 @@
         <servlet-name>OrderServlet</servlet-name>
         <servlet-class>controller.OrderServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UserOrderServlet</servlet-name>
+        <servlet-class>controller.UserOrderServlet</servlet-class>
+    </servlet>
     <!-- SERVLET MAPPINGS -->
     <!-- TEMPLATE:
    <servlet-mapping>
@@ -339,6 +343,10 @@
     <servlet-mapping>
         <servlet-name>n_VariationLoader</servlet-name>
         <url-pattern>/ajax/variation</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserOrderServlet</servlet-name>
+        <url-pattern>/userorder</url-pattern>
     </servlet-mapping>
     <!-- FILTER DECLARATIONS -->
     <filter>
