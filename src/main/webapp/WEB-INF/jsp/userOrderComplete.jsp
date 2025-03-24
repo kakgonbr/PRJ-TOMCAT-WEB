@@ -70,37 +70,8 @@
                     </div>
                 </nav>
                 <main class="col-10">
-                    <h2>Profile: </h2>
-                    <img src="${pageContext.request.contextPath}/resources/${sessionScope.user.profileStringResourceId.id}">
-                    <form action="${pageContext.request.contextPath}/user" method="POST" enctype="multipart/form-data">
-                        <input type="hidden" name="action" value="profilePic">
-                        <input type="file" name="image">
-                        <input type="submit" value="Update" />
-                    </form>
-                    <label>Username:</label>
-                    <input type="text" name="username" value="${sessionScope.user.username}" disabled>
-                    <form action="${pageContext.request.contextPath}/user" method="POST">
-                        <input type="hidden" name="action" value="displayName">
-                        <label>Display Name:</label>
-                        <input type="text" name="displayName" value="${sessionScope.user.displayName}">
-                        <input type="submit" value="Update" />
-                    </form>
-                    <label>Phone Number:</label>
-                    <input type="text" name="phoneNumber" value="${sessionScope.user.phoneNumber}" disabled>
-                    <form action="${pageContext.request.contextPath}/user" method="POST">
-                        <input type="hidden" name="action" value="password">
-                        <label>Change password:</label>
-                        <input type="password" name="password">
-                        <label>Confirm Password:</label>
-                        <input type="password" name="confirmPassword">
-                        <input type="submit" value="Change" />
-                    </form>
-                    <form action="${pageContext.request.contextPath}/user" method="POST">
-                        <input type="hidden" name="action" value="credit">
-                        <label>Credit:</label>
-                        <input type="text" name="credit" value="${sessionScope.user.credit}">
-                        <input type="submit" value="Add Credit" />
-                    </form>
+                    <h2>Order complete: </h2>
+                    
                 </main>
             </div>
         </div>
