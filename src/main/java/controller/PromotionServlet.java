@@ -36,7 +36,7 @@ public class PromotionServlet extends HttpServlet {
             List<Promotion> promotions = dao.PromotionDAO.PromotionFetcher.checkAvailablePromotions(userId);
 
             request.setAttribute("promotions", promotions);
-            request.getRequestDispatcher("displayPromotion.jsp").forward(request, response);
+            request.getRequestDispatcher(config.Config.JSPMapper.SHOP_DISPLAY_PROMOTION).forward(request, response);
         } catch (Exception e) {
             service.Logging.logger.error("Error fetching promotions: {}", e);
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server error: " + e.getMessage());
@@ -65,17 +65,16 @@ public class PromotionServlet extends HttpServlet {
             Logger.getLogger(PromotionServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         promotion.setCreatorId(creator);
-        promotion.setStatus(true); // Mặc định là hoạt động
+        promotion.setStatus(true);
 
         try {
-            // Thêm promotion vào DB
             boolean success = dao.PromotionDAO.PromotionManager.addPromotion(creatorId, promotion);
 
             if (success) {
-                response.sendRedirect("promotion"); // Quay về trang danh sách promotions
+                response.sendRedirect("/promotion"); 
             } else {
                 request.setAttribute("error", "Failed to add promotion.");
-                request.getRequestDispatcher("addPromotion.jsp").forward(request, response);
+                request.getRequestDispatcher(config.Config.JSPMapper.SHOP_ADD_PROMOTION).forward(request, response);
             }
         } catch (Exception e) {
             service.Logging.logger.error("Error adding promotion: {}", e);
