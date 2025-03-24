@@ -352,6 +352,10 @@
         <servlet-name>UserOrderServlet</servlet-name>
         <url-pattern>/userorder</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PromotionServlet</servlet-name>
+        <url-pattern>/promotion</url-pattern>
+    </servlet-mapping>
     <!-- FILTER DECLARATIONS -->
     <filter>
         <filter-name>n_MaintenanceFilter</filter-name>
@@ -389,10 +393,6 @@
     <servlet-mapping>
         <servlet-name>OrderLoader</servlet-name>
         <url-pattern>/ajax/order</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>PromotionServlet</servlet-name>
-        <url-pattern>/promotion</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
