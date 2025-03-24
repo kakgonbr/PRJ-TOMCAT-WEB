@@ -15,7 +15,8 @@ public class SearchServlet extends HttpServlet {
         else
             request.setAttribute("categoryId", categoryId);
         String query = request.getParameter("query");
-        request.setAttribute("query", query);
+        if(query != null)
+            request.setAttribute("query", query);
         request.getRequestDispatcher(config.Config.JSPMapper.SEARCH).forward(request, response);
     }
 

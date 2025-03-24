@@ -8,9 +8,12 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/searchPage_css">
         <%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/main_css"> --%>
 
+        <script src="${pageContext.request.contextPath}/resources/product_js"></script>
         <script>
             var contextPath = "${pageContext.request.contextPath}";
-            var categoryId = "${categoryId}"
+            var categoryId = "${categoryId}";
+            var query = "${query}";
+            document.addEventListener("DOMContentLoaded", fetchProductsSearch);
         </script>
 
     </jsp:attribute>
@@ -111,57 +114,8 @@
     
                 <!-- Products Grid (unchanged from previous example) -->
                 <div class="col-9 row">
-                    <div class="col-3 mb-2">
-                        <a href="#" class="text-dark text-decoration-none">
-                        <div class="card">
-                            <!--should have a id of product-->
-                            <div class="position-relative ">
-                                <img src="https://raw.githubusercontent.com/HoanghoDev/youtube_v2/main/auto_slider/images/slider2_2.png" class="card-img-top product-img " alt="" loading="lazy">
-                            </div>
-                            <div class="card-body d-flex flex-column justify-content-between ">
-                                <p class="card-title mt-3 fw-semibold blackLineUnderneath">Lorem, ipsum dolor sit amet consect</p>
-                                <!--take the rate and put it in a loop. if not even, the last start will be half -> if else -->
-                                
-                                <p class="card-text "><strong>$126.50</strong> <s class="text-muted">$165.00</s></p>
-                            </div>
-                        </div>
-                        </a>
-                    </div>
-                    <div class="col-3 mb-2">
-                        <a href="#" class="text-dark text-decoration-none">
-                        <div class="card">
-                            <!--should have a id of product-->
-                            <div class="position-relative ">
-                                <img src="https://raw.githubusercontent.com/HoanghoDev/youtube_v2/main/auto_slider/images/slider2_2.png" class="card-img-top product-img " alt="" loading="lazy">
-                            </div>
-                            <div class="card-body d-flex flex-column justify-content-between ">
-                                <p class="card-title mt-3 fw-semibold blackLineUnderneath">Lorem, ipsum dolor sit amet consect</p>
-                                <!--take the rate and put it in a loop. if not even, the last start will be half -> if else -->
-                                
-                                <p class="card-text "><strong>$126.50</strong> <s class="text-muted">$165.00</s></p>
-                            </div>
-                        </div>
-                        </a>
-                    </div>
-                    <div class="col-3 mb-2">
-                        <a href="#" class="text-dark text-decoration-none">
-                        <div class="card">
-                            <!--should have a id of product-->
-                            <div class="position-relative ">
-                                <img src="https://raw.githubusercontent.com/HoanghoDev/youtube_v2/main/auto_slider/images/slider2_2.png" class="card-img-top product-img " alt="" loading="lazy">
-                            </div>
-                            <div class="card-body d-flex flex-column justify-content-between ">
-                                <p class="card-title mt-3 fw-semibold blackLineUnderneath">Lorem, ipsum dolor sit amet consect</p>
-                                <!--take the rate and put it in a loop. if not even, the last start will be half -> if else -->
-                                
-                                <p class="card-text "><strong>$126.50</strong> <s class="text-muted">$165.00</s></p>
-                            </div>
-                        </div>
-                        </a>
-                    </div>
                     
-                    
-                    
+                </div>    
                     <!--page-->
                     <div class="col-12 my-4 d-flex justify-content-center">
                         <nav aria-label="Page navigation example">
@@ -177,7 +131,7 @@
                             </ul>
                           </nav>
                     </div>
-                </div>
+                
 
             </div>
         </main>

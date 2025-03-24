@@ -235,3 +235,35 @@ async function fetchProductsHomePage() {
       console.error("Error for fetching products for homepage:", error);
   }
 }
+/*fetch products for search */
+async function fetchProductsSearch() {
+  const container = document.querySelector(".col-9.row");
+  
+  try {
+      const response = await fetch("https://kakgonbri.zapto.org:8443/prj/ajax/products?categoryId="+categoryId+"&query=" + query);
+      const products = await response.json();
+      
+      products.forEach(product => {
+          const productCard = document.createElement("div");
+          productCard.classList.add("col-3", "mb-2");
+          productCard.innerHTML = `
+              <a href="https://kakgonbri.zapto.org:8443/prj/product?productId=${product.id}" class="text-dark text-decoration-none">
+                  <div class="card">
+                      <div class="position-relative">
+                          <img src="${product.thumbnail}" alt="${product.name}" loading="lazy" class="w-100">
+                      </div>
+                      <div class="card-body d-flex flex-column justify-content-between">
+                          <p class="card-title mt-3 fw-semibold blackLineUnderneath">${product.name}</p>
+                          <input type="hidden" value="${product.id}">
+                      </div>
+                  </div>
+              </a>
+          `;
+          container.appendChild(productCard);
+      });
+  } catch (error) {
+      console.error("Error for fetching products for search:", error);
+  }
+}
+
+
