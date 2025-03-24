@@ -10,7 +10,7 @@
 
         <script>
             var contextPath = "${pageContext.request.contextPath}";
-            var categoryId = "${sessionScope.categoryId}";
+            var categoryId = "${sessionScope.categoryId}"; // ?
 
             document.addEventListener("DOMContentLoaded", function () {
                 if (!categoryId) {

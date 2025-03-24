@@ -4,15 +4,12 @@
  */
 package model;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class VariationWrapper implements java.io.Serializable {
     private int id;
     private String name;
     private String datatype;
     private String unit;
-    private List<VariationValueWrapper> values;
+    // private List<VariationValueWrapper> values;
 
     public VariationWrapper() {}
 
@@ -24,10 +21,10 @@ public class VariationWrapper implements java.io.Serializable {
         this.unit = variation.getUnit();
         
         // Chuyển đổi danh sách VariationValue sang VariationValueWrapper
-        this.values = variation.getVariationValueList()
-                               .stream()
-                               .map(VariationValueWrapper::new)
-                               .collect(Collectors.toList());
+        // // this.values = variation.getVariationValueList()
+        //                        .stream()
+        //                        .map(VariationValueWrapper::new)
+        //                        .collect(Collectors.toList());
     }
 
     // Getters & Setters
@@ -43,7 +40,7 @@ public class VariationWrapper implements java.io.Serializable {
     public String getUnit() { return unit; }
     public void setUnit(String unit) { this.unit = unit; }
 
-    public List<VariationValueWrapper> getValues() { return values; }
-    public void setValues(List<VariationValueWrapper> values) { this.values = values; }
+    // public List<VariationValueWrapper> getValues() { return values; }
+    // public void setValues(List<VariationValueWrapper> values) { this.values = values; }
 }
 
