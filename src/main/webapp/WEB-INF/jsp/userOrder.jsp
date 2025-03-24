@@ -71,7 +71,66 @@
                 </nav>
                 <main class="col-10">
                     <h2>Order: </h2>
-                    
+                    <table class="cart-table">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Product</th>
+                                <th>Shop</th>
+                                <th>Promotion</th>
+                                <th>Quantity</th>
+                                <th>Price (Per Item)</th>
+                                <th>Customization</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="orderItem" items="${OrderItemList}">
+                                <tr>
+                                    <td>
+                                        <img src="${pageContext.request.contextPath}/resources/${orderItem.productWrapper.thumbnail}"
+                                            alt="Product Image">
+                                    </td>
+                                    <td>${orderItem.productWrapper.name}</td>
+                                    <td>${orderItem.productWrapper.shop.name}</td>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${orderItem.productWrapper.promotion.type}">
+                                                - ${orderItem.productWrapper.promotion.value} VND
+                                            </c:when>
+                                            <c:otherwise>
+                                                - ${orderItem.productWrapper.promotion.value} %
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                    <td>
+                                        ${orderItem.quantity}
+                                    </td>
+                                    <td>
+                                        <!-- Someone optimize this, save to variables or something -->
+                                        <c:choose>
+                                            <c:when test="${orderItem.productWrapper.promotion != null && orderItem.productWrapper.promotion.type}">
+                                                ${(orderItem.productItem.price - orderItem.productWrapper.promotion.value) * orderItem.quantity}
+                                            </c:when>
+                                            <c:when test="${orderItem.productWrapper.promotion != null && !orderItem.productWrapper.promotion.type}">
+                                                ${(orderItem.productItem.price * (100.0 - orderItem.productWrapper.promotion.value) / 100.0) * orderItem.quantity}
+                                            </c:when>
+                                            <c:otherwise>
+                                                ${orderItem.productItem.price * orderItem.quantity}
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                    <td>
+                                        <c:forEach var="customization"
+                                            items="${orderItem.productItem.customizations}">
+                                            <p>${customization.name}: ${customization.value}
+                                                ${customization.unit}</p>
+                                        </c:forEach>
+                                    </td>
+                                </tr>
+                                
+                            </c:forEach>
+                        </tbody>
+                    </table>
                 </main>
             </div>
         </div>
