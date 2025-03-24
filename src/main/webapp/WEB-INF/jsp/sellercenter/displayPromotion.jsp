@@ -81,7 +81,7 @@
                                             <td>${promo.name}</td>
                                             <td>${promo.type ? "Percentage" : "Fixed Amount"}</td>
                                             <td>${promo.value}</td>
-                                            <td>${promo.startDate}</td> 
+                                            <td>${promo.creationDate}</td> 
                                             <td>${promo.expireDate}</td>
                                             <td>${promo.status ? "Active" : "Inactive"}</td>
                                         </tr>
