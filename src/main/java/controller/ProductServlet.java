@@ -93,9 +93,8 @@ public class ProductServlet extends HttpServlet {
             }
             
             service.Logging.logger.info("Removing picture {} from product {}", imageId, product.getId());
-            product.getProductImageList().removeIf(pi -> pi.getImageStringResourceId().getId().equals(imageId));
 
-            dao.ProductDAO.ProductManager.editProduct(product);
+            dao.ProductDAO.ProductManager.removeImage(imageId);
 
             response.sendRedirect(request.getContextPath() + "/sellercenter/shophome");
         } catch (java.sql.SQLException e) {
@@ -129,7 +128,7 @@ public class ProductServlet extends HttpServlet {
 
             model.ProductImage productImage = new model.ProductImage();
             productImage.setProductId(product);
-            productImage.setImageStringResourceId(dao.ResourceDAO.overrideMapping("prd_" + product.getId() + product.getProductImageList().size(), saved));
+            productImage.setImageStringResourceId(dao.ResourceDAO.overrideMapping("prd_" + product.getId() + "_" + product.getProductImageList().size(), saved));
 
             product.getProductImageList().add(productImage); // this feels quite C++ actually
 

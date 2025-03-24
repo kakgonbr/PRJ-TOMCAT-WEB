@@ -413,5 +413,29 @@ public class ProductDAO {
                 }
             }
         } // public static synchronized void updateProductItem
+
+        private static final String REMOVE_PRODUCT_IMAGE = "DELETE FROM tblProductImage WHERE imageStringResourceId = ?2";
+        private static final String REMOVE_FROM_RESOURCE = "DELETE FROM tblResourceMap WHERE id = ?1";
+
+        public static synchronized void removeImage(String imageId) throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                EntityTransaction et = em.getTransaction();
+
+                try {
+                    et.begin();
+
+                    em.createNativeQuery(REMOVE_PRODUCT_IMAGE).setParameter(1, imageId).executeUpdate();
+                    em.createNativeQuery(REMOVE_FROM_RESOURCE).setParameter(1, imageId).executeUpdate();
+                    
+                    et.commit();
+                } catch (Exception e) {
+                    if (et.isActive()) {
+                        et.rollback();
+                    }
+
+                    throw new java.sql.SQLException(e);
+                }
+            }
+        } // public static synchronized void removeImage
     }
 }
