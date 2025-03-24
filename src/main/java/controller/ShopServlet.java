@@ -13,16 +13,8 @@ public class ShopServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         model.User user = session == null ? null : (model.User) session.getAttribute("user");
         model.Shop shop = null;
-        String shopIdStr = request.getParameter("shopId");  // Lấy từ request
-        if (shopIdStr == null) {
-            Object sessionShopId = session.getAttribute("shopId");
-            if (sessionShopId instanceof Integer) {
-                shopIdStr = String.valueOf(sessionShopId); // Chuyển Integer về String nếu cần
-            } else if (sessionShopId instanceof String) {
-                shopIdStr = (String) sessionShopId;
-            }
-        }
-        int shopId = (shopIdStr == null) ? -1 : Integer.parseInt(shopIdStr);
+        int shopId = request.getParameter("shopId") == null ? -1 :Integer.parseInt(request.getParameter("shopId"));
+
         try {
             if (shopId != -1) {
                 shop = dao.ShopDAO.ShopFetcher.getShop(shopId);
@@ -37,12 +29,12 @@ public class ShopServlet extends HttpServlet {
         }
 
         // special page for shop owner here
-        if (user != null && shop != null && shop.getOwnerId() != null && shop.getOwnerId().getId() == user.getId()) {
+        if (user != null && shop.getOwnerId().getId() == user.getId()) {
             request.getRequestDispatcher(config.Config.JSPMapper.SHOP_OWNER_DETAILS).forward(request, response);
 
             return;
         }
-
+        
         request.getRequestDispatcher(config.Config.JSPMapper.SHOP_DETAILS).forward(request, response);
     }
 

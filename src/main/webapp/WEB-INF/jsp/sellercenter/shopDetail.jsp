@@ -15,6 +15,7 @@
 
         <script>
             var contextPath = "${pageContext.request.contextPath}";
+            var shopId = "${param.shopId}";
         </script>
 
     </jsp:attribute>
@@ -82,7 +83,7 @@
                                     </button>
                                 </h2>
                                 <div id="collapseShop" class="accordion-collapse collapse">
-                                    <a href="${pageContext.request.contextPath}/shop" class="list-group-item list-group-item-action p-3">🏪    
+                                    <a href="${pageContext.request.contextPath}/shop?shopId=${param.shopId}" class="list-group-item list-group-item-action p-3">🏪    
                                         Shop
                                         Information</a>
                                 </div>
@@ -118,7 +119,6 @@
                             <div class="card-body">
                                 <p><strong>Shop ID:</strong> ${shop.id}</p>
                                 <p><strong>Shop Name:</strong> ${shop.name}</p>
-                                <p><strong>Owner:</strong> ${shop.owner.username}</p>
                                 <p><strong>Address:</strong> ${shop.address}</p>
                             </div>
                         </div>
