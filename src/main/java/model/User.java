@@ -117,7 +117,7 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "userId")
     private List<OnholdCredit> onholdCreditList;
     @OneToMany(mappedBy = "ownerId")
-    private Collection<Shop> shopCollection;
+    private List<Shop> shopList;
     @OneToMany(mappedBy = "creatorId")
     private Collection<Promotion> promotionCollection;
     private static final long serialVersionUID = 1L;
@@ -202,12 +202,12 @@ public class User implements Serializable {
     
 
     @XmlTransient
-    public Collection<Shop> getShopCollection() {
-        return shopCollection;
+    public Collection<Shop> getShopList() {
+        return shopList;
     }
 
-    public void setShopCollection(Collection<Shop> shopCollection) {
-        this.shopCollection = shopCollection;
+    public void setShopList(List<Shop> shopList) {
+        this.shopList = shopList;
     }
 
     @XmlTransient

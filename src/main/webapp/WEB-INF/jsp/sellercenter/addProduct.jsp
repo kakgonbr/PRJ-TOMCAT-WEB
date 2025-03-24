@@ -40,7 +40,13 @@
             <textarea id="description" name="description"></textarea><br>
             <label>Category:</label>
             <div id="categoryFilter"></div> <%-- Danh sách danh mục hiển thị tại đây --%>
-            <button type="submit">Add Product</button>
+            <button onclick="onSelectCategory()">Continue</button>
+            <ul id="variation-container">
+            
+            </ul>
+            <table id="variation-table">
+            
+            <table>
         </form>
     </jsp:attribute>
 

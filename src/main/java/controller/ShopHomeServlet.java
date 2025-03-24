@@ -14,7 +14,6 @@ import jakarta.servlet.http.HttpSession;
 public class ShopHomeServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String shopIdParam = request.getParameter("shopId");
         HttpSession session = request.getSession();
         Integer shopId = (Integer) session.getAttribute("shopId");
         if (shopId == null) {
