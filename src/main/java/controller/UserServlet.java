@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher(config.Config.JSPMapper.USER_DETAILS).forward(request, response);
+        request.getRequestDispatcher(config.Config.JSPMapper.USER_PROFILE).forward(request, response);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class UserServlet extends HttpServlet {
                     dao.UserDAO.UserManager.updateUser(user);
                     request.setAttribute("changed", "Display name");
                     break;
-                    case "password":
+                case "password":
                     String password = request.getParameter("password");
                     String confirm = request.getParameter("confirmPassword");
                     
