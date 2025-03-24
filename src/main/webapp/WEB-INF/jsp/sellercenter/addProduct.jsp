@@ -45,7 +45,7 @@
             <ul id="variation-container">
             
             </ul>
-            <table id="variation-table">
+            <table id="variation-table" border="1">
                 <thead>
                     <tr>
                     <th>test</th>

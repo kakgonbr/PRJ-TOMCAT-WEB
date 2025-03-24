@@ -10,7 +10,7 @@ function addProductItem() {
 
     let selectedVariations = Array.from(
         document.querySelectorAll('input[name="variation"]:checked')
-    ).map(cb => data.find(v => v.id == cb.value));
+    ).map(cb => variations.find(v => v.id == cb.value));
 
     let row = document.createElement("tr");
 
