@@ -4,10 +4,6 @@ function onSelectCategory() {
     fetchVariations(filter ? filter.value : 0);
 }
 
-function fromProduct() { // used for editing
-
-}
-
 function addProductItem() {
     let table = document.getElementById("variation-table");
     let tableBody = table.querySelector("tbody");
@@ -19,7 +15,7 @@ function addProductItem() {
     let row = document.createElement("tr");
 
     let firstCell = document.createElement("td");
-    firstCell.contentEditable = "true";
+    // firstCell.contentEditable = "true";
     row.appendChild(firstCell);
 
     let numericCell = document.createElement("td");

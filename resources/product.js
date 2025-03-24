@@ -169,7 +169,7 @@ function fetchProductsShop(shopId, status) {
           <td class="text-center">
             ${item.status
               ? `
-                <button class="btn btn-warning btn-sm me-2" onclick="window.location.href='${contextPath}/sellercenter/addProduct?action=edit&productId=${item.id}'">
+                <button class="btn btn-warning btn-sm me-2" onclick="window.location.href='${contextPath}/product?action=edit&productId=${item.id}'">
                   Edit
                 </button>
                 <button class="btn btn-danger btn-sm" onclick="if (confirm('Are you sure you want to delete this product?')) {

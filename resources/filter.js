@@ -19,11 +19,6 @@ function createCategoryElement(category) {
   radio.type = "radio";
   radio.name = "filter";
   radio.value = category.id;
-  if (categoryId && categoryId !== "") {
-    if (category === parseInt(categoryId)) {
-      radio.checked = true;
-    }
-  }
 
   label.appendChild(radio);
   label.appendChild(document.createTextNode(" " + category.name));

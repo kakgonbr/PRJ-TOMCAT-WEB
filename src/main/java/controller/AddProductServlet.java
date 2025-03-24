@@ -27,7 +27,6 @@ public class AddProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Example parameter: (adding)
-        // action	"addProduct"
         // name	"hello"
         // description	"world"
         // filter	"83"
@@ -139,10 +138,9 @@ public class AddProductServlet extends HttpServlet {
 
             product.setProductItemList(productItems);
 
-            product = dao.ProductDAO.ProductManager.addProduct(product);
+            dao.ProductDAO.ProductManager.addProduct(product);
 
             // service.Logging.logger.info("product from database: {}", product.getId());
-
 
             for (final model.ProductItem productItem : productItems) {
                 dao.ProductDAO.ProductManager.addProductItem(productItem);

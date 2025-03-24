@@ -124,6 +124,12 @@
                                                 <td>
                                                     <input type="text" name="price" value="${item.price}">
                                                 </td>
+                                                <td>
+                                                    <c:forEach var="customization" items="${item.customizations}">
+                                                        ${customization.name} : ${customization.value} ${customization.unit}
+                                                        <br></br>
+                                                    </c:forEach>
+                                                </td>
                                             </tr>
                                         </c:forEach>
                                     </tbody>

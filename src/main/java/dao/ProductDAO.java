@@ -5,13 +5,9 @@ import org.hibernate.Hibernate;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.ParameterMode;
-import jakarta.persistence.StoredProcedureQuery;
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.stream.Collectors;
-
 import model.ProductItem;
-import service.DatabaseConnection;
 
 public class ProductDAO {
 
@@ -85,7 +81,7 @@ public class ProductDAO {
             }
         }
 
-        private static final String GET_PRODUCTS_FROM_SHOP_BY_CATEGORY = "WITH category AS (SELECT id FROM tblCategory WHERE id IN (SELECT CAST(value AS INT) FROM STRING_SPLIT(?1, ',')) UNION ALL SELECT c.id FROM tblCategory c JOIN category ch ON c.parent_id = ch.id) SELECT TOP 10 * FROM tblProduct WHERE tblProduct.shopId = ?2 AND tblProduct.categoryId IN (SELECT id FROM category)";
+        private static final String GET_PRODUCTS_FROM_SHOP_BY_CATEGORY = "WITH category AS (SELECT id FROM tblCategory WHERE id IN (SELECT CAST(value AS INT) FROM STRING_SPLIT(?1, ',')) UNION ALL SELECT c.id FROM tblCategory c JOIN category ch ON c.parent_id = ch.id) SELECT TOP 10 * FROM tblProduct WHERE tblProduct.shopId = ?2 AND tblProduct.status = 1 AND tblProduct.categoryId IN (SELECT id FROM category)";
 
         public static synchronized java.util.List<model.Product> getShopProductsByCategory(int shopId, java.util.List<Integer> category) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
@@ -125,7 +121,7 @@ public class ProductDAO {
             }
         }
 
-        private static final String GET_PRODUCTS_BY_CATEGORY = "WITH category AS (SELECT id FROM tblCategory WHERE id = ?1 UNION ALL SELECT c.id FROM tblCategory c JOIN category ch ON c.parent_id = ch.id) SELECT TOP 10 * FROM tblProduct WHERE tblProduct.categoryId IN (SELECT id FROM category)";
+        private static final String GET_PRODUCTS_BY_CATEGORY = "WITH category AS (SELECT id FROM tblCategory WHERE id = ?1 UNION ALL SELECT c.id FROM tblCategory c JOIN category ch ON c.parent_id = ch.id) SELECT TOP 10 * FROM tblProduct WHERE tblProduct.status = 1 AND tblProduct.categoryId IN (SELECT id FROM category)";
 
         public static synchronized java.util.List<model.Product> getCategoryProducts(int category) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
@@ -336,8 +332,11 @@ public class ProductDAO {
                     et.begin();
 
                     for (final model.ProductCustomization customization : customizations) {
-                        service.Logging.logger.info("persisting customization productitem {}, variationvalue {}", customization.getProductItemId().getId(), customization.getVariationValueId().getId());
-                        em.persist(customization);
+                        if (em.find(model.ProductCustomization.class, customization.getId()) == null) {
+                            em.persist(customization);
+                        } else {
+                            em.merge(customization);
+                        }
                     }
 
                     et.commit();
@@ -372,6 +371,28 @@ public class ProductDAO {
             }
 
         } // public static synchronized void addProductItem
+
+        public static synchronized ProductItem editProductItem(model.ProductItem productItem) throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                EntityTransaction et = em.getTransaction();
+
+                try {
+                    et.begin();
+
+                    em.merge(productItem);
+                    // em.flush();
+                    et.commit();
+                    return productItem;
+                } catch (Exception e) {
+                    if (et.isActive()) {
+                        et.rollback();
+                    }
+
+                    throw new java.sql.SQLException(e);
+                }
+            }
+
+        } // public static synchronized void editProductItem
 
         public static synchronized void updateProductItem(model.ProductItem productItem) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
