@@ -58,7 +58,7 @@
                         </c:if>
 
                         <div class="mb-3">
-                            <a href="${pageContext.request.contextPath}/promotion" class="btn btn-primary">➕ Add Promotion</a>
+                            <a href="${pageContext.request.contextPath}/sellercenter/promotion" class="btn btn-primary">➕ Add Promotion</a>
                         </div>
 
                         <c:if test="${not empty promotions}">
