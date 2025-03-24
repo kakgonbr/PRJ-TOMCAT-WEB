@@ -1,12 +1,15 @@
 function fetchCategory() {
   fetch(contextPath + "/ajax/category")
-    .then(response => response.json())
-    .then(data => {
-      let treeContainer = document.getElementById("categoryFilter");
-      treeContainer.innerHTML = "";
-      treeContainer.appendChild(createCategoryElement(data));
-    })
-    .catch(error => console.error("Error fetching filters:", error));
+  .then(response => response.json())
+  .then(data => {
+    let treeContainer = document.getElementById("categoryFilter");
+    treeContainer.innerHTML = "";
+    treeContainer.appendChild(createCategoryElement(data));
+  })
+  .catch(error => console.error("Error fetching filters:", error));
+  if (category && category !== "") {
+    
+  }
 }
 
 function createCategoryElement(category) {
@@ -16,6 +19,11 @@ function createCategoryElement(category) {
   radio.type = "radio";
   radio.name = "filter";
   radio.value = category.id;
+  if (categoryId && categoryId !== "") {
+    if (category === parseInt(categoryId)) {
+      radio.checked = true;
+    }
+  }
 
   label.appendChild(radio);
   label.appendChild(document.createTextNode(" " + category.name));

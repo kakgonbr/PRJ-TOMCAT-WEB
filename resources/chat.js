@@ -51,5 +51,6 @@ function sendMessage() {
         window.chatSocket.send(JSON.stringify(messageObject));
 
         // ADD MESAGE TO PANEL HERE
+        chatPanel.innerHTML += "<p><strong>Now - You:</strong> " + message + "</p>";
     }
 }
