@@ -10,10 +10,9 @@ public class SearchServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String categoryId = request.getParameter("categoryId");
-        if(categoryId == null)
-            request.setAttribute("categoryId", "0");
-        else
-            request.setAttribute("categoryId", categoryId);
+        if(categoryId.isBlank() || categoryId == null)
+            categoryId="0";
+        request.setAttribute("categoryId", categoryId);
         String query = request.getParameter("query");
         if(query != null)
             request.setAttribute("query", query);
