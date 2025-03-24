@@ -317,17 +317,18 @@ public class AddProductServlet extends HttpServlet {
 
             // Lặp qua từng biến thể (Variation)
             for (Map<String, Object> variation : variations) {
-                String variationName = (String) variation.get("name");
+                String variationName = (String) variation.get("name"); // Đổi từ variationName thành name
                 String datatype = (String) variation.get("datatype");
                 String unit = (String) variation.get("unit");
 
-                // Lấy danh sách "values" (danh sách object)
+                // Kiểm tra nếu values tồn tại
                 List<Map<String, Object>> valueObjects = (List<Map<String, Object>>) variation.get("values");
 
-                // Chuyển danh sách object thành danh sách String
                 List<String> values = new ArrayList<>();
-                for (Map<String, Object> valueObj : valueObjects) {
-                    values.add((String) valueObj.get("value"));
+                if (valueObjects != null) { 
+                    for (Map<String, Object> valueObj : valueObjects) {
+                        values.add((String) valueObj.get("value"));
+                    }
                 }
 
                 if (variationName == null || values == null || values.isEmpty() || datatype == null || datatype.trim().isEmpty()) {
