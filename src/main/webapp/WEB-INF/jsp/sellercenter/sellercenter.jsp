@@ -115,7 +115,7 @@
                                         <a href="shop-advertisement.html"
                                            class="list-group-item list-group-item-action pb-3">📢
                                             Shop Advertisement</a>
-                                        <a href="${pageContext.request.contextPath}/promotion" 
+                                        <a href="${pageContext.request.contextPath}/sellercenter/promotion" 
                                            class="list-group-item list-group-item-action">🏷 Discount</a>
                                     </div>
                                 </div>
