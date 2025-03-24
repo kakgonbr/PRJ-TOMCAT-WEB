@@ -63,10 +63,7 @@ public class AddProductServlet extends HttpServlet {
         java.util.Map<model.Variation, String[]> variationValues = new java.util.HashMap<>();
 
         try {
-            if (stocks.length != prices.length || stocks.length < 1 || variationIds.size() != prices.length || variationIds.size() != stocks.length || prices.length < 1 || variationIds.size() < 1) {
-                throw new java.sql.SQLException("MALFORMED INPUT, NUMBER OF INPUTED STOCK AND PRICE MUST MATCH, THERE MUST BE ATLEAST ONE PRODUCT ITEM, EACH CONTAINIGN ATLEAST ONE CUSTOMIZATION");
-            }
-        
+            
             // chjeck if the order is correct
             for (final Integer variationId : variationIds) {
                 model.Variation variation = dao.VariationDAO.VariationFetcher.getVariation(variationId);
@@ -85,6 +82,17 @@ public class AddProductServlet extends HttpServlet {
 
                 variationValues.put(variation, values);
             }
+            
+            if (stocks.length != prices.length || stocks.length < 1 || prices.length < 1 || variationIds.size() < 1) {
+                throw new java.sql.SQLException("MALFORMED INPUT, NUMBER OF INPUTED STOCK AND PRICE MUST MATCH, THERE MUST BE ATLEAST ONE PRODUCT ITEM, EACH CONTAINIGN ATLEAST ONE CUSTOMIZATION");
+            }
+            service.Logging.logger.info("name: {}", name);
+            service.Logging.logger.info("description: {}", description);
+            service.Logging.logger.info("category: {}", categoryId);
+            service.Logging.logger.info("varations: {}", variationIds);
+            service.Logging.logger.info("stock: {}", (Object[]) stocks);
+            service.Logging.logger.info("price: {}", (Object[]) prices);
+            service.Logging.logger.info("variation values: {}", variationValues);
             
             model.Product product = new model.Product();
             product.setShopId(dao.ShopDAO.ShopFetcher.getShop(shopId));
