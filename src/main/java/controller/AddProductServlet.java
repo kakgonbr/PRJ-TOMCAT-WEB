@@ -141,18 +141,18 @@ public class AddProductServlet extends HttpServlet {
 
             dao.ProductDAO.ProductManager.addProduct(product);
             // nesting, nesting, more nesting
-            for (final model.ProductItem productItem : product.getProductItemList()) {
-                dao.ProductDAO.ProductManager.addProductItem(productItem);
-                dao.ProductDAO.ProductManager.addCustomizations(product.getId(), productItem.getProductCustomizationList());
-                
-                for (final model.ProductCustomization customization : productItem.getProductCustomizationList()) {
-                    try {
-                        dao.VariationValueDAO.VariationValueManager.createVariationValue(customization.getVariationValueId());
-                    } catch (java.sql.SQLException e) {
-                        dao.VariationValueDAO.VariationValueManager.updateVariationValue(customization.getVariationValueId());
-                    }
-                }
-            }
+            // for (final model.ProductItem productItem : product.getProductItemList()) {
+            //     dao.ProductDAO.ProductManager.addProductItem(productItem);
+            //     dao.ProductDAO.ProductManager.addCustomizations(product.getId(), productItem.getProductCustomizationList());
+
+            //     for (final model.ProductCustomization customization : productItem.getProductCustomizationList()) {
+            //         try {
+            //             dao.VariationValueDAO.VariationValueManager.createVariationValue(customization.getVariationValueId());
+            //         } catch (java.sql.SQLException e) {
+            //             dao.VariationValueDAO.VariationValueManager.updateVariationValue(customization.getVariationValueId());
+            //         }
+            //     }
+            // }
         } catch (java.sql.SQLException | NumberFormatException e) {
             service.Logging.logger.warn("FAILED TO ADD PRODUCT, REASON: {}", e.getMessage());
             service.Logging.logger.warn("StackTrace: ", (Object[]) e.getStackTrace());
