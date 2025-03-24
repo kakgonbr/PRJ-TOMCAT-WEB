@@ -4,6 +4,49 @@ function onSelectCategory() {
     fetchVariations(filter ? filter.value : 0);
 }
 
+function addProductItem() {
+    let table = document.getElementById("variation-table");
+    let tableBody = table.querySelector("tbody");
+
+    let selectedVariations = Array.from(
+        document.querySelectorAll('input[name="variation"]:checked')
+    ).map(cb => data.find(v => v.id == cb.value));
+
+    let row = document.createElement("tr");
+
+    let firstCell = document.createElement("td");
+    firstCell.contentEditable = "true";
+    row.appendChild(firstCell);
+
+    selectedVariations.forEach(variation => {
+        let valueCell = document.createElement("td");
+
+        let input = document.createElement("input");
+        input.name = `input-${variation.id}`;
+        
+        if (variation.datatype === "integer") {
+            input.type = "number";
+            input.step = "1";
+        } else if (variation.datatype === "float") {
+            input.type = "number";
+            input.step = "0.01";
+        } else {
+            input.type = "text";
+        }
+
+        valueCell.appendChild(input);
+        if (variation.unit) {
+            let unitSpan = document.createElement("span");
+            unitSpan.textContent = ` ${variation.unit}`;
+            valueCell.appendChild(unitSpan);
+        }
+
+        row.appendChild(valueCell);
+    });
+
+    tableBody.appendChild(row);
+}
+
 var variations = [];
 
 function fetchVariations(categoryId) {
