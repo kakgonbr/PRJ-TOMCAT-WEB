@@ -111,9 +111,8 @@ public class AddProductServlet extends HttpServlet {
 
                 // go over variations, each product item must contain the same amount
                 // i is the index that represents the value of a productitem's variation
+                java.util.List<model.ProductCustomization> customizations = new java.util.ArrayList<>();
                 for (final java.util.Map.Entry<model.Variation, String[]> entry : variationValues.entrySet()) {
-                    java.util.List<model.ProductCustomization> customizations = new java.util.ArrayList<>();
-
                     model.ProductCustomization customization = new model.ProductCustomization();
                     model.VariationValue variationValue = new model.VariationValue();
                     variationValue.setVariationId(entry.getKey());
@@ -121,9 +120,8 @@ public class AddProductServlet extends HttpServlet {
                     customization.setVariationValueId(variationValue);
 
                     customizations.add(customization);
-
-                    productItem.setProductCustomizationList(customizations);
                 }
+                productItem.setProductCustomizationList(customizations);
 
                 service.Logging.logger.info("Adding product item: stock {}, price {}, customization list {}", productItem.getStock(), productItem.getPrice(), productItem.getProductCustomizationList());
 
@@ -135,6 +133,7 @@ public class AddProductServlet extends HttpServlet {
             dao.ProductDAO.ProductManager.addProduct(product);
         } catch (java.sql.SQLException | NumberFormatException e) {
             service.Logging.logger.warn("FAILED TO ADD PRODUCT, REASON: {}", e.getMessage());
+            service.Logging.logger.warn("StackTrace: ", (Object[]) e.getStackTrace());
             request.setAttribute("error", e.getMessage());
 
             doGet(request, response);

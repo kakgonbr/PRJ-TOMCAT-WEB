@@ -62,7 +62,7 @@ public class ProductItem implements Serializable {
     @OneToMany(mappedBy = "productItemId")
     private List<OrderedItem> orderedItemList;
     
-    @OneToMany(mappedBy = "productItemId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "productItemId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductCustomization> productCustomizationList;
     // private String name;
 
