@@ -245,7 +245,7 @@ async function fetchProductsSearch() {
       
       products.forEach(product => {
           const productCard = document.createElement("div");
-          productCard.classList.add("col-3", "mb-2");
+          productCard.classList.add("col-3");
           productCard.innerHTML = `
               <a href="https://kakgonbri.zapto.org:8443/prj/product?productId=${product.id}" class="text-dark text-decoration-none">
                   <div class="card">

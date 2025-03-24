@@ -91,7 +91,6 @@
 
     <jsp:attribute name="footer">
         <t:footer/>
-        <script src="${pageContext.request.contextPath}/resources/userMain_js"></script>
     </jsp:attribute>
 </t:genericpage>
 
