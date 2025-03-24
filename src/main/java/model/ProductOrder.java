@@ -71,7 +71,7 @@ public class ProductOrder implements Serializable {
     private User userId;
     @Column(name = "status")
     private Boolean status;
-    @OneToMany(mappedBy = "orderId", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "orderId")
     private List<OrderedItem> orderedItemList;
 
     public ProductOrder() {

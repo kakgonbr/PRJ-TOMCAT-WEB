@@ -47,7 +47,7 @@ public class Product implements Serializable {
     @Size(max = 255)
     @Column(name = "description")
     private String description;
-    @OneToMany(mappedBy = "productId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "productId")
     private List<ProductItem> productItemList;
     @OneToMany(mappedBy = "productId", fetch = FetchType.LAZY)
     private List<ProductImage> productImageList;
