@@ -206,7 +206,7 @@ public class ProductDAO {
 
     public static class ProductManager {
 
-        public static synchronized void addProduct(model.Product product) throws java.sql.SQLException {
+        public static synchronized model.Product addProduct(model.Product product) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 EntityTransaction et = em.getTransaction();
 
@@ -216,6 +216,8 @@ public class ProductDAO {
                     em.persist(product);
 
                     et.commit();
+
+                    return product;
                 } catch (Exception e) {
                     if (et.isActive()) {
                         et.rollback();
@@ -234,24 +236,28 @@ public class ProductDAO {
          * @param product
          * @throws java.sql.SQLException
          */
-        public static synchronized void editProduct(model.Product product) throws java.sql.SQLException {
+        public static synchronized model.Product editProduct(model.Product product) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 EntityTransaction et = em.getTransaction();
 
                 try {
                     et.begin();
 
-                    model.Product dbProduct = em.find(model.Product.class, product.getId());
+                    // model.Product dbProduct = em.find(model.Product.class, product.getId());
 
-                    dbProduct.setAvailablePromotionId(product.getAvailablePromotionId());
-                    dbProduct.setCategoryId(product.getCategoryId());
-                    dbProduct.setDescription(product.getDescription());
-                    dbProduct.setImageStringResourceId(product.getImageStringResourceId());
-                    dbProduct.setName(product.getName());
-                    dbProduct.setShopId(product.getShopId());
-                    dbProduct.setStatus(product.isStatus());
+                    // dbProduct.setAvailablePromotionId(product.getAvailablePromotionId());
+                    // dbProduct.setCategoryId(product.getCategoryId());
+                    // dbProduct.setDescription(product.getDescription());
+                    // dbProduct.setImageStringResourceId(product.getImageStringResourceId());
+                    // dbProduct.setName(product.getName());
+                    // dbProduct.setShopId(product.getShopId());
+                    // dbProduct.setStatus(product.isStatus());
+
+                    product = em.merge(product);
 
                     et.commit();
+
+                    return product;
                 } catch (Exception e) {
                     if (et.isActive()) {
                         et.rollback();
@@ -311,24 +317,15 @@ public class ProductDAO {
             }
         } // public static synchronized void deleteProduct
 
-        public static synchronized void addCustomizations(int productId,
-                java.util.List<model.ProductCustomization> customizations) throws java.sql.SQLException {
+        public static synchronized void addCustomizations(java.util.List<model.ProductCustomization> customizations) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 EntityTransaction et = em.getTransaction();
-
+                
                 try {
                     et.begin();
 
                     for (final model.ProductCustomization customization : customizations) {
-                        model.VariationValue variationValue = customization.getVariationValueId();
-
-                        if (em.find(model.Variation.class, variationValue.getVariationId().getId()) == null) {
-                            continue;
-                        }
-
-                        // customization's VariationValue gets its ID assigned here.
-                        variationValue = em.merge(variationValue);
-
+                        service.Logging.logger.info("persisting customization productitem {}, variationvalue {}", customization.getProductItemId().getId(), customization.getVariationValueId().getId());
                         em.persist(customization);
                     }
 
@@ -351,7 +348,7 @@ public class ProductDAO {
                     et.begin();
 
                     em.persist(productItem);
-                    em.flush();
+                    // em.flush();
                     et.commit();
                     return productItem;
                 } catch (Exception e) {
