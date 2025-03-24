@@ -72,7 +72,7 @@ public class PromotionDAO {
 
     public static class PromotionManager {
 
-        public static synchronized boolean addPromotion(int actorID, model.Promotion promotion) throws java.sql.SQLException {
+        public static synchronized model.Promotion addPromotion(model.Promotion promotion) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 EntityTransaction et = em.getTransaction();
                 try {
@@ -81,7 +81,7 @@ public class PromotionDAO {
                     em.persist(promotion);
 
                     et.commit();
-                    return true;
+                    return promotion;
                 } catch (Exception e) {
                     if (et.isActive()) {
                         et.rollback();

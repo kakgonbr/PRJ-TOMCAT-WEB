@@ -21,7 +21,7 @@ public final class SessionAndCookieManager {
 
                     return true;
                 } catch (java.sql.SQLException e) {
-                    service.Logging.logger.warn("Failed to restore user session for session {}, reason: '{}'", session == null ? "none" : session.getId(), e.getMessage());
+                    // service.Logging.logger.warn("Failed to restore user session for session {}, reason: '{}'", session == null ? "none" : session.getId(), e.getMessage());
                 } // try catch
             } // if
         } // for

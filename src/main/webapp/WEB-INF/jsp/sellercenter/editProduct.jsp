@@ -82,6 +82,54 @@
                                 ${error}
                             </div>
                         </c:if>
+                        
+                        <form action="${pageContext.request.contextPath}/product?action=setThumbnail&productId=${product.id}" enctype="multipart/form-data" method="POST">
+                            <div>
+                                <h4>Thumbnail:</h4>
+                                <img src="${pageContext.request.contextPath}/resources/${product.thumbnail}" alt="">
+                                <input type="file" name="image">
+                                <button type="submit">Update</button>
+                            </div>
+                        </form>
+
+                        <h4>Images:</h4>
+                        <c:forEach var="image" items="${product.productImages}">
+                            <form action="${pageContext.request.contextPath}/product?action=removePicture&productId=${product.id}" enctype="multipart/form-data" method="POST">
+                                <div>
+                                    <h4>Thumbnail:</h4>
+                                    <img src="${pageContext.request.contextPath}/resources/${image}" alt="">
+                                    <input type="hidden" name="imageId" value="${image}">
+                                    <button type="submit">Remove</button>
+                                </div>
+                            </form>
+                        </c:forEach>
+
+                        <form action="${pageContext.request.contextPath}/product?action=addPicture&productId=${product.id}" enctype="multipart/form-data" method="POST">
+                            <input type="file" name="image">
+                            <button type="submit">Update</button>
+                        </form>
+
+                        <c:choose>
+                            <c:when test="${product.promotion == null}">
+                                <form action="${pageContext.request.contextPath}/product?action=addPromotion&productId=${product.id}" method="POST">
+                                    <label>Name: </label>
+                                    <input type="text" name="name" required>
+                                    <label>Type: Check for flat, uncheck for %</label>
+                                    <input type="checkbox" name="type" value="true">
+                                    <label>Value</label>
+                                    <input type="number" name="value">
+                                    <label>Expire On:</label>
+                                    <input type="text" name="expire" placeholder="dd/mm/yyyy">
+                                    <button type="submit">Add Promotion</button>
+                                </form>
+                            </c:when>
+                            <c:otherwise>
+                                <form action="${pageContext.request.contextPath}/product?action=removePromotion&productId=${product.id}" method="POST">
+                                    <button type="submit">Remove Promotion</button>
+                                </form>
+                            </c:otherwise>
+                        </c:choose>
+
                         <form action="${pageContext.request.contextPath}/product?action=edit&productId=${product.id}" method="post">
                             <input type="hidden" name="id" value="${product.id}" /> 
 
