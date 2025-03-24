@@ -4,6 +4,10 @@ function onSelectCategory() {
     fetchVariations(filter ? filter.value : 0);
 }
 
+function fromProduct() { // used for editing
+
+}
+
 function addProductItem() {
     let table = document.getElementById("variation-table");
     let tableBody = table.querySelector("tbody");
@@ -17,6 +21,20 @@ function addProductItem() {
     let firstCell = document.createElement("td");
     firstCell.contentEditable = "true";
     row.appendChild(firstCell);
+
+    let numericCell = document.createElement("td");
+    let numericInput = document.createElement("input");
+    numericInput.type = "number";
+    numericInput.name = `stock`;
+    numericCell.appendChild(numericInput);
+    row.appendChild(numericCell);
+
+    numericCell = document.createElement("td");
+    numericInput = document.createElement("input");
+    numericInput.type = "number";
+    numericInput.name = `price`;
+    numericCell.appendChild(numericInput);
+    row.appendChild(numericCell);
 
     selectedVariations.forEach(variation => {
         let valueCell = document.createElement("td");
@@ -94,7 +112,10 @@ function fetchVariations(categoryId) {
 
                 let existingHeaders = tableHead.querySelectorAll("th");
                 let firstColumnHeader = existingHeaders[0].textContent; 
-                tableHead.innerHTML = `<th>${firstColumnHeader}</th>`;
+                tableHead.innerHTML = `<th>${firstColumnHeader}</th>
+                                       <th>Stock</th>
+                                       <th>Price</th>`;
+
 
                 selectedVariations.forEach(variation => {
                     let th = document.createElement("th");
@@ -105,9 +126,7 @@ function fetchVariations(categoryId) {
                 let rows = tableBody.querySelectorAll("tr");
 
                 rows.forEach(row => {
-                    let property = row.cells[0].textContent.toLowerCase(); 
-
-                    while (row.cells.length > 1) {
+                    while (row.cells.length > 3) {
                         row.removeChild(row.lastChild);
                     }
 
@@ -115,7 +134,7 @@ function fetchVariations(categoryId) {
                         let valueCell = document.createElement("td");
 
                         let input = document.createElement("input");
-                        input.name = `input-${variation.id}-${property}`;
+                        input.name = `${variation.id}`;
 
                         if (variation.datatype === "integer") {
                             input.type = "number";
@@ -128,6 +147,7 @@ function fetchVariations(categoryId) {
                         }
 
                         valueCell.appendChild(input);
+
                         if (variation.unit) {
                             let unitSpan = document.createElement("span");
                             unitSpan.textContent = ` ${variation.unit}`;
@@ -136,6 +156,14 @@ function fetchVariations(categoryId) {
 
                         row.appendChild(valueCell);
                     });
+
+                    let removeCell = document.createElement("td");
+                    let label = document.createElement("label");
+                    label.onclick = function() {row.remove()};
+                    label.innerText = "Remove";
+                    removeCell.appendChild(label);
+                    
+                    row.appendChild(label);
                 });
             }
         })
