@@ -49,7 +49,7 @@ public class Product implements Serializable {
     private String description;
     @OneToMany(mappedBy = "productId")
     private List<ProductItem> productItemList;
-    @OneToMany(mappedBy = "productId", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "productId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ProductImage> productImageList;
     @OneToMany(mappedBy = "productId")
     private List<Review> reviewList;
