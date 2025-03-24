@@ -134,10 +134,11 @@
                             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#deleted">Deleted</button>
                         </li>
                     </ul>
-
+                    
                     <div class="tab-content mt-3">
+                        <div id="productTableShop"></div>
                         <div id="available" class="tab-pane fade">
-                            <table class="table table-bordered" id="availableTable"></table>
+                            <table class="table table-bordered" id="productTableShop"></table>
                         </div>
                         <div id="deleted" class="tab-pane fade">
                             <table class="table table-bordered" id="deletedTable"></table>

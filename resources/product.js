@@ -96,15 +96,11 @@ function fetchByShop() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  // Lấy giá trị shopId từ một phần tử trên trang (nếu có)
-  var shopId = document.getElementById("shopIdInput")
-    ? document.getElementById("shopIdInput").value
-    : null;
-
-  // Kiểm tra nếu shopId không null thì tự động tải sản phẩm khả dụng ban đầu
+  let urlParams = new URLSearchParams(window.location.search);
+  let shopId = urlParams.get("shopId");
   if (shopId) {
-    fetchProductsShop(shopId, true); // Mặc định hiển thị sản phẩm có status = true
-  };
+    fetchProductsShop(shopId, true);
+  }
 });
 
 function fetchProductsShop(shopId, status) {
@@ -120,7 +116,7 @@ function fetchProductsShop(shopId, status) {
   fetch(url.toString())
     .then((response) => response.json())
     .then((data) => {
-      let tableContainer = status ? document.getElementById("availableTable") : document.getElementById("deletedTable");
+      let tableContainer = document.getElementById("productTableShop");
       updateTable(tableContainer, data);
     })
     .catch((error) => console.error("Error fetching data:", error));
