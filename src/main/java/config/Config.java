@@ -59,6 +59,7 @@ public final class Config {
         public static final String USER_ORDER = "/WEB-INF/jsp/userOrder.jsp";
         public static final String USER_ORDER_COMPLETE = "/WEB-INF/jsp/userOrderComplete.jsp";
         public static final String SHOP_ADD_PROMOTION = "/WEB-INF/jsp/sellercenter/addPromotion.jsp";
+        public static final String SHOP_DISPLAY_PROMOTION = "/WEB-INF/jsp/sellercenter/displayPromotion.jsp";
     }
 
     public static final class CookieMapper {
