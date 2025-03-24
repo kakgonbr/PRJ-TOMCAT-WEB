@@ -11,6 +11,7 @@
         <script>
             var contextPath = "${pageContext.request.contextPath}";
             var shopId = "${sessionScope.shopId}";
+            var categoryId = "${product.category.id}";
 
             document.addEventListener("DOMContentLoaded", function () {
                 fetchCategory();
