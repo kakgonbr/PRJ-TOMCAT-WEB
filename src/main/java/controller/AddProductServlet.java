@@ -63,7 +63,6 @@ public class AddProductServlet extends HttpServlet {
         java.util.Map<model.Variation, String[]> variationValues = new java.util.HashMap<>();
 
         try {
-            
             // chjeck if the order is correct
             for (final Integer variationId : variationIds) {
                 model.Variation variation = dao.VariationDAO.VariationFetcher.getVariation(variationId);
@@ -132,7 +131,6 @@ public class AddProductServlet extends HttpServlet {
             product.setProductItemList(productItems);
 
             dao.ProductDAO.ProductManager.addProduct(product);
-            request.setAttribute("product", new model.ProductDetailsWrapper(product));
         } catch (java.sql.SQLException | NumberFormatException e) {
             service.Logging.logger.warn("FAILED TO ADD PRODUCT, REASON: {}", e.getMessage());
             request.setAttribute("error", e.getMessage());

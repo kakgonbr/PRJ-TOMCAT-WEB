@@ -5,6 +5,7 @@
 package model;
 
 import jakarta.persistence.Basic;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -46,7 +47,7 @@ public class Product implements Serializable {
     @Size(max = 255)
     @Column(name = "description")
     private String description;
-    @OneToMany(mappedBy = "productId")
+    @OneToMany(mappedBy = "productId", cascade = CascadeType.ALL)
     private List<ProductItem> productItemList;
     @OneToMany(mappedBy = "productId", fetch = FetchType.LAZY)
     private List<ProductImage> productImageList;
