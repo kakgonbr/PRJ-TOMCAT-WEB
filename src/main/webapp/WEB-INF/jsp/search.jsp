@@ -116,24 +116,7 @@
                 <!-- Products Grid (unchanged from previous example) -->
                 <div class="col-9 row">
                     
-                </div>    
-                    <!--page-->
-                    <div class="col-12 my-4 d-flex justify-content-center">
-                        <nav aria-label="Page navigation example">
-                            <ul class="pagination">
-                                <!--depend on current page to calculate to page num-->
-                                <li class="page-item"><a class="page-link text-dark" href="#">Previous</a></li>
-                                <li class="page-item"><a class="page-link text-dark" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link text-dark" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link text-dark" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link text-dark" href="#">4</a></li>
-                                <li class="page-item"><a class="page-link text-dark" href="#">5</a></li>
-                              <li class="page-item"><a class="page-link text-dark" href="#">Next</a></li>
-                            </ul>
-                          </nav>
-                    </div>
-                
-
+                </div>  
             </div>
         </main>
     </jsp:attribute>

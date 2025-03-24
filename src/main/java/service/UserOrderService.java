@@ -3,26 +3,21 @@ package service;
 import java.util.List;
 
 import model.OrderItemWrapper;
-import model.OrderedItem;
-import model.ProductOrder;
+
 
 public class UserOrderService {
 
-    public static List<OrderItemWrapper> getOrderItems(int userId, int status) {
+    public static List<OrderItemWrapper> getOrderItems(int userId) {
         try {
-
-            List<ProductOrder> orders = dao.OrderDAO.OrderManager.getOrderFromUser(userId, status);
-            List<OrderItemWrapper> orderItems = null;
-            for(ProductOrder order : orders)
-            {
-                for(OrderedItem orderItem : order.getOrderedItemList()) {
-                    orderItems.add(new OrderItemWrapper(orderItem));
-                }
-            }
+            List<OrderItemWrapper> orderItems = dao.OrderDAO.OrderedItemManager.getOrderItemFromUser(userId).stream().map(model.OrderItemWrapper::new).toList();
+            if(!orderItems.isEmpty())
+                service.Logging.logger.info("List of orderItems: " + orderItems.toString());
+            else
+                service.Logging.logger.warn("orderitem dao error or there's no order");
             return orderItems;
             
         } catch (java.sql.SQLException e) {
-            service.Logging.logger.warn("FAILED TO GET AVAILABLE PROMOTIONS FOR USER {}");
+            service.Logging.logger.warn("FAILED TO GET ORDERITEMS");
         }
         return null;
     }

@@ -1,10 +1,13 @@
 package controller;
 
 import java.io.IOException;
+import java.util.List;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.OrderItemWrapper;
 
 
 public class UserOrderServlet extends HttpServlet {
@@ -15,7 +18,8 @@ public class UserOrderServlet extends HttpServlet {
         String action= request.getParameter("action");
         switch (action) {
             case "order":
-                request.setAttribute("OrderItemList", service.UserOrderService.getOrderItems(user.getId(), 1));
+                List<OrderItemWrapper> orderItemWrappers= service.UserOrderService.getOrderItems(0);
+                request.setAttribute("OrderItemList", orderItemWrappers);
                 request.getRequestDispatcher(config.Config.JSPMapper.USER_ORDER).forward(request, response);
                 break;
             case "complete":
