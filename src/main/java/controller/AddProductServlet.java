@@ -104,6 +104,10 @@ public class AddProductServlet extends HttpServlet {
 
             java.util.List<model.ProductItem> productItems = new java.util.ArrayList<>();
 
+            // jpa jpa jpa jpa jpa jpa jpa jpa jpa jpa jpa jpa jpa jpa jpa jpa jpa jpa jpa jpa jpa jpa jpa jpa
+            // how does object persisting work? who knows
+            // perks of high level programming
+            // you never know what breaks, whether its yours or theirs
             for (int i = 0; i < stocks.length; ++i) {
                 model.ProductItem productItem = new model.ProductItem();
                 productItem.setPrice(BigDecimal.valueOf(Long.parseLong(prices[i])));
@@ -136,6 +140,19 @@ public class AddProductServlet extends HttpServlet {
             product.setProductItemList(productItems);
 
             dao.ProductDAO.ProductManager.addProduct(product);
+            // nesting, nesting, more nesting
+            for (final model.ProductItem productItem : product.getProductItemList()) {
+                dao.ProductDAO.ProductManager.addProductItem(productItem);
+                dao.ProductDAO.ProductManager.addCustomizations(product.getId(), productItem.getProductCustomizationList());
+                
+                for (final model.ProductCustomization customization : productItem.getProductCustomizationList()) {
+                    try {
+                        dao.VariationValueDAO.VariationValueManager.createVariationValue(customization.getVariationValueId());
+                    } catch (java.sql.SQLException e) {
+                        dao.VariationValueDAO.VariationValueManager.updateVariationValue(customization.getVariationValueId());
+                    }
+                }
+            }
         } catch (java.sql.SQLException | NumberFormatException e) {
             service.Logging.logger.warn("FAILED TO ADD PRODUCT, REASON: {}", e.getMessage());
             service.Logging.logger.warn("StackTrace: ", (Object[]) e.getStackTrace());
