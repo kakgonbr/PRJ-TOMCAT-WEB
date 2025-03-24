@@ -45,7 +45,7 @@
                 <!-- Sidebar Filters -->
                 <div class="col-3 mb-4">
                     <form class="sidebar">
-                        <input type="hiden" name="categoryId" value="${categoryId}">
+                        <input type="hidden" name="categoryId" value="${categoryId}">
                         <div class="filter-section mb-3">
                             <div class="collapse-header" data-bs-toggle="collapse" data-bs-target="#categoriesCollapse">
                                 Categories <span class="float-end"><i class="bi bi-chevron-down text-dark"></i></span>
@@ -108,7 +108,7 @@
                             </div>
                         </div>
                         <div class="text-center">
-                            <button class="btn btn-dark" type="submit">Apply</button>
+                            <div class="btn btn-dark" onclick="fetchProductsSearch()">Apply</div>
                         </div>
                     </form>
                 </div>
@@ -141,6 +141,6 @@
     <jsp:attribute name="footer">
         <t:footer/>
         <script src="${pageContext.request.contextPath}/resources/searchPage_js"></script>
-        <script src="${pageContext.request.contextPath}/resources/userMain_js"></script>
+        
     </jsp:attribute>
 </t:genericpage>
