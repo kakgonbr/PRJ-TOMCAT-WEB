@@ -166,7 +166,9 @@ function fetchProductsShop(shopId, status) {
           <td><a href="${contextPath}/category?categoryId=${item.category.id}" class="text-decoration-none">${item.category.name}</a></td>
           <td><a href="${contextPath}/product?productId=${item.id}" class="text-decoration-none fw-bold">${item.name}</a></td>
           <td class="text-wrap" style="max-width: 300px;">${item.description}</td>
-          <td class="text-wrap" style="max-width: 300px;">${item.promotion.name} + " : " + ${item.promotion.value} + ${(item.promotion.type ? "$" : "%")}</td>
+          <td class="text-wrap" style="max-width: 300px;">
+  ${item.promotion ? `${item.promotion.name} : ${item.promotion.value} ${(item.promotion.type ? "$" : "%")}` : "No Promotion"}
+</td>
           <td class="text-center">
             ${item.status
               ? `
