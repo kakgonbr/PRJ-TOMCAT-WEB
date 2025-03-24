@@ -27,9 +27,6 @@
         <h2>Add Product</h2>
 
         <form id="addProductForm" action="${pageContext.request.contextPath}/sellercenter/addproduct" method="post">
-            <%-- TODO: ADD PRODUCT ID OF THE EDITING PRODUCT --%>
-            <input type="hidden" name="id" value=""> 
-
             <label for="productName">Product Name:</label>
             <input type="text" id="productName" name="name" required><br>
 

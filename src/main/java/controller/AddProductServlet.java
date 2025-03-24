@@ -84,13 +84,13 @@ public class AddProductServlet extends HttpServlet {
             if (stocks.length != prices.length || stocks.length < 1 || prices.length < 1 || variationIds.size() < 1) {
                 throw new java.sql.SQLException("MALFORMED INPUT, NUMBER OF INPUTED STOCK AND PRICE MUST MATCH, THERE MUST BE ATLEAST ONE PRODUCT ITEM, EACH CONTAINIGN ATLEAST ONE CUSTOMIZATION");
             }
-            // service.Logging.logger.info("name: {}", name);
-            // service.Logging.logger.info("description: {}", description);
-            // service.Logging.logger.info("category: {}", categoryId);
-            // service.Logging.logger.info("varations: {}", variationIds);
-            // service.Logging.logger.info("stock: {}", (Object[]) stocks);
-            // service.Logging.logger.info("price: {}", (Object[]) prices);
-            // service.Logging.logger.info("variation values: {}", variationValues);
+            service.Logging.logger.info("name: {}", name);
+            service.Logging.logger.info("description: {}", description);
+            service.Logging.logger.info("category: {}", categoryId);
+            service.Logging.logger.info("varations: {}", variationIds);
+            service.Logging.logger.info("stock: {}", (Object[]) stocks);
+            service.Logging.logger.info("price: {}", (Object[]) prices);
+            service.Logging.logger.info("variation values: {}", variationValues);
             
             model.Product product = new model.Product();
             product.setShopId(dao.ShopDAO.ShopFetcher.getShop(shopId));
@@ -154,7 +154,6 @@ public class AddProductServlet extends HttpServlet {
             }
         } catch (java.sql.SQLException | NumberFormatException e) {
             service.Logging.logger.warn("FAILED TO ADD PRODUCT, REASON: {}", e.getMessage());
-            service.Logging.logger.warn("StackTrace: ", e.getStackTrace().toString());
             request.setAttribute("error", e.getMessage());
 
             doGet(request, response);
