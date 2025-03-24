@@ -69,9 +69,9 @@ public class PromotionServlet extends HttpServlet {
 
         try {
             // Thêm promotion vào DB
-            boolean success = dao.PromotionDAO.PromotionManager.addPromotion(creatorId, promotion);
+            model.Promotion dbPromotion = dao.PromotionDAO.PromotionManager.addPromotion(promotion);
 
-            if (success) {
+            if (dbPromotion != null) {
                 response.sendRedirect("promotion"); // Quay về trang danh sách promotions
             } else {
                 request.setAttribute("error", "Failed to add promotion.");
