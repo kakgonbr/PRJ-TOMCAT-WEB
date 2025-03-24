@@ -317,24 +317,15 @@ public class ProductDAO {
             }
         } // public static synchronized void deleteProduct
 
-        public static synchronized void addCustomizations(int productId,
-                java.util.List<model.ProductCustomization> customizations) throws java.sql.SQLException {
+        public static synchronized void addCustomizations(java.util.List<model.ProductCustomization> customizations) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 EntityTransaction et = em.getTransaction();
-
+                
                 try {
                     et.begin();
 
                     for (final model.ProductCustomization customization : customizations) {
-                        model.VariationValue variationValue = customization.getVariationValueId();
-
-                        if (em.find(model.Variation.class, variationValue.getVariationId().getId()) == null) {
-                            continue;
-                        }
-
-                        // customization's VariationValue gets its ID assigned here.
-                        variationValue = em.merge(variationValue);
-
+                        service.Logging.logger.info("persisting customization productitem {}, variationvalue {}", customization.getProductItemId().getId(), customization.getVariationValueId().getId());
                         em.persist(customization);
                     }
 
@@ -357,7 +348,7 @@ public class ProductDAO {
                     et.begin();
 
                     em.persist(productItem);
-                    em.flush();
+                    // em.flush();
                     et.commit();
                     return productItem;
                 } catch (Exception e) {

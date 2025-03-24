@@ -121,7 +121,7 @@ public class AddProductServlet extends HttpServlet {
                     model.VariationValue variationValue = new model.VariationValue();
                     variationValue.setVariationId(entry.getKey());
                     variationValue.setValue(entry.getValue()[i]);
-                    variationValue.setProductCustomizationList(customizations);
+                    // variationValue.setProductCustomizationList(customizations);
                     
                     customization.setProductItemId(productItem);
                     customization.setVariationValueId(variationValue);
@@ -142,8 +142,21 @@ public class AddProductServlet extends HttpServlet {
             product = dao.ProductDAO.ProductManager.addProduct(product);
 
             service.Logging.logger.info("product from database: {}", product.getId());
-            product.setProductItemList(productItems);
-            product = dao.ProductDAO.ProductManager.editProduct(product);
+
+
+            for (final model.ProductItem productItem : productItems) {
+                dao.ProductDAO.ProductManager.addProductItem(productItem);
+
+                for (final model.ProductCustomization customization : productItem.getProductCustomizationList()) {
+                    service.Logging.logger.info("adding variation value, variation : {}, value: {}", customization.getVariationValueId().getVariationId(), customization.getVariationValueId().getValue());
+                    try {
+                        dao.VariationValueDAO.VariationValueManager.createVariationValue(customization.getVariationValueId());
+                    } catch (java.sql.SQLException e) {
+                        dao.VariationValueDAO.VariationValueManager.updateVariationValue(customization.getVariationValueId());
+                    }
+                }
+                dao.ProductDAO.ProductManager.addCustomizations(productItem.getProductCustomizationList());
+            }
 
             // // nesting, nesting, more nesting
             // for (final model.ProductItem productItem : product.getProductItemList()) {
