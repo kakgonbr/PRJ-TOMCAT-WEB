@@ -9,12 +9,13 @@ import jakarta.servlet.http.HttpServletResponse;
 public class SearchServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String categoryId= request.getParameter("categoryId");
+        String categoryId = request.getParameter("categoryId");
         if(categoryId == null)
             request.setAttribute("categoryId", "0");
         else
             request.setAttribute("categoryId", categoryId);
-
+        String query = request.getParameter("query");
+        request.setAttribute("query", query);
         request.getRequestDispatcher(config.Config.JSPMapper.SEARCH).forward(request, response);
     }
 
