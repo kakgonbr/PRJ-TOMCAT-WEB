@@ -62,13 +62,12 @@ public class AddProductServlet extends HttpServlet {
         String[] prices = request.getParameterValues("price");
         java.util.Map<model.Variation, String[]> variationValues = new java.util.HashMap<>();
 
-        model.Product product = new model.Product();
         try {
-        if (stocks.length != prices.length || stocks.length < 1 || variationIds.size() != prices.length || variationIds.size() != stocks.length || prices.length < 1 || variationIds.size() < 1) {
-            throw new java.sql.SQLException("MALFORMED INPUT, NUMBER OF INPUTED STOCK AND PRICE MUST MATCH, THERE MUST BE ATLEAST ONE PRODUCT ITEM, EACH CONTAINIGN ATLEAST ONE CUSTOMIZATION");
-        }
+            if (stocks.length != prices.length || stocks.length < 1 || variationIds.size() != prices.length || variationIds.size() != stocks.length || prices.length < 1 || variationIds.size() < 1) {
+                throw new java.sql.SQLException("MALFORMED INPUT, NUMBER OF INPUTED STOCK AND PRICE MUST MATCH, THERE MUST BE ATLEAST ONE PRODUCT ITEM, EACH CONTAINIGN ATLEAST ONE CUSTOMIZATION");
+            }
         
-        // chjeck if the order is correct
+            // chjeck if the order is correct
             for (final Integer variationId : variationIds) {
                 model.Variation variation = dao.VariationDAO.VariationFetcher.getVariation(variationId);
                 if (!variation.getCategoryId().getId().equals(categoryId)) {
@@ -86,7 +85,8 @@ public class AddProductServlet extends HttpServlet {
 
                 variationValues.put(variation, values);
             }
-
+            
+            model.Product product = new model.Product();
             product.setShopId(dao.ShopDAO.ShopFetcher.getShop(shopId));
             product.setCategoryId(dao.CategoryDAO.CategoryFetcher.getCategory(categoryId));
             product.setName(name);
@@ -124,8 +124,9 @@ public class AddProductServlet extends HttpServlet {
             product.setProductItemList(productItems);
 
             dao.ProductDAO.ProductManager.addProduct(product);
-        } catch (java.sql.SQLException | NumberFormatException e) {
             request.setAttribute("product", new model.ProductDetailsWrapper(product));
+        } catch (java.sql.SQLException | NumberFormatException e) {
+            service.Logging.logger.warn("FAILED TO ADD PRODUCT, REASON: {}", e.getMessage());
             request.setAttribute("error", e.getMessage());
 
             doGet(request, response);
