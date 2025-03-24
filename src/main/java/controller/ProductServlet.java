@@ -16,13 +16,15 @@ public class ProductServlet extends HttpServlet {
         if (productId != null) {
 
             request.getRequestDispatcher(config.Config.JSPMapper.PRODUCT_INFO).forward(request, response);
+
+            return;
         }
 
 
         request.setAttribute("code", 404);
-            request.getRequestDispatcher("/error").forward(request, response);
+        request.getRequestDispatcher("/error").forward(request, response);
 
-            return;
+        return;
     }
 
     @Override
