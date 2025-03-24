@@ -87,5 +87,12 @@ public class CategoryDAO {
             } 
         } // public static synchronized Category getCategoryDetails
         
+        public static synchronized Category getCategory(int id) throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return em.createNamedQuery("Category.findById", Category.class).setParameter("id", id).getSingleResult();
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
+            }
+        }
     }
 }
