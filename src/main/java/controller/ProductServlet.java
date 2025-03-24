@@ -75,6 +75,7 @@ public class ProductServlet extends HttpServlet {
         Integer productId = Integer.parseInt(request.getParameter("productId"));
         String imageId = request.getParameter("imageId");
 
+        
         try {
             model.Shop shop = dao.ShopDAO.ShopFetcher.getShop(shopIdValue);
             if (shop == null) {
@@ -82,15 +83,16 @@ public class ProductServlet extends HttpServlet {
                 request.getRequestDispatcher(config.Config.JSPMapper.EDIT_PRODUCT).forward(request, response);
                 return;
             }
-
+            
             model.Product product = dao.ProductDAO.ProductFetcher.getProductDetails(productId);
-
+            
             if (!product.getShopId().equals(shop)) {
                 request.setAttribute("error", "invalid_shop");
                 request.getRequestDispatcher(config.Config.JSPMapper.EDIT_PRODUCT).forward(request, response);
                 return;
             }
-
+            
+            service.Logging.logger.info("Removing picture {} from product {}", imageId, product.getId());
             product.getProductImageList().removeIf(pi -> pi.getImageStringResourceId().getId().equals(imageId));
 
             dao.ProductDAO.ProductManager.editProduct(product);
@@ -123,7 +125,7 @@ public class ProductServlet extends HttpServlet {
                 return;
             }
 
-            String saved = service.FileUploadService.saveFile(request.getPart("image"), productId.toString());
+            String saved = service.FileUploadService.saveFile(request.getPart("image"), productId.toString() + product.getProductImageList().size());
 
             model.ProductImage productImage = new model.ProductImage();
             productImage.setProductId(product);
@@ -260,6 +262,7 @@ public class ProductServlet extends HttpServlet {
             model.Promotion promotion = new model.Promotion();
             promotion.setCreationDate(java.sql.Date.valueOf(java.time.LocalDate.now()));
             promotion.setExpireDate(expireDate);
+            promotion.setValue(value);
             promotion.setType(type);
             promotion.setCreatorId((model.User) request.getSession().getAttribute("user"));
             promotion.setName(name);

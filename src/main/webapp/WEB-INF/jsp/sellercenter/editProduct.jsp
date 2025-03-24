@@ -100,7 +100,7 @@
                         <c:forEach var="image" items="${product.productImages}">
                             <form
                                 action="${pageContext.request.contextPath}/product?action=removePicture&productId=${product.id}"
-                                enctype="multipart/form-data" method="POST">
+                                method="POST">
                                 <div>
                                     <h4>Thumbnail:</h4>
                                     <img src="${pageContext.request.contextPath}/resources/${image}"
@@ -115,7 +115,7 @@
                             action="${pageContext.request.contextPath}/product?action=addPicture&productId=${product.id}"
                             enctype="multipart/form-data" method="POST">
                             <input type="file" name="image">
-                            <button type="submit">Update</button>
+                            <button type="submit">Add Picture</button>
                         </form>
 
                         <c:choose>
@@ -135,6 +135,21 @@
                                 </form>
                             </c:when>
                             <c:otherwise>
+                                <h4>Promotion:</h4>
+                                <ul>
+                                    <li>Name: ${product.promotion.name}</li>
+                                    <li>Value: 
+                                        <c:choose>
+                                            <c:when test="${product.promotion.type}">
+                                                - ${product.promotion.value} VND
+                                            </c:when>
+                                            <c:otherwise>
+                                                - ${product.promotion.value} %
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </li>
+                                    <li>Expire On: ${product.promotion.expireDate}</li>
+                                </ul>
                                 <form
                                     action="${pageContext.request.contextPath}/product?action=removePromotion&productId=${product.id}"
                                     method="POST">
