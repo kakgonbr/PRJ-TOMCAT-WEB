@@ -55,6 +55,7 @@ public final class Config {
         public static final String NEW_HOME = "/WEB-INF/jsp/newHome.jsp";
         public static final String EXCEED_STOCK = "/WEB-INF/jsp/exceedStock.jsp";
         public static final String SHOP_ORDER = "/WEB-INF/jsp/sellercenter/shopOrder.jsp";
+        public static final String USER_PROFILE = "/WEB-INF/jsp/userProfile.jsp";
     }
 
     public static final class CookieMapper {
