@@ -74,13 +74,20 @@ function generateCategoryHTML(category, parentId = "categoriesCollapseContent") 
         <label class="form-check-label" for="${categoryId}" data-bs-toggle="collapse" data-bs-target="#${collapseId}">
             ${category.name}
         </label>`;
-    
+
     if (category.children && category.children.length > 0) {
+        // this is awful
+        html = `<div class="form-check">
+        <input class="form-check-input" type="checkbox" id="${categoryId}" value="${categoryId}" name="categoryFilter" data-parent="${parentId}">
+        <label class="form-check-label" data-bs-toggle="collapse" data-bs-target="#${collapseId}">
+            ${category.name} <i class="bi bi-chevron-down"></i>
+        </label>`;
+    
         html += `<div class="collapse my-1" id="${collapseId}">
                     <div class="collapse-content" id="${collapseId}Content">`;
         
         category.children.forEach(child => {
-            html += generateCategoryHTML(child, `${collapseId}Content`); // parentId is unused
+            html += generateCategoryHTML(child, `${categoryId}`); // id is current category id
         });
         
         html += `</div>
