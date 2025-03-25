@@ -202,7 +202,7 @@ function updateSelection() {
 
         // productData.promotion.value + (productData.promotion.type ? "$" : "%")
         if (productData.promotion) {
-            price.innerHTML = "<del>" + matchingItem.price + "$</del>" + " " + (matchingItem.promotion.type ? matchingItem.price - parseInt(matchingItem.promotion.value) : matchingItem.price * (100.0 - parseInt(matchingItem.promotion.value)) / 100.0) + "$";
+            price.innerHTML = "<del>" + matchingItem.price + "$</del>" + " " + (productData.promotion.type ? matchingItem.price - parseInt(productData.promotion.value) : matchingItem.price * (100.0 - parseInt(productData.promotion.value)) / 100.0) + "$";
         } else {
             price.innerHTML = matchingItem.price + "$";
         }

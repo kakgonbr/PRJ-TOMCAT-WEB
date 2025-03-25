@@ -23,7 +23,7 @@
           <div class="col-12 rounded mx-auto mb-2" style="max-width: 620px;">
             <img id="mainImage" class="rounded"
               src=""
-              alt="Product Image" style="width: 100%; object-fit: cover;">
+              alt="Product Image" style="width: 100%; object-fit: cover; height: 600px">
           </div>
           <div class="d-flex align-items-center overflow-hidden" style="position: relative;">
             <button class="slider-btn left" onclick="moveSlider(-1)"><i class="bi bi-chevron-left"></i></button>
