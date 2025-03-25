@@ -26,141 +26,6 @@
     </jsp:attribute>
 
     <jsp:attribute name="body">
-        <%-- <div>
-            <h2>Quick Actions</h2>
-            <form action="${pageContext.request.contextPath}/admin" method="POST">
-                <input type="hidden" name="action" value="enableMaintenance" />
-                <input type="submit" value="Enable Maintenance" />
-            </form>
-            <form action="${pageContext.request.contextPath}/admin" method="POST">
-                <input type="hidden" name="action" value="disableMaintenance" />
-                <input type="submit" value="Disable Maintenance" />
-            </form>
-            <form action="${pageContext.request.contextPath}/admin" method="POST">
-                <input type="hidden" name="action" value="logStatistics" />
-                <input type="submit" value="Log today's statistics" />
-            </form>
-            <form action="${pageContext.request.contextPath}/admin" method="POST">
-                <input type="hidden" name="action" value="calculateTFIDF" />
-                <input type="submit" value="Calculate TFIDF" />
-            </form>
-            <form action="${pageContext.request.contextPath}/admin" method="POST">
-                <input type="hidden" name="action" value="cleanup" />
-                <input type="submit" value="Clean up files" />
-            </form>
-            </div>
-
-            <div class="table-container">
-                <h2>Resource List</h2>
-                <table border="1">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Path</th>
-                        </tr>
-                    </thead>
-                    <tbody class="data-body" id="resources">
-
-                    </tbody>
-                </table>
-                <a href="${pageContext.request.contextPath}/admin/cp?table=resources&action=edit">Create
-                    a new resource mapping</a>
-            </div>
-
-            <div class="table-container">
-                <h2>Product List</h2>
-                <table border="1">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Category ID</th>
-                            <th>Available Promotion ID</th>
-                            <th>Image Resource ID</th>
-                            <th>Shop ID</th>
-                        </tr>
-                    </thead>
-                    <tbody class="data-body" id="products">
-
-                    </tbody>
-                </table>
-                <a href="${pageContext.request.contextPath}/admin/cp?table=products&action=edit">Create
-                    a new product</a>
-            </div>
-
-            <div class="table-container">
-                <h2>User List</h2>
-                <table border="1">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Email</th>
-                            <th>Username</th>
-                            <th>Phonenumber</th>
-                            <th>Password</th>
-                            <th>Persistent Cookie</th>
-                            <th>Google ID</th>
-                            <th>Facebook ID</th>
-                            <th>Display Name</th>
-                            <th>Bio</th>
-                            <th>Is Admin</th>
-                            <th>Credit</th>
-                            <th>Profile String Resource ID</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody class="data-body" id="users">
-
-                    </tbody>
-                </table>
-                <a href="${pageContext.request.contextPath}/admin/cp?table=users&action=edit">Create
-                    a new user</a>
-            </div>
-
-            <div class="table-container">
-                <h2>Shop List</h2>
-                <table border="1">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Address</th>
-                            <th>Is Visible</th>
-                            <th>Owner ID</th>
-                        </tr>
-                    </thead>
-                    <tbody class="data-body" id="shops">
-
-                    </tbody>
-                </table>
-                <a href="${pageContext.request.contextPath}/admin/cp?table=shops&action=edit">Create
-                    a new shop</a>
-            </div>
-
-            <div class="table-container">
-                <h2>Promotion List</h2>
-                <table border="1">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Value</th>
-                            <th>ExpireDate</th>
-                            <th>Type</th>
-                            <th>Is Of Admin</th>
-                            <th>Creation Date</th>
-                            <th>Creator ID</th>
-                        </tr>
-                    </thead>
-                    <tbody class="data-body" id="promotions">
-
-                    </tbody>
-                </table>
-                <a href="${pageContext.request.contextPath}/admin/cp?table=promotions&action=edit">Create
-                    a new promotion</a>
-            </div> --%>
-
             <div class="my-3 container">
                 <div class="row justify-content-center">
                     <div class="col-lg-8 text-center">
@@ -198,6 +63,37 @@
                         </form>
                     </div>
                 </div>
+
+                <div class="mb-4">
+                    <h2>Send Notification</h2>
+                    <form action="${pageContext.request.contextPath}/admin" method="POST">
+                        <input type="hidden" name="action" value="sendNotification" />
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="title" name="title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="content" class="form-label">Content</label>
+                            <input type="text" class="form-control" id="content" name="content" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="recipient" class="form-label">Send To</label>
+                            <select class="form-select" id="target" name="target">
+                                <option value="all">To all</option>
+                                <option value="user">To user</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3" id="userIdField">
+                            <label for="userId" class="form-label">User ID</label>
+                            <input type="number" class="form-control" id="userId" name="userId">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Send</button>
+                    </form>
+                </div>
+
 
                 <div class="table-container">
                     <h2>Resource List</h2>

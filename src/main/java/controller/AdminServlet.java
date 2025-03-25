@@ -48,7 +48,10 @@ public class AdminServlet extends HttpServlet {
                 break;
                 case "cleanup":
                     cleanup();
-                break;                
+                break;
+                case "sendNotification":
+                    sendNotification(request, response);
+                break;
             }
         } catch (java.sql.SQLException e) {
             service.Logging.logger.error("Failed to execute action {}, reason: {}", action, e.getMessage());
@@ -70,5 +73,15 @@ public class AdminServlet extends HttpServlet {
 
     private static void cleanup() throws java.sql.SQLException, java.io.IOException {
         service.FileCleanupJob.cleanup();
+    }
+
+    private static void sendNotification(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, java.sql.SQLException {
+        model.Notification notification = new model.Notification();
+        notification.setTitle(request.getParameter("title"));
+        notification.setBody(request.getParameter("body"));
+        notification.setIsRead(false);
+        // excuse the uneasy and inconsistent usage of R-value string here
+        notification.setUserId("all".equals(request.getParameter("target")) ? null : new model.User(Integer.parseInt(request.getParameter("userId"))));
+        dao.NotificationDAO.NotificationManager.add(notification);
     }
 }
