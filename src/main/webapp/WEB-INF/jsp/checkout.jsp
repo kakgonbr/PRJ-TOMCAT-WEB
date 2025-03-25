@@ -80,17 +80,17 @@
                         </tr>
                         <c:choose>
                             <c:when test="${cartItem.productWrapper.promotion == null}">
-                                <c:set var="total" value="${(total + cartItem.productItem.price) * cartItem.quantity}"/>
+                                <c:set var="total" value="${total + cartItem.productItem.price * cartItem.quantity}"/>
                             </c:when>
                             <c:otherwise>
                                 <c:choose>
                                     <c:when test="${cartItem.productWrapper.promotion.type}">
                                         <c:set var="total"
-                                            value="${(total + (cartItem.productItem.price - cartItem.productWrapper.promotion.value)) * cartItem.quantity}" />
+                                            value="${(total + (cartItem.productItem.price - cartItem.productWrapper.promotion.value) * cartItem.quantity)}" />
                                     </c:when>
                                     <c:otherwise>
                                         <c:set var="total"
-                                            value="${(total + (cartItem.productItem.price * (100.0 - cartItem.productWrapper.promotion.value) / 100.0)) * cartItem.quantity}" />
+                                            value="${(total + (cartItem.productItem.price * (100.0 - cartItem.productWrapper.promotion.value) / 100.0) * cartItem.quantity)}" />
                                     </c:otherwise>
                                 </c:choose>
                             </c:otherwise>
