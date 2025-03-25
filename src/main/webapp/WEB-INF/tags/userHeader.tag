@@ -122,6 +122,8 @@
                 <div class="row">
                     <div class="tab-content"></div>
                 </div>
+                <div class="row"><h2 class="text-center"><a href="https://kakgonbri.zapto.org:8443/prj/search?categoryId=0" class="text-decoration-none text-dark blackLineUnderneath" style="width: 100%;">All
+                    </a></64H224c></div>
             </div>
         </div>
         <div class="col-7 mx-auto">
