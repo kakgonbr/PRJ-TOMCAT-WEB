@@ -24,7 +24,7 @@
         <c:if test="${error == 'address'}">
             <h1>address invalid!</h1>
         </c:if> --%>
-        <t:error error="${error}" />
+        <t:userHeader user="${sessionScope.user.username}" />
     </jsp:attribute>
 
     <jsp:attribute name="body">

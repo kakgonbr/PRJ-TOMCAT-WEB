@@ -8,6 +8,8 @@ import model.Review;
 
 import java.util.List;
 
+import org.hibernate.Hibernate;
+
 public class ReviewDAO {
     
     public static class ReviewManager {
@@ -55,10 +57,14 @@ public class ReviewDAO {
     
         public static synchronized List<Review> getReviewsByProductId(int productId, int page, int pageSize) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                return em.createQuery(GET_REVIEWS_BY_PRODUCT_PAGED, Review.class).setParameter(1, productId)
+                List<Review> reviews = em.createQuery(GET_REVIEWS_BY_PRODUCT_PAGED, Review.class).setParameter(1, productId)
                         .setFirstResult((page - 1) * pageSize)
                         .setMaxResults(pageSize)
                         .getResultList();
+
+                reviews.stream().map(Review::getUserId).map(model.User::getProfileStringResourceId).forEach(Hibernate::initialize);
+
+                return reviews;
             } catch (Exception e) {
                 throw new java.sql.SQLException(e);
             }

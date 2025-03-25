@@ -23,31 +23,51 @@
     </jsp:attribute>
 
     <jsp:attribute name="body">
-        <h2>Open Chats</h2>
-        <c:forEach var="chat" items="${chatBoxes}">
-            <c:if test="${chat.user1 == currentUser}">
-                <button onclick="openChat('${chat.user2}', '${chat.username2}')">Chat with ${chat.username2}</button>
-            </c:if>
-            <c:if test="${chat.user2 == currentUser}">
-                <button onclick="openChat('${chat.user1}', '${chat.username1}')">Chat with ${chat.username1}</button>
-            </c:if>
-        </c:forEach>
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-md-4">
+                    <h2 class="mb-3">Open Chats</h2>
 
-        <form action="${pageContext.request.contextPath}/chat" method="POST">
-            <input type="text" name="targetUser"/>
-            <button type="submit">Create chat</button>
-        </form>
+                    <div class="list-group">
+                        <c:forEach var="chat" items="${chatBoxes}">
+                            <c:if test="${chat.user1 == currentUser}">
+                                <button class="list-group-item list-group-item-action" onclick="openChat('${chat.user2}', '${chat.username2}')">
+                                    Chat with ${chat.username2}
+                                </button>
+                            </c:if>
+                            <c:if test="${chat.user2 == currentUser}">
+                                <button class="list-group-item list-group-item-action" onclick="openChat('${chat.user1}', '${chat.username1}')">
+                                    Chat with ${chat.username1}
+                                </button>
+                            </c:if>
+                        </c:forEach>
+                    </div>
 
+                    <form action="${pageContext.request.contextPath}/chat" method="POST" class="mt-3">
+                        <div class="input-group">
+                            <input type="text" name="targetUser" class="form-control" placeholder="Enter username">
+                            <button type="submit" class="btn btn-primary">Create Chat</button>
+                        </div>
+                    </form>
+                </div>
 
-        <div id="chatPanel">
-            <label>Chat</label><br>
-            <div id="messages"
-                style="border:1px solid #ccc; height:200px; overflow-y:scroll; margin:10px 0;">
+                <div class="col-md-8">
+                    <h2 class="mb-3">Chat</h2>
+                    
+                    <div id="chatPanel" class="card">
+                        <div class="card-body">
+                            <div id="messages" class="border rounded p-2" style="height: 200px; overflow-y: auto;">
+                            </div>
+
+                            <div class="input-group mt-2">
+                                <input type="text" id="message" class="form-control" placeholder="Type a message">
+                                <button class="btn btn-success" onclick="sendMessage()">Send</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <input type="text" id="message" placeholder="Type a message">
-            <button onclick="sendMessage()">Send</button>
         </div>
-
     </jsp:attribute>
 
     <jsp:attribute name="footer">

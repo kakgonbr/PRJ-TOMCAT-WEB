@@ -17,10 +17,10 @@
     <jsp:attribute name="body">
         <%-- <c:if test="${error != null && error !=''}">
             <p>Error: ${error}.</p>
-        </c:if>
+        </c:if> --%>
         <c:if test="${changed != null && changed != ''}">
             <p>Changed ${changed}.</p>
-        </c:if> --%>
+        </c:if>
         <p>Profile: </p>
         <img src="${pageContext.request.contextPath}/resources/${sessionScope.user.profileStringResourceId.id}">
         <form action="${pageContext.request.contextPath}/user" method="POST" enctype="multipart/form-data">

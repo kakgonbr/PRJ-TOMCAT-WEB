@@ -53,6 +53,11 @@ public class UserServlet extends HttpServlet {
                         request.setAttribute("error", "Passwords do not match");
                         break;
                     }
+
+                    if (!misc.Utils.Validator.password(password)) {
+                        request.setAttribute("error", "Password must be between 8 and 16 characters, contain atleast 1 number, 1 uppercase letter, 1 lowercase letter and 1 non-alphanumeric character.");
+                        break;
+                    }
                     
                     user.setPassword(password);
                     dao.UserDAO.UserManager.updateUser(user);
