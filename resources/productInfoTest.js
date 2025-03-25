@@ -274,7 +274,7 @@ function loadReviews(productId, page = 1) {
     fetch("https://kakgonbri.zapto.org:8443/prj/ajax/reviewloader?productId=" + productId + "&page=" + page)
         .then(response => response.json())
         .then(data => {
-            const { reviews, currentPage, totalPages, totalReviews } = data;
+            let { reviews, currentPage, totalPages, totalReviews } = data;
             
             currentPage = currentPage;
             totalPages = totalPages;
