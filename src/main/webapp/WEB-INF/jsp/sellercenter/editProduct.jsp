@@ -15,6 +15,25 @@
             });
         </script>
 
+        <style>
+            <%-- messy --%>
+            .card {
+                padding: 1rem;
+                border-radius: 8px;
+                margin-bottom: 1rem;
+            }
+
+            .form-control, .btn {
+                margin-top: 0.5rem;
+            }
+
+            .thumbnail-img, .product-img {
+                width: 100%;
+                max-width: 150px;
+                height: auto;
+                border-radius: 8px;
+            }
+        </style>
     </jsp:attribute>
 
     <jsp:attribute name="header">
@@ -174,72 +193,75 @@
                                 </c:otherwise>
                             </c:choose>
                         </div>
-                        <form
+                        <div class="card">
+                            <form
                             action="${pageContext.request.contextPath}/product?action=edit&productId=${product.id}"
                             method="post">
-                            <input type="hidden" name="id" value="${product.id}" />
+                                <input type="hidden" name="id" value="${product.id}" />
 
-                            <div class="mb-3">
-                                <label for="name" class="form-label">name:</label>
-                                <input type="text" id="name" name="name" class="form-control"
-                                    value="${product.name}" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="description" class="form-label">Description:</label>
-                                <textarea id="description" name="description" class="form-control"
-                                    required>${product.description}</textarea>
-                            </div>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Name:</label>
+                                    <input type="text" id="name" name="name" class="form-control"
+                                        value="${product.name}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Description:</label>
+                                    <textarea id="description" name="description" class="form-control"
+                                        required>${product.description}</textarea>
+                                </div>
 
-                            <div class="mb-3">
-                                <label>Category: ${product.category.name}</label>
-                            </div>
+                                <div class="mb-3">
+                                    <label>Category: ${product.category.name}</label>
+                                </div>
 
-                            <div class="mb-3">
-                                <h4>product item</h4>
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Stock</th>
-                                            <th>Price</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:forEach var="item" items="${product.productItems}">
+                                <div class="mb-3">
+                                    <h4>Product items</h4>
+                                    <table class="table">
+                                        <thead>
                                             <tr>
-                                                <td>
-                                                    <input type="hidden" name="productItemId"
-                                                        value="${item.id}">
-                                                    ${item.id}
-                                                </td>
-                                                <td>
-                                                    <input type="number" name="stock"
-                                                        value="${item.stock}">
-                                                </td>
-                                                <td>
-                                                    <input type="text" name="price"
-                                                        value="${item.price}">
-                                                </td>
-                                                <td>
-                                                    <c:forEach var="customization"
-                                                        items="${item.customizations}">
-                                                        ${customization.name} : ${customization.value}
-                                                        ${customization.unit}
-                                                        <br></br>
-                                                    </c:forEach>
-                                                </td>
+                                                <th>ID</th>
+                                                <th>Stock</th>
+                                                <th>Price</th>
+                                                <th>Customizations</th>
                                             </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>
-                            </div>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach var="item" items="${product.productItems}">
+                                                <tr>
+                                                    <td>
+                                                        <input type="hidden" name="productItemId"
+                                                            value="${item.id}">
+                                                        ${item.id}
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" class="form-control" name="stock"
+                                                            value="${item.stock}">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control" name="price"
+                                                            value="${item.price}">
+                                                    </td>
+                                                    <td>
+                                                        <c:forEach var="customization"
+                                                            items="${item.customizations}">
+                                                            ${customization.name} : ${customization.value}
+                                                            ${customization.unit}
+                                                            <br></br>
+                                                        </c:forEach>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
 
-                            <div class="mb-3">
-                                <button type="submit" class="btn btn-primary">Save changes</button>
-                                <a href="${pageContext.request.contextPath}/sellercenter/shophome"
-                                    class="btn btn-secondary">Hủy</a>
-                            </div>
-                        </form>
+                                <div class="mb-3">
+                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                    <a href="${pageContext.request.contextPath}/sellercenter/shophome"
+                                        class="btn btn-secondary">Cancel</a>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </main>
             </div>
