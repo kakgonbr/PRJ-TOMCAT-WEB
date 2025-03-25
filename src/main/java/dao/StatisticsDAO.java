@@ -55,10 +55,10 @@ public final class StatisticsDAO {
                 + //
                 "VALUES (\r\n" + //
                 "    ?1,\r\n" + //
-                "    (SELECT SUM(finalPrice) FROM tblOrder),\r\n" + //
-                "    (SELECT COUNT(*) FROM tblUser),\r\n" + //
-                "    (SELECT COUNT(*) FROM tblProduct),\r\n" + //
-                "    (SELECT COUNT(*) FROM tblShop),\r\n" + //
+                "    (SELECT SUM(finalPrice) FROM tblOrder WHERE status = 1),\r\n" + //
+                "    (SELECT COUNT(*) FROM tblUser WHERE status = 1),\r\n" + //
+                "    (SELECT COUNT(*) FROM tblProduct WHERE status = 1),\r\n" + //
+                "    (SELECT COUNT(*) FROM tblShop WHERE status = 1),\r\n" + //
                 "    (SELECT COUNT(*) FROM tblPromotion),\r\n" + //
                 "    (SELECT SUM(quantity) FROM tblOrderedItem),\r\n" + //
                 "    ?2,\r\n" + //

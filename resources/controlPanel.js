@@ -45,6 +45,11 @@ function populateTables(data) {
 
             let editCell = row.insertCell();
             let editButton = document.createElement("button");
+            editButton.classList.add("btn");
+            editButton.classList.add("shadow");
+            editButton.classList.add("custom-outline-button");
+            editButton.classList.add("btn shadow custom-outline-button");
+            editButton.style.width = "100%";
             editButton.textContent = "Edit";
             editButton.addEventListener("click", function () {
                 window.location.href = contextPath + `/admin/cp?${params.toString()}`;
@@ -53,6 +58,11 @@ function populateTables(data) {
 
             let deleteCell = row.insertCell();
             let deleteButton = document.createElement("button");
+            deleteButton.classList.add("btn");
+            deleteButton.classList.add("shadow");
+            deleteButton.classList.add("custom-outline-button");
+            deleteButton.classList.add("btn shadow custom-outline-button");
+            deleteButton.style.width = "100%";
             deleteButton.textContent = "Delete";
             deleteButton.addEventListener("click", function () {
                 if (confirm("Are you sure you want to delete this item?")) {

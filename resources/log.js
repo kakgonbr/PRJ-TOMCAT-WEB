@@ -3,7 +3,7 @@ function refreshLogs() {
         .then(response => response.text())
         .then(text => {
             let log = document.getElementById("logContainer");
-            let wasScrolled = log.scrollTop == log.scrollHeight;
+            let wasScrolled = (log.scrollHeight - log.scrollTop < 1000) || log.scrollTop == 0;
             log.innerText = text;
             if (wasScrolled) {
                 log.scrollTop = log.scrollHeight;

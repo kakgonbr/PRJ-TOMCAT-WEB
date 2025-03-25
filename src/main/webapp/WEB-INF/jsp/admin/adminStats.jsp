@@ -133,7 +133,7 @@
             </div>
         </div>
 
-        <div class="container p-3 my-2" style="background-color: var(--bs-custom-container-focus);">
+        <div class="container-fluid p-3 my-2 shadow-lg" style="background-color: var(--bs-custom-container-focus);">
             <pre id="logContainer">Loading logs</pre>
         </div>
     </jsp:attribute>

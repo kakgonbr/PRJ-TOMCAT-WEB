@@ -18,7 +18,6 @@
             });
         </script>
 
-
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/admin_css">
     </jsp:attribute>
 
@@ -28,7 +27,7 @@
     </jsp:attribute>
 
     <jsp:attribute name="body">
-        <div>
+        <%-- <div>
             <h2>Quick Actions</h2>
             <form action="${pageContext.request.contextPath}/admin" method="POST">
                 <input type="hidden" name="action" value="enableMaintenance" />
@@ -50,113 +49,255 @@
                 <input type="hidden" name="action" value="cleanup" />
                 <input type="submit" value="Clean up files" />
             </form>
-        </div>
+            </div>
 
-        <div class="table-container">
-            <h2>Resource List</h2>
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Path</th>
-                    </tr>
-                </thead>
-                <tbody class="data-body" id="resources">
+            <div class="table-container">
+                <h2>Resource List</h2>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Path</th>
+                        </tr>
+                    </thead>
+                    <tbody class="data-body" id="resources">
 
-                </tbody>
-            </table>
-            <a href="${pageContext.request.contextPath}/admin/cp?table=resources&action=edit">Create a new resource mapping</a>
-        </div>
+                    </tbody>
+                </table>
+                <a href="${pageContext.request.contextPath}/admin/cp?table=resources&action=edit">Create
+                    a new resource mapping</a>
+            </div>
 
-        <div class="table-container">
-            <h2>Product List</h2>
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Category ID</th>
-                        <th>Available Promotion ID</th>
-                        <th>Image Resource ID</th>
-                        <th>Shop ID</th>
-                    </tr>
-                </thead>
-                <tbody class="data-body" id="products">
+            <div class="table-container">
+                <h2>Product List</h2>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Category ID</th>
+                            <th>Available Promotion ID</th>
+                            <th>Image Resource ID</th>
+                            <th>Shop ID</th>
+                        </tr>
+                    </thead>
+                    <tbody class="data-body" id="products">
 
-                </tbody>
-            </table>
-            <a href="${pageContext.request.contextPath}/admin/cp?table=products&action=edit">Create a new product</a>
-        </div>
-        
-        <div class="table-container">
-            <h2>User List</h2>
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Email</th>
-                        <th>Username</th>
-                        <th>Phonenumber</th>
-                        <th>Password</th>
-                        <th>Persistent Cookie</th>
-                        <th>Google ID</th>
-                        <th>Facebook ID</th>
-                        <th>Display Name</th>
-                        <th>Bio</th>
-                        <th>Is Admin</th>
-                        <th>Credit</th>
-                        <th>Profile String Resource ID</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody class="data-body" id="users">
+                    </tbody>
+                </table>
+                <a href="${pageContext.request.contextPath}/admin/cp?table=products&action=edit">Create
+                    a new product</a>
+            </div>
 
-                </tbody>
-            </table>
-            <a href="${pageContext.request.contextPath}/admin/cp?table=users&action=edit">Create a new user</a>
-        </div>
+            <div class="table-container">
+                <h2>User List</h2>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Email</th>
+                            <th>Username</th>
+                            <th>Phonenumber</th>
+                            <th>Password</th>
+                            <th>Persistent Cookie</th>
+                            <th>Google ID</th>
+                            <th>Facebook ID</th>
+                            <th>Display Name</th>
+                            <th>Bio</th>
+                            <th>Is Admin</th>
+                            <th>Credit</th>
+                            <th>Profile String Resource ID</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="data-body" id="users">
 
-        <div class="table-container">
-            <h2>Shop List</h2>
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Address</th>
-                        <th>Is Visible</th>
-                        <th>Owner ID</th>
-                    </tr>
-                </thead>
-                <tbody class="data-body" id="shops">
+                    </tbody>
+                </table>
+                <a href="${pageContext.request.contextPath}/admin/cp?table=users&action=edit">Create
+                    a new user</a>
+            </div>
 
-                </tbody>
-            </table>
-            <a href="${pageContext.request.contextPath}/admin/cp?table=shops&action=edit">Create a new shop</a>
-        </div>
+            <div class="table-container">
+                <h2>Shop List</h2>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Address</th>
+                            <th>Is Visible</th>
+                            <th>Owner ID</th>
+                        </tr>
+                    </thead>
+                    <tbody class="data-body" id="shops">
 
-        <div class="table-container">
-            <h2>Promotion List</h2>
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Value</th>
-                        <th>ExpireDate</th>
-                        <th>Type</th>
-                        <th>Is Of Admin</th>
-                        <th>Creation Date</th>
-                        <th>Creator ID</th>
-                    </tr>
-                </thead>
-                <tbody class="data-body" id="promotions">
+                    </tbody>
+                </table>
+                <a href="${pageContext.request.contextPath}/admin/cp?table=shops&action=edit">Create
+                    a new shop</a>
+            </div>
 
-                </tbody>
-            </table>
-            <a href="${pageContext.request.contextPath}/admin/cp?table=promotions&action=edit">Create a new promotion</a>
-        </div>
+            <div class="table-container">
+                <h2>Promotion List</h2>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Value</th>
+                            <th>ExpireDate</th>
+                            <th>Type</th>
+                            <th>Is Of Admin</th>
+                            <th>Creation Date</th>
+                            <th>Creator ID</th>
+                        </tr>
+                    </thead>
+                    <tbody class="data-body" id="promotions">
+
+                    </tbody>
+                </table>
+                <a href="${pageContext.request.contextPath}/admin/cp?table=promotions&action=edit">Create
+                    a new promotion</a>
+            </div> --%>
+
+            <div class="container">
+                <div class="mb-4">
+                    <h2>Quick Actions</h2>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <form action="${pageContext.request.contextPath}/admin" method="POST">
+                            <input type="hidden" name="action" value="enableMaintenance" />
+                            <button type="submit" class="btn btn-warning">Enable
+                                Maintenance</button>
+                        </form>
+                        <form action="${pageContext.request.contextPath}/admin" method="POST">
+                            <input type="hidden" name="action" value="disableMaintenance" />
+                            <button type="submit" class="btn btn-success">Disable
+                                Maintenance</button>
+                        </form>
+                        <form action="${pageContext.request.contextPath}/admin" method="POST">
+                            <input type="hidden" name="action" value="logStatistics" />
+                            <button type="submit" class="btn btn-info">Log Today's
+                                Statistics</button>
+                        </form>
+                        <form action="${pageContext.request.contextPath}/admin" method="POST">
+                            <input type="hidden" name="action" value="calculateTFIDF" />
+                            <button type="submit" class="btn btn-primary">Calculate TFIDF</button>
+                        </form>
+                        <form action="${pageContext.request.contextPath}/admin" method="POST">
+                            <input type="hidden" name="action" value="cleanup" />
+                            <button type="submit" class="btn btn-danger">Clean Up Files</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <h2>Resource List</h2>
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Path</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resources"></tbody>
+                    </table>
+                    <a class="btn btn-primary"
+                        href="${pageContext.request.contextPath}/admin/cp?table=resources&action=edit">Create
+                        a new resource mapping</a>
+                </div>
+
+                <div class="table-container">
+                    <h2>Product List</h2>
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Category ID</th>
+                                <th>Available Promotion ID</th>
+                                <th>Image Resource ID</th>
+                                <th>Shop ID</th>
+                            </tr>
+                        </thead>
+                        <tbody id="products"></tbody>
+                    </table>
+                    <a class="btn btn-primary"
+                        href="${pageContext.request.contextPath}/admin/cp?table=products&action=edit">Create
+                        a new product</a>
+                </div>
+
+                <div class="table-container">
+                    <h2>User List</h2>
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Email</th>
+                                <th>Username</th>
+                                <th>Phonenumber</th>
+                                <th>Password</th>
+                                <th>Persistent Cookie</th>
+                                <th>Google ID</th>
+                                <th>Facebook ID</th>
+                                <th>Display Name</th>
+                                <th>Bio</th>
+                                <th>Is Admin</th>
+                                <th>Credit</th>
+                                <th>Profile String Resource ID</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users"></tbody>
+                    </table>
+                    <a class="btn btn-primary"
+                        href="${pageContext.request.contextPath}/admin/cp?table=users&action=edit">Create
+                        a new user</a>
+                </div>
+
+                <div class="table-container">
+                    <h2>Shop List</h2>
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Address</th>
+                                <th>Is Visible</th>
+                                <th>Owner ID</th>
+                            </tr>
+                        </thead>
+                        <tbody id="shops"></tbody>
+                    </table>
+                    <a class="btn btn-primary"
+                        href="${pageContext.request.contextPath}/admin/cp?table=shops&action=edit">Create
+                        a new shop</a>
+                </div>
+
+                <div class="table-container">
+                    <h2>Promotion List</h2>
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Value</th>
+                                <th>Expire Date</th>
+                                <th>Type</th>
+                                <th>Is Of Admin</th>
+                                <th>Creation Date</th>
+                                <th>Creator ID</th>
+                            </tr>
+                        </thead>
+                        <tbody id="promotions"></tbody>
+                    </table>
+                    <a class="btn btn-primary"
+                        href="${pageContext.request.contextPath}/admin/cp?table=promotions&action=edit">Create
+                        a new promotion</a>
+                </div>
+            </div>
 
     </jsp:attribute>
 
