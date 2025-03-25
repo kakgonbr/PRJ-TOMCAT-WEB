@@ -44,7 +44,7 @@ public class ProductLoader extends HttpServlet {
             if (recommendations == null || recommendations.isBlank()) {
                 recommendations = "";
 
-                if (user != null) {
+                if (user != null && shopId == null) {
                     recommendations = dao.OrderDAO.OrderManager.getPreferenceFromOrders(user.getId());
                 }
             }
