@@ -36,7 +36,7 @@ public class ProductLoader extends HttpServlet {
 
         String recommendations = request.getParameter("query");
         // Integer category = request.getParameter("category") == null || request.getParameter("category").isBlank() ? 0 : Integer.parseInt(request.getParameter("category"));
-        java.util.List<Integer> categories = request.getParameterValues("category") == null ? Arrays.asList(0) : Arrays.asList(request.getParameterValues("category")).stream().map(Integer::parseInt).toList();
+        java.util.List<Integer> categories = request.getParameterValues("categoryId") == null ? Arrays.asList(0) : Arrays.asList(request.getParameterValues("categoryId")).stream().map(Integer::parseInt).toList();
         String shopId = request.getParameter("shopId");
         String statusParam = request.getParameter("status");
 
@@ -45,7 +45,7 @@ public class ProductLoader extends HttpServlet {
                 recommendations = "";
 
                 if (user != null) {
-                    // try to get the user's preference here
+                    recommendations = dao.OrderDAO.OrderManager.getPreferenceFromOrders(user.getId());
                 }
             }
 

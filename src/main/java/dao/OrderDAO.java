@@ -184,6 +184,18 @@ public class OrderDAO {
                 }
             }
         } // public static synchronized void updatePrice
+
+
+        public static synchronized String getPreferenceFromOrders(int userId) throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                java.util.List<ProductOrder> orders = em.createNativeQuery(SELECT_ORDER_USER, model.ProductOrder.class).setParameter(1, userId).setParameter(2, 1).getResultList();
+
+                return orders.stream().flatMap(o -> o.getOrderedItemList().stream()).map(model.OrderedItem::getProductItemId).map(model.ProductItem::getProductId).map(model.Product::getName).collect(Collectors.joining(" "));
+                
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
+            }
+        }
     } // public static class OrderManager
 
     public static class OrderedItemManager {
