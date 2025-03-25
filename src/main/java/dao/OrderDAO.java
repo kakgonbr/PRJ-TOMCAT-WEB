@@ -198,7 +198,7 @@ public class OrderDAO {
             "JOIN FETCH p.shopId s " +
             "LEFT JOIN FETCH pi.productCustomizationList pc " +
             "LEFT JOIN FETCH p.availablePromotionId " +
-            "WHERE o.userId = :userId AND o.status = 0";
+            "WHERE o.userId = :userId AND o.status = false";
 
         /**
          * Try to verify that these items belong to the correct cart and the
