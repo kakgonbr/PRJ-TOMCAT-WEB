@@ -19,8 +19,10 @@ public class UserOrderServlet extends HttpServlet {
         switch (action) {
             case "order":
                 List<OrderItemWrapper> orderItemWrappers= service.UserOrderService.getOrderItems(user.getId());
-                request.setAttribute("OrderItemList", orderItemWrappers);
-                request.getRequestDispatcher(config.Config.JSPMapper.USER_ORDER).forward(request, response);
+                if(orderItemWrappers != null) {
+                    request.setAttribute("OrderItemList", orderItemWrappers);
+                    request.getRequestDispatcher(config.Config.JSPMapper.USER_ORDER).forward(request, response);
+                }
                 break;
             case "complete":
                 request.getRequestDispatcher(config.Config.JSPMapper.USER_ORDER_COMPLETE).forward(request, response);

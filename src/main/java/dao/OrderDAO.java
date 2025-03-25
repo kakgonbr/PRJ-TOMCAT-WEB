@@ -190,7 +190,13 @@ public class OrderDAO {
         private static final String INSERT_INTO_ORDER = "INSERT INTO tblOrderedItem (orderId, productItemId, quantity, totalPrice, shippingCost) VALUES (?1, ?2, ?3, ?4, ?5)";
         private static final String DELETE_FROM_CART_ITEM = "DELETE FROM tblCartItem WHERE id = ?1";
         private static final String REMOVE_FROM_PRODUCT_ITEM = "UPDATE tblProductItem SET stock = ((SELECT stock FROM tblproductItem WHERE id = ?2) - ?1) WHERE id = ?2";
-        private static final String GET_ORDERITEMS = "SELECT tblOrderedItem.* FROM tblOrderedItem JOIN tblOrder ON tblOrderedItem.orderId = tblOrder.id WHERE tblOrder.userId = ?1 AND tblOrder.status = 0";
+        private static final String GET_ORDERITEMS = 
+        "SELECT oi.* FROM tblOrderedItem oi " +
+        "JOIN tblOrder o ON oi.orderId = o.id " +
+        "JOIN tblProductItem pi ON oi.productItemId = pi.id " +
+        "JOIN tblProduct p ON pi.productId = p.id " +
+        "JOIN tblShop s ON p.shopId = s.id " +
+        "WHERE o.userId = ?1 AND o.status = 0";
 
         /**
          * Try to verify that these items belong to the correct cart and the
@@ -251,9 +257,14 @@ public class OrderDAO {
 
         public static synchronized List<OrderedItem> getOrderItemFromUser(int userId) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                List<OrderedItem> orderedItems = em.createNativeQuery(GET_ORDERITEMS,OrderedItem.class).setParameter(1, userId).getResultList();
-                service.Logging.logger.info("get list of order items from userId: "+ userId);
-                service.Logging.logger.info("list of order items: "+ orderedItems.toString());
+                List<OrderedItem> orderedItems = em.createNativeQuery(GET_ORDERITEMS, OrderedItem.class).setParameter(1, userId).getResultList();
+                for (OrderedItem item : orderedItems) {
+                    Hibernate.initialize(item.getProductItemId());
+                    Hibernate.initialize(item.getOrderId());
+                    Hibernate.initialize(item.getProductItemId().getProductId());
+                    Hibernate.initialize(item.getProductItemId().getProductId().getShopId());
+                }
+                
                 return orderedItems;
             } catch (Exception e) {
                 throw new SQLException(e);
