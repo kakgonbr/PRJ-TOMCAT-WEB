@@ -75,6 +75,9 @@ function generateCategoryHTML(category, parentId = "categoriesCollapseContent") 
             ${category.name}
         </label>`;
     
+    let currentCheckbox = document.getElementById(categoryId);
+    currentCheckbox.dataset.parent = document.getElementById(parentId);
+
     if (category.children && category.children.length > 0) {
         html += `<div class="collapse my-1" id="${collapseId}">
                     <div class="collapse-content" id="${collapseId}Content">`;
