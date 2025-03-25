@@ -267,6 +267,55 @@ function getImages() {
 }
 
 /*review */
+document.addEventListener('DOMContentLoaded', function() {
+    const reviewForm = document.getElementById('reviewForm');
+    if (reviewForm) {
+        reviewForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            submitReview();
+        });
+    }
+});
+
+function submitReview() {
+    const form = document.getElementById('reviewForm');
+    const rate = form.querySelector('input[name="rate"]:checked')?.value;
+    const comment = form.querySelector('#comment').value;
+
+    if (!rate) {
+        alert('Please select a rating');
+        return;
+    }
+
+    const formData = new URLSearchParams();
+    formData.append('productId', productId);
+    formData.append('rate', rate);
+    formData.append('comment', comment);
+
+    fetch('https://kakgonbri.zapto.org:8443/prj/ajax/reviewloader', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Reset form
+            form.reset();
+            // Reload reviews
+            loadReviews(productId);
+        } else {
+            alert('Failed to submit review');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error submitting review');
+    });
+}
+
 let currentPage = 1;
 let totalPages = 1;
 
@@ -274,18 +323,12 @@ function loadReviews(productId, page = 1) {
     fetch("https://kakgonbri.zapto.org:8443/prj/ajax/reviewloader?productId=" + productId + "&page=" + page)
         .then(response => response.json())
         .then(data => {
-            let { reviews, currentPage, totalPages, totalReviews } = data;
+            let { reviews, currentPage, totalPages, totalReviews, averageRating } = data;
             
             currentPage = currentPage;
             totalPages = totalPages;
 
-            if (totalReviews === 0) {
-                document.getElementById('average-rating').textContent = "0.0";
-            } else {
-                const totalRating = reviews.reduce((sum, review) => sum + review.rate, 0);
-                const averageRating = (totalRating / reviews.length).toFixed(1);
-                document.getElementById('average-rating').textContent = averageRating;
-            }
+            document.getElementById('average-rating').textContent = averageRating ? averageRating.toFixed(1) : "0.0";
 
             const container = document.getElementById('reviews-container');
             container.innerHTML = ''; 
@@ -306,8 +349,7 @@ function loadReviews(productId, page = 1) {
         .catch(error => {
             console.error('Error loading reviews:', error);
             document.getElementById('average-rating').textContent = "N/A";
-            document.getElementById('reviews-container').innerHTML = 
-                '<p class="text-danger">Error loading reviews. Please try again later.</p>';
+            document.getElementById('reviews-container').innerHTML = '<p class="text-danger">Error loading reviews. Please try again later.</p>';
         });
 }
 
