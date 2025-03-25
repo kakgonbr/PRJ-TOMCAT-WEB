@@ -87,7 +87,19 @@
                 <tr>
                     <th>Is Of Admin:</th>
                     <td>
-                        <input type="text" name="ofAdmin" size="45" value="<c:out value='${promotion.ofAdmin}' />" />
+                        <select name="ofAdmin">
+                            <c:choose>
+                                <c:when test="${promotion.ofAdmin}">
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                </c:when>
+                                <c:otherwise>
+                                    <option value="false">No</option>
+                                    <option value="true">Yes</option>
+                                </c:otherwise>
+                            </c:choose>
+                            
+                        </select>
                     </td>
                 </tr>
                 <tr>
@@ -100,6 +112,24 @@
                     <th>Creator ID:</th>
                     <td>
                         <input type="text" name="creatorId" size="45" value="<c:out value='${promotion.creatorId}' />" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>Status:</th>
+                    <td>
+                        <select name="status">
+                            <c:choose>
+                                <c:when test="${promotion.status}">
+                                    <option value="true">Active</option>
+                                    <option value="false">Inactive</option>
+                                </c:when>
+                                <c:otherwise>
+                                    <option value="false">Inactive</option>
+                                    <option value="true">Active</option>
+                                </c:otherwise>
+                            </c:choose>
+                            
+                        </select>
                     </td>
                 </tr>
                 <tr>

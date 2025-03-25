@@ -219,6 +219,7 @@
                                 <th>Available Promotion ID</th>
                                 <th>Image Resource ID</th>
                                 <th>Shop ID</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody id="products"></tbody>
@@ -288,6 +289,7 @@
                                 <th>Is Of Admin</th>
                                 <th>Creation Date</th>
                                 <th>Creator ID</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody id="promotions"></tbody>

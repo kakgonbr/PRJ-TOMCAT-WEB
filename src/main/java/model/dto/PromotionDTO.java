@@ -9,6 +9,7 @@ public class PromotionDTO implements java.io.Serializable {
     private Boolean ofAdmin;
     private String creationDate;
     private Integer creatorId;
+    private Boolean status;
 
     public PromotionDTO() {}
 
@@ -21,6 +22,7 @@ public class PromotionDTO implements java.io.Serializable {
         setOfAdmin(promotion.getOfAdmin());
         setType(promotion.getType());
         setValue(promotion.getValue());
+        setStatus(promotion.getStatus());
     }
 
     public model.Promotion toPromotion() {
@@ -33,6 +35,7 @@ public class PromotionDTO implements java.io.Serializable {
         promotion.setValue(value);
         promotion.setType(type);
         promotion.setOfAdmin(ofAdmin);
+        promotion.setStatus(status);
 
         return promotion;
     }
@@ -99,5 +102,13 @@ public class PromotionDTO implements java.io.Serializable {
 
     public void setCreatorId(Integer creatorId) {
         this.creatorId = creatorId;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 }   
