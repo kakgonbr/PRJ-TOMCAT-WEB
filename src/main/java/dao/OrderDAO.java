@@ -197,7 +197,7 @@ public class OrderDAO {
             "JOIN FETCH pi.productId p " +
             "JOIN FETCH p.shopId s " +
             "LEFT JOIN FETCH pi.productCustomizationList pc " +
-            "LEFT JOIN FETCH p.promotionId " +
+            "LEFT JOIN FETCH p.availablePromotionId " +
             "WHERE o.userId = :userId AND o.status = 0";
 
         /**
