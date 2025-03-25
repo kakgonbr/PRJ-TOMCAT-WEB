@@ -25,7 +25,7 @@
                 const endTimestamp = endDate ? new Date(endDate).setHours(23, 59, 59, 999) : Infinity;
                 
                 window.allOrders.forEach(orderCard => {
-                    const dateStr = orderCard.querySelector('.card-header span').textContent;
+                    const dateStr = orderCard.querySelector('.card-header span').value;
                     // Chuyển đổi date string (dd-MM-yyyy HH:mm) thành Date object
                     const [datePart, timePart] = dateStr.split(' ');
                     const [day, month, year] = datePart.split('-');
