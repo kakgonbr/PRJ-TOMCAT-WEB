@@ -10,68 +10,6 @@
 
         <script>
             var contextPath = "${pageContext.request.contextPath}";
-            
-            document.addEventListener('DOMContentLoaded', function() {
-                // Lưu trữ tất cả các order cards để dùng khi filter
-                window.allOrders = document.querySelectorAll('.card.mb-4');
-            });
-
-            function filterOrders() {
-                const startDate = document.getElementById('startDate').value;
-                const endDate = document.getElementById('endDate').value;
-                
-                // Chuyển đổi giá trị input date thành timestamp để so sánh
-                const startTimestamp = startDate ? new Date(startDate).getTime() : 0;
-                const endTimestamp = endDate ? new Date(endDate).setHours(23, 59, 59, 999) : Infinity;
-                
-                window.allOrders.forEach(orderCard => {
-                    const dateStr = orderCard.querySelector('.card-header span').value;
-                    // Chuyển đổi date string (dd-MM-yyyy HH:mm) thành Date object
-                    const [datePart, timePart] = dateStr.split(' ');
-                    const [day, month, year] = datePart.split('-');
-                    const [hours, minutes] = timePart.split(':');
-                    const orderDate = new Date(year, month - 1, day, hours, minutes).getTime();
-                    
-                    if (orderDate >= startTimestamp && orderDate <= endTimestamp) {
-                        orderCard.style.display = '';
-                    } else {
-                        orderCard.style.display = 'none';
-                    }
-                });
-                
-                // Hiển thị thông báo nếu không có kết quả
-                const visibleOrders = document.querySelectorAll('.card.mb-4:not([style*="display: none"])');
-                const noResultsMsg = document.getElementById('noResultsMessage');
-                
-                if (visibleOrders.length === 0) {
-                    if (!noResultsMsg) {
-                        const msg = document.createElement('div');
-                        msg.id = 'noResultsMessage';
-                        msg.className = 'alert alert-info mt-3';
-                        msg.textContent = 'Không tìm thấy đơn hàng nào trong khoảng thời gian này';
-                        document.querySelector('h2').insertAdjacentElement('afterend', msg);
-                    }
-                } else if (noResultsMsg) {
-                    noResultsMsg.remove();
-                }
-            }
-
-            function resetFilter() {
-                // Reset input fields
-                document.getElementById('startDate').value = '';
-                document.getElementById('endDate').value = '';
-                
-                // Hiển thị lại tất cả các orders
-                window.allOrders.forEach(orderCard => {
-                    orderCard.style.display = '';
-                });
-                
-                // Xóa thông báo không có kết quả nếu có
-                const noResultsMsg = document.getElementById('noResultsMessage');
-                if (noResultsMsg) {
-                    noResultsMsg.remove();
-                }
-            }
         </script>            
     </jsp:attribute>
 
@@ -133,31 +71,35 @@
                     </div>
                 </nav>
                 <main class="col-10">
-                    <div class="card mb-4">
+                    <div class="card my-4">
                         <div class="card-body">
-                            <div class="row g-3 align-items-center">
+                            <form action="${pageContext.request.contextPath}/userorder" method="post" class="row g-3 align-items-center">
+                                <input type="hidden" name="action" value="filter">
+                                
                                 <div class="col-auto">
                                     <label for="startDate" class="col-form-label">Từ ngày:</label>
                                 </div>
                                 <div class="col-auto">
-                                    <input type="date" class="form-control" id="startDate">
+                                    <input type="date" class="form-control" id="startDate" name="startDate" 
+                                           value="${param.startDate}">
                                 </div>
                                 
                                 <div class="col-auto">
                                     <label for="endDate" class="col-form-label">Đến ngày:</label>
                                 </div>
                                 <div class="col-auto">
-                                    <input type="date" class="form-control" id="endDate">
+                                    <input type="date" class="form-control" id="endDate" name="endDate" 
+                                           value="${param.endDate}">
                                 </div>
                                 
                                 <div class="col-auto">
-                                    <button type="button" class="btn btn-primary" onclick="filterOrders()">Tìm kiếm</button>
+                                    <button type="submit" class="btn btn-primary">Tìm kiếm</button>
                                 </div>
                                 
                                 <div class="col-auto">
-                                    <button type="button" class="btn btn-secondary" onclick="resetFilter()">Xóa bộ lọc</button>
+                                    <a href="${pageContext.request.contextPath}/userorder?action=order" class="btn btn-secondary">Xóa bộ lọc</a>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
 

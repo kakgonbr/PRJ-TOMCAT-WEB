@@ -5,6 +5,7 @@ import org.hibernate.Hibernate;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -198,7 +199,10 @@ public class OrderDAO {
             "JOIN FETCH p.shopId s " +
             "LEFT JOIN FETCH pi.productCustomizationList pc " +
             "LEFT JOIN FETCH p.availablePromotionId " +
-            "WHERE o.userId.id = :userId AND o.status = :status ORDER BY o.date DESC";
+            "WHERE o.userId.id = :userId AND o.status = :status"+
+            "AND (:startDate IS NULL OR o.date >= :startDate) " +
+            "AND (:endDate IS NULL OR o.date < :endDate) " +
+            "ORDER BY o.date DESC";
 
         /**
          * Try to verify that these items belong to the correct cart and the
@@ -257,13 +261,17 @@ public class OrderDAO {
             }
         } // public static synchronized void transferFromCart
 
-        public static synchronized List<OrderedItem> getOrderItemFromUser(int userId, boolean status) throws java.sql.SQLException {
+        public static synchronized List<OrderedItem> getOrderItemFromUser(int userId, boolean status, Date startDate, Date endDate) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                return em.createQuery(JPQL_GET_ORDERITEMS, OrderedItem.class).setParameter("userId", userId).setParameter("status", status).getResultList();
+                return em.createQuery(JPQL_GET_ORDERITEMS, OrderedItem.class).setParameter("userId", userId).setParameter("status", status).setParameter("startDate", startDate).setParameter("endDate", endDate).getResultList();
             } catch (Exception e) {
                 service.Logging.logger.error("Error getting order items: ", e);
                 throw new SQLException(e);
             }
+        }
+
+        public static synchronized List<OrderedItem> getOrderItemFromUser(int userId, boolean status) throws java.sql.SQLException {
+            return getOrderItemFromUser(userId, status, null, null);
         }
         
     }
