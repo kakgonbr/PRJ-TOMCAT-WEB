@@ -96,6 +96,8 @@ function getProductInfo(productId) {
             });
 
             postFetch();
+            //load reviews
+            loadReviews(productId);
         })
         .catch((error) => console.error("Error fetching data:", error));
 }
@@ -252,4 +254,52 @@ function getImages() {
 
         container.appendChild(img);
     });
+}
+
+/*review */
+function loadReviews(productId) {
+    fetch("https://kakgonbri.zapto.org:8443/prj/ajax/reviewloader?productId=" + productId)
+        .then(response => response.json())
+        .then(reviews => {
+            const container = document.getElementById('reviews-container');
+            container.innerHTML = ''; 
+
+            if (reviews.length === 0) {
+                container.innerHTML = '<p>No reviews yet.</p>';
+                return;
+            }
+
+            reviews.forEach(review => {
+                const reviewElement = createReviewElement(review);
+                container.appendChild(reviewElement);
+            });
+        })
+        .catch(error => {
+            console.error('Error loading reviews:', error);
+            document.getElementById('reviews-container').innerHTML = 
+                '<p class="text-danger">Error loading reviews. Please try again later.</p>';
+        });
+}
+
+function createReviewElement(review) {
+    const div = document.createElement('div');
+    div.className = 'review-card';
+    
+    const stars = '★'.repeat(review.rate) + '☆'.repeat(5 - review.rate);
+    
+    div.innerHTML = `
+        <div class="review-header">
+            <div class="rating">
+                ${stars}
+            </div>
+            <div class="review-id">
+                Review #${review.id}
+            </div>
+        </div>
+        <div class="review-comment">
+            ${review.comment || 'No comment'}
+        </div>
+    `;
+    
+    return div;
 }
