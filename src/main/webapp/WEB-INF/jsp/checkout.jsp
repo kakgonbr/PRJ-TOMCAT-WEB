@@ -10,6 +10,7 @@
         </script>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/checkout_css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/cart_css">
+        <script src="${pageContext.request.contextPath}/resources/checkout_js"></script>
     </jsp:attribute>
 
     <jsp:attribute name="header">
