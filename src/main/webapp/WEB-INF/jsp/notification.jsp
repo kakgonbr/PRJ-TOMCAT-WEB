@@ -11,6 +11,7 @@
 <t:genericpage title="User">
     <jsp:attribute name="head">
         <t:resources />
+        <script src="${pageContext.request.contextPath}/resources/shop_js"></script>
         <script>
             var contextPath = "${pageContext.request.contextPath}";
             var userId = "${sessionScope.user.id}";

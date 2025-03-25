@@ -30,7 +30,7 @@ public class NotificationLoader extends HttpServlet {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing userId");
             return;
         }
-
+        
         try {
             int userId = Integer.parseInt(userIdStr);
             System.out.println("DEBUG: Parsed userId = " + userId);
