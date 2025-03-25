@@ -74,7 +74,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="content" class="form-label">Content</label>
-                            <input type="text" class="form-control" id="content" name="content" required>
+                            <textarea class="form-control" id="content" name="content" rows="10" required></textarea>
                         </div>
 
                         <div class="mb-3">

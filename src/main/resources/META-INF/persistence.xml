@@ -15,7 +15,6 @@
     <class>model.OnholdCredit</class>
     <class>model.Variation</class>
     <class>model.VariationValue</class>
-    <class>model.Notification</class>
     <class>model.UserPreference</class>
     <class>model.ResourceMap</class>
     <class>model.Category</class>
