@@ -9,11 +9,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Product;
+import model.Promotion;
 
 @MultipartConfig(
-    fileSizeThreshold = 1024 * 1024, // 1
-    maxFileSize = 1024 * 1024 * 10, // 10
-    maxRequestSize = 1024 * 1024 * 50 // 50
+        fileSizeThreshold = 1024 * 1024, // 1
+        maxFileSize = 1024 * 1024 * 10, // 10
+        maxRequestSize = 1024 * 1024 * 50 // 50
 )
 public class ProductServlet extends HttpServlet {
 
@@ -21,12 +22,15 @@ public class ProductServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String productId = request.getParameter("productId");
-
+        HttpSession session = request.getSession(false);
+        model.User user = session == null ? null : (model.User) session.getAttribute("user");
         if (productId != null) {
             int id = Integer.parseInt(productId);
 
             if ("edit".equals(request.getParameter("action"))) {
                 try {
+                    java.util.List<Promotion> promotions = dao.PromotionDAO.PromotionFetcher.checkAvailablePromotionsByCreator(user.getId());
+                    request.setAttribute("promotions", promotions);
                     request.setAttribute("product",
                             new model.ProductDetailsWrapper(dao.ProductDAO.ProductFetcher.getProductDetails(id)));
                     request.getRequestDispatcher(config.Config.JSPMapper.EDIT_PRODUCT).forward(request, response);
@@ -75,7 +79,6 @@ public class ProductServlet extends HttpServlet {
         Integer productId = Integer.parseInt(request.getParameter("productId"));
         String imageId = request.getParameter("imageId");
 
-        
         try {
             model.Shop shop = dao.ShopDAO.ShopFetcher.getShop(shopIdValue);
             if (shop == null) {
@@ -83,15 +86,15 @@ public class ProductServlet extends HttpServlet {
                 request.getRequestDispatcher(config.Config.JSPMapper.EDIT_PRODUCT).forward(request, response);
                 return;
             }
-            
+
             model.Product product = dao.ProductDAO.ProductFetcher.getProductDetails(productId);
-            
+
             if (!product.getShopId().equals(shop)) {
                 request.setAttribute("error", "invalid_shop");
                 request.getRequestDispatcher(config.Config.JSPMapper.EDIT_PRODUCT).forward(request, response);
                 return;
             }
-            
+
             service.Logging.logger.info("Removing picture {} from product {}", imageId, product.getId());
 
             dao.ProductDAO.ProductManager.removeImage(imageId);
@@ -209,78 +212,52 @@ public class ProductServlet extends HttpServlet {
 
     private void addPromotion(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Integer shopIdValue = (Integer) request.getSession().getAttribute("shopId");
-        String name = request.getParameter("name");
-        Boolean type = Boolean.parseBoolean(request.getParameter("type")); // 1 is flat 0 is %
-        Integer value = Integer.parseInt(request.getParameter("value"));
-        String expire = request.getParameter("expire");
+        Integer promotionId = Integer.parseInt(request.getParameter("promotionId"));
         Integer productId = Integer.parseInt(request.getParameter("productId"));
 
         try {
             model.Shop shop = dao.ShopDAO.ShopFetcher.getShop(shopIdValue);
             if (shop == null) {
-                request.setAttribute("error", "invalid_shop");
+                request.setAttribute("error", "Invalid shop.");
                 request.getRequestDispatcher(config.Config.JSPMapper.EDIT_PRODUCT).forward(request, response);
                 return;
             }
 
             model.Product product = dao.ProductDAO.ProductFetcher.getProductDetails(productId);
-
             if (!product.getShopId().equals(shop)) {
-                request.setAttribute("error", "invalid_shop");
+                request.setAttribute("error", "Invalid shop ownership.");
                 request.getRequestDispatcher(config.Config.JSPMapper.EDIT_PRODUCT).forward(request, response);
                 return;
             }
-            
+
             if (product.getAvailablePromotionId() != null && product.getAvailablePromotionId().getStatus()) {
-                request.setAttribute("error", "Product already has promotion.");
+                request.setAttribute("error", "Product already has an active promotion.");
                 request.getRequestDispatcher(config.Config.JSPMapper.EDIT_PRODUCT).forward(request, response);
                 return;
             }
 
-            // not sure if this works
-            if (type && value > product.getProductItemList().stream().min((o1, o2) -> o1.getPrice().compareTo(o2.getPrice())).get().getPrice().longValue() / 2 || value < 1) {
-                request.setAttribute("error", "Invalid value.");
+            model.Promotion promotion = dao.PromotionDAO.PromotionFetcher.getPromotion(promotionId);
+            if (promotion == null) {
+                request.setAttribute("error", "Invalid promotion.");
                 request.getRequestDispatcher(config.Config.JSPMapper.EDIT_PRODUCT).forward(request, response);
                 return;
             }
 
-            if (!type && value > 99 || value < 1) {
-                request.setAttribute("error", "Invalid value.");
+            if (promotion.getExpireDate().before(java.sql.Date.valueOf(java.time.LocalDate.now()))) {
+                request.setAttribute("error", "The selected promotion has expired.");
                 request.getRequestDispatcher(config.Config.JSPMapper.EDIT_PRODUCT).forward(request, response);
                 return;
             }
-
-            java.sql.Date expireDate = java.sql.Date.valueOf(java.time.LocalDate.parse(expire, config.Config.Time.inputFormatDate));
-
-            if (expireDate.before(java.sql.Date.valueOf(java.time.LocalDate.now()))) {
-                request.setAttribute("error", "Invalid expire date.");
-                request.getRequestDispatcher(config.Config.JSPMapper.EDIT_PRODUCT).forward(request, response);
-                return;
-            }
-
-            model.Promotion promotion = new model.Promotion();
-            promotion.setCreationDate(java.sql.Date.valueOf(java.time.LocalDate.now()));
-            promotion.setExpireDate(expireDate);
-            promotion.setValue(value);
-            promotion.setType(type);
-            promotion.setCreatorId((model.User) request.getSession().getAttribute("user"));
-            promotion.setName(name);
-            promotion.setOfAdmin(false);
-            promotion.setStatus(true);
-
-            promotion = dao.PromotionDAO.PromotionManager.addPromotion(promotion);
 
             product.setAvailablePromotionId(promotion);
-
             dao.ProductDAO.ProductManager.editProduct(product);
 
             response.sendRedirect(request.getContextPath() + "/product?action=edit&productId=" + productId);
         } catch (java.sql.SQLException e) {
-            service.Logging.logger.error("Failed to add promotion, reason: {}", e.getMessage());
+            service.Logging.logger.error("Failed to apply promotion, reason: {}", e.getMessage());
             request.setAttribute("error", e.getMessage());
             request.getRequestDispatcher(config.Config.JSPMapper.EDIT_PRODUCT).forward(request, response);
         }
-
     }
 
     private void handleEditProduct(HttpServletRequest request, HttpServletResponse response)
@@ -312,7 +289,6 @@ public class ProductServlet extends HttpServlet {
 
 //            int categoryIdInt = Integer.parseInt(categoryParam);
 //            model.Category category = dao.CategoryDAO.CategoryFetcher.getCategoryDetails(categoryIdInt);
-
 //            if (category == null) {
 //                request.setAttribute("error", "invalid_category");
 //                request.getRequestDispatcher(config.Config.JSPMapper.ADD_PRODUCT).forward(request, response);
@@ -320,7 +296,6 @@ public class ProductServlet extends HttpServlet {
 //                return;
 //
 //            }
-
             Product product = dao.ProductDAO.ProductFetcher.getProductDetails(productId);
             if (product == null) {
                 request.setAttribute("error", "Product not found.");

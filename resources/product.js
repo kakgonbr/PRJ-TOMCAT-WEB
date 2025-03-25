@@ -95,28 +95,6 @@ function fetchByShop() {
   fetchProducts(null, filter ? filter.value : 0, shopId);
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  // Lấy giá trị shopId từ một phần tử trên trang (nếu có)
-  var shopId = document.getElementById("shopIdInput") 
-               ? document.getElementById("shopIdInput").value 
-               : null;
-
-  // Kiểm tra nếu shopId không null thì tự động tải sản phẩm khả dụng ban đầu
-  if (shopId) {
-    fetchProductsShop(shopId, true); // Mặc định hiển thị sản phẩm có status = true
-  }
-
-  // Gắn sự kiện cho nút "View Deleted Products"
-  document.getElementById("viewDeletedBtn").addEventListener("click", function () {
-    fetchProductsShop(shopId, false);
-  });
-
-  // Gắn sự kiện cho nút "View Available Products"
-  document.getElementById("viewAvailableBtn").addEventListener("click", function () {
-    fetchProductsShop(shopId, true);
-  });
-});
-
 function fetchProductsShop(shopId, status) {
   if (!shopId) {
     console.error("shopId is not defined");

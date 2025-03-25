@@ -51,7 +51,7 @@
                     <div class="position-sticky ">
                         <!-- Quick Access Search -->
                         <input type="text" id="searchBox" class="form-control my-3"
-                            placeholder="Quick access...">
+                               placeholder="Quick access...">
 
                         <!-- Accordion Menu -->
                         <div class="accordion fs-6" id="menuAccordion">
@@ -61,17 +61,17 @@
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
                                     <button class="accordion-button" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#collapseProduct">
+                                            data-bs-toggle="collapse" data-bs-target="#collapseProduct">
                                         Product
                                     </button>
                                 </h2>
                                 <div id="collapseProduct" class="accordion-collapse collapse">
                                     <div class="accordion-body">
                                         <a href="${pageContext.request.contextPath}/sellercenter/shophome"
-                                            class="list-group-item list-group-item-action pb-3">🛍 My
+                                           class="list-group-item list-group-item-action pb-3">🛍 My
                                             Products</a>
                                         <a href="${pageContext.request.contextPath}/addproduct"
-                                            class="list-group-item list-group-item-action">➕ Add
+                                           class="list-group-item list-group-item-action">➕ Add
                                             Product</a>
                                     </div>
                                 </div>
@@ -81,7 +81,7 @@
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
                                     <button class="accordion-button" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#collapseShop">
+                                            data-bs-toggle="collapse" data-bs-target="#collapseShop">
                                         Shop
                                     </button>
                                 </h2>
@@ -101,7 +101,7 @@
                         <div class="card">
                             <h4>Thumbnail:</h4>
                             <img src="${pageContext.request.contextPath}/resources/${product.thumbnail}"
-                                class="thumbnail-img" alt="Thumbnail">
+                                 class="thumbnail-img" alt="Thumbnail">
                             <form
                                 action="${pageContext.request.contextPath}/product?action=setThumbnail&productId=${product.id}"
                                 enctype="multipart/form-data" method="POST">
@@ -117,13 +117,13 @@
                                     <div class="col-md-3">
                                         <div class="text-center">
                                             <img src="${pageContext.request.contextPath}/resources/${image}"
-                                                class="product-img" alt="Product Image">
+                                                 class="product-img" alt="Product Image">
                                             <form
                                                 action="${pageContext.request.contextPath}/product?action=removePicture&productId=${product.id}"
                                                 method="POST">
                                                 <input type="hidden" name="imageId" value="${image}">
                                                 <button type="submit"
-                                                    class="btn btn-danger btn-sm">Remove</button>
+                                                        class="btn btn-danger btn-sm">Remove</button>
                                             </form>
                                         </div>
                                     </div>
@@ -145,26 +145,37 @@
                             <c:choose>
                                 <c:when test="${product.promotion == null}">
                                     <h4>Add Promotion:</h4>
-                                    <form
-                                        action="${pageContext.request.contextPath}/product?action=addPromotion&productId=${product.id}"
-                                        method="POST">
-                                        <label class="form-label">Name:</label>
-                                        <input type="text" class="form-control" name="name" required>
-
-                                        <label class="form-label">Type: Check for flat, uncheck for
-                                            %</label>
-                                        <input type="checkbox" class="form-check-input" name="type"
-                                            value="true">
-
-                                        <label class="form-label">Value:</label>
-                                        <input type="number" class="form-control" name="value">
-
-                                        <label class="form-label">Expire On:</label>
-                                        <input type="text" class="form-control" name="expire"
-                                            placeholder="dd/mm/yyyy">
-
-                                        <button type="submit" class="btn btn-warning mt-2">Add
-                                            Promotion</button>
+                                    <form action="${pageContext.request.contextPath}/product?action=addPromotion&productId=${product.id}" method="POST">
+                                    <table class="table table-striped table-hover">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>Select</th>
+                                                <th>Name</th>
+                                                <th>Type</th>
+                                                <th>Value</th>
+                                                <th>Expire Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach var="promo" items="${promotions}">
+                                                <tr>
+                                                    <td>
+                                                        <input type="radio" name="promotionId" value="${promo.id}" required>
+                                                    </td>
+                                                    <td>${promo.name}</td>
+                                                    <td>
+                                                        <c:choose>
+                                                            <c:when test="${promo.type}">Flat Discount</c:when>
+                                                            <c:otherwise>% Discount</c:otherwise>
+                                                        </c:choose>
+                                                    </td>
+                                                    <td>${promo.value}</td>
+                                                    <td><fmt:formatDate value="${promo.expireDate}" pattern="dd/MM/yyyy" /></td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                    <button type="submit" class="btn btn-warning mt-2">Apply Promotion</button>
                                     </form>
                                 </c:when>
                                 <c:otherwise>
@@ -195,19 +206,19 @@
                         </div>
                         <div class="card">
                             <form
-                            action="${pageContext.request.contextPath}/product?action=edit&productId=${product.id}"
-                            method="post">
+                                action="${pageContext.request.contextPath}/product?action=edit&productId=${product.id}"
+                                method="post">
                                 <input type="hidden" name="id" value="${product.id}" />
 
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Name:</label>
                                     <input type="text" id="name" name="name" class="form-control"
-                                        value="${product.name}" required>
+                                           value="${product.name}" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="description" class="form-label">Description:</label>
                                     <textarea id="description" name="description" class="form-control"
-                                        required>${product.description}</textarea>
+                                              required>${product.description}</textarea>
                                 </div>
 
                                 <div class="mb-3">
@@ -230,20 +241,20 @@
                                                 <tr>
                                                     <td>
                                                         <input type="hidden" name="productItemId"
-                                                            value="${item.id}">
+                                                               value="${item.id}">
                                                         ${item.id}
                                                     </td>
                                                     <td>
                                                         <input type="number" class="form-control" name="stock"
-                                                            value="${item.stock}">
+                                                               value="${item.stock}">
                                                     </td>
                                                     <td>
                                                         <input type="text" class="form-control" name="price"
-                                                            value="${item.price}">
+                                                               value="${item.price}">
                                                     </td>
                                                     <td>
                                                         <c:forEach var="customization"
-                                                            items="${item.customizations}">
+                                                                   items="${item.customizations}">
                                                             ${customization.name} : ${customization.value}
                                                             ${customization.unit}
                                                             <br></br>
@@ -258,7 +269,7 @@
                                 <div class="mb-3">
                                     <button type="submit" class="btn btn-primary">Save changes</button>
                                     <a href="${pageContext.request.contextPath}/sellercenter/shophome"
-                                        class="btn btn-secondary">Cancel</a>
+                                       class="btn btn-secondary">Cancel</a>
                                 </div>
                             </form>
                         </div>
