@@ -57,6 +57,13 @@ public class CheckOutServlet extends HttpServlet {
                     // what a mess
                     model.Cart cart = dao.CartDAO.CartFetcher.getCartByUser(user.getId(), true);
 
+                    String shippingAddress = request.getParameter("address");
+                    if (shippingAddress == null || shippingAddress.isBlank()) {
+                        request.setAttribute("error", "Shipping address is required");
+                        doGet(request, response);
+                        return;
+                    }
+
                     if (checkExceed(request, response, cart.getCartItemList().stream().map(model.CartItemWrapper::new).toList())) {
                         return;
                     }
@@ -70,6 +77,7 @@ public class CheckOutServlet extends HttpServlet {
                     order.setDate(new java.util.Date());
                     order.setPromotionId(promotion);
                     order.setStatus(false);
+                    order.setShippingAddress(shippingAddress);
                     int orderId = dao.OrderDAO.OrderManager.createOrder(order);
 
                     // the moment this goes through, item stock will be deducted
