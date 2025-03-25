@@ -140,6 +140,69 @@ function attachCheckboxHandlers() {
     });
 }
 
+/*fetch products for search */
+async function fetchProductsSearch(byParam = false) {
+    const container = document.querySelector(".col-9.row");
+    container.innerHTML = "";
+    
+    try {
+        var checkedBoxes = document.querySelectorAll('input[name=categoryFilter]:checked');
+        var url = new URL(
+          "https://" + location.host + contextPath + "/ajax/products"
+        );
+  
+        url.searchParams.append("query", query);
+  
+        if (byParam && categoryId !== '') {
+            url.searchParams.append("categoryId", categoryId);
+        } else {
+            checkedBoxes.forEach(item => url.searchParams.append("categoryId", item.value));
+        }
+  
+        const response = await fetch(url.toString());
+        const products = await response.json();
+        
+        products.forEach(product => {
+            const productCard = document.createElement("div");
+            productCard.classList.add("col-3");
+            productCard.innerHTML = `
+                <a href="https://kakgonbri.zapto.org:8443/prj/product?productId=${product.id}" class="text-dark text-decoration-none">
+                    <div class="card">
+                        <div class="position-relative">
+                            <img src="/prj/resources/${product.thumbnail}" alt="${product.name}" loading="lazy" class="w-100">
+                        </div>
+                        <div class="card-body d-flex flex-column justify-content-between">
+                            <p class="card-title mt-3 fw-semibold blackLineUnderneath">${product.name}</p>
+                            <input type="hidden" value="${product.id}">
+                        </div>
+                    </div>
+                </a>
+            `;
+            container.appendChild(productCard);
+        });
+    } catch (error) {
+        console.error("Error for fetching products for search:", error);
+    }
+  }
+  
+  function createProductElement(product) {
+    let li = document.createElement("li");
+  
+    // Tạo checkbox để chọn sản phẩm
+    let checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.value = product.id;
+    checkbox.classList.add("product-checkbox");
+  
+    // Nhãn hiển thị tên sản phẩm
+    let label = document.createElement("label");
+    label.appendChild(checkbox);
+    label.appendChild(document.createTextNode(" " + product.name));
+  
+    li.appendChild(label);
+    return li;
+  }
+
 document.addEventListener("DOMContentLoaded", () => {
     fetchCategories();
 });

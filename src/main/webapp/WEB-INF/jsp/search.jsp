@@ -13,7 +13,9 @@
             var contextPath = "${pageContext.request.contextPath}";
             var categoryId = "${categoryId}";
             var query = "${query}";
-            document.addEventListener("DOMContentLoaded", fetchProductsSearch);
+            document.addEventListener("DOMContentLoaded", function {
+                fetchProductsSearch(true);
+            });
         </script>
 
     </jsp:attribute>
