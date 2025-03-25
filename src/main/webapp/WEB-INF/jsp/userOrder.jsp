@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <t:genericpage title="Add Product">
     <jsp:attribute name="head">
@@ -74,6 +75,8 @@
                     <table class="cart-table">
                         <thead>
                             <tr>
+                                <th>Order ID</th>
+                                <th>Date</th>
                                 <th>Image</th>
                                 <th>Product</th>
                                 <th>Shop</th>
@@ -86,6 +89,8 @@
                         <tbody>
                             <c:forEach var="orderItem" items="${OrderItemList}">
                                 <tr>
+                                    <td>${orderItem.orderId}</td>
+                                    <td><fmt:formatDate value="${orderItem.date}" pattern="dd-MM-yyyy HH:mm"/></td>
                                     <td>
                                         <img src="${pageContext.request.contextPath}/resources/${orderItem.productWrapper.thumbnail}"
                                             alt="Product Image">

@@ -1,13 +1,14 @@
 package model;
 
 import java.math.BigDecimal;
-
+import java.util.Date;
 public class OrderItemWrapper implements java.io.Serializable {
-    private Integer id, userId, quantity;
+    private Integer id, userId, quantity, orderId;
     private BigDecimal totalPrice;
     private boolean status;
     private ProductWrapper productWrapper;
     private ProductItemWrapper productItem;
+    private Date date;
 
     public OrderItemWrapper() {
     }
@@ -20,6 +21,24 @@ public class OrderItemWrapper implements java.io.Serializable {
         setProductItem(new ProductItemWrapper(orderItem.getProductItemId()));
         setProductWrapper(new ProductWrapper(orderItem.getProductItemId().getProductId()));
         setQuantity(orderItem.getQuantity());
+        setOrderId(orderItem.getOrderId().getId());
+        setDate(orderItem.getOrderId().getDate());
+    }
+
+    public Integer getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public Integer getId() {

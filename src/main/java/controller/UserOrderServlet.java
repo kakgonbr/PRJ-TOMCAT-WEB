@@ -16,16 +16,21 @@ public class UserOrderServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         model.User user = (model.User) request.getSession(false).getAttribute("user");
         String action= request.getParameter("action");
+        List<OrderItemWrapper> orderItemWrappers = null;
         switch (action) {
             case "order":
-                List<OrderItemWrapper> orderItemWrappers= service.UserOrderService.getOrderItems(user.getId());
+                orderItemWrappers= service.UserOrderService.getOrderItems(user.getId(), false);
                 if(orderItemWrappers != null) {
                     request.setAttribute("OrderItemList", orderItemWrappers);
                     request.getRequestDispatcher(config.Config.JSPMapper.USER_ORDER).forward(request, response);
                 }
                 break;
             case "complete":
-                request.getRequestDispatcher(config.Config.JSPMapper.USER_ORDER_COMPLETE).forward(request, response);
+                orderItemWrappers= service.UserOrderService.getOrderItems(user.getId(), true);
+                if(orderItemWrappers != null) {
+                    request.setAttribute("OrderItemList", orderItemWrappers);
+                    request.getRequestDispatcher(config.Config.JSPMapper.USER_ORDER_COMPLETE).forward(request, response);
+                }
                 break;
             default:
                 break;

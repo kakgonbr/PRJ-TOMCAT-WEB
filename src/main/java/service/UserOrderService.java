@@ -7,9 +7,9 @@ import model.OrderItemWrapper;
 
 public class UserOrderService {
 
-    public static List<OrderItemWrapper> getOrderItems(int userId) {
+    public static List<OrderItemWrapper> getOrderItems(int userId, boolean status) {
         try {
-            List<model.OrderedItem> orderedItems = dao.OrderDAO.OrderedItemManager.getOrderItemFromUser(userId);
+            List<model.OrderedItem> orderedItems = dao.OrderDAO.OrderedItemManager.getOrderItemFromUser(userId, status);
             if (!orderedItems.isEmpty()) {
                 List<OrderItemWrapper> orderItemWrappers = orderedItems.stream().map(OrderItemWrapper::new).toList();
                 service.Logging.logger.info("Successfully retrieved order items for user: " + userId);

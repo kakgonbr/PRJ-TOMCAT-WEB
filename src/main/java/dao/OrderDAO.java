@@ -198,7 +198,7 @@ public class OrderDAO {
             "JOIN FETCH p.shopId s " +
             "LEFT JOIN FETCH pi.productCustomizationList pc " +
             "LEFT JOIN FETCH p.availablePromotionId " +
-            "WHERE o.userId.id = :userId AND o.status = false";
+            "WHERE o.userId.id = :userId AND o.status = :status ORDER BY o.date DESC";
 
         /**
          * Try to verify that these items belong to the correct cart and the
@@ -257,9 +257,9 @@ public class OrderDAO {
             }
         } // public static synchronized void transferFromCart
 
-        public static synchronized List<OrderedItem> getOrderItemFromUser(int userId) throws java.sql.SQLException {
+        public static synchronized List<OrderedItem> getOrderItemFromUser(int userId, boolean status) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                return em.createQuery(JPQL_GET_ORDERITEMS, OrderedItem.class).setParameter("userId", userId).getResultList();
+                return em.createQuery(JPQL_GET_ORDERITEMS, OrderedItem.class).setParameter("userId", userId).setParameter("status", status).getResultList();
             } catch (Exception e) {
                 service.Logging.logger.error("Error getting order items: ", e);
                 throw new SQLException(e);
