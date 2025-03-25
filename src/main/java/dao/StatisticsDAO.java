@@ -11,7 +11,6 @@ public final class StatisticsDAO {
             private static int peakSession = 0;
             private static long averageResponseTime = 0; // in milisec
             private static long maxResponseTime = 0;
-            private static int responseTimeReports = 0;
 
             public static long getAverageResponseTime() {
                 return averageResponseTime;
@@ -30,8 +29,6 @@ public final class StatisticsDAO {
             }
 
             public static synchronized void reportResponseTime(long t_responseTime) {
-                ++responseTimeReports;
-
                 averageResponseTime = (averageResponseTime + t_responseTime) / 2;
                 maxResponseTime = t_responseTime > maxResponseTime ? t_responseTime : maxResponseTime;
 
@@ -45,16 +42,23 @@ public final class StatisticsDAO {
                 // service.Logging.logger.info("Session report received, visits: {}, peak: {} ms", visits, peakSession);
             }
 
+            public static synchronized void reset() {
+                visits = 0;
+                peakSession = 0;
+                averageResponseTime = 0;
+                maxResponseTime = 0;
+            }
+
         } // public static final class SystemStatisticsContainer
 
         private static final String CREATE_SERVER_STATISTICS = "INSERT INTO tblServerStatistics (day, totalMoneyEarned, userNum, productNum, shopNum, promotionNum, purchaseNum, visitNum, peakSessionNum, averageResponseTime, maxResponseTime)\r\n"
                 + //
                 "VALUES (\r\n" + //
                 "    ?1,\r\n" + //
-                "    (SELECT SUM(finalPrice) FROM tblOrder),\r\n" + //
-                "    (SELECT COUNT(*) FROM tblUser),\r\n" + //
-                "    (SELECT COUNT(*) FROM tblProduct),\r\n" + //
-                "    (SELECT COUNT(*) FROM tblShop),\r\n" + //
+                "    (SELECT SUM(finalPrice) FROM tblOrder WHERE status = 1),\r\n" + //
+                "    (SELECT COUNT(*) FROM tblUser WHERE status = 1),\r\n" + //
+                "    (SELECT COUNT(*) FROM tblProduct WHERE status = 1),\r\n" + //
+                "    (SELECT COUNT(*) FROM tblShop WHERE status = 1),\r\n" + //
                 "    (SELECT COUNT(*) FROM tblPromotion),\r\n" + //
                 "    (SELECT SUM(quantity) FROM tblOrderedItem),\r\n" + //
                 "    ?2,\r\n" + //
@@ -79,6 +83,8 @@ public final class StatisticsDAO {
                     .setParameter(3, SystemStatisticsContainer.getPeakSession())
                     .setParameter(4, SystemStatisticsContainer.getAverageResponseTime())
                     .setParameter(5 ,SystemStatisticsContainer.getMaxResponseTime()).executeUpdate();
+
+                    SystemStatisticsContainer.reset();
 
                     et.commit();
                 } catch (Exception e) {

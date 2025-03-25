@@ -354,7 +354,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PromotionServlet</servlet-name>
-        <url-pattern>/promotion</url-pattern>
+        <url-pattern>/sellercenter/promotion</url-pattern>
     </servlet-mapping>
     <!-- FILTER DECLARATIONS -->
     <filter>

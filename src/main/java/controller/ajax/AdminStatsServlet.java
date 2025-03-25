@@ -2,9 +2,6 @@ package controller.ajax;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
 import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -17,7 +14,6 @@ public class AdminStatsServlet extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        
         PrintWriter out = response.getWriter();
 
         try {

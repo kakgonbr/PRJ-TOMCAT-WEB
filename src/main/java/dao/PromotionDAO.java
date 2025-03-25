@@ -68,11 +68,19 @@ public class PromotionDAO {
                 throw new java.sql.SQLException(e);
             }
         }
+
+        public static synchronized java.util.List<model.Promotion> getPromotions() throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return em.createNamedQuery("Promotion.findAll", model.Promotion.class).getResultList();
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
+            }
+        }
     } //  public static synchronized java.util.List<model.Promotion> checkAvailablePromotions
 
     public static class PromotionManager {
 
-        public static synchronized boolean addPromotion(int actorID, model.Promotion promotion) throws java.sql.SQLException {
+        public static synchronized model.Promotion addPromotion(model.Promotion promotion) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 EntityTransaction et = em.getTransaction();
                 try {
@@ -81,7 +89,7 @@ public class PromotionDAO {
                     em.persist(promotion);
 
                     et.commit();
-                    return true;
+                    return promotion;
                 } catch (Exception e) {
                     if (et.isActive()) {
                         et.rollback();
@@ -90,6 +98,44 @@ public class PromotionDAO {
                 }
             }
         }
+
+        public static synchronized model.Promotion editPromotion(model.Promotion promotion) throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                EntityTransaction et = em.getTransaction();
+                try {
+                    et.begin();
+
+                    em.merge(promotion);
+
+                    et.commit();
+                    return promotion;
+                } catch (Exception e) {
+                    if (et.isActive()) {
+                        et.rollback();
+                    }
+                    throw new java.sql.SQLException(e);
+                }
+            }
+        }
+
+        public static synchronized void deletePromotion(int promotionId) throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                EntityTransaction et = em.getTransaction();
+                try {
+                    et.begin();
+
+                    em.remove(em.find(model.Promotion.class, promotionId));
+
+                    et.commit();
+                } catch (Exception e) {
+                    if (et.isActive()) {
+                        et.rollback();
+                    }
+                    throw new java.sql.SQLException(e);
+                }
+            }
+        }
+
         private static final String REMOVE_EXPIRED_PROMOTIONS
                 = "UPDATE tblPromotion SET status = 0 WHERE id = ? AND expireDate <= GETDATE()";
 

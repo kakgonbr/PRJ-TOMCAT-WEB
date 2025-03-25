@@ -106,8 +106,7 @@ public class AdminService {
         }
 
         public static java.util.List<PromotionDTO> getPromotionDTOs() throws java.sql.SQLException {
-            // TODO: IMPLEMENT
-            throw new java.sql.SQLException("UNIMPLEMENTED");
+            return dao.PromotionDAO.PromotionFetcher.getPromotions().stream().map(PromotionDTO::new).toList();
         }
 
         public static void persistProductDTO(ProductDTO productDTO) throws java.sql.SQLException {
@@ -148,7 +147,13 @@ public class AdminService {
         }
 
         public static void persistPromotionDTO(PromotionDTO promotionDTO) throws java.sql.SQLException {
-            // TODO: IMPLEMENT
+            if (promotionDTO.getId() == null) {
+                dao.PromotionDAO.PromotionManager.addPromotion(promotionDTO.toPromotion());
+
+                return;
+            }
+
+            dao.PromotionDAO.PromotionManager.editPromotion(promotionDTO.toPromotion());
         }
 
         public static java.util.List<java.util.Map<String, Object>> getDTOs() throws java.sql.SQLException {
@@ -169,11 +174,11 @@ public class AdminService {
             users.put("name", "users");
             users.put("records", getUserDTOs());
 
-            // java.util.Map<String, Object> promotions = new java.util.HashMap<>();
-            // promotions.put("name", "promotions");
-            // promotions.put("records", getPromotionDTOs());
+            java.util.Map<String, Object> promotions = new java.util.HashMap<>();
+            promotions.put("name", "promotions");
+            promotions.put("records", getPromotionDTOs());
 
-            return java.util.Arrays.asList(resources, products, shops, users);
+            return java.util.Arrays.asList(resources, products, shops, users, promotions);
         }
     }
 }

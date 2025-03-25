@@ -58,7 +58,7 @@
                         </c:if>
 
                         <div class="mb-3">
-                            <a href="${pageContext.request.contextPath}/promotion" class="btn btn-primary">➕ Add Promotion</a>
+                            <a href="${pageContext.request.contextPath}/sellercenter/promotion" class="btn btn-primary">➕ Add Promotion</a>
                         </div>
 
                         <c:if test="${not empty promotions}">
@@ -81,7 +81,7 @@
                                             <td>${promo.name}</td>
                                             <td>${promo.type ? "Percentage" : "Fixed Amount"}</td>
                                             <td>${promo.value}</td>
-                                            <td>${promo.startDate}</td> 
+                                            <td>${promo.creationDate}</td> 
                                             <td>${promo.expireDate}</td>
                                             <td>${promo.status ? "Active" : "Inactive"}</td>
                                         </tr>

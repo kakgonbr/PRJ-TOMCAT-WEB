@@ -3,6 +3,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <t:genericpage title="Admin Statistics">
     <jsp:attribute name="head">
@@ -22,13 +23,86 @@
     </jsp:attribute>
 
     <jsp:attribute name="header">
-        <t:error error="${error}" />
-        <h1>Admin page.</h1>
-        <a href="${pageContext.request.contextPath}/admin/cp">To Control Panel</a>
+        <t:userHeader user="${sessionScope.user.username}" />
     </jsp:attribute>
 
     <jsp:attribute name="body">
-        <p>admin?</p>
+        <div class="my-3 container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <p class="lead text-muted"><a class="btn shadow custom-outline-button" href="${pageContext.request.contextPath}/admin/cp">To Control Panel</a></p>
+                    <h2 class="fw-bold mb-3">Current Statistics</h2>
+                </div>
+            </div>
+        </div>
+        <div class="my-5 container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="row row-cols-1 row-cols-md-3 g-4 rounded shadow-lg">
+                        <div class="col border-end">
+                            <div class="text-center p-4">
+                                <h5 class="text-muted mb-0">Average Response Time</h5>
+                                <c:choose>
+                                    <c:when test="${averageResponse < 100}">
+                                        <h1 class="fw-bold text-success">${averageResponse} ms</h1>
+                                    </c:when>
+                                    <c:when test="${averageResponse < 200}">
+                                        <h1 class="fw-bold text-warning">${averageResponse} ms</h1>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <h1 class="fw-bold text-danger">${averageResponse} ms</h1>
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
+                        </div>
+                        <div class="col border-end">
+                            <div class="text-center p-4">
+                                <h5 class="text-muted mb-0">Max Response Time</h5>
+                                <c:choose>
+                                    <c:when test="${maxResponse < 250}">
+                                        <h1 class="fw-bold text-success">${maxResponse} ms</h1>
+                                    </c:when>
+                                    <c:when test="${maxResponse < 500}">
+                                        <h1 class="fw-bold text-warning">${maxResponse} ms</h1>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <h1 class="fw-bold text-danger">${maxResponse} ms</h1>
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="text-center p-4">
+                                <h5 class="text-muted mb-0">Current Active Sessions</h5>
+                                <h1 class="fw-bold">${currentSessions}</h1>
+                            </div>
+                        </div>
+                        <div class="col border-end">
+                            <div class="text-center p-4">
+                                <h5 class="text-muted mb-0">Peak Number of Sessions</h5>
+                                <h1 class="fw-bold">${peakSessions}</h1>
+                            </div>
+                        </div>
+                        <div class="col border-end">
+                            <div class="text-center p-4">
+                                <h5 class="text-muted mb-0">Number of Visits</h5>
+                                <h1 class="fw-bold">${visits}</h1>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="text-center p-4">
+                                <h5 class="text-muted mb-0">Log statistics</h5>
+                                <h1 class="fw-bold"><form action="${pageContext.request.contextPath}/admin" method="POST">
+                                    <input type="hidden" name="action" value="logStatistics" />
+                                    <input type="submit" value="Log today's statistics" class="btn shadow custom-outline-button"/>
+                                </form></h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="chart-container">
             <div class="chart-item">
                 <canvas id="chartTotalMoney" class="adminChart"></canvas>
@@ -59,7 +133,9 @@
             </div>
         </div>
 
-        <pre id="logContainer"></pre>
+        <div class="container-fluid p-3 my-2 shadow-lg" style="background-color: var(--bs-custom-container-focus);">
+            <pre id="logContainer">Loading logs</pre>
+        </div>
     </jsp:attribute>
 
     <jsp:attribute name="footer">

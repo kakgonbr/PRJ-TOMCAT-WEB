@@ -17,11 +17,11 @@ public final class SessionAndCookieManager {
                     session = request.getSession();
                     session.setAttribute("user", user);
                     
-                    service.Logging.logger.info("Logged {} in with cookie {}", user.getUsername(), cookie);
+                    // service.Logging.logger.info("Logged {} in with cookie {}", user.getUsername(), cookie);
 
                     return true;
                 } catch (java.sql.SQLException e) {
-                    service.Logging.logger.warn("Failed to restore user session for session {}, reason: '{}'", session == null ? "none" : session.getId(), e.getMessage());
+                    // service.Logging.logger.warn("Failed to restore user session for session {}, reason: '{}'", session == null ? "none" : session.getId(), e.getMessage());
                 } // try catch
             } // if
         } // for

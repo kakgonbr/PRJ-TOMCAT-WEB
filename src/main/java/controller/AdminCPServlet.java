@@ -103,14 +103,20 @@ public class AdminCPServlet extends HttpServlet {
                         request.getRequestDispatcher(config.Config.JSPMapper.ADMIN_EDIT_PROMOTION).forward(request, response);
                         break;
                     }
+
+                    dao.PromotionDAO.PromotionManager.deletePromotion(Integer.parseInt(idString));
                 break;
             }
         } catch (java.sql.SQLException e) {
             service.Logging.logger.error("ERROR OCCURRED WHILE TRYING TO PERFORM AN ACTION, REASON: {}", e.getMessage());
 
+            request.setAttribute("error", e.getMessage());
+            request.getRequestDispatcher(config.Config.JSPMapper.ADMIN_CONTROL_PANEL).forward(request, response);
+
             return;
         }
         
+        doGet(request, response);
     }
 
     @Override
@@ -152,6 +158,14 @@ public class AdminCPServlet extends HttpServlet {
                     // service.Logging.logger.info("promo id {}", productDTO.getAvailablePromotionId());
 
                     service.AdminService.DatabaseEditService.persistProductDTO(productDTO);
+                break;
+                case "promotions":
+                    model.dto.PromotionDTO promotionDTO = new model.dto.PromotionDTO();
+                    BeanUtils.populate(promotionDTO, request.getParameterMap());
+
+                    // service.Logging.logger.info("promo id {}", PromotionDTO.getAvailablePromotionId());
+
+                    service.AdminService.DatabaseEditService.persistPromotionDTO(promotionDTO);
                 break;
             }
         } catch (java.sql.SQLException | IllegalAccessException | InvocationTargetException e) {

@@ -96,11 +96,25 @@ function fetchByShop() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  let urlParams = new URLSearchParams(window.location.search);
-  let shopId = urlParams.get("shopId");
+  // Lấy giá trị shopId từ một phần tử trên trang (nếu có)
+  var shopId = document.getElementById("shopIdInput") 
+               ? document.getElementById("shopIdInput").value 
+               : null;
+
+  // Kiểm tra nếu shopId không null thì tự động tải sản phẩm khả dụng ban đầu
   if (shopId) {
-    fetchProductsShop(shopId, true);
+    fetchProductsShop(shopId, true); // Mặc định hiển thị sản phẩm có status = true
   }
+
+  // Gắn sự kiện cho nút "View Deleted Products"
+  document.getElementById("viewDeletedBtn").addEventListener("click", function () {
+    fetchProductsShop(shopId, false);
+  });
+
+  // Gắn sự kiện cho nút "View Available Products"
+  document.getElementById("viewAvailableBtn").addEventListener("click", function () {
+    fetchProductsShop(shopId, true);
+  });
 });
 
 function fetchProductsShop(shopId, status) {
@@ -111,108 +125,98 @@ function fetchProductsShop(shopId, status) {
 
   var url = new URL("https://" + location.host + contextPath + "/ajax/products");
   url.searchParams.append("shopId", shopId);
-  url.searchParams.append("status", status ? "true" : "false");
+  url.searchParams.append("status", status ? "true" : "false"); // Chuyển status thành 'true' hoặc 'false'
 
   fetch(url.toString())
     .then((response) => response.json())
     .then((data) => {
       let tableContainer = document.getElementById("productTableShop");
-      updateTable(tableContainer, data);
+      tableContainer.innerHTML = ""; // Xóa dữ liệu cũ
+
+      // Bọc bảng trong div để hỗ trợ hiển thị trên mobile
+      let responsiveDiv = document.createElement("div");
+      responsiveDiv.className = "table-responsive";
+
+      // Tạo bảng Bootstrap
+      let table = document.createElement("table");
+      table.className = "table table-striped table-hover table-bordered align-middle";
+
+      // Tạo tiêu đề bảng
+      let thead = document.createElement("thead");
+      thead.className = "table-dark";
+      thead.innerHTML = `
+        <tr>
+          <th scope="col">Shop</th>
+          <th scope="col">Category</th>
+          <th scope="col">Name</th>
+          <th scope="col">Description</th>
+          <th scope="col" class="text-center">Actions</th>
+        </tr>
+      `;
+      table.appendChild(thead);
+
+      // Tạo phần thân bảng
+      let tbody = document.createElement("tbody");
+
+      data.forEach((item) => {
+        let row = document.createElement("tr");
+
+        row.innerHTML = `
+          <td><a href="${contextPath}/shop?shopId=${item.shop.id}" class="text-decoration-none">${item.shop.name}</a></td>
+          <td><a href="${contextPath}/category?categoryId=${item.category.id}" class="text-decoration-none">${item.category.name}</a></td>
+          <td><a href="${contextPath}/product?productId=${item.id}" class="text-decoration-none fw-bold">${item.name}</a></td>
+          <td class="text-wrap" style="max-width: 300px;">${item.description}</td>
+          <td class="text-center">
+            ${item.status
+              ? `
+                <button class="btn btn-warning btn-sm me-2" onclick="window.location.href='${contextPath}/product?action=edit&productId=${item.id}'">
+                  Edit
+                </button>
+                <button class="btn btn-danger btn-sm" onclick="if (confirm('Are you sure you want to delete this product?')) {
+                  fetch('${contextPath}/product', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'action=delete&productId=${encodeURIComponent(item.id)}'
+                  }).then(() => fetchProductsShop(${shopId}, true));
+                }">
+                  Delete
+                </button>`
+              : `
+                <button class="btn btn-success btn-sm" onclick="if (confirm('Do you want to restore this product?')) {
+                  fetch('${contextPath}/product', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'action=restore&productId=${encodeURIComponent(item.id)}'
+                  }).then(() => fetchProductsShop(${shopId}, false));
+                }">
+                  Restore
+                </button>`
+            }
+          </td>
+        `;
+
+        tbody.appendChild(row);
+      });
+
+      table.appendChild(tbody);
+      responsiveDiv.appendChild(table);
+      tableContainer.appendChild(responsiveDiv);
     })
     .catch((error) => console.error("Error fetching data:", error));
-}
-
-function updateTable(tableContainer, data) {
-  if (!tableContainer) return;
-
-  tableContainer.innerHTML = "";
-
-  let responsiveDiv = document.createElement("div");
-  responsiveDiv.className = "table-responsive";
-
-  let table = document.createElement("table");
-  table.className = "table table-striped table-hover table-bordered align-middle";
-
-  let thead = document.createElement("thead");
-  thead.className = "table-dark";
-  thead.innerHTML = `
-    <tr>
-      <th scope="col">Shop</th>
-      <th scope="col">Category</th>
-      <th scope="col">Name</th>
-      <th scope="col">Description</th>
-      <th scope="col">Promotion</th>
-      <th scope="col" class="text-center">Actions</th>
-    </tr>
-  `;
-  table.appendChild(thead);
-
-  let tbody = document.createElement("tbody");
-  data.forEach((item) => {
-    let row = document.createElement("tr");
-    row.innerHTML = `
-      <td><a href="${contextPath}/shop?shopId=${item.shop.id}" class="text-decoration-none">${item.shop.name}</a></td>
-      <td><a href="${contextPath}/category?categoryId=${item.category.id}" class="text-decoration-none">${item.category.name}</a></td>
-      <td><a href="${contextPath}/product?productId=${item.id}" class="text-decoration-none fw-bold">${item.name}</a></td>
-      <td class="text-wrap" style="max-width: 300px;">${item.description}</td>
-      <td class="text-wrap" style="max-width: 300px;">
-        ${item.promotion ? `${item.promotion.name} : ${item.promotion.value} ${item.promotion.type ? "$" : "%"}` : "No Promotion"}
-      </td>
-      <td class="text-center">
-        ${item.status 
-          ? `<button class="btn btn-warning btn-sm me-2" onclick="window.location.href='${contextPath}/product?action=edit&productId=${item.id}'">Edit</button>
-             <button class="btn btn-danger btn-sm" onclick="deleteProduct(${item.id})">Delete</button>`
-          : `<button class="btn btn-success btn-sm" onclick="restoreProduct(${item.id})">Restore</button>`}
-      </td>
-    `;
-    tbody.appendChild(row);
-  });
-
-  table.appendChild(tbody);
-  responsiveDiv.appendChild(table);
-  tableContainer.appendChild(responsiveDiv);
-}
-
-// Hàm xóa sản phẩm
-function deleteProduct(productId) {
-  if (confirm("Are you sure you want to delete this product?")) {
-    fetch(`${contextPath}/product`, {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `action=delete&productId=${encodeURIComponent(productId)}`,
-    }).then(() => {
-      fetchProductsShop(shopId, true);
-    });
-  }
-}
-
-// Hàm khôi phục sản phẩm
-function restoreProduct(productId) {
-  if (confirm("Do you want to restore this product?")) {
-    fetch(`${contextPath}/product`, {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `action=restore&productId=${encodeURIComponent(productId)}`,
-    }).then(() => {
-      fetchProductsShop(shopId, false);
-    });
-  }
 }
 
 /*fetch products for home page */
 async function fetchProductsHomePage() {
   const container = document.querySelector(".row.gy-4");
-
+  
   try {
-    const response = await fetch(
-      "https://kakgonbri.zapto.org:8443/prj/ajax/products?"
-    );
-    const products = await response.json();
-
-    products.forEach((product) => {
-      const productCard = document.createElement("div");
-      productCard.classList.add("col-3", "mb-2");
-      productCard.innerHTML = `
+      const response = await fetch("https://kakgonbri.zapto.org:8443/prj/ajax/products?");
+      const products = await response.json();
+      
+      products.forEach(product => {
+          const productCard = document.createElement("div");
+          productCard.classList.add("col-3", "mb-2");
+          productCard.innerHTML = `
               <a href="https://kakgonbri.zapto.org:8443/prj/product?productId=${product.id}" class="text-dark text-decoration-none">
                   <div class="card">
                       <div class="position-relative">
@@ -225,29 +229,24 @@ async function fetchProductsHomePage() {
                   </div>
               </a>
           `;
-      container.appendChild(productCard);
-    });
+          container.appendChild(productCard);
+      });
   } catch (error) {
-    console.error("Error for fetching products for homepage:", error);
+      console.error("Error for fetching products for homepage:", error);
   }
 }
 /*fetch products for search */
 async function fetchProductsSearch() {
   const container = document.querySelector(".col-9.row");
-
+  
   try {
-    const response = await fetch(
-      "https://kakgonbri.zapto.org:8443/prj/ajax/products?categoryId=" +
-        categoryId +
-        "&query=" +
-        query
-    );
-    const products = await response.json();
-
-    products.forEach((product) => {
-      const productCard = document.createElement("div");
-      productCard.classList.add("col-3");
-      productCard.innerHTML = `
+      const response = await fetch("https://kakgonbri.zapto.org:8443/prj/ajax/products?categoryId="+categoryId+"&query=" + query);
+      const products = await response.json();
+      
+      products.forEach(product => {
+          const productCard = document.createElement("div");
+          productCard.classList.add("col-3");
+          productCard.innerHTML = `
               <a href="https://kakgonbri.zapto.org:8443/prj/product?productId=${product.id}" class="text-dark text-decoration-none">
                   <div class="card">
                       <div class="position-relative">
@@ -260,9 +259,29 @@ async function fetchProductsSearch() {
                   </div>
               </a>
           `;
-      container.appendChild(productCard);
-    });
+          container.appendChild(productCard);
+      });
   } catch (error) {
-    console.error("Error for fetching products for search:", error);
+      console.error("Error for fetching products for search:", error);
   }
 }
+
+function createProductElement(product) {
+  let li = document.createElement("li");
+
+  // Tạo checkbox để chọn sản phẩm
+  let checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.value = product.id;
+  checkbox.classList.add("product-checkbox");
+
+  // Nhãn hiển thị tên sản phẩm
+  let label = document.createElement("label");
+  label.appendChild(checkbox);
+  label.appendChild(document.createTextNode(" " + product.name));
+
+  li.appendChild(label);
+  return li;
+}
+
+
