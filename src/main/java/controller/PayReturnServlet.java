@@ -51,13 +51,7 @@ public class PayReturnServlet extends HttpServlet {
             request.setAttribute("status", "Invalid signature");
         }
 
-        try {
-            java.util.List<OrderedItem> orderedItems = dao.OrderDAO.OrderedItemManager.getOrderItemFromUser(((model.User) request.getSession().getAttribute("user")).getId(), true);
-        } catch (java.sql.SQLException e) {
-
-        }
-
-        request.getRequestDispatcher(config.Config.JSPMapper.PAYMENT_RETURN_JSP).forward(request, response);
+        request.getRequestDispatcher(config.Config.JSPMapper.USER_ORDER_COMPLETE).forward(request, response);
     }
 
     @Override

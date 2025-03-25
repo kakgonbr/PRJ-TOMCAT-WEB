@@ -9,11 +9,14 @@
         <%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/main_css"> --%>
 
         <script src="${pageContext.request.contextPath}/resources/product_js"></script>
+        <script src="${pageContext.request.contextPath}/resources/searchPage_js"></script>
         <script>
             var contextPath = "${pageContext.request.contextPath}";
-            var categoryId = "${categoryId}";
+            var paramCategoryId = "${categoryId}";
             var query = "${query}";
-            document.addEventListener("DOMContentLoaded", fetchProductsSearch);
+            document.addEventListener("DOMContentLoaded", function () {
+                fetchProductsSearch(true);
+            });
         </script>
 
     </jsp:attribute>
@@ -123,7 +126,6 @@
 
     <jsp:attribute name="footer">
         <t:footer/>
-        <script src="${pageContext.request.contextPath}/resources/searchPage_js"></script>
         
     </jsp:attribute>
 </t:genericpage>

@@ -22,17 +22,13 @@ public class UserOrderServlet extends HttpServlet {
         switch (action) {
             case "order":
                 orderItemWrappers= service.UserOrderService.getOrderItems(user.getId(), false);
-                if(orderItemWrappers != null) {
-                    request.setAttribute("OrderItemList", orderItemWrappers);
-                    request.getRequestDispatcher(config.Config.JSPMapper.USER_ORDER).forward(request, response);
-                }
+                request.setAttribute("OrderItemList", orderItemWrappers);
+                request.getRequestDispatcher(config.Config.JSPMapper.USER_ORDER).forward(request, response);
                 break;
             case "complete":
                 orderItemWrappers= service.UserOrderService.getOrderItems(user.getId(), true);
-                if(orderItemWrappers != null) {
-                    request.setAttribute("OrderItemList", orderItemWrappers);
-                    request.getRequestDispatcher(config.Config.JSPMapper.USER_ORDER_COMPLETE).forward(request, response);
-                }
+                request.setAttribute("OrderItemList", orderItemWrappers);
+                request.getRequestDispatcher(config.Config.JSPMapper.USER_ORDER_COMPLETE).forward(request, response);
                 break;
             default:
                 break;
