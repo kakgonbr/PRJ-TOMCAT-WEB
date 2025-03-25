@@ -44,7 +44,7 @@ public class PromotionServlet extends HttpServlet {
             try {
                 int promotionId = Integer.parseInt(promotionIdStr);
 
-                List<Product> products = dao.ProductDAO.ProductFetcher.getShopProductsByPromotion(shopId, promotionId); // getShopProductsByPromotion is not defined
+                List<Product> products = dao.ProductDAO.ProductFetcher.getShopProductsByPromotion(shopId, promotionId);
                 request.setAttribute("products", products);
                 request.getRequestDispatcher(config.Config.JSPMapper.SHOP_PROMOTION_DETAILS).forward(request, response);
             } catch (NumberFormatException e) {

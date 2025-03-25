@@ -80,7 +80,7 @@ function generateCategoryHTML(category, parentId = "categoriesCollapseContent") 
                     <div class="collapse-content" id="${collapseId}Content">`;
         
         category.children.forEach(child => {
-            html += generateCategoryHTML(child, `${collapseId}Content`); // parentId is unused
+            html += generateCategoryHTML(child, `${categoryId}`); // id is current category id
         });
         
         html += `</div>
