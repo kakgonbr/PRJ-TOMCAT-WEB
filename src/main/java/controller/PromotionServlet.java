@@ -158,7 +158,7 @@ public class PromotionServlet extends HttpServlet {
                 }
             }
 
-            response.sendRedirect(request.getContextPath() + "/promotion?action=products&promotionId=" + promotionId);
+            response.sendRedirect(request.getContextPath() + "/sellercenter/promotion?action=products&promotionId=" + promotionId);
         } catch (NumberFormatException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid format.");
         } catch (Exception e) {
