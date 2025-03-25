@@ -71,7 +71,7 @@ public class PromotionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String name = request.getParameter("promotionName");
+        String name = request.getParameter("name");
         boolean type = Boolean.parseBoolean(request.getParameter("type"));
         int value = Integer.parseInt(request.getParameter("value"));
         String expireDate = request.getParameter("expireDate");
