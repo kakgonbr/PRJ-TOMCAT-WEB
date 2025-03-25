@@ -48,7 +48,7 @@
                                 </h2>
                                 <div id="collapseProduct" class="accordion-collapse collapse">
                                     <div class="accordion-body">
-                                        <a href="#"
+                                        <a href="${pageContext.request.contextPath}/sellercenter/shophome"
                                             class="list-group-item list-group-item-action pb-3">🛍 My
                                             Products</a>
                                         <a href="${pageContext.request.contextPath}/addproduct"
@@ -78,86 +78,102 @@
                 <main class="col-md-10 p-4">
                     <div class="container">
                         <h2>Edit product</h2>
-                        <c:if test="${not empty error}">
-                            <div class="alert alert-danger">
-                                ${error}
-                            </div>
-                        </c:if>
 
-                        <form
-                            action="${pageContext.request.contextPath}/product?action=setThumbnail&productId=${product.id}"
-                            enctype="multipart/form-data" method="POST">
-                            <div>
-                                <h4>Thumbnail:</h4>
-                                <img src="${pageContext.request.contextPath}/resources/${product.thumbnail}"
-                                    alt="">
-                                <input type="file" name="image">
-                                <button type="submit">Update</button>
-                            </div>
-                        </form>
-
-                        <h4>Images:</h4>
-                        <c:forEach var="image" items="${product.productImages}">
+                        <div class="card">
+                            <h4>Thumbnail:</h4>
+                            <img src="${pageContext.request.contextPath}/resources/${product.thumbnail}"
+                                class="thumbnail-img" alt="Thumbnail">
                             <form
-                                action="${pageContext.request.contextPath}/product?action=removePicture&productId=${product.id}"
-                                method="POST">
-                                <div>
-                                    <h4>Thumbnail:</h4>
-                                    <img src="${pageContext.request.contextPath}/resources/${image}"
-                                        alt="">
-                                    <input type="hidden" name="imageId" value="${image}">
-                                    <button type="submit">Remove</button>
-                                </div>
+                                action="${pageContext.request.contextPath}/product?action=setThumbnail&productId=${product.id}"
+                                enctype="multipart/form-data" method="POST">
+                                <input type="file" class="form-control" name="image">
+                                <button type="submit" class="btn btn-primary">Update</button>
                             </form>
-                        </c:forEach>
+                        </div>
 
-                        <form
-                            action="${pageContext.request.contextPath}/product?action=addPicture&productId=${product.id}"
-                            enctype="multipart/form-data" method="POST">
-                            <input type="file" name="image">
-                            <button type="submit">Add Picture</button>
-                        </form>
+                        <div class="card">
+                            <h4>Images:</h4>
+                            <div class="row">
+                                <c:forEach var="image" items="${product.productImages}">
+                                    <div class="col-md-3">
+                                        <div class="text-center">
+                                            <img src="${pageContext.request.contextPath}/resources/${image}"
+                                                class="product-img" alt="Product Image">
+                                            <form
+                                                action="${pageContext.request.contextPath}/product?action=removePicture&productId=${product.id}"
+                                                method="POST">
+                                                <input type="hidden" name="imageId" value="${image}">
+                                                <button type="submit"
+                                                    class="btn btn-danger btn-sm">Remove</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </div>
 
-                        <c:choose>
-                            <c:when test="${product.promotion == null}">
-                                <form
-                                    action="${pageContext.request.contextPath}/product?action=addPromotion&productId=${product.id}"
-                                    method="POST">
-                                    <label>Name: </label>
-                                    <input type="text" name="name" required>
-                                    <label>Type: Check for flat, uncheck for %</label>
-                                    <input type="checkbox" name="type" value="true">
-                                    <label>Value</label>
-                                    <input type="number" name="value">
-                                    <label>Expire On:</label>
-                                    <input type="text" name="expire" placeholder="dd/mm/yyyy">
-                                    <button type="submit">Add Promotion</button>
-                                </form>
-                            </c:when>
-                            <c:otherwise>
-                                <h4>Promotion:</h4>
-                                <ul>
-                                    <li>Name: ${product.promotion.name}</li>
-                                    <li>Value: 
-                                        <c:choose>
-                                            <c:when test="${product.promotion.type}">
-                                                - ${product.promotion.value} VND
-                                            </c:when>
-                                            <c:otherwise>
-                                                - ${product.promotion.value} %
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </li>
-                                    <li>Expire On: ${product.promotion.expireDate}</li>
-                                </ul>
-                                <form
-                                    action="${pageContext.request.contextPath}/product?action=removePromotion&productId=${product.id}"
-                                    method="POST">
-                                    <button type="submit">Remove Promotion</button>
-                                </form>
-                            </c:otherwise>
-                        </c:choose>
+                        <div class="card">
+                            <h4>Add Picture:</h4>
+                            <form
+                                action="${pageContext.request.contextPath}/product?action=addPicture&productId=${product.id}"
+                                enctype="multipart/form-data" method="POST">
+                                <input type="file" class="form-control" name="image">
+                                <button type="submit" class="btn btn-success">Add Picture</button>
+                            </form>
+                        </div>
 
+                        <div class="card">
+                            <c:choose>
+                                <c:when test="${product.promotion == null}">
+                                    <h4>Add Promotion:</h4>
+                                    <form
+                                        action="${pageContext.request.contextPath}/product?action=addPromotion&productId=${product.id}"
+                                        method="POST">
+                                        <label class="form-label">Name:</label>
+                                        <input type="text" class="form-control" name="name" required>
+
+                                        <label class="form-label">Type: Check for flat, uncheck for
+                                            %</label>
+                                        <input type="checkbox" class="form-check-input" name="type"
+                                            value="true">
+
+                                        <label class="form-label">Value:</label>
+                                        <input type="number" class="form-control" name="value">
+
+                                        <label class="form-label">Expire On:</label>
+                                        <input type="text" class="form-control" name="expire"
+                                            placeholder="dd/mm/yyyy">
+
+                                        <button type="submit" class="btn btn-warning mt-2">Add
+                                            Promotion</button>
+                                    </form>
+                                </c:when>
+                                <c:otherwise>
+                                    <h4>Current Promotion:</h4>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">Name: ${product.promotion.name}</li>
+                                        <li class="list-group-item">Value:
+                                            <c:choose>
+                                                <c:when test="${product.promotion.type}">
+                                                    - ${product.promotion.value} VND
+                                                </c:when>
+                                                <c:otherwise>
+                                                    - ${product.promotion.value} %
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </li>
+                                        <li class="list-group-item">Expire On:
+                                            ${product.promotion.expireDate}</li>
+                                    </ul>
+                                    <form
+                                        action="${pageContext.request.contextPath}/product?action=removePromotion&productId=${product.id}"
+                                        method="POST">
+                                        <button type="submit" class="btn btn-danger mt-2">Remove
+                                            Promotion</button>
+                                    </form>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
                         <form
                             action="${pageContext.request.contextPath}/product?action=edit&productId=${product.id}"
                             method="post">

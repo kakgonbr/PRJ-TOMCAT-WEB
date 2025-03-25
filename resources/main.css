@@ -177,3 +177,20 @@
 .logo::after {
     transform: rotate(180deg);
 }
+
+.card {
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.form-control, .btn {
+    margin-top: 0.5rem;
+}
+
+.thumbnail-img, .product-img {
+    width: 100%;
+    max-width: 150px;
+    height: auto;
+    border-radius: 8px;
+}
