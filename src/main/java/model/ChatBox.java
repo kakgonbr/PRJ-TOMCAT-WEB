@@ -48,7 +48,7 @@ public class ChatBox implements Serializable {
     @JoinColumn(name = "user2", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.EAGER)
     private User user2;
-    @OneToMany(mappedBy = "chatBoxId")
+    @OneToMany(mappedBy = "chatBoxId", fetch = FetchType.EAGER)
     private List<ChatContent> tblChatBoxContentList;
 
     public ChatBox() {
