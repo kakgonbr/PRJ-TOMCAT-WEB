@@ -78,11 +78,11 @@ public class AdminServlet extends HttpServlet {
     private static void sendNotification(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, java.sql.SQLException {
         model.Notification notification = new model.Notification();
         notification.setTitle(request.getParameter("title"));
-        notification.setBody(request.getParameter("body"));
+        notification.setBody(request.getParameter("content"));
         notification.setIsRead(false);
         // excuse the uneasy and inconsistent usage of R-value string here
         notification.setUserId("all".equals(request.getParameter("target")) ? null : new model.User(Integer.parseInt(request.getParameter("userId"))));
-        service.Logging.logger.info("Adding notification title: {}, body: {}, target: {}", notification.getTitle(), notification.getBody(), notification.getUserId().getId());
+        service.Logging.logger.info("Adding notification title: {}, body: {}, target: {}", notification.getTitle(), notification.getBody(), notification.getUserId());
         dao.NotificationDAO.NotificationManager.add(notification);
     }
 }
