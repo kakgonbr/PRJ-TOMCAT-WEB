@@ -1,5 +1,8 @@
 #logContainer {
     overflow-y: auto;
+    overflow-y: scroll;
+    white-space: pre-wrap;
+    max-height: 50vh;
 }
 
 .chart-container {

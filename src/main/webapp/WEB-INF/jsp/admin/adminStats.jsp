@@ -44,13 +44,13 @@
                                 <h5 class="text-muted mb-0">Average Response Time</h5>
                                 <c:choose>
                                     <c:when test="${averageResponse < 100}">
-                                        <h1 class="fw-bold text-success">${averageResponse}</h1>
+                                        <h1 class="fw-bold text-success">${averageResponse} ms</h1>
                                     </c:when>
                                     <c:when test="${averageResponse < 200}">
-                                        <h1 class="fw-bold text-warning">${averageResponse}</h1>
+                                        <h1 class="fw-bold text-warning">${averageResponse} ms</h1>
                                     </c:when>
                                     <c:otherwise>
-                                        <h1 class="fw-bold text-danger">${averageResponse}</h1>
+                                        <h1 class="fw-bold text-danger">${averageResponse} ms</h1>
                                     </c:otherwise>
                                 </c:choose>
                             </div>
@@ -60,13 +60,13 @@
                                 <h5 class="text-muted mb-0">Max Response Time</h5>
                                 <c:choose>
                                     <c:when test="${maxResponse < 250}">
-                                        <h1 class="fw-bold text-success">${maxResponse}</h1>
+                                        <h1 class="fw-bold text-success">${maxResponse} ms</h1>
                                     </c:when>
                                     <c:when test="${maxResponse < 500}">
-                                        <h1 class="fw-bold text-warning">${maxResponse}</h1>
+                                        <h1 class="fw-bold text-warning">${maxResponse} ms</h1>
                                     </c:when>
                                     <c:otherwise>
-                                        <h1 class="fw-bold text-danger">${maxResponse}</h1>
+                                        <h1 class="fw-bold text-danger">${maxResponse} ms</h1>
                                     </c:otherwise>
                                 </c:choose>
                             </div>
