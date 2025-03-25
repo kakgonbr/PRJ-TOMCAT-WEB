@@ -247,7 +247,7 @@ async function fetchProductsSearch() {
 
       url.searchParams.append("query", query);
 
-      checkedBoxes.forEach(item => url.searchParams.append("categoryId", item));
+      checkedBoxes.forEach(item => url.searchParams.append("categoryId", item.value));
 
       const response = await fetch(url.toString());
       const products = await response.json();
