@@ -62,7 +62,7 @@ public class ReviewDAO {
                         "offset (?3 - 1)*5 rows\r\n" + //
                         "fetch next 5 rows only";
         public static final String GET_OVERALL_RATING = "SELECT AVG(rate) AS AvarageRate FROM tblReview WHERE productId = ?1";
-        public static final String GET_REVIEWS_BY_PRODUCT = "SELECT r FROM Review r WHERE r.productId.id = ?1 AND r.status = true ORDER BY r.id DESC";
+        public static final String GET_REVIEWS_BY_PRODUCT = "SELECT r FROM Review r JOIN FETCH r.userId WHERE r.productId.id = ?1 AND r.status = true ORDER BY r.id DESC";
 
         public static synchronized List<Review> getReviewNext(int productId ,int lastID, int curPage, int nextPage) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
