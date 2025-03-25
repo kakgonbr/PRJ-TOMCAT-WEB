@@ -99,7 +99,7 @@ public class User implements Serializable {
     private String bio;
     @OneToMany(mappedBy = "user1", fetch = FetchType.EAGER)
     private List<ChatBox> chatBoxList;
-    @OneToMany(mappedBy = "user2")
+    @OneToMany(mappedBy = "user2", fetch = FetchType.EAGER)
     private List<ChatBox> chatBoxList1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
     private List<Preference> preferenceList;
