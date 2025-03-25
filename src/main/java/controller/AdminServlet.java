@@ -82,7 +82,7 @@ public class AdminServlet extends HttpServlet {
         notification.setIsRead(false);
         // excuse the uneasy and inconsistent usage of R-value string here
         notification.setUserId("all".equals(request.getParameter("target")) ? null : new model.User(Integer.parseInt(request.getParameter("userId"))));
-        service.Logging.logger.info("Adding notification title: {}, body: {}, target: {}", notification.getTitle(), notification.getBody(), notification.getUserId());
+        // service.Logging.logger.info("Adding notification title: {}, body: {}, target: {}", notification.getTitle(), notification.getBody(), notification.getUserId());
         dao.NotificationDAO.NotificationManager.add(notification);
     }
 }

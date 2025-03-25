@@ -40,7 +40,7 @@ public class NotificationDAO {
                     throw new java.sql.SQLException(e);
                 }
 
-                em.persist(em);
+                // em.persist(em); // ?????????????? what was I on?
             }
         } // public static synchronized void add
 
