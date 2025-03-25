@@ -161,6 +161,14 @@
                     a new promotion</a>
             </div> --%>
 
+            <div class="my-3 container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 text-center">
+                        <p class="lead text-muted"><a class="btn shadow custom-outline-button" href="${pageContext.request.contextPath}/admin">To Statistics</a></p>
+                        <h2 class="fw-bold mb-3">Control Panel</h2>
+                    </div>
+                </div>
+            </div>
             <div class="container">
                 <div class="mb-4">
                     <h2>Quick Actions</h2>

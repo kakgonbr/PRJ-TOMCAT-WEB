@@ -116,6 +116,7 @@ public class AdminCPServlet extends HttpServlet {
             return;
         }
         
+        doGet(request, response);
     }
 
     @Override
