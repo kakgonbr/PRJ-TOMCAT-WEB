@@ -33,10 +33,9 @@ public class PromotionServlet extends HttpServlet {
         int userId = user.getId();
 
         try {
-            // DOESNT WORK, checkAvailablePromotionsByCreator IS NOT DEFINED
-            // List<Promotion> promotions = dao.PromotionDAO.PromotionFetcher.checkAvailablePromotionsByCreator(userId);
+             List<Promotion> promotions = dao.PromotionDAO.PromotionFetcher.checkAvailablePromotionsByCreator(userId);
 
-            // request.setAttribute("promotions", promotions);
+            request.setAttribute("promotions", promotions);
             request.getRequestDispatcher(config.Config.JSPMapper.SHOP_DISPLAY_PROMOTION).forward(request, response);
         } catch (Exception e) {
             service.Logging.logger.error("Error fetching promotions: {}", e);

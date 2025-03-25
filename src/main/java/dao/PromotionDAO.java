@@ -59,6 +59,19 @@ public class PromotionDAO {
                 throw new java.sql.SQLException(e);
             }
         }
+        
+        private static final String CHECK_AVAILABLE_PROMOTIONS_BY_CREATOR
+                = "SELECT * FROM tblPromotion WHERE expireDate >= GETDATE() AND creatorId = ?1";
+
+        public static synchronized java.util.List<model.Promotion> checkAvailablePromotionsByCreator(int userID) throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return em.createNativeQuery(CHECK_AVAILABLE_PROMOTIONS_BY_CREATOR, model.Promotion.class)
+                        .setParameter(1, userID)
+                        .getResultList();
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
+            }
+        }
 
         public static synchronized model.Promotion getPromotion(int promotionId) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
