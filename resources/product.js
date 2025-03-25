@@ -16,7 +16,7 @@ function fetchProducts(query, filter, shopId) {
   }
 
   if (filter) {
-    url.searchParams.append("category", filter);
+    url.searchParams.append("categoryId", filter);
   }
 
   if (shopId) {
