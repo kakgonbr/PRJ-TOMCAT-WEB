@@ -25,23 +25,80 @@
     <jsp:attribute name="body">
         <div class="container-fluid">
             <div class="row">
-                <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
-                    <div class="position-sticky">
+<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-none sidebar">
+                    <div class="position-sticky ">
+                        <!-- Quick Access Search -->
                         <input type="text" id="searchBox" class="form-control my-3" placeholder="Quick access...">
-                        <div class="accordion" id="menuAccordion">
+
+                        <!-- Accordion Menu -->
+                        <div class="accordion fs-6" id="menuAccordion">
+                            <!-- Order Section -->
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProduct">
-                                        Product
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseOrder">
+                                        Order
                                     </button>
                                 </h2>
-                                <div id="collapseProduct" class="accordion-collapse collapse show">
+                                <div id="collapseOrder" class="accordion-collapse collapse">
                                     <div class="accordion-body">
-                                        <a href="${pageContext.request.contextPath}/sellercenter/shophome" class="list-group-item list-group-item-action">🛍 My Products</a>
-                                        <a href="${pageContext.request.contextPath}/sellercenter/addproduct" class="list-group-item list-group-item-action active">➕ Add Product</a>
+                                        <a href="${pageContext.request.contextPath}/sellercenter/order" class="list-group-item list-group-item-action pb-3">📦 My
+                                            order</a>
+                                        <!--                                    <a href="../html/return-refund-cancle.html" class="list-group-item list-group-item-action fs-6">🔄
+                                                                                Return/Refund/Cancel</a>-->
                                     </div>
                                 </div>
                             </div>
+                            <!-- Product Section -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseProduct">
+                                        Product
+                                    </button>
+                                </h2>
+                                <div id="collapseProduct" class="accordion-collapse collapse">
+                                    <div class="accordion-body">
+                                        <a href="${pageContext.request.contextPath}/sellercenter/shophome" class="list-group-item list-group-item-action pb-3">🛍 My
+                                            Products</a>
+                                        <a href="${pageContext.request.contextPath}/sellercenter/addproduct" class="list-group-item list-group-item-action">➕ Add Product</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Shop -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseShop">
+                                        Shop
+                                    </button>
+                                </h2>
+                                <div id="collapseShop" class="accordion-collapse collapse">
+                                    <a href="${pageContext.request.contextPath}/shop?shopId=${sessionScope.shopId}" class="list-group-item list-group-item-action p-3">🏪    
+                                        Shop
+                                        Information</a>
+                                </div>
+                            </div>
+                            <!-- marketing center -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseMarketing">
+                                        Marketing center
+                                    </button>
+                                </h2>
+                                <div id="collapseMarketing" class="accordion-collapse collapse">
+                                    <div class="accordion-body">
+                                        <a href="shop-advertisement.html"
+                                           class="list-group-item list-group-item-action pb-3">📢
+                                            Shop Advertisement</a>
+                                        <a href="${pageContext.request.contextPath}/sellercenter/promotion" 
+                                           class="list-group-item list-group-item-action">🏷 Discount</a>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </nav>
