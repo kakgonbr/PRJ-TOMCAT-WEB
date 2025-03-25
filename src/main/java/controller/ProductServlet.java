@@ -96,7 +96,7 @@ public class ProductServlet extends HttpServlet {
 
             dao.ProductDAO.ProductManager.removeImage(imageId);
 
-            response.sendRedirect(request.getContextPath() + "/sellercenter/shophome");
+            response.sendRedirect(request.getContextPath() + "/product?action=edit?productId=" + productId);
         } catch (java.sql.SQLException e) {
             service.Logging.logger.error("Failed to save thumbnail, reason: {}", e.getMessage());
             request.setAttribute("error", e.getMessage());
@@ -134,7 +134,7 @@ public class ProductServlet extends HttpServlet {
 
             dao.ProductDAO.ProductManager.editProduct(product);
 
-            response.sendRedirect(request.getContextPath() + "/sellercenter/shophome");
+            response.sendRedirect(request.getContextPath() + "/product?action=edit?productId=" + productId);
         } catch (java.sql.SQLException e) {
             service.Logging.logger.error("Failed to save thumbnail, reason: {}", e.getMessage());
             request.setAttribute("error", e.getMessage());
@@ -167,7 +167,7 @@ public class ProductServlet extends HttpServlet {
             product.setImageStringResourceId(dao.ResourceDAO.overrideMapping("prd_" + product.getId(), saved));
             dao.ProductDAO.ProductManager.editProduct(product);
 
-            response.sendRedirect(request.getContextPath() + "/sellercenter/shophome");
+            response.sendRedirect(request.getContextPath() + "/product?action=edit?productId=" + productId);
         } catch (java.sql.SQLException e) {
             service.Logging.logger.error("Failed to save thumbnail, reason: {}", e.getMessage());
             request.setAttribute("error", e.getMessage());
@@ -198,7 +198,7 @@ public class ProductServlet extends HttpServlet {
             product.setAvailablePromotionId(null);
 
             dao.ProductDAO.ProductManager.editProduct(product);
-            response.sendRedirect(request.getContextPath() + "/sellercenter/shophome");
+            response.sendRedirect(request.getContextPath() + "/product?action=edit?productId=" + productId);
         } catch (java.sql.SQLException e) {
             service.Logging.logger.error("Failed to remove promotion, reason: {}", e.getMessage());
             request.setAttribute("error", e.getMessage());
@@ -274,7 +274,7 @@ public class ProductServlet extends HttpServlet {
 
             dao.ProductDAO.ProductManager.editProduct(product);
 
-            response.sendRedirect(request.getContextPath() + "/sellercenter/shophome");
+            response.sendRedirect(request.getContextPath() + "/product?action=edit?productId=" + productId);
         } catch (java.sql.SQLException e) {
             service.Logging.logger.error("Failed to add promotion, reason: {}", e.getMessage());
             request.setAttribute("error", e.getMessage());
@@ -351,7 +351,7 @@ public class ProductServlet extends HttpServlet {
             }
 
             dao.ProductDAO.ProductManager.updateMultipleProductItems(productId, productItemList);
-            response.sendRedirect(request.getContextPath() + "/sellercenter/shophome");
+            response.sendRedirect(request.getContextPath() + "/product?action=edit?productId=" + productId);
 
         } catch (NumberFormatException e) {
             service.Logging.logger.warn("Invalid input format: {}", e.getMessage());
@@ -372,7 +372,7 @@ public class ProductServlet extends HttpServlet {
         try {
             int productId = Integer.parseInt(productIdParam);
             dao.ProductDAO.ProductManager.deleteProduct(productId);
-            response.sendRedirect(request.getContextPath() + "/sellercenter/shophome");
+            response.sendRedirect(request.getContextPath() + "/product?action=edit?productId=" + productId);
         } catch (NumberFormatException e) {
             request.setAttribute("error", "number format occur");
             request.getRequestDispatcher(config.Config.JSPMapper.SELLER_CENTER).forward(request, response);
@@ -395,7 +395,7 @@ public class ProductServlet extends HttpServlet {
                 dao.ProductDAO.ProductManager.editProduct(product);
             }
 
-            response.sendRedirect(request.getContextPath() + "/sellercenter/shophome");
+            response.sendRedirect(request.getContextPath() + "/product?action=edit?productId=" + productId);
         } catch (NumberFormatException e) {
             request.setAttribute("error", "Invalid product ID format.");
             request.getRequestDispatcher(config.Config.JSPMapper.SELLER_CENTER).forward(request, response);

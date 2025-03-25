@@ -185,6 +185,8 @@ public class AddProductServlet extends HttpServlet {
 
             doGet(request, response);
         }
+
+        response.sendRedirect(request.getContextPath() + "/sellercenter/shophome");
     }
 
     // @Override

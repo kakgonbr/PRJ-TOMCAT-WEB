@@ -1,8 +1,8 @@
 package model.dto;
 
 public class ResourceDTO implements java.io.Serializable {
-    private String systemPath;
     private String id;
+    private String systemPath;
 
     public ResourceDTO() {}
 

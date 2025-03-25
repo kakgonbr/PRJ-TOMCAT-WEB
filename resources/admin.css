@@ -1,8 +1,8 @@
 #logContainer {
-    padding: 10px;
-    border: 1px solid #ccc;
-    max-height: 500px;
     overflow-y: auto;
+    overflow-y: scroll;
+    white-space: pre-wrap;
+    max-height: 50vh;
 }
 
 .chart-container {
@@ -13,7 +13,8 @@
 }
 
 .chart-item {
-    background: #f8f9fa;
+    /* background: #f8f9fa; */
+    background: var(--bs-custom-container-focus);
     padding: 15px;
     border-radius: 10px;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);

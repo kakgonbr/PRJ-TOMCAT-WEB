@@ -190,7 +190,15 @@ public class OrderDAO {
         private static final String INSERT_INTO_ORDER = "INSERT INTO tblOrderedItem (orderId, productItemId, quantity, totalPrice, shippingCost) VALUES (?1, ?2, ?3, ?4, ?5)";
         private static final String DELETE_FROM_CART_ITEM = "DELETE FROM tblCartItem WHERE id = ?1";
         private static final String REMOVE_FROM_PRODUCT_ITEM = "UPDATE tblProductItem SET stock = ((SELECT stock FROM tblproductItem WHERE id = ?2) - ?1) WHERE id = ?2";
-        private static final String GET_ORDERITEMS = "SELECT tblOrderedItem.* FROM tblOrderedItem JOIN tblOrder ON tblOrderedItem.orderId = tblOrder.id WHERE tblOrder.userId = ?1 AND tblOrder.status = 0";
+        private static final String JPQL_GET_ORDERITEMS = 
+            "SELECT DISTINCT oi FROM OrderedItem oi " +
+            "JOIN FETCH oi.productItemId pi " +
+            "JOIN FETCH oi.orderId o " +
+            "JOIN FETCH pi.productId p " +
+            "JOIN FETCH p.shopId s " +
+            "LEFT JOIN FETCH pi.productCustomizationList pc " +
+            "LEFT JOIN FETCH p.availablePromotionId " +
+            "WHERE o.userId = :userId AND o.status = false";
 
         /**
          * Try to verify that these items belong to the correct cart and the
@@ -251,11 +259,9 @@ public class OrderDAO {
 
         public static synchronized List<OrderedItem> getOrderItemFromUser(int userId) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
-                List<OrderedItem> orderedItems = em.createNativeQuery(GET_ORDERITEMS,OrderedItem.class).setParameter(1, userId).getResultList();
-                service.Logging.logger.info("get list of order items from userId: "+ userId);
-                service.Logging.logger.info("list of order items: "+ orderedItems.toString());
-                return orderedItems;
+                return em.createQuery(JPQL_GET_ORDERITEMS, OrderedItem.class).setParameter("userId", userId).getResultList();
             } catch (Exception e) {
+                service.Logging.logger.error("Error getting order items: ", e);
                 throw new SQLException(e);
             }
         }

@@ -9,16 +9,20 @@ public class UserOrderService {
 
     public static List<OrderItemWrapper> getOrderItems(int userId) {
         try {
-            List<OrderItemWrapper> orderItems = dao.OrderDAO.OrderedItemManager.getOrderItemFromUser(userId).stream().map(model.OrderItemWrapper::new).toList();
-            if(!orderItems.isEmpty())
-                service.Logging.logger.info("List of orderItems: " + orderItems.toString());
-            else
-                service.Logging.logger.warn("orderitem dao error or there's no order");
-            return orderItems;
-            
+            List<model.OrderedItem> orderedItems = dao.OrderDAO.OrderedItemManager.getOrderItemFromUser(userId);
+            if (!orderedItems.isEmpty()) {
+                List<OrderItemWrapper> orderItemWrappers = orderedItems.stream().map(OrderItemWrapper::new).toList();
+                service.Logging.logger.info("Successfully retrieved order items for user: " + userId);
+                service.Logging.logger.info("List of order items:" + orderItemWrappers.toString());
+                return orderItemWrappers;
+            } else {
+                service.Logging.logger.warn("No orders found for user: " + userId);
+                return null;
+            }
         } catch (java.sql.SQLException e) {
-            service.Logging.logger.warn("FAILED TO GET ORDERITEMS");
+            service.Logging.logger.error("Failed to get order items for user: " + userId);
+            return null;
         }
-        return null;
     }
+
 }
