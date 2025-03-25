@@ -123,6 +123,7 @@
                                         <th>Start Date</th> 
                                         <th>Expire Date</th>
                                         <th>Status</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -135,9 +136,12 @@
                                             <td>${promo.creationDate}</td> 
                                             <td>${promo.expireDate}</td>
                                             <td>${promo.status ? "Active" : "Inactive"}</td>
-                                            <td><a href="${pageContext.request.contextPath}/sellercenter/promotion?action=products&promotionId=${promo.id}">
+                                            <td>
+                                                <a href="${pageContext.request.contextPath}/sellercenter/promotion?action=products&promotionId=${promo.id}" 
+                                                   class="btn btn-primary btn-sm">
                                                     View Details
-                                                </a></td>
+                                                </a>
+                                            </td>
                                         </tr>
                                     </c:forEach>
                                 </tbody>

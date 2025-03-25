@@ -200,6 +200,7 @@
                                     <c:if
                                         test="${status.last || OrderItemList[status.index+1].orderId != orderItem.orderId}">
                                             </div>
+                                        </div>
                                     </c:if>
                                 </c:forEach>
                             </c:if>
