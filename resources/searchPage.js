@@ -105,7 +105,7 @@ function renderCategories(categories) {
 }
 
 function attachCheckboxHandlers() {
-    document.querySelectorAll(".category-checkbox").forEach(checkbox => {
+    document.querySelectorAll(".form-check-input").forEach(checkbox => {
         checkbox.addEventListener("change", function () {
             let parentId = this.dataset.parent;
             let children = document.querySelectorAll(`[data-parent='${this.id}']`);
@@ -116,13 +116,11 @@ function attachCheckboxHandlers() {
                 });
             }
 
-            // If a child is unchecked, uncheck the parent
             if (!this.checked && parentId !== "categoriesCollapseContent") {
                 let parentCheckbox = document.getElementById(parentId);
                 if (parentCheckbox) parentCheckbox.checked = false;
             }
 
-            // If all children are checked, check the parent
             if (parentId !== "categoriesCollapseContent") {
                 let parentCheckbox = document.getElementById(parentId);
                 if (parentCheckbox) {
