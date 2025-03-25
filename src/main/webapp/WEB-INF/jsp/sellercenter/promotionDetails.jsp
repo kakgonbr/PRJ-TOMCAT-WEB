@@ -21,7 +21,7 @@
     <jsp:attribute name="body">
         <div class="container-fluid">
             <div class="row">
-                
+
                 <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-none sidebar">
                     <div class="position-sticky ">
                         <!-- Quick Access Search -->
@@ -102,6 +102,65 @@
                 <main class="col-md-10 p-4">
                     <div class="container">
                         <h2>Promotion: ${param.promotionId}</h2>
+
+                        <button type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#addProductModal">
+                            ➕ Add Product
+                        </button>
+
+                        <!-- Modal hiển thị danh sách sản phẩm chưa có promotion -->
+                        <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="addProductModalLabel">Select Products to Add</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="addProductForm" method="POST" action="${pageContext.request.contextPath}/promotion?action=addProductPromotion">
+                                            <input type="hidden" name="promotionId" value="${param.promotionId}">
+
+                                            <c:if test="${empty unpromotedProducts}">
+                                                <p>No available products to add.</p>
+                                            </c:if>
+
+                                            <c:if test="${not empty unpromotedProducts}">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Select</th>
+                                                            <th>Product ID</th>
+                                                            <th>Name</th>
+                                                            <th>Description</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <c:forEach var="product" items="${unpromotedProducts}">
+                                                            <tr>
+                                                                <td><input type="checkbox" name="productIds" value="${product.id}"></td>
+                                                                <td>${product.id}</td>
+                                                                <td>${product.name}</td>
+                                                                <td>${product.description}</td>
+                                                            </tr>
+                                                        </c:forEach>
+                                                    </tbody>
+                                                </table>
+                                            </c:if>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-success" id="submitBtn" onclick="submitAddProductForm()">Add to Promotion</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <script>
+                            function submitAddProductForm() {
+                                document.getElementById("submitBtn").disabled = true;
+                                document.getElementById("addProductForm").submit();
+                            }
+                        </script>
 
                         <c:if test="${not empty error}">
                             <div class="alert alert-danger">
