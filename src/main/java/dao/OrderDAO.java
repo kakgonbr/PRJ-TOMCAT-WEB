@@ -198,10 +198,10 @@ public class OrderDAO {
             "JOIN FETCH pi.productId p " +
             "JOIN FETCH p.shopId s " +
             "LEFT JOIN FETCH pi.productCustomizationList pc " +
-            "LEFT JOIN FETCH p.availablePromotionId " +
-            "WHERE o.userId.id = :userId AND o.status = :status"+
-            "AND (:startDate IS NULL OR o.date >= :startDate) " +
-            "AND (:endDate IS NULL OR o.date < :endDate) " +
+            "LEFT JOIN FETCH p.promotionId " +
+            "WHERE o.userId.id = :userId AND o.status = :status " +
+            "AND (cast(:startDate as date) IS NULL OR o.date >= :startDate) " +
+            "AND (cast(:endDate as date) IS NULL OR o.date < :endDate) " +
             "ORDER BY o.date DESC";
 
         /**
