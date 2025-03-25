@@ -22,4 +22,8 @@ public class SessionCountingListener implements HttpSessionListener {
         int count = activeSessions.decrementAndGet();
         service.Logging.logger.info("Session destroyed: {} | Active Sessions: {}", se.getSession().getId(), count);
     }
+
+    public static synchronized int getSessionCount() {
+        return activeSessions.get();
+    }
 }

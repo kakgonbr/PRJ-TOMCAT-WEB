@@ -15,6 +15,12 @@ public class AdminServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("averageResponse", dao.StatisticsDAO.SystemStatisticsManager.SystemStatisticsContainer.getAverageResponseTime());
+        request.setAttribute("maxResponse", dao.StatisticsDAO.SystemStatisticsManager.SystemStatisticsContainer.getMaxResponseTime());
+        request.setAttribute("currentSessions", listeners.SessionCountingListener.getSessionCount());
+        request.setAttribute("peakSessions", dao.StatisticsDAO.SystemStatisticsManager.SystemStatisticsContainer.getPeakSession());
+        request.setAttribute("visits", dao.StatisticsDAO.SystemStatisticsManager.SystemStatisticsContainer.getVisits());
+
         request.getRequestDispatcher(config.Config.JSPMapper.PRIVILEGED_ADMIN_JSP).forward(request, response);
     }
 

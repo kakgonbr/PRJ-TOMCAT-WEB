@@ -11,7 +11,6 @@ public final class StatisticsDAO {
             private static int peakSession = 0;
             private static long averageResponseTime = 0; // in milisec
             private static long maxResponseTime = 0;
-            private static int responseTimeReports = 0;
 
             public static long getAverageResponseTime() {
                 return averageResponseTime;
@@ -30,8 +29,6 @@ public final class StatisticsDAO {
             }
 
             public static synchronized void reportResponseTime(long t_responseTime) {
-                ++responseTimeReports;
-
                 averageResponseTime = (averageResponseTime + t_responseTime) / 2;
                 maxResponseTime = t_responseTime > maxResponseTime ? t_responseTime : maxResponseTime;
 
@@ -43,6 +40,13 @@ public final class StatisticsDAO {
                 peakSession = t_sessionCount > peakSession ? t_sessionCount : peakSession;
 
                 // service.Logging.logger.info("Session report received, visits: {}, peak: {} ms", visits, peakSession);
+            }
+
+            public static synchronized void reset() {
+                visits = 0;
+                peakSession = 0;
+                averageResponseTime = 0;
+                maxResponseTime = 0;
             }
 
         } // public static final class SystemStatisticsContainer
@@ -79,6 +83,8 @@ public final class StatisticsDAO {
                     .setParameter(3, SystemStatisticsContainer.getPeakSession())
                     .setParameter(4, SystemStatisticsContainer.getAverageResponseTime())
                     .setParameter(5 ,SystemStatisticsContainer.getMaxResponseTime()).executeUpdate();
+
+                    SystemStatisticsContainer.reset();
 
                     et.commit();
                 } catch (Exception e) {
