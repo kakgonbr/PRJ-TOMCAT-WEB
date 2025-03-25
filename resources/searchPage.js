@@ -80,7 +80,7 @@ function generateCategoryHTML(category, parentId = "categoriesCollapseContent") 
                     <div class="collapse-content" id="${collapseId}Content">`;
         
         category.children.forEach(child => {
-            html += generateCategoryHTML(child, `${collapseId}Content`);
+            html += generateCategoryHTML(child, `${collapseId}Content`); // parentId is unused
         });
         
         html += `</div>
@@ -101,11 +101,42 @@ function renderCategories(categories) {
     });
     
     container.innerHTML = html;
+    attachCheckboxHandlers(); // Attach event listeners after rendering categories
+}
+
+function attachCheckboxHandlers() {
+    document.querySelectorAll(".category-checkbox").forEach(checkbox => {
+        checkbox.addEventListener("change", function () {
+            let parentId = this.dataset.parent;
+            let children = document.querySelectorAll(`[data-parent='${this.id}']`);
+            
+            if (children.length > 0) {
+                children.forEach(child => {
+                    child.checked = this.checked;
+                });
+            }
+
+            // If a child is unchecked, uncheck the parent
+            if (!this.checked && parentId !== "categoriesCollapseContent") {
+                let parentCheckbox = document.getElementById(parentId);
+                if (parentCheckbox) parentCheckbox.checked = false;
+            }
+
+            // If all children are checked, check the parent
+            if (parentId !== "categoriesCollapseContent") {
+                let parentCheckbox = document.getElementById(parentId);
+                if (parentCheckbox) {
+                    let allSiblings = document.querySelectorAll(`[data-parent='${parentId}']`);
+                    let allChecked = [...allSiblings].every(sibling => sibling.checked);
+                    parentCheckbox.checked = allChecked;
+                }
+            }
+        });
+    });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
     fetchCategories();
 });
-
 
 
