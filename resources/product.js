@@ -238,6 +238,7 @@ async function fetchProductsHomePage() {
 /*fetch products for search */
 async function fetchProductsSearch() {
   const container = document.querySelector(".col-9.row");
+  container.innerHTML = "";
   
   try {
       var checkedBoxes = document.querySelectorAll('input[name=categoryFilter]:checked');
