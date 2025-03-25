@@ -6,7 +6,7 @@ let priceMax;
 /**/
 async function fetchCategories() {
     try {
-        let response = await fetch('https://kakgonbri.zapto.org:8443/prj/ajax/category?categoryId='+ categoryId);
+        let response = await fetch('https://kakgonbri.zapto.org:8443/prj/ajax/category?categoryId='+ paramCategoryId);
         let data = await response.json();
         renderCategories(data.children);
     } catch (error) {
