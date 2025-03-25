@@ -190,13 +190,18 @@ function updateSelection() {
     if (matchingItem && matchingItem.stock > 0) {
         // console.log("Selected Product Item:", matchingItem);
         
+        let button = document.getElementById("add-to-cart");
+        button.removeAttribute("disabled");
+        button.style.opacity = 1;
+        button.style.cursor = "pointer";
+
         const productItemIdInput = document.getElementById("productItemId");
         const price = document.getElementById("price-counter");
         
         productItemIdInput.value = matchingItem.id;
 
         // productData.promotion.value + (productData.promotion.type ? "$" : "%")
-        if (matchingItem.promotion) {
+        if (productData.promotion) {
             price.innerHTML = "<del>" + matchingItem.price + "$</del>" + " " + (matchingItem.promotion.type ? matchingItem.price - parseInt(matchingItem.promotion.value) : matchingItem.price * (100.0 - parseInt(matchingItem.promotion.value)) / 100.0) + "$";
         } else {
             price.innerHTML = matchingItem.price + "$";
@@ -208,6 +213,11 @@ function updateSelection() {
     } else {
         // console.log("No matching product available.");
         
+        let button = document.getElementById("add-to-cart");
+        button.setAttribute("disabled", "disabled");
+        button.style.opacity = 0.7;
+        button.style.cursor = "not-allowed";
+
         const price = document.getElementById("price-counter");
         const productItemIdInput = document.getElementById("productItemId");
 
