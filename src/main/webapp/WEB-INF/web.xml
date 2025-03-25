@@ -165,6 +165,10 @@
         <servlet-name>UserOrderServlet</servlet-name>
         <servlet-class>controller.UserOrderServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ReviewLoader</servlet-name>
+        <servlet-class>controller.ajax.ReviewLoader</servlet-class>
+    </servlet>
     <!-- SERVLET MAPPINGS -->
     <!-- TEMPLATE:
    <servlet-mapping>
@@ -355,6 +359,10 @@
     <servlet-mapping>
         <servlet-name>PromotionServlet</servlet-name>
         <url-pattern>/sellercenter/promotion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReviewLoader</servlet-name>
+        <url-pattern>/ajax/reviewloader</url-pattern>
     </servlet-mapping>
     <!-- FILTER DECLARATIONS -->
     <filter>
