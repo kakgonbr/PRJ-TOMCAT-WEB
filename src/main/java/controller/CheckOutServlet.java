@@ -24,7 +24,11 @@ public class CheckOutServlet extends HttpServlet {
                 return;
             }
 
-            request.setAttribute("promotions", dao.PromotionDAO.PromotionFetcher.checkAvailablePromotions(user.getId()).stream().map(model.PromotionWrapper::new).toList());
+            var promotions = dao.PromotionDAO.PromotionFetcher.checkAvailablePromotions(user.getId()).stream().map(model.PromotionWrapper::new).toList();
+
+            service.Logging.logger.info("Promotions found for user {}: {}", user.getId(), promotions.size());
+
+            request.setAttribute("promotions", promotions);
         } catch (java.sql.SQLException e) {
             service.Logging.logger.warn("FAILED TO GET AVAILABLE PROMOTIONS FOR USER {}", user.getId());
         }

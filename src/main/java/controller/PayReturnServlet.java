@@ -10,6 +10,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.OrderedItem;
 
 /**
  * The servlet responsible for displaying the payment result, redirected by
@@ -48,6 +49,12 @@ public class PayReturnServlet extends HttpServlet {
             }
         } else {
             request.setAttribute("status", "Invalid signature");
+        }
+
+        try {
+            java.util.List<OrderedItem> orderedItems = dao.OrderDAO.OrderedItemManager.getOrderItemFromUser(((model.User) request.getSession().getAttribute("user")).getId(), true);
+        } catch (java.sql.SQLException e) {
+
         }
 
         request.getRequestDispatcher(config.Config.JSPMapper.PAYMENT_RETURN_JSP).forward(request, response);
