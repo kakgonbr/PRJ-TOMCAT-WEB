@@ -79,7 +79,6 @@
 
     <jsp:attribute name="body">
         <div class="container mt-4">
-            <h2 class="mb-3">Add Promotion</h2>
 
             <c:if test="${not empty error}">
                 <div class="alert alert-danger">${error}</div>
