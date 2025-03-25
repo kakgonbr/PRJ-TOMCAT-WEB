@@ -131,7 +131,7 @@
 
                                 <div class="mb-3">
                                     <label class="form-label">Expire Date:</label>
-                                    <input type="date" name="expireDate" class="form-control" value="<c:out value='${promotion.expireDate}' />" required />
+                                    <input type="text" name="expireDate" class="form-control" value="<c:out value='${promotion.expireDate}' />" required />
                                 </div>
 
                                 <div class="mb-3">
