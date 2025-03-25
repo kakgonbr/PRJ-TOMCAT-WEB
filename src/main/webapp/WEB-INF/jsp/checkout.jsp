@@ -59,13 +59,13 @@
                                 <!-- Someone optimize this, save to variables or something -->
                                 <c:choose>
                                     <c:when test="${cartItem.productWrapper.promotion != null && cartItem.productWrapper.promotion.type}">
-                                        ${(cartItem.productItem.price - cartItem.productWrapper.promotion.value) * cartItem.quantity}
+                                        ${(cartItem.productItem.price - cartItem.productWrapper.promotion.value)}
                                     </c:when>
                                     <c:when test="${cartItem.productWrapper.promotion != null && !cartItem.productWrapper.promotion.type}">
-                                        ${(cartItem.productItem.price * (100.0 - cartItem.productWrapper.promotion.value) / 100.0) * cartItem.quantity}
+                                        ${(cartItem.productItem.price * (100.0 - cartItem.productWrapper.promotion.value) / 100.0)}
                                     </c:when>
                                     <c:otherwise>
-                                        ${cartItem.productItem.price * cartItem.quantity}
+                                        ${cartItem.productItem.price}
                                     </c:otherwise>
                                 </c:choose>
                             </td>
@@ -99,65 +99,77 @@
                 </tbody>
             </table>
         </div>
-        <form>
-            <div class="address-container">
-                <label for="address">Địa chỉ</label>
-                <input type="text" id="address" name="address" required placeholder="Nhập địa chỉ của bạn"
-                    autocomplete="off">
-                <div id="suggestions" class="suggestions"></div>
-            </div>
-        </form>
-        <form action="${pageContext.request.contextPath}/checkout" method="POST">
-            <input type="hidden" name="action" value="apply">
-            <select name="promotionId">
-                <option value="">None</option>
-                <c:forEach var="promotion" items="${promotions}">
-                    <option value="${promotion.id}">[
+        <div class="container">
+            <form class="mb-3">
+                <div class="mb-3">
+                    <label for="address" class="form-label">Address</label>
+                    <input type="text" id="address" name="address" class="form-control" required placeholder="Enter your address" autocomplete="off">
+                    <div id="suggestions" class="form-text"></div>
+                </div>
+            </form>
+
+            <form action="${pageContext.request.contextPath}/checkout" method="POST" class="mb-3">
+                <input type="hidden" name="action" value="apply">
+                
+                <div class="mb-3">
+                    <label for="promotionId" class="form-label">Select Promotion</label>
+                    <select name="promotionId" id="promotionId" class="form-select">
+                        <option value="">None</option>
+                        <c:forEach var="promotion" items="${promotions}">
+                            <option value="${promotion.id}">[
+                                <c:choose>
+                                    <c:when test="${promotion.type}">
+                                        - ${promotion.value} VND
+                                    </c:when>
+                                    <c:otherwise>
+                                        - ${promotion.value} %
+                                    </c:otherwise>
+                                </c:choose>] ${promotion.name} - Expires on ${promotion.expireDate}
+                            </option>
+                        </c:forEach>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Apply</button>
+            </form>
+
+            <c:choose>
+                <c:when test="${activePromotion == null}">
+                    <p class="fw-bold">Final Price: <span class="text-primary">${total}</span></p>
+                </c:when>
+                <c:otherwise>
+                    <p class="fw-bold text-success">Active Promotion: [
                         <c:choose>
-                            <c:when test="${promotion.type}">
-                                - ${promotion.value} VND
+                            <c:when test="${activePromotion.type}">
+                                - ${activePromotion.value} VND
                             </c:when>
                             <c:otherwise>
-                                - ${promotion.value} %
+                                - ${activePromotion.value} %
                             </c:otherwise>
-                        </c:choose>] ${promotion.name} - Expires on ${promotion.expireDate}
-                    </option>
-                </c:forEach>
-            </select>
-            <button type="submit">Apply</button>
-        </form>
-        <c:choose>
-            <c:when test="${activePromotion == null}">
-                <p>Final Price: ${total}</p>
-            </c:when>
-            <c:otherwise>
-                <p>Active promotion: [
+                        </c:choose>] ${activePromotion.name} - Expires on ${activePromotion.expireDate}
+                    </p>
+
                     <c:choose>
                         <c:when test="${activePromotion.type}">
-                            - ${activePromotion.value} VND
+                            <p class="fw-bold">Final Price: <span class="text-success">${total - activePromotion.value}</span></p>
                         </c:when>
                         <c:otherwise>
-                            - ${activePromotion.value} %
+                            <p class="fw-bold">Final Price: <span class="text-success">${total * (100.0 - activePromotion.value) / 100.0}</span></p>
                         </c:otherwise>
-                    </c:choose>] ${activePromotion.name} - Expires on ${activePromotion.expireDate}
-                </p>
-                <c:choose>
-                    <c:when test="${activePromotion.type}">
-                        <p>Final Price: ${total - activePromotion.value}</p>
-                    </c:when>
-                    <c:otherwise>
-                        <p>Final Price: ${total * (100.0 - activePromotion.value) / 100.0}</p>
-                    </c:otherwise>
-                </c:choose>
-            </c:otherwise>
-        </c:choose>
-        <form action="${pageContext.request.contextPath}/checkout" method="POST">
-            <input type="hidden" name="action" value="proceed">
-            <c:if test="${activePromotion != null}">
-                <input type="hidden" name="promotionId" value="${activePromotion.id}">
-            </c:if>
-            <button type="submit">Proceed to Payment</button>
-        </form>
+                    </c:choose>
+                </c:otherwise>
+            </c:choose>
+
+            <form action="${pageContext.request.contextPath}/checkout" method="POST">
+                <input type="hidden" name="action" value="proceed">
+                
+                <c:if test="${activePromotion != null}">
+                    <input type="hidden" name="promotionId" value="${activePromotion.id}">
+                </c:if>
+
+                <button type="submit" class="btn btn-success">Proceed to Payment</button>
+            </form>
+        </div>
     </jsp:attribute>
 
     <jsp:attribute name="footer">

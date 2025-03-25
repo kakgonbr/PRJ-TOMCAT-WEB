@@ -153,7 +153,7 @@ public class OrderDAO {
             }
         } // public static synchronized boolean isCompleted
 
-        private static final String UPDATE_ORDER_PRICE = "WITH total AS ( SELECT SUM(totalPrice + shippingCost) AS total FROM tblOrderedItem WHERE orderId = ?1) UPDATE tblOrder SET finalPrice = (SELECT CASE WHEN p.id IS NULL THEN t.total WHEN p.type = 1 THEN t.total - p.value WHEN p.type = 0 THEN t.total * (1 - p.value / 100.0) ELSE t.total END FROM total t LEFT JOIN tblOrder o ON o.id = ?1 LEFT JOIN tblPromotion p ON p.id = o.promotionId ) WHERE id = ?1;";
+        private static final String UPDATE_ORDER_PRICE = "WITH total AS ( SELECT SUM(totalPrice + shippingCost) * quantity AS total FROM tblOrderedItem WHERE orderId = ?1 GROUP BY id, quantity) UPDATE tblOrder SET finalPrice = (SELECT CASE WHEN p.id IS NULL THEN t.total WHEN p.type = 1 THEN t.total - p.value WHEN p.type = 0 THEN t.total * (1 - p.value / 100.0) ELSE t.total END FROM total t LEFT JOIN tblOrder o ON o.id = ?1 LEFT JOIN tblPromotion p ON p.id = o.promotionId ) WHERE id = ?1;";
 
         /**
          * Call this after every request the user made to add items from cart to

@@ -10,7 +10,7 @@
     max-height: 300px;
     z-index: 1000;
     overflow-y: auto;
-    background: #F2F2F2;
+    background: var(--bs-custom-content-focus);
 }
 .suggestion-item {
     padding: 12px 16px;
