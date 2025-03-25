@@ -69,17 +69,9 @@ function generateCategoryHTML(category, parentId = "categoriesCollapseContent") 
     let categoryId = `${category.id}`;
     let collapseId = `collapse${category.id}`;
     
-    let input = document.createElement("input");
-    input.classList.add("form-check-input");
-    input.type = "checkbox";
-    input.id = categoryId;
-    input.value = categoryId;
-    input.name = "categoryFilter";
-    input.dataset.parent = document.getElementById(parentId);
-
-    let html = `<div class="form-check">`
-        + input.outerHTML +
-        `<label class="form-check-label" for="${categoryId}" data-bs-toggle="collapse" data-bs-target="#${collapseId}">
+    let html = `<div class="form-check">
+        <input class="form-check-input" type="checkbox" id="${categoryId}" value="${categoryId}" name="categoryFilter" data-parent="${parentId}">
+        <label class="form-check-label" for="${categoryId}" data-bs-toggle="collapse" data-bs-target="#${collapseId}">
             ${category.name}
         </label>`;
     
