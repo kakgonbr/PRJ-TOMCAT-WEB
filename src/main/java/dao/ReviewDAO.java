@@ -50,8 +50,8 @@ public class ReviewDAO {
     public static class ReviewFetcher {
         
         public static final String GET_REVIEWS_BY_PRODUCT_PAGED = "SELECT r FROM Review r JOIN FETCH r.userId WHERE r.productId.id = ?1 AND r.status = true ORDER BY r.id DESC";
-    
         public static final String COUNT_REVIEWS_BY_PRODUCT = "SELECT COUNT(r) FROM Review r WHERE r.productId.id = ?1 AND r.status = true";
+        public static final String GET_OVERALL_RATING = "SELECT AVG(r.rate) FROM Review r WHERE r.productId.id = ?1 AND r.status = true";
     
         public static synchronized List<Review> getReviewsByProductId(int productId, int page, int pageSize) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
@@ -67,6 +67,15 @@ public class ReviewDAO {
         public static synchronized long getTotalReviews(int productId) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 return em.createQuery(COUNT_REVIEWS_BY_PRODUCT, Long.class).setParameter(1, productId).getSingleResult();
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
+            }
+        }
+
+        public static synchronized Double getOverallRating(int productID) throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                Double result = em.createQuery(GET_OVERALL_RATING, Double.class).setParameter(1, productID).getSingleResult();
+                return result != null ? result : 0.0;
             } catch (Exception e) {
                 throw new java.sql.SQLException(e);
             }
