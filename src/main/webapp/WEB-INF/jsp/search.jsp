@@ -14,7 +14,7 @@
             var contextPath = "${pageContext.request.contextPath}";
             var categoryId = "${categoryId}";
             var query = "${query}";
-            document.addEventListener("DOMContentLoaded", function {
+            document.addEventListener("DOMContentLoaded", function () {
                 fetchProductsSearch(true);
             });
         </script>
