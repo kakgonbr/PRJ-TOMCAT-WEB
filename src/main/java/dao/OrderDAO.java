@@ -5,7 +5,7 @@ import org.hibernate.Hibernate;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 
-import java.sql.Date;
+import java.util.Date;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
