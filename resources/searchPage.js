@@ -77,7 +77,7 @@ function generateCategoryHTML(category, parentId = "categoriesCollapseContent") 
 
     if (category.children && category.children.length > 0) {
         // this is awful
-        let html = `<div class="form-check">
+        html = `<div class="form-check">
         <input class="form-check-input" type="checkbox" id="${categoryId}" value="${categoryId}" name="categoryFilter" data-parent="${parentId}">
         <label class="form-check-label" data-bs-toggle="collapse" data-bs-target="#${collapseId}">
             ${category.name} <i class="bi bi-chevron-down"></i>
