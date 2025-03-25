@@ -47,10 +47,11 @@ public class ProductLoader extends HttpServlet {
             if (recommendations == null || recommendations.isBlank()) {
                 recommendations = "";
 
-                if (user != null && shopId == null) {
-                    recommendations = dao.OrderDAO.OrderManager.getPreferenceFromOrders(user.getId());
-                    service.Logging.logger.info("Acquired recommendations based on user's past orders: {}", recommendations);
-                }
+                // this doesnt work very well
+                // if (user != null && shopId == null) {
+                //     recommendations = dao.OrderDAO.OrderManager.getPreferenceFromOrders(user.getId());
+                //     service.Logging.logger.info("Acquired recommendations based on user's past orders: {}", recommendations);
+                // }
             }
 
             java.util.List<model.ProductWrapper> products;
