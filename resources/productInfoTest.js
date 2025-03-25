@@ -267,12 +267,19 @@ function getImages() {
 }
 
 /*review */
-function loadReviews(productId) {
-    fetch("https://kakgonbri.zapto.org:8443/prj/ajax/reviewloader?productId=" + productId)
+let currentPage = 1;
+let totalPages = 1;
+
+function loadReviews(productId, page = 1) {
+    fetch("https://kakgonbri.zapto.org:8443/prj/ajax/reviewloader?productId=" + productId + "&page=" + page)
         .then(response => response.json())
-        .then(reviews => {
-            // Xử lý average rating
-            if (reviews.length === 0) {
+        .then(data => {
+            const { reviews, currentPage, totalPages, totalReviews } = data;
+            
+            currentPage = currentPage;
+            totalPages = totalPages;
+
+            if (totalReviews === 0) {
                 document.getElementById('average-rating').textContent = "0.0";
             } else {
                 const totalRating = reviews.reduce((sum, review) => sum + review.rate, 0);
@@ -280,7 +287,6 @@ function loadReviews(productId) {
                 document.getElementById('average-rating').textContent = averageRating;
             }
 
-            // Xử lý hiển thị reviews
             const container = document.getElementById('reviews-container');
             container.innerHTML = ''; 
 
@@ -293,6 +299,9 @@ function loadReviews(productId) {
                 const reviewElement = createReviewElement(review);
                 container.appendChild(reviewElement);
             });
+
+            // Thêm pagination
+            createPagination(currentPage, totalPages);
         })
         .catch(error => {
             console.error('Error loading reviews:', error);
@@ -331,4 +340,36 @@ function createReviewElement(review) {
     `;
     
     return div;
+}
+
+function createPagination(currentPage, totalPages) {
+    const paginationContainer = document.createElement('div');
+    paginationContainer.className = 'pagination';
+
+    // Previous
+    const prevButton = document.createElement('button');
+    prevButton.className = 'pagination-btn';
+    prevButton.textContent = 'Previous';
+    prevButton.disabled = currentPage === 1;
+    prevButton.onclick = () => loadReviews(productId, currentPage - 1);
+    paginationContainer.appendChild(prevButton);
+
+    // Các nút số trang
+    for (let i = 1; i <= totalPages; i++) {
+        const pageButton = document.createElement('button');
+        pageButton.className = `pagination-btn ${i === currentPage ? 'active' : ''}`;
+        pageButton.textContent = i;
+        pageButton.onclick = () => loadReviews(productId, i);
+        paginationContainer.appendChild(pageButton);
+    }
+
+    // Next
+    const nextButton = document.createElement('button');
+    nextButton.className = 'pagination-btn';
+    nextButton.textContent = 'Next';
+    nextButton.disabled = currentPage === totalPages;
+    nextButton.onclick = () => loadReviews(productId, currentPage + 1);
+    paginationContainer.appendChild(nextButton);
+
+    document.getElementById('reviews-container').appendChild(paginationContainer);
 }
