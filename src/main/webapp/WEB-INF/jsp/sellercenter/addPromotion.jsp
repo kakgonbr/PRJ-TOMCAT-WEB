@@ -63,7 +63,7 @@
                             <div class="alert alert-danger">${error}</div>
                         </c:if>
 
-                        <form id="promotionForm" method="POST" action="${pageContext.request.contextPath}/sellercenter/promotion">
+                        <form id="promotionForm" method="POST" action="${pageContext.request.contextPath}/sellercenter/promotion/addPromotion">
 
                             <table border="1" cellpadding="5">
                                 <c:if test="${promotion.id != null}">

@@ -121,6 +121,20 @@ public class ProductDAO {
                 throw new java.sql.SQLException(e);
             }
         }
+        
+        private static final String GET_PRODUCTS_WITHOUT_PROMOTION
+                = "SELECT * FROM tblProduct WHERE shopId = ?1 AND availablePromotionId IS NULL";
+
+        public static synchronized java.util.List<model.Product> getShopProductsWithoutPromotion(int shopId)
+                throws java.sql.SQLException {
+            try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
+                return em.createNativeQuery(GET_PRODUCTS_WITHOUT_PROMOTION, model.Product.class)
+                        .setParameter(1, shopId)
+                        .getResultList();
+            } catch (Exception e) {
+                throw new java.sql.SQLException(e);
+            }
+        }
 
         private static final String GET_PRODUCTS_BY_NAME_AND_SHOP = "SELECT id FROM tblProduct p WHERE p.name = :name AND p.shopId = :shopId";
 
