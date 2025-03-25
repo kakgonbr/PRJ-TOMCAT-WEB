@@ -2,7 +2,7 @@ package config;
 
 public final class Config {
 
-    public static final String[] nonPrivileged = {"/login", "/public", "/home", "/redirect", "/resources", "/ipn", "/return", "/logs", "/ajax", "/signup", "/product", "/shop", "/category"};
+    public static final String[] nonPrivileged = {"/login", "/public", "/home", "/redirect", "/resources", "/ipn", "/return", "/logs", "/ajax", "/signup", "/product", "/shop", "/category", "/search"};
     public static final String[] nonMaintenance = {"/login", "/error", "/redirect"};
 
     public static final String LOG_LOCATION = "/prj/logs/app.log";
@@ -60,7 +60,8 @@ public final class Config {
         public static final String USER_ORDER = "/WEB-INF/jsp/userOrder.jsp";
         public static final String USER_ORDER_COMPLETE = "/WEB-INF/jsp/userOrderComplete.jsp";
         public static final String SHOP_ADD_PROMOTION = "/WEB-INF/jsp/sellercenter/addPromotion.jsp";
-        public static final String SHOP_DISPLAY_PROMOTION = "/WEB-INF/jsp/sellercenter/displayPromotion.jsp";
+        public static final String SHOP_DISPLAY_PROMOTION = "/WEB-INF/jsp/sellerscenter/displayPromotion.jsp";
+        public static final String SHOP_PROMOTION_DETAILS = "/WEB-INF/jsp/sellercenter/promotionDetails.jsp";
     }
 
     public static final class CookieMapper {

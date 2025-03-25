@@ -86,41 +86,91 @@
             </c:if>
 
             <form id="promotionForm" method="POST" action="${pageContext.request.contextPath}/promotion">
-                <input type="hidden" id="creatorId" name="creatorId" value="${sessionScope.userId}">
-                <div class="mb-3">
-                    <label for="promotionName" class="form-label">Promotion Name</label>
-                    <input type="text" id="promotionName" name="promotionName" class="form-control" required>
-                </div>
                 
-                <div class="mb-3">
-                    <label class="form-label">Promotion Type</label>
-                    <select id="type" name="type" class="form-control">
-                        <option value="0">Percentage (%)</option>
-                        <option value="1">Flat Discount</option>
-                    </select>
-                </div>
+                <table border="1" cellpadding="5">
+                    <c:if test="${promotion.id != null}">
+                        <caption>
+                            <h2>
+                                Editing Promotion ID ${promotion.id}
+                            </h2>
+                        </caption>
+                        <input type="hidden" name="id" value="<c:out value='${promotion.id}' />" />
+                    </c:if>
+                    <c:if test="${promotion.id == null}">
+                        <caption>
+                            <h2>
+                                Creating a new promotion
+                            </h2>
+                        </caption>
+                    </c:if>
+                    <input type="hidden" id="creatorId" name="creatorId" value="${sessionScope.user.id}">
+                    <tr>
+                        <th>Name:</th>
+                        <td>
+                            <input type="text" name="name" size="45" value="<c:out value='${promotion.name}' />" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Value:</th>
+                        <td>
+                            <input type="text" name="value" size="45" value="<c:out value='${promotion.value}' />" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Expire Date:</th>
+                        <td>
+                            <input type="date" name="expireDate" size="45" value="<c:out value='${promotion.expireDate}' />" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Type:</th>
+                        <td>
+                            <select name="type">
+                                <c:choose>
+                                    <c:when test="${promotion.type}">
+                                        <option value="true">Flat</option>
+                                        <option value="false">Percentage</option>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <option value="false">Percentage</option>
+                                        <option value="true">Flat</option>
+                                    </c:otherwise>
+                                </c:choose>
 
-                <div class="mb-3">
-                    <label for="value" class="form-label">Value</label>
-                    <input type="number" id="discount" name="value" class="form-control" min="1" required>
-                </div>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Creation Date:</th>
+                        <td>
+                            <input type="text" name="creationDate" size="45" value="<c:out value='${promotion.creationDate}' />" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Status:</th>
+                        <td>
+                            <select name="status">
+                                <c:choose>
+                                    <c:when test="${promotion.status}">
+                                        <option value="true">Active</option>
+                                        <option value="false">Inactive</option>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <option value="false">Inactive</option>
+                                        <option value="true">Active</option>
+                                    </c:otherwise>
+                                </c:choose>
 
-                <div class="mb-3">
-                    <label for="startDate" class="form-label">Start Date</label>
-                    <input type="date" id="startDate" name="startDate" class="form-control" required>
-                </div>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
 
-                <div class="mb-3">
-                    <label for="exprireDate" class="form-label">End Date</label>
-                    <input type="date" id="expireDate" name="expireDate" class="form-control" required>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Select Products</label>
-                    <ul id="productList" class="list-unstyled border p-2" style="max-height: 300px; overflow-y: auto;"></ul>
-                </div>
-
-                <button type="submit" class="btn btn-primary">Create Promotion</button>
+                        <td colspan="2" align="center">
+                            <input type="submit" value="Save" />
+                        </td>
+                    </tr>
+                </table>
             </form>
         </div>
     </jsp:attribute>

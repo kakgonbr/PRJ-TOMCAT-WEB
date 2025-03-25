@@ -16,7 +16,7 @@ function fetchProducts(query, filter, shopId) {
   }
 
   if (filter) {
-    url.searchParams.append("category", filter);
+    url.searchParams.append("categoryId", filter);
   }
 
   if (shopId) {
@@ -238,9 +238,19 @@ async function fetchProductsHomePage() {
 /*fetch products for search */
 async function fetchProductsSearch() {
   const container = document.querySelector(".col-9.row");
+  container.innerHTML = "";
   
   try {
-      const response = await fetch("https://kakgonbri.zapto.org:8443/prj/ajax/products?categoryId="+categoryId+"&query=" + query);
+      var checkedBoxes = document.querySelectorAll('input[name=categoryFilter]:checked');
+      var url = new URL(
+        "https://" + location.host + contextPath + "/ajax/products"
+      );
+
+      url.searchParams.append("query", query);
+
+      checkedBoxes.forEach(item => url.searchParams.append("categoryId", item.value));
+
+      const response = await fetch(url.toString());
       const products = await response.json();
       
       products.forEach(product => {

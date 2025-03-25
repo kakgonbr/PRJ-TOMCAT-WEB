@@ -61,7 +61,7 @@ public class OrderDAO {
         } // public static synchronized ProductOrder getOrder
 
 
-        private static final String SELECT_ORDER_USER = "SELECT p FROM ProductOrder p WHERE p.userId = ?1 and p.status = ?2";
+        private static final String SELECT_ORDER_USER = "SELECT * FROM tblOrder p WHERE userId = ?1 AND status = ?2";
         public static synchronized List<ProductOrder> getOrderFromUser(int userId, int status) throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 return em.createNativeQuery(SELECT_ORDER_USER,ProductOrder.class).setParameter(1, userId).setParameter(2, status).getResultList();

@@ -75,7 +75,7 @@
               autocomplete="off">
               <div class="quantity-btn" onclick="updateQuantity(1)"><i class="bi bi-plus-lg"></i></div>
             </div>
-            <button class="cartBtn" type="submit">
+            <button id="add-to-cart" class="cartBtn" type="submit">
               <svg class="cart" fill="white" viewBox="0 0 576 512" height="1em"
                 xmlns="http://www.w3.org/2000/svg">
                 <path
