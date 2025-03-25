@@ -119,7 +119,7 @@
                     <tr>
                         <th>Expire Date:</th>
                         <td>
-                            <input type="text" name="expireDate" size="45" value="<c:out value='${promotion.expireDate}' />" />
+                            <input type="date" name="expireDate" size="45" value="<c:out value='${promotion.expireDate}' />" />
                         </td>
                     </tr>
                     <tr>

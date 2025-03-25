@@ -98,6 +98,9 @@
       </div>
       <div class="row">
         <div class="col-12">
+            <div id="average-rating-container" class="my-4">
+                <h3>Average Rating: <span id="average-rating">0.0</span>/5.0 ★</h3>
+            </div>
             <h2 class="my-4">Reviews: </h2>
             <div id="reviews-container">
                 <!-- Reviews will be added here -->

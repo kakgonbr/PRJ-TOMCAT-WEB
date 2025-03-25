@@ -2,7 +2,7 @@ package model;
 
 public class ReviewWrapper implements java.io.Serializable{
     private int id, rate, userId, productId;
-    private String comment;
+    private String comment, userName, profileStringResourceId;
     
     public ReviewWrapper() {
     }
@@ -13,6 +13,8 @@ public class ReviewWrapper implements java.io.Serializable{
         this.userId = review.getUserId().getId();
         this.productId = review.getProductId().getId();
         this.comment = review.getComment();
+        this.userName = review.getUserId().getDisplayName() == null ? review.getUserId().getUsername() : review.getUserId().getDisplayName();
+        this.profileStringResourceId = review.getUserId().getProfileStringResourceId().getId();
     }
 
     public int getId() {
@@ -53,6 +55,22 @@ public class ReviewWrapper implements java.io.Serializable{
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getProfileStringResourceId() {
+        return profileStringResourceId;
+    }
+
+    public void setProfileStringResourceId(String profileStringResourceId) {
+        this.profileStringResourceId = profileStringResourceId;
     }
     
 }
