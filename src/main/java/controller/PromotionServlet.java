@@ -82,7 +82,8 @@ public class PromotionServlet extends HttpServlet {
         promotion.setType(type);
         promotion.setOfAdmin(false);
         promotion.setValue(value);
-        promotion.setExpireDate(java.sql.Date.valueOf(expireDate));
+        promotion.setExpireDate(java.sql.Date.valueOf(java.time.LocalDate.parse(expireDate, config.Config.Time.inputFormatDate)));
+        promotion.setCreationDate(java.sql.Date.valueOf(java.time.LocalDate.now()));
         User creator = null;
         try {
             creator = dao.UserDAO.UserFetcher.getUser(creatorId);

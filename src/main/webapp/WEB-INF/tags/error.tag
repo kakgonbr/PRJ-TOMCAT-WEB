@@ -4,7 +4,7 @@
 
 <c:if test="${error != null && error != ''}">
   <div id="error-container" style="display: block;background-color: red;color: #ddd;position: relative;padding: 2vh;" class="rounded text-center col-12 error-container">
-  <button style="position: absolute;right: 0;top: 0;" class="btn" onclick="closeError()">X</button>
+  <button style="position: absolute;right: 0;top: 0;" class="btn" onclick="closeError()">[X] Close</button>
         <p class="fs-4">Error: ${error}</p>
   </div>
 </c:if>
