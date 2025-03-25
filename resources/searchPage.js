@@ -19,7 +19,7 @@ function generateCategoryHTML(category, parentId = "categoriesCollapseContent") 
     let collapseId = `collapse${category.id}`;
     
     let html = `<div class="form-check">
-        <input class="form-check-input" type="checkbox" id="${categoryId}" value="${categoryId}" name="categoryFilter" data-parent="${parentId}">
+        <input class="form-check-input" type="checkbox" id="${categoryId}" value="${categoryId}" name="categoryFilter" data-parent="${parentId}" ${paramCategoryId !== '' ? (categoryId == paramCategoryId ? 'checked' : '') : ''}>
         <label class="form-check-label" for="${categoryId}" data-bs-toggle="collapse" data-bs-target="#${collapseId}">
             ${category.name}
         </label>`;
@@ -27,7 +27,7 @@ function generateCategoryHTML(category, parentId = "categoriesCollapseContent") 
     if (category.children && category.children.length > 0) {
         // this is awful
         html = `<div class="form-check">
-        <input class="form-check-input" type="checkbox" id="${categoryId}" value="${categoryId}" name="categoryFilter" data-parent="${parentId}">
+        <input class="form-check-input" type="checkbox" id="${categoryId}" value="${categoryId}" name="categoryFilter" data-parent="${parentId}" ${paramCategoryId !== '' ? (categoryId == paramCategoryId ? 'checked' : '') : ''}>
         <label class="form-check-label" data-bs-toggle="collapse" data-bs-target="#${collapseId}">
             ${category.name} <i class="bi bi-chevron-down"></i>
         </label>`;
@@ -102,8 +102,8 @@ async function fetchProductsSearch(byParam = false) {
   
         url.searchParams.append("query", query);
   
-        if (byParam && categoryId !== '') {
-            url.searchParams.append("categoryId", categoryId);
+        if (byParam && paramCategoryId !== '') {
+            url.searchParams.append("categoryId", paramCategoryId);
         } else {
             checkedBoxes.forEach(item => url.searchParams.append("categoryId", item.value));
         }

@@ -12,7 +12,7 @@
         <script src="${pageContext.request.contextPath}/resources/searchPage_js"></script>
         <script>
             var contextPath = "${pageContext.request.contextPath}";
-            var categoryId = "${categoryId}";
+            var paramCategoryId = "${categoryId}";
             var query = "${query}";
             document.addEventListener("DOMContentLoaded", function () {
                 fetchProductsSearch(true);
