@@ -12,7 +12,8 @@
 
         <script src="${pageContext.request.contextPath}/resources/product_js"></script>
         <script src="${pageContext.request.contextPath}/resources/filter_js"></script>
-        
+        <script src="${pageContext.request.contextPath}/resources/newHome_js"></script>
+
         <script>
             var contextPath = "${pageContext.request.contextPath}";
             document.addEventListener("DOMContentLoaded", fetchProductsHomePage);
@@ -54,32 +55,9 @@
                 
             </div>
             <!--infinite slider-->
-            <div class="slider mt-3 " reverse="true" style="--width: 200px; --height: 200px; --quantity:8;">
-                <div class="list">
-                    <div class="item" style="--position: 1">
-                        <img src="https://raw.githubusercontent.com/HoanghoDev/youtube_v2/main/auto_slider/images/slider2_1.png" alt="" class="rounded"/>
-                    </div>
-                    <div class="item" style="--position: 2">
-                        <img src="https://raw.githubusercontent.com/HoanghoDev/youtube_v2/main/auto_slider/images/slider2_2.png" alt="" class="rounded"/>
-                    </div>
-                    <div class="item" style="--position: 3">
-                        <img src="https://raw.githubusercontent.com/HoanghoDev/youtube_v2/main/auto_slider/images/slider2_3.png" alt="" class="rounded"/>
-                    </div>
-                    <div class="item" style="--position: 4">
-                        <img src="https://raw.githubusercontent.com/HoanghoDev/youtube_v2/main/auto_slider/images/slider2_4.png" alt="" class="rounded"/>
-                    </div>
-                    <div class="item" style="--position: 5">
-                        <img src="https://raw.githubusercontent.com/HoanghoDev/youtube_v2/main/auto_slider/images/slider2_5.png" alt="" class="rounded"/>
-                    </div>
-                    <div class="item" style="--position: 6">
-                        <img src="https://raw.githubusercontent.com/HoanghoDev/youtube_v2/main/auto_slider/images/slider2_6.png" alt="" class="rounded"/>
-                    </div>
-                    <div class="item" style="--position: 7">
-                        <img src="https://raw.githubusercontent.com/HoanghoDev/youtube_v2/main/auto_slider/images/slider2_5.png" alt="" class="rounded"/>
-                    </div>
-                    <div class="item" style="--position: 8">
-                        <img src="https://raw.githubusercontent.com/HoanghoDev/youtube_v2/main/auto_slider/images/slider2_6.png" alt="" class="rounded"/>
-                    </div>
+            <div class="slider mt-3 " reverse="true" style="--width: 200px; --height: 200px; --quantity:12;">
+                <div class="list" id="product-slider">
+                    <!-- Products will be added here dynamically -->
                 </div>
             </div>
             <h3 class="my-5 text-center">Suggested for you</h3>
