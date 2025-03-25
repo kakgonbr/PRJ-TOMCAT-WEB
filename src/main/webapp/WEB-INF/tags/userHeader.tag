@@ -116,14 +116,13 @@
         </div>
         <div class="dropdown-menu border-0 shadow p-3 overflow-auto my-3 dropdown-menu-hover">
             <div class="container">
+            <div class="row"><h2 class="text-center"><a href="https://kakgonbri.zapto.org:8443/prj/search?categoryId=0" class="text-decoration-none text-dark blackLineUnderneath" style="width: 100%;">All</a></h2></div>
                 <div class="nav nav-tabs d-flex align-items-center justify-content-center text-dark">
                     <ul class="nav nav-tabs" id="categoryTabs"></ul>
                 </div>
                 <div class="row">
                     <div class="tab-content"></div>
                 </div>
-                <div class="row"><h2 class="text-center"><a href="https://kakgonbri.zapto.org:8443/prj/search?categoryId=0" class="text-decoration-none text-dark blackLineUnderneath" style="width: 100%;">All
-                    </a></64H224c></div>
             </div>
         </div>
         <div class="col-7 mx-auto">
