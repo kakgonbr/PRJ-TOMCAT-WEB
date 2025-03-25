@@ -62,6 +62,7 @@ public final class Config {
         public static final String SHOP_ADD_PROMOTION = "/WEB-INF/jsp/sellercenter/addPromotion.jsp";
         public static final String SHOP_DISPLAY_PROMOTION = "/WEB-INF/jsp/sellercenter/displayPromotion.jsp";
         public static final String SHOP_PROMOTION_DETAILS = "/WEB-INF/jsp/sellercenter/promotionDetails.jsp";
+        public static final String NOTIFICATION = "/WEB-INF/jsp/notification.jsp";
     }
 
     public static final class CookieMapper {

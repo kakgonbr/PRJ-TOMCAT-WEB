@@ -200,6 +200,14 @@
         <servlet-name>PromotionServlet</servlet-name>
         <servlet-class>controller.PromotionServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>NotificationServlet</servlet-name>
+        <servlet-class>controller.NotificationServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>NotificationLoader</servlet-name>
+        <servlet-class>controller.ajax.NotificationLoader</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>n_LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -401,6 +409,14 @@
     <servlet-mapping>
         <servlet-name>OrderLoader</servlet-name>
         <url-pattern>/ajax/order</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NotificationServlet</servlet-name>
+        <url-pattern>/notification</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NotificationLoader</servlet-name>
+        <url-pattern>/ajax/notifications</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

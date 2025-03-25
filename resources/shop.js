@@ -81,26 +81,26 @@ function handleAccordionSearch(searchBoxId, accordionContainerId) {
 }
 
 function fetchOrders(shopId) {
-    if (!shopId) {
-      console.error("Missing shopId");
-      return;
-    }
-  
-    var url = new URL("https://" + location.host + contextPath + "/ajax/order");
-    url.searchParams.append("shopId", shopId);
-  
-    fetch(url.toString())
-      .then((response) => response.json())
-      .then((data) => {
-        let tableContainer = document.getElementById("orderTable");
-        tableContainer.innerHTML = ""; 
-  
-        let table = document.createElement("table");
-        table.className = "table table-striped table-hover table-bordered";
-  
-        let thead = document.createElement("thead");
-        thead.className = "table-dark"; 
-        thead.innerHTML = `
+  if (!shopId) {
+    console.error("Missing shopId");
+    return;
+  }
+
+  var url = new URL("https://" + location.host + contextPath + "/ajax/order");
+  url.searchParams.append("shopId", shopId);
+
+  fetch(url.toString())
+    .then((response) => response.json())
+    .then((data) => {
+      let tableContainer = document.getElementById("orderTable");
+      tableContainer.innerHTML = "";
+
+      let table = document.createElement("table");
+      table.className = "table table-striped table-hover table-bordered";
+
+      let thead = document.createElement("thead");
+      thead.className = "table-dark";
+      thead.innerHTML = `
           <tr>
             <th scope="col">User Name</th>
             <th scope="col">Product Name</th>
@@ -109,32 +109,89 @@ function fetchOrders(shopId) {
             <th scope="col">Shipping Cost</th>
           </tr>
         `;
-        table.appendChild(thead);
-  
-        // Tạo phần thân bảng
-        let tbody = document.createElement("tbody");
-  
-        data.forEach((item) => {
-          let row = document.createElement("tr");
-  
-          row.innerHTML = `
+      table.appendChild(thead);
+
+      // Tạo phần thân bảng
+      let tbody = document.createElement("tbody");
+
+      data.forEach((item) => {
+        let row = document.createElement("tr");
+
+        row.innerHTML = `
             <td>${item.userName}</td>
             <td>${item.productName}</td>
             <td class="text-center">${item.quantity}</td>
             <td class="text-end">${item.totalPrice.toFixed(2)} $</td>
             <td class="text-end">${item.shippingCost.toFixed(2)} $</td>
           `;
-  
-          tbody.appendChild(row);
-        });
-  
-        table.appendChild(tbody);
-  
-        let responsiveDiv = document.createElement("div");
-        responsiveDiv.className = "table-responsive";
-        responsiveDiv.appendChild(table);
-  
-        tableContainer.appendChild(responsiveDiv);
-      })
-      .catch((error) => console.error("Error fetching orders:", error));
+
+        tbody.appendChild(row);
+      });
+
+      table.appendChild(tbody);
+
+      let responsiveDiv = document.createElement("div");
+      responsiveDiv.className = "table-responsive";
+      responsiveDiv.appendChild(table);
+
+      tableContainer.appendChild(responsiveDiv);
+    })
+    .catch((error) => console.error("Error fetching orders:", error));
+}
+
+function fetchNotifications(userId) {
+  if (!userId) {
+    console.error("Missing userId");
+    return;
   }
+
+  var url = new URL(
+    "https://" + location.host + contextPath + "/ajax/notifications"
+  );
+  url.searchParams.append("userId", userId);
+
+  fetch(url.toString())
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to fetch notifications");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      let container = document.getElementById("notificationTable");
+      container.innerHTML = "";
+
+      data.forEach((notification) => {
+        let item = document.createElement("div");
+        item.className =
+          "notification-item " + (notification.isRead ? "read" : "unread");
+        item.id = `notif-${notification.id}`;
+        item.innerHTML = `
+                    <h4>${notification.title}</h4>
+                    <p>${notification.body}</p>
+                `;
+        item.onclick = () => markNotificationAsRead(notification.id);
+        container.appendChild(item);
+      });
+    })
+    .catch((error) => console.error("Error fetching notifications:", error));
+}
+
+function markNotificationAsRead(notificationId) {
+  fetch(contextPath + "/notification", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ notificationIds: [notificationId] }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        console.log("Notification marked as read:", notificationId);
+        let notifItem = document.getElementById(`notif-${notificationId}`);
+        if (notifItem) notifItem.classList.add("read");
+      }
+    })
+    .catch((error) =>
+      console.error("Error marking notification as read:", error)
+    );
+}
