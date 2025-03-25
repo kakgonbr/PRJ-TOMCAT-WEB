@@ -22,13 +22,13 @@
     <jsp:attribute name="body">
         <div class="container">
             <h2>Promotion: ${param.promotionId}</h2>
-            
+
             <c:if test="${not empty error}">
                 <div class="alert alert-danger">
                     ${error}
                 </div>
             </c:if>
-            
+
             <c:if test="${not empty products}">
                 <table class="table">
                     <thead>
@@ -47,8 +47,8 @@
                             <c:if test="${product.status}">
                                 <tr>
                                     <td>${product.id}</td>
-                                    <td>${product.shopId}</td>
-                                    <td>${product.categoryId}</td>
+                                    <td>${product.shopId.id}</td>   
+                                    <td>${product.categoryId.id}</td> 
                                     <td>${product.name}</td>
                                     <td>${product.description}</td>
                                     <td><img src="${product.imageStringResourceId}" alt="${product.name}" width="50"></td>
@@ -58,7 +58,7 @@
                     </tbody>
                 </table>
             </c:if>
-            
+
             <c:if test="${empty products}">
                 <p>No products found for this promotion.</p>
             </c:if>
@@ -71,4 +71,3 @@
         <t:footer/>
     </jsp:attribute>
 </t:genericpage>
-
