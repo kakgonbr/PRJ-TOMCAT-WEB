@@ -1,28 +1,40 @@
 package model.dto;
 
-import java.util.Date;
-
 public class PromotionDTO implements java.io.Serializable {
     private Integer id;
     private String name;
     private int value;
-    private Date expireDate;
+    private String expireDate;
     private Boolean type;
     private Boolean ofAdmin;
-    private Date creationDate;
+    private String creationDate;
     private Integer creatorId;
 
     public PromotionDTO() {}
 
     public PromotionDTO(model.Promotion promotion) {
-        setCreationDate(promotion.getCreationDate());
+        setCreationDate(promotion.getCreationDate().toLocalDate().format(config.Config.Time.outputFormatDate));
         setCreatorId(promotion.getCreatorId().getId());
-        setExpireDate(promotion.getExpireDate());
+        setExpireDate(promotion.getExpireDate().toLocalDate().format(config.Config.Time.outputFormatDate));
         setId(promotion.getId());
         setName(promotion.getName());
         setOfAdmin(promotion.getOfAdmin());
         setType(promotion.getType());
         setValue(promotion.getValue());
+    }
+
+    public model.Promotion toPromotion() {
+        model.Promotion promotion = new model.Promotion();
+
+        promotion.setCreationDate(java.sql.Date.valueOf(java.time.LocalDate.parse(creationDate, config.Config.Time.inputFormatDate))); // shouldnt be modified? I mean it's the admin, they have the rights to.
+        promotion.setExpireDate(java.sql.Date.valueOf(java.time.LocalDate.parse(expireDate, config.Config.Time.inputFormatDate)));
+        promotion.setCreatorId(new model.User(creatorId));
+        promotion.setName(name);
+        promotion.setValue(value);
+        promotion.setType(type);
+        promotion.setOfAdmin(ofAdmin);
+
+        return promotion;
     }
 
     public String getName() {
@@ -31,10 +43,6 @@ public class PromotionDTO implements java.io.Serializable {
 
     public int getValue() {
         return value;
-    }
-
-    public Date getExpireDate() {
-        return expireDate;
     }
 
     public Integer getId() {
@@ -49,10 +57,6 @@ public class PromotionDTO implements java.io.Serializable {
         return ofAdmin;
     }
 
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
     public Integer getCreatorId() {
         return creatorId;
     }
@@ -65,12 +69,24 @@ public class PromotionDTO implements java.io.Serializable {
         this.value = value;
     }
 
-    public void setExpireDate(Date expireDate) {
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getExpireDate() {
+        return expireDate;
+    }
+
+    public void setExpireDate(String expireDate) {
         this.expireDate = expireDate;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public String getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(String creationDate) {
+        this.creationDate = creationDate;
     }
 
     public void setType(Boolean type) {
@@ -79,10 +95,6 @@ public class PromotionDTO implements java.io.Serializable {
 
     public void setOfAdmin(Boolean ofAdmin) {
         this.ofAdmin = ofAdmin;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
     }
 
     public void setCreatorId(Integer creatorId) {

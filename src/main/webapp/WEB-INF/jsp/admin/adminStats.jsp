@@ -23,7 +23,7 @@
     </jsp:attribute>
 
     <jsp:attribute name="header">
-        <t:error error="${error}" />
+        <t:userHeader user="${sessionScope.user.username}" />
     </jsp:attribute>
 
     <jsp:attribute name="body">

@@ -32,56 +32,43 @@ public class AdminServlet extends HttpServlet {
             doGet(request, response);
         }
 
-        switch (action) {
-            case "enableMaintenance":
-                service.ServerMaintenance.enableMaintenance("test");
-            break;
-            case "disableMaintenance":
-                service.ServerMaintenance.disableMaintenance();
-            break;
-            case "logStatistics":
-                logStatistics();
-            break;
-            case "calculateTFIDF":
-                calculateTFIDF();
-            break;
-            case "cleanup":
-                cleanup();
-            break;
+        try {
+            switch (action) {
+                case "enableMaintenance":
+                    service.ServerMaintenance.enableMaintenance("test");
+                break;
+                case "disableMaintenance":
+                    service.ServerMaintenance.disableMaintenance();
+                break;
+                case "logStatistics":
+                    logStatistics();
+                break;
+                case "calculateTFIDF":
+                    calculateTFIDF();
+                break;
+                case "cleanup":
+                    cleanup();
+                break;                
+            }
+        } catch (java.sql.SQLException e) {
+            service.Logging.logger.error("Failed to execute action {}, reason: {}", action, e.getMessage());
+
+            request.setAttribute("error", e.getMessage());
         }
+        
 
         doGet(request, response);
     }
 
-    private static void logStatistics() {
-        try {
-            dao.StatisticsDAO.SystemStatisticsManager.addStatistics();
-        } catch (java.sql.SQLException e) {
-            service.Logging.logger.warn("Statistics Job failed, reason: {}", e.getMessage());
-            
-            return;
-        }
+    private static void logStatistics() throws java.sql.SQLException {
+        dao.StatisticsDAO.SystemStatisticsManager.addStatistics();
     }
 
-    private static void calculateTFIDF() {
-        try {
-            dao.ProductDAO.TFIDF.computeTFIDF();
-        } catch (java.sql.SQLException e) {
-            service.Logging.logger.warn("TFIDF Job failed, reason: {}", e.getMessage());
-            
-            return;
-        }
+    private static void calculateTFIDF() throws java.sql.SQLException {
+        dao.ProductDAO.TFIDF.computeTFIDF();
     }
 
-    private static void cleanup() {
-        try {
-            service.FileCleanupJob.cleanup();
-        } catch (IOException | java.sql.SQLException e) {
-            service.Logging.logger.error("FAILED TO CLEAN UP FILES, REASON: {}", e.getMessage());
-            
-            return;
-        }
-
-        service.Logging.logger.info("Cleanup Job completed at: {}", java.time.LocalDateTime.now().format(config.Config.Time.outputFormatTime));
+    private static void cleanup() throws java.sql.SQLException, java.io.IOException {
+        service.FileCleanupJob.cleanup();
     }
 }
