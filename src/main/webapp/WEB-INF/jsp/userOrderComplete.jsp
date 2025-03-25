@@ -71,71 +71,73 @@
                     </div>
                 </nav>
                 <main class="col-10">
-                    <h2>Order Completed: </h2>
-                    <table class="cart-table">
-                        <thead>
-                            <tr>
-                                <th>Order ID</th>
-                                <th>Date</th>
-                                <th>Image</th>
-                                <th>Product</th>
-                                <th>Shop</th>
-                                <th>Promotion</th>
-                                <th>Quantity</th>
-                                <th>Price (Per Item)</th>
-                                <th>Customization</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach var="orderItem" items="${OrderItemList}">
-                                <tr>
-                                    <td>${orderItem.orderId}</td>
-                                    <td><fmt:formatDate value="${orderItem.date}" pattern="dd-MM-yyyy HH:mm"/></td>
-                                    <td>
-                                        <img src="${pageContext.request.contextPath}/resources/${orderItem.productWrapper.thumbnail}"
-                                            alt="Product Image">
-                                    </td>
-                                    <td>${orderItem.productWrapper.name}</td>
-                                    <td>${orderItem.productWrapper.shop.name}</td>
-                                    <td>
+                    <h2>Order da hoan thanh: </h2>
+                    <c:forEach var="orderItem" items="${OrderItemList}" varStatus="status">
+                        <c:if test="${status.index == 0 || OrderItemList[status.index-1].orderId != orderItem.orderId}">
+                            <!-- Đầu mỗi đơn hàng mới -->
+                            <div class="card mb-4">
+                                <div class="card-header bg-primary text-white">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0">Đơn hàng #${orderItem.orderId}</h5>
+                                        <span><fmt:formatDate value="${orderItem.date}" pattern="dd-MM-yyyy HH:mm"/></span>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                        </c:if>
+                        
+                        <!-- Chi tiết từng sản phẩm trong đơn -->
+                        <div class="row mb-3 p-3 border-bottom">
+                            <div class="col-2">
+                                <img src="${pageContext.request.contextPath}/resources/${orderItem.productWrapper.thumbnail}"
+                                     alt="Product Image" class="img-fluid">
+                            </div>
+                            <div class="col-6">
+                                <h6>${orderItem.productWrapper.name}</h6>
+                                <p class="text-muted mb-1">Cửa hàng: ${orderItem.productWrapper.shop.name}</p>
+                                <div class="small">
+                                    <c:forEach var="customization" items="${orderItem.productItem.customizations}">
+                                        <span class="badge bg-secondary me-1">
+                                            ${customization.name}: ${customization.value} ${customization.unit}
+                                        </span>
+                                    </c:forEach>
+                                </div>
+                            </div>
+                            <div class="col-2 text-center">
+                                <p class="mb-1">Số lượng: ${orderItem.quantity}</p>
+                                <c:if test="${orderItem.productWrapper.promotion != null}">
+                                    <p class="text-danger mb-1">
                                         <c:choose>
                                             <c:when test="${orderItem.productWrapper.promotion.type}">
-                                                - ${orderItem.productWrapper.promotion.value} VND
+                                                Giảm ${orderItem.productWrapper.promotion.value}đ
                                             </c:when>
                                             <c:otherwise>
-                                                - ${orderItem.productWrapper.promotion.value} %
+                                                Giảm ${orderItem.productWrapper.promotion.value}%
                                             </c:otherwise>
                                         </c:choose>
-                                    </td>
-                                    <td>
-                                        ${orderItem.quantity}
-                                    </td>
-                                    <td>
-                                        <!-- Someone optimize this, save to variables or something -->
-                                        <c:choose>
-                                            <c:when test="${orderItem.productWrapper.promotion != null && orderItem.productWrapper.promotion.type}">
-                                                ${(orderItem.productItem.price - orderItem.productWrapper.promotion.value) * orderItem.quantity}
-                                            </c:when>
-                                            <c:when test="${orderItem.productWrapper.promotion != null && !orderItem.productWrapper.promotion.type}">
-                                                ${(orderItem.productItem.price * (100.0 - orderItem.productWrapper.promotion.value) / 100.0) * orderItem.quantity}
-                                            </c:when>
-                                            <c:otherwise>
-                                                ${orderItem.productItem.price * orderItem.quantity}
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </td>
-                                    <td>
-                                        <c:forEach var="customization"
-                                            items="${orderItem.productItem.customizations}">
-                                            <p>${customization.name}: ${customization.value}
-                                                ${customization.unit}</p>
-                                        </c:forEach>
-                                    </td>
-                                </tr>
-                                
-                            </c:forEach>
-                        </tbody>
-                    </table>
+                                    </p>
+                                </c:if>
+                            </div>
+                            <div class="col-2 text-end">
+                                <h6>
+                                    <c:choose>
+                                        <c:when test="${orderItem.productWrapper.promotion != null && orderItem.productWrapper.promotion.type}">
+                                            ${(orderItem.productItem.price - orderItem.productWrapper.promotion.value) * orderItem.quantity}đ
+                                        </c:when>
+                                        <c:when test="${orderItem.productWrapper.promotion != null && !orderItem.productWrapper.promotion.type}">
+                                            ${(orderItem.productItem.price * (100.0 - orderItem.productWrapper.promotion.value) / 100.0) * orderItem.quantity}đ
+                                        </c:when>
+                                        <c:otherwise>
+                                            ${orderItem.productItem.price * orderItem.quantity}đ
+                                        </c:otherwise>
+                                    </c:choose>
+                                </h6>
+                            </div>
+                        </div>
+                        <c:if test="${status.last || OrderItemList[status.index+1].orderId != orderItem.orderId}">
+                                </div>
+                            </div>
+                        </c:if>
+                    </c:forEach>
                 </main>
             </div>
         </div>
