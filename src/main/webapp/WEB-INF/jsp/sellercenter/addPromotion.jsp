@@ -63,7 +63,7 @@
                             <div class="alert alert-danger">${error}</div>
                         </c:if>
 
-                        <form id="promotionForm" method="POST" action="${pageContext.request.contextPath}/promotion">
+                        <form id="promotionForm" method="POST" action="${pageContext.request.contextPath}/sellercenter/promotion">
 
                             <table border="1" cellpadding="5">
                                 <c:if test="${promotion.id != null}">
@@ -116,12 +116,6 @@
                                             </c:choose>
 
                                         </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Creation Date:</th>
-                                    <td>
-                                        <input type="text" name="creationDate" size="45" value="<c:out value='${promotion.creationDate}' />" />
                                     </td>
                                 </tr>
                                 <tr>

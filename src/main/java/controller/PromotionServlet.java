@@ -37,7 +37,7 @@ public class PromotionServlet extends HttpServlet {
             Integer shopId = (Integer) session.getAttribute("shopId");
 
             if (promotionIdStr == null || shopId == null) {
-                response.sendRedirect(request.getContextPath() + "/promotion");
+                response.sendRedirect(request.getContextPath() + "/sellercenter/promotion");
                 return;
             }
 
