@@ -72,7 +72,7 @@ public class UserOrderServlet extends HttpServlet {
                         service.Logging.logger.error("Invalid end date format: " + endDateStr);
                     }
                 }
-                orderItemWrappers= service.UserOrderService.getOrderItems(user.getId(), false);
+                orderItemWrappers= service.UserOrderService.getOrderItems(user.getId(), false, startDate, endDate);
                 if(orderItemWrappers != null) {
                     request.setAttribute("OrderItemList", orderItemWrappers);
                     request.getRequestDispatcher(config.Config.JSPMapper.USER_ORDER).forward(request, response);
