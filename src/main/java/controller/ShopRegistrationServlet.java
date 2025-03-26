@@ -79,7 +79,8 @@ public class ShopRegistrationServlet extends HttpServlet {
 
             dao.ShopDAO.ShopManager.createShop(shop);
 
-            response.sendRedirect(request.getContextPath() + "/sellercenter/shophome");
+            // response.sendRedirect(request.getContextPath() + "/sellercenter/shophome");
+            request.getRequestDispatcher(config.Config.JSPMapper.SHOP_OWNER_DETAILS).forward(request, response);
 
         } catch (SQLException e) {
             service.Logging.logger.error("Database error while registering shop for user {}: {}",
