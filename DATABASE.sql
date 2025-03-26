@@ -482,7 +482,7 @@ BEGIN
 		GROUP BY iv.id
 	),
 	category AS (
-        SELECT id FROM tblCategory WHERE id IN (SELECT CAST(value AS INT) FROM STRING_SPLIT(@category, ','));
+        SELECT id FROM tblCategory WHERE id IN (SELECT CAST(value AS INT) FROM STRING_SPLIT(@category, ','))
         UNION ALL
         SELECT c.id FROM tblCategory c
         JOIN category ch ON c.parent_id = ch.id

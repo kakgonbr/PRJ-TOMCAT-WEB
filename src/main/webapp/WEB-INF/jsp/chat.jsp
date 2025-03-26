@@ -28,15 +28,15 @@
                 <div class="col-md-4">
                     <h2 class="mb-3">Open Chats</h2>
 
-                    <div class="list-group">
+                    <div id="chat-container" class="list-group">
                         <c:forEach var="chat" items="${chatBoxes}">
                             <c:if test="${chat.user1 == currentUser}">
-                                <button class="list-group-item list-group-item-action" onclick="openChat('${chat.user2}', '${chat.username2}')">
+                                <button class="btn btn-secondary" onclick="openChat(this, '${chat.user2}', '${chat.username2}')">
                                     Chat with ${chat.username2}
                                 </button>
                             </c:if>
                             <c:if test="${chat.user2 == currentUser}">
-                                <button class="list-group-item list-group-item-action" onclick="openChat('${chat.user1}', '${chat.username1}')">
+                                <button class="btn btn-secondary" onclick="openChat(this, '${chat.user1}', '${chat.username1}')">
                                     Chat with ${chat.username1}
                                 </button>
                             </c:if>

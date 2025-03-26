@@ -66,7 +66,6 @@
           <h4 id="stock-counter">Loading</h4>
           <h4>Price: </h4>
           <h4 id="price-counter">Loading</h4>
-          <input type="text" class="form-control-plaintext fs-3 fw-semibold">
           <form action="${pageContext.request.contextPath}/cart" method="POST">
             <input type="hidden" id="productItemId" name="productItemId">
             <div class="quantity-container">
