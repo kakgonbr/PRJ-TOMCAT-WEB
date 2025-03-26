@@ -25,12 +25,19 @@ public class MapAPI extends HttpServlet {
             case "shippingFee":
                 String origin = request.getParameter("addressOrigin");
                 String destination = request.getParameter("addressDestination");
-                String distance = service.MapAPIService.getDistance(service.MapAPIService.getLongLat(origin), service.MapAPIService.getLongLat(destination));
-                //request.setAttribute("distance", distance);
+                String distance = service.MapAPIService.getDistance(
+                    service.MapAPIService.getLongLat(origin), 
+                    service.MapAPIService.getLongLat(destination)
+                );
                 Double shippingFee = service.MapAPIService.getShippingFee(distance);
-                out.print(shippingFee);
+                
+                String jsonResponse = String.format(
+                    "{\"status\":\"OK\",\"fee\":%.1f}", 
+                    shippingFee
+                );
+                out.print(jsonResponse);
                 out.flush();    
-                return;            
+                return;       
         }
     }
 

@@ -15,21 +15,43 @@ async function calculateShippingCost(shopAddress, userAddress, cartItemId) {
     try {
         const url = `https://kakgonbri.zapto.org:8443/prj/ajax/map?action=shippingFee&addressOrigin=${encodeURIComponent(shopAddress)}&addressDestination=${encodeURIComponent(userAddress)}`;
         const response = await fetch(url);
-        const data = await response.json();
+        const text = await response.text();
         
-        if (data.status === 'OK') {
-            shippingCosts.set(cartItemId, data.fee);
-            uniqueShopAddresses.set(shopAddress, data.fee); // Lưu shipping cost theo địa chỉ shop
-            
-            const cell = document.querySelector(`td[data-cart-item-id="${cartItemId}"]`);
-            if (cell) {
-                cell.textContent = `${data.fee} `;
+        try {
+            // Thử parse JSON
+            const data = JSON.parse(text);
+            if (data.status === 'OK') {
+                shippingCosts.set(cartItemId, data.fee);
+                uniqueShopAddresses.set(shopAddress, data.fee);
+                
+                const cell = document.querySelector(`td[data-cart-item-id="${cartItemId}"]`);
+                if (cell) {
+                    cell.textContent = `${data.fee} VND`;
+                }
+                
+                updateTotalShippingCost();
+            } else {
+                throw new Error('Invalid response status');
             }
-            
-            updateTotalShippingCost();
+        } catch (jsonError) {
+            const fee = parseFloat(text);
+            if (!isNaN(fee)) {
+                shippingCosts.set(cartItemId, fee);
+                uniqueShopAddresses.set(shopAddress, fee);
+                
+                const cell = document.querySelector(`td[data-cart-item-id="${cartItemId}"]`);
+                if (cell) {
+                    cell.textContent = `${fee} VND`;
+                }
+                
+                updateTotalShippingCost();
+            } else {
+                throw new Error('Invalid response format');
+            }
         }
     } catch (error) {
         console.error('Error calculating shipping cost:', error);
+        alert('Không thể tính phí vận chuyển. Vui lòng thử lại.');
     }
 }
 
