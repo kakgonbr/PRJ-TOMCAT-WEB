@@ -177,7 +177,6 @@
                                         <th>Category ID</th>
                                         <th>Name</th>
                                         <th>Description</th>
-                                        <th>Image</th>
                                         <th>Status</th>
                                     </tr>
                                 </thead>
@@ -190,7 +189,6 @@
                                                 <td>${product.categoryId.id}</td>
                                                 <td>${product.name}</td>
                                                 <td>${product.description}</td>
-                                                <td><img src="${product.imageStringResourceId}" alt="${product.name}" width="50"></td>
                                                 <td>${product.status}</td>
                                             </tr>
                                         </c:if>

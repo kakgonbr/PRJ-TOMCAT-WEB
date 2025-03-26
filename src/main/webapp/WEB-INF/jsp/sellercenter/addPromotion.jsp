@@ -16,7 +16,7 @@
     <jsp:attribute name="body">
         <div class="container-fluid">
             <div class="row">
-                                <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-none sidebar">
+                <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-none sidebar">
                     <div class="position-sticky ">
                         <!-- Quick Access Search -->
                         <input type="text" id="searchBox" class="form-control my-3" placeholder="Quick access...">
