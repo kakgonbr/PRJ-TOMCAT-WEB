@@ -1,6 +1,6 @@
 let addressInput = null;
 let suggestionsContainer = null;
-let shippingCosts = new Map(); // Lưu trữ shipping cost cho mỗi item
+let shippingCosts = new Map(); 
 let uniqueShopAddresses = new Map();
 
 function debounce(func, wait) {
@@ -13,6 +13,22 @@ function debounce(func, wait) {
 
 async function calculateShippingCost(shopAddress, userAddress, cartItemId) {
     try {
+        // Kiểm tra xem shop address đã có trong uniqueShopAddresses chưa
+        if (uniqueShopAddresses.has(shopAddress)) {
+            // Nếu có rồi thì lấy fee đã tính trước đó
+            const fee = uniqueShopAddresses.get(shopAddress);
+            shippingCosts.set(cartItemId, fee);
+            
+            const cell = document.querySelector(`td[data-cart-item-id="${cartItemId}"]`);
+            if (cell) {
+                cell.textContent = `${fee} `;
+            }
+            
+            updateTotalShippingCost();
+            return;
+        }
+
+        // Nếu chưa có thì mới gọi API
         const url = `https://kakgonbri.zapto.org:8443/prj/ajax/map?action=shippingFee&addressOrigin=${encodeURIComponent(shopAddress)}&addressDestination=${encodeURIComponent(userAddress)}`;
         const response = await fetch(url);
         
@@ -28,7 +44,7 @@ async function calculateShippingCost(shopAddress, userAddress, cartItemId) {
             
             const cell = document.querySelector(`td[data-cart-item-id="${cartItemId}"]`);
             if (cell) {
-                cell.textContent = `${data.fee}`;
+                cell.textContent = `${data.fee} `;
             }
             
             updateTotalShippingCost();
@@ -39,6 +55,16 @@ async function calculateShippingCost(shopAddress, userAddress, cartItemId) {
         console.error('Error calculating shipping cost:', error);
         console.log('Shop address:', shopAddress);
         console.log('User address:', userAddress);
+        console.log('Cart item ID:', cartItemId);
+        
+        // Nếu lỗi, set shipping cost về 0 cho item này
+        shippingCosts.set(cartItemId, 0);
+        const cell = document.querySelector(`td[data-cart-item-id="${cartItemId}"]`);
+        if (cell) {
+            cell.textContent = '0 ';
+        }
+        
+        updateTotalShippingCost();
         alert('Không thể tính phí vận chuyển. Vui lòng thử lại.');
     }
 }
@@ -68,18 +94,25 @@ function updateGrandTotal(shippingCost) {
 async function updateAllShippingCosts(userAddress) {
     if (!userAddress) return;
     
-    // Reset map 
+    // Reset maps
     shippingCosts.clear();
     uniqueShopAddresses.clear();
     
     const shippingCells = document.querySelectorAll('td.shipping-cost');
-    const promises = Array.from(shippingCells).map(cell => {
-        let shopAddress = cell.dataset.shopAddress;
-        let cartItemId = cell.dataset.cartItemId;
-        return calculateShippingCost(shopAddress, userAddress, cartItemId);
+    
+    // Sắp xếp cells theo shop address để tính các shop khác nhau trước
+    const sortedCells = Array.from(shippingCells).sort((a, b) => {
+        const shopA = a.dataset.shopAddress;
+        const shopB = b.dataset.shopAddress;
+        return shopA.localeCompare(shopB);
     });
     
-    await Promise.all(promises);
+    // Tính shipping cost lần lượt
+    for (const cell of sortedCells) {
+        let shopAddress = cell.dataset.shopAddress;
+        let cartItemId = cell.dataset.cartItemId;
+        await calculateShippingCost(shopAddress, userAddress, cartItemId);
+    }
 }
 
 function initializeAddressSearch() {
