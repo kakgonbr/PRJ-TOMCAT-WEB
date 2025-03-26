@@ -67,7 +67,7 @@ public class ProductOrder implements Serializable {
     @ManyToOne
     private Promotion promotionId;
     @JoinColumn(name = "userId", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private User userId;
     @Column(name = "status")
     private Boolean status;
