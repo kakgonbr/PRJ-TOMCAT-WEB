@@ -87,7 +87,7 @@ public class UserRegistrationServlet extends HttpServlet {
         String googleId = request.getParameter("googleId");
 
         if (googleId != null && idToEmail.containsKey(googleId)) { // ensuring integrity, user cannot just edit their email to cause mismatch with the id
-            email = idToEmail.remove(googleId);
+            email = idToEmail.get(googleId);
         } else {
             email = request.getParameter("email");
         }
@@ -192,6 +192,7 @@ public class UserRegistrationServlet extends HttpServlet {
             return;
         }
 
+        idToEmail.remove(googleId);
         // send the user back to login? Maybe? Ideally, this should already have all the information required to forward to user, but remember me option is missing
 
         response.sendRedirect(request.getContextPath() + "/login");
