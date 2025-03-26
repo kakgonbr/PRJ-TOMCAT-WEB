@@ -137,13 +137,14 @@ public class AdminService {
         }
 
         public static void persistResourceDTO(ResourceDTO resourceDTO) throws java.sql.SQLException {
-            if (resourceDTO.getId() == null) {
-                dao.ResourceDAO.addMapping(resourceDTO.getId(), resourceDTO.getSystemPath());
+            // if (resourceDTO.getId() == null) {
+            //     dao.ResourceDAO.addMapping(resourceDTO.getId(), resourceDTO.getSystemPath());
 
-                return;
-            }
+            //     return;
+            // }
 
-            dao.ResourceDAO.editMapping(resourceDTO.toResourceMap());
+            // dao.ResourceDAO.editMapping(resourceDTO.toResourceMap());
+            dao.ResourceDAO.overrideMapping(resourceDTO.getId(), resourceDTO.getSystemPath());
         }
 
         public static void persistPromotionDTO(PromotionDTO promotionDTO) throws java.sql.SQLException {
