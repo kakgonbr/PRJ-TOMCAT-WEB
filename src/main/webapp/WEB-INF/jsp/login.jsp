@@ -16,13 +16,9 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/login_css">
     </jsp:attribute>
 
-    <jsp:attribute name="header">
-        <%-- <t:nav /> --%>
+    <jsp:attribute name="body">
         <t:error error="${error}" />
         <t:error error="${param.reason}" />
-    </jsp:attribute>
-
-    <jsp:attribute name="body">
         <main class="container-fluid d-flex justify-content-evenly mt-5 p-5"
             style="background-color: #9BB3C8 !important">
             <!--login-->
@@ -97,10 +93,6 @@
             </div>
         </main>
 
-    </jsp:attribute>
-
-    <jsp:attribute name="footer">
-        <t:footer />
     </jsp:attribute>
 </t:genericpage>
 
