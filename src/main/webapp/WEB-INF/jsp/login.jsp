@@ -24,7 +24,7 @@
 
     <jsp:attribute name="body">
         <main class="container-fluid d-flex justify-content-evenly mt-5 p-5"
-            style="background-color: var(--bs-custom-background-focus) !important">
+            style="background-color: #9BB3C8 !important">
             <!--login-->
             <div style="width: 35%;">
                 <img src="${pageContext.request.contextPath}/resources/logoBM_png" alt="shop_logo"
