@@ -309,7 +309,7 @@ public class ProductServlet extends HttpServlet {
             // product.setCategoryId(category);
             product.setName(productName);
             product.setDescription(description);
-            product.setImageStringResourceId(null);
+            // product.setImageStringResourceId(null);
             product.setStatus(true);
 
             dao.ProductDAO.ProductManager.editProduct(product);
