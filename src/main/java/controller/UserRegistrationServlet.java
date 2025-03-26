@@ -179,6 +179,7 @@ public class UserRegistrationServlet extends HttpServlet {
             user.setStatus(true);
             user.setIsAdmin(false);
             user.setCredit(BigDecimal.valueOf(0));
+            user.setProfileStringResourceId(new model.ResourceMap("test_png"));
 
             dao.UserDAO.UserManager.createUser(user);
         } catch (java.sql.SQLException e) {
