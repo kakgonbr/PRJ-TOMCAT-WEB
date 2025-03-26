@@ -13,7 +13,7 @@
 
         <t:resources />
         <%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/main_css"> --%>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/login_css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/login_css">   
     </jsp:attribute>
 
     <jsp:attribute name="header">
@@ -23,8 +23,8 @@
     </jsp:attribute>
 
     <jsp:attribute name="body">
-        <main class="container-fluid d-flex justify-content-evenly mt-5 p-5"
-            style="background-color: #9BB3C8;">
+            <main class="container-fluid d-flex flex-column align-items-center justify-content-evenly mt-5 p-5"
+                style="background-color: #9BB3C8;">
             <!--login-->
             <div style="width: 35%;">
                 <img src="${pageContext.request.contextPath}/resources/logoBM_png" alt="shop_logo"

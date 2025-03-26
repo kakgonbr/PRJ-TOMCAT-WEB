@@ -2,9 +2,19 @@
     max-width: 30rem;
     width: 100%;
 }
-#pageheader {
-    background-color: #9BB3C8 !important;
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.container-fluid {
+    flex-grow: 1;
 }
 #pagefooter {
-    background-color: #9BB3C8 !important;
+    background-color: #343a40;
+    color: white;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 1rem 0;
 }
