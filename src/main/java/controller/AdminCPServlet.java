@@ -116,7 +116,7 @@ public class AdminCPServlet extends HttpServlet {
             return;
         }
         
-        doGet(request, response);
+        response.sendRedirect(request.getContextPath() + "/admin/cp");
     }
 
     @Override
