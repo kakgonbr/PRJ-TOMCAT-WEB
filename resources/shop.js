@@ -139,63 +139,63 @@ function fetchOrders(shopId) {
     .catch((error) => console.error("Error fetching orders:", error));
 }
 
-function fetchNotifications(userId) {
-  if (!userId) {
-    console.error("Missing userId");
-    return;
+  function fetchNotifications(userId) {
+    if (!userId) {
+      console.error("Missing userId");
+      return;
+    }
+
+    var url = new URL(
+      "https://" + location.host + contextPath + "/ajax/notifications"
+    );
+    url.searchParams.append("userId", userId);
+
+    fetch(url.toString())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch notifications");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        let container = document.getElementById("notificationTable");
+        container.innerHTML = "";
+
+        data.forEach((notification) => {
+          let item = document.createElement("div");
+          item.className =
+            "notification-item " + (notification.isRead ? "read" : "unread");
+          item.id = `notif-${notification.id}`;
+          item.innerHTML = `
+                      <h4>${notification.title}</h4>
+                      <p>${notification.body}</p>
+                  `;
+          item.onclick = () => markNotificationAsRead(notification.id);
+          container.appendChild(item);
+        });
+      })
+      .catch((error) => console.error("Error fetching notifications:", error));
   }
 
-  var url = new URL(
-    "https://" + location.host + contextPath + "/ajax/notifications"
-  );
-  url.searchParams.append("userId", userId);
+  function markNotificationAsRead(notificationId) {
+    let formData = new FormData();
+    formData.append("notificationIds", notificationId);
 
-  fetch(url.toString())
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Failed to fetch notifications");
-      }
-      return response.json();
+    fetch(contextPath + "/notification", {
+      method: "POST",
+      body: formData,
     })
-    .then((data) => {
-      let container = document.getElementById("notificationTable");
-      container.innerHTML = "";
-
-      data.forEach((notification) => {
-        let item = document.createElement("div");
-        item.className =
-          "notification-item " + (notification.isRead ? "read" : "unread");
-        item.id = `notif-${notification.id}`;
-        item.innerHTML = `
-                    <h4>${notification.title}</h4>
-                    <p>${notification.body}</p>
-                `;
-        item.onclick = () => markNotificationAsRead(notification.id);
-        container.appendChild(item);
-      });
-    })
-    .catch((error) => console.error("Error fetching notifications:", error));
-}
-
-function markNotificationAsRead(notificationId) {
-  let formData = new FormData();
-  formData.append("notificationIds", notificationId);
-
-  fetch(contextPath + "/notification", {
-    method: "POST",
-    body: formData,
-  })
-    .then((response) => response.json()) // Đọc JSON từ server
-    .then((data) => {
-      if (data.success) {
-        let notifItem = document.getElementById(`notif-${notificationId}`);
-        if (notifItem) {
-          notifItem.classList.remove("unread");
-          notifItem.classList.add("read"); // Chuyển màu xanh nhạt
+      .then((response) => response.json()) // Đọc JSON từ server
+      .then((data) => {
+        if (data.success) {
+          let notifItem = document.getElementById(`notif-${notificationId}`);
+          if (notifItem) {
+            notifItem.classList.remove("unread");
+            notifItem.classList.add("read"); // Chuyển màu xanh nhạt
+          }
         }
-      }
-    })
-    .catch((error) =>
-      console.error("Error marking notification as read:", error)
-    );
-}
+      })
+      .catch((error) =>
+        console.error("Error marking notification as read:", error)
+      );
+  }

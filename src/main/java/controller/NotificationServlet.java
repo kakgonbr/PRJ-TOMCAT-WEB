@@ -55,9 +55,7 @@ public class NotificationServlet extends HttpServlet {
                 dao.NotificationDAO.NotificationManager.markAsRead(notification);
             }
 
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().write("{\"success\": true}");
+            response.sendRedirect(request.getContextPath() + "/notification");
 
         } catch (NumberFormatException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
