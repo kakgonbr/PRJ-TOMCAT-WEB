@@ -79,7 +79,7 @@ public class ShopRegistrationServlet extends HttpServlet {
 
             dao.ShopDAO.ShopManager.createShop(shop);
 
-            response.sendRedirect(request.getContextPath() + "/sellercenter/shophome"); // doesnt work?
+            response.sendRedirect(request.getContextPath() + "/shopauth");
             // request.getRequestDispatcher(config.Config.JSPMapper.SHOP_OWNER_DETAILS).forward(request, response);
 
         } catch (SQLException e) {
