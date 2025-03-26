@@ -226,7 +226,17 @@
                 </c:if>
 
                 <!-- Grand Total -->
-                <p class="fw-bold fs-5">Grand Total: <span id="grandTotal" class="text-primary">${total}</span></p>
+                <p class="fw-bold fs-5">Grand Total: <span id="grandTotal" class="text-primary"><c:choose>
+                                    <c:when test="${activePromotion == null}">
+                                        ${total}
+                                    </c:when>
+                                    <c:when test="${activePromotion.type}">
+                                        ${total - activePromotion.value}
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${total * (100.0 - activePromotion.value) / 100.0}
+                                    </c:otherwise>
+                                </c:choose></span></p>
             </div>
 
             <form action="${pageContext.request.contextPath}/checkout" method="POST">
