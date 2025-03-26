@@ -23,21 +23,40 @@ public class MapAPI extends HttpServlet {
                 out.flush();    
                 return;
             case "shippingFee":
-                String origin = request.getParameter("addressOrigin");
-                String destination = request.getParameter("addressDestination");
-                String distance = service.MapAPIService.getDistance(
-                    service.MapAPIService.getLongLat(origin), 
-                    service.MapAPIService.getLongLat(destination)
-                );
-                Double shippingFee = service.MapAPIService.getShippingFee(distance);
-                
-                String jsonResponse = String.format(
-                    "{\"status\":\"OK\",\"fee\":%.1f}", 
-                    shippingFee
-                );
-                out.print(jsonResponse);
-                out.flush();    
-                return;       
+                try {
+                    String origin = request.getParameter("addressOrigin");
+                    String destination = request.getParameter("addressDestination");
+                    
+                    if (origin == null || origin.trim().isEmpty() || 
+                        destination == null || destination.trim().isEmpty()) {
+                        out.print("{\"status\":\"ERROR\",\"message\":\"Missing address parameters\"}");
+                        return;
+                    }
+            
+                    String distance = service.MapAPIService.getDistance(
+                        service.MapAPIService.getLongLat(origin), 
+                        service.MapAPIService.getLongLat(destination)
+                    );
+                    
+                    Double shippingFee = service.MapAPIService.getShippingFee(distance);
+                    
+                    if (shippingFee == null) {
+                        out.print("{\"status\":\"ERROR\",\"message\":\"Could not calculate shipping fee\"}");
+                        return;
+                    }
+                    
+                    String jsonResponse = String.format(
+                        "{\"status\":\"OK\",\"fee\":%.1f}", 
+                        shippingFee
+                    );
+                    out.print(jsonResponse);
+                } catch (Exception e) {
+                    service.Logging.logger.error("Error calculating shipping fee", e);
+                    out.print("{\"status\":\"ERROR\",\"message\":\"" + e.getMessage() + "\"}");
+                } finally {
+                    out.flush();
+                }
+                return;
         }
     }
 
