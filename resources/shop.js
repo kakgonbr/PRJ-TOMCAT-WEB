@@ -185,11 +185,14 @@ function markNotificationAsRead(notificationId) {
     method: "POST",
     body: formData,
   })
-    .then((response) => {
-      if (response.ok) {
+    .then((response) => response.json()) // Đọc JSON từ server
+    .then((data) => {
+      if (data.success) {
         let notifItem = document.getElementById(`notif-${notificationId}`);
-        if (notifItem) notifItem.classList.remove("unread");
-        notifItem.classList.add("read"); // Chuyển màu xanh nhạt
+        if (notifItem) {
+          notifItem.classList.remove("unread");
+          notifItem.classList.add("read"); // Chuyển màu xanh nhạt
+        }
       }
     })
     .catch((error) =>
