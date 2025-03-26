@@ -528,7 +528,8 @@ VALUES
 ('searchPage_js','searchPage.js'),
 ('newHome_css','newHome.css'),
 ('newHome_js','newHome.js'),
-('checkout_js','checkout.js');
+('checkout_js','checkout.js'),
+('logoBM_png', 'logoBM.png');
 
 INSERT INTO tblUser (email, username, phoneNumber, password, persistentCookie, googleId, facebookId, isAdmin, profileStringResourceId)
 VALUES 
