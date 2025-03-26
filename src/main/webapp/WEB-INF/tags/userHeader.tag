@@ -77,7 +77,7 @@
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item"
                                href="${pageContext.request.contextPath}/user">Profile</a></li>
-                        <li><a class="dropdown-item" href="#">Something</a></li>
+                        <li><a class="dropdown-item" href="${pageContext.request.contextPath}/userorder?action=order">Orders</a></li>
                         <li>
                             <hr class="dropdown-divider" />
                         </li>
@@ -126,11 +126,10 @@
             </div>
         </div>
         <div class="col-7 mx-auto">
-            <form class="input-group ms-2 rounded y w-75" style="background-color: rgb(248, 246, 246);"
-                  action="${pageContext.request.contextPath}/search">
+            <form class="input-group ms-2 rounded y w-75" action="${pageContext.request.contextPath}/search">
                 <input type="text" class="form-control border-0 rounded"
                        placeholder="Search for items and brands" aria-label="Search" data-bs-toggle="dropdown"
-                       aria-expanded="false" style="background-color: rgb(248, 246, 246);" name="query"
+                       aria-expanded="false" style="background-color: var(--bs-custom-container-focus);" name="query"
                        id="searchBar" autocomplete="off">
                 <input type="hidden" name="categoryId" value= "${categoryId}">
                 <div class="btn  border-0 rounded clear-btn">

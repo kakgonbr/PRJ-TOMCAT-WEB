@@ -130,7 +130,7 @@
 .logo {
     position: relative;
     color: #636363;
-    background-color:#EEF0F4;
+    background-color: var(--bs-custom-container-focus);
     transition: color 0.6s 0.3s ease-in-out;
 }
 @property --fill {

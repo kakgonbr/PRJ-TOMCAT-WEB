@@ -20,12 +20,18 @@ public class MaintenanceFilter implements jakarta.servlet.Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        if (service.ServerLockDown.isActive()) {
+            ((HttpServletResponse) response).sendRedirect(
+                httpRequest.getContextPath() + "/redirect?page=" + controller.RedirectServlet.REDIRECT_MAINTENANCE);
+            return;
+        }
+
         if (!service.ServerMaintenance.isActive()) {
             chain.doFilter(request, response);
             return;
         }
 
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
         String path = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
 
         for (final String nmPath : config.Config.nonMaintenance) {
