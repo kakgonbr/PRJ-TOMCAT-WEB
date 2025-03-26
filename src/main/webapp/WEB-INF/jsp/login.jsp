@@ -101,7 +101,6 @@
 
     <jsp:attribute name="footer">
         <t:footer />
-        <h2><a href="${pageContext.request.contextPath}/redirect?page=log">View Log</a></h2>
     </jsp:attribute>
 </t:genericpage>
 
