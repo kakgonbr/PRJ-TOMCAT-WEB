@@ -130,7 +130,7 @@ public class User implements Serializable {
     @Column(name = "isAdmin")
     private Boolean isAdmin;
     @JoinColumn(name = "profileStringResourceId", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private ResourceMap profileStringResourceId;
 
     public User() {
