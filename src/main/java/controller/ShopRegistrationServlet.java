@@ -51,7 +51,7 @@ public class ShopRegistrationServlet extends HttpServlet {
         }
         //just need shopname and address
         String shopName = request.getParameter("shopName");
-        String address = request.getParameter("shopAddress");
+        String address = request.getParameter("address");
         //validation!!
         if (shopName == null || !misc.Utils.Validator.username(shopName)) {
             request.setAttribute("error", "shopName");
