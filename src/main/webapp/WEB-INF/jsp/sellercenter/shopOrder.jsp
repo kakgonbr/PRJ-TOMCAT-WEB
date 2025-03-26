@@ -87,7 +87,7 @@
                                     </button>
                                 </h2>
                                 <div id="collapseShop" class="accordion-collapse collapse">
-                                    <a href="#" class="list-group-item list-group-item-action p-3">🏪    
+                                    <a href="${pageContext.request.contextPath}/shop?shopId=${sessionScope.shopId}" class="list-group-item list-group-item-action p-3">🏪    
                                         Shop
                                         Information</a>
                                 </div>
@@ -105,8 +105,8 @@
                                         <a href="shop-advertisement.html"
                                            class="list-group-item list-group-item-action pb-3">📢
                                             Shop Advertisement</a>
-                                        <a href="discount.html" class="list-group-item list-group-item-action">🏷
-                                            Discount</a>
+                                        <a href="${pageContext.request.contextPath}/sellercenter/promotion" 
+                                           class="list-group-item list-group-item-action">🏷 Discount</a>
                                     </div>
                                 </div>
                             </div>
