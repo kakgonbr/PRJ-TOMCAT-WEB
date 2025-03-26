@@ -67,9 +67,9 @@ public class NotificationServlet extends HttpServlet {
             jsonResponse.add(notificationData);
         }
 
-        com.google.gson.Gson gson = new GsonBuilder().create();
+        com.google.gson.Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         PrintWriter out = response.getWriter();
-        out.write(gson.toJson(jsonResponse));  // Trả về danh sách JSON
+        out.write(gson.toJson(jsonResponse)); 
         out.flush();
 
     } catch (NumberFormatException e) {
