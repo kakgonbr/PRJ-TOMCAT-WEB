@@ -47,8 +47,9 @@ public class ChatServlet extends HttpServlet {
         } catch (java.sql.SQLException e) {
             service.Logging.logger.warn("FAILED TO CREATE CHATBOX FOR {}, REASON: {}", user.getId(), e.getMessage());
 
-            request.setAttribute("code", 500);
-            request.getRequestDispatcher("/error").forward(request, response);
+            // request.setAttribute("code", 500);
+            // request.getRequestDispatcher("/error").forward(request, response);
+            request.setAttribute("error", "No user found");
             return;
         }
 

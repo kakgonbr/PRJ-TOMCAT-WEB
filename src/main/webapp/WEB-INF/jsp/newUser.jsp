@@ -62,7 +62,7 @@
                                     </button>
                                 </h2>
                                 <div id="collapseShop" class="accordion-collapse collapse">
-                                    <a href="#" class="list-group-item list-group-item-action p-3">Notification</a>
+                                    <a href="${pageContext.request.contextPath}/notification" class="list-group-item list-group-item-action p-3">Notification</a>
                                 </div>
                             </div>
 
