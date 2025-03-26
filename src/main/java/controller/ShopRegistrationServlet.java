@@ -75,6 +75,7 @@ public class ShopRegistrationServlet extends HttpServlet {
             shop.setAddress(address);
             shop.setOwnerId(user);
             shop.setVisible(true);
+            shop.setProfileStringResourceId(new model.ResourceMap("test_png"));
 
             dao.ShopDAO.ShopManager.createShop(shop);
 
