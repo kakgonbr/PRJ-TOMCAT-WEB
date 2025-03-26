@@ -50,7 +50,6 @@ public class ChatServlet extends HttpServlet {
             // request.setAttribute("code", 500);
             // request.getRequestDispatcher("/error").forward(request, response);
             request.setAttribute("error", "No user found");
-            return;
         }
 
         doGet(request, response);
