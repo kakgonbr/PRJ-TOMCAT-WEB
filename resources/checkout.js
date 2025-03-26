@@ -80,8 +80,7 @@ async function calculateShippingCost(shopAddress, userAddress, cartItemId, retry
 }
 
 function updateTotalShippingCost() {
-    const totalShippingCost = Array.from(uniqueShopAddresses.values())
-        .reduce((sum, cost) => sum + cost, 0);
+    const totalShippingCost = Array.from(uniqueShopAddresses.values()).reduce((sum, cost) => sum + cost, 0);
     
     const totalShippingElement = document.getElementById('totalShippingCost');
     if (totalShippingElement) {
@@ -94,11 +93,28 @@ function updateGrandTotal(shippingCost) {
     const grandTotalElement = document.getElementById('grandTotal');
     if (!grandTotalElement) return;
 
-    let subtotal = parseFloat(document.querySelector('.price-summary .text-primary, .price-summary .text-success').textContent);
+    let subtotal = parseFloat(document.getElementById('subtotal').textContent);
     
-    const newTotal = subtotal + shippingCost;
+    let total = subtotal + shippingCost;
     
-    grandTotalElement.textContent = `${newTotal}`;
+    // Áp dụng promotion nếu có
+    const promotionElement = document.querySelector('.text-success');
+    if (promotionElement) {
+        const promotionText = promotionElement.textContent;
+        if (promotionText.includes('%')) {
+            // Percentage discount
+            const percentage = parseFloat(promotionText.match(/\d+/)[0]);
+            total = total * (100 - percentage) / 100;
+        } else {
+            // Fixed amount discount
+            const amount = parseFloat(promotionText.match(/\d+/)[0]);
+            total = total - amount;
+        }
+    }
+    
+    total = Math.max(0, total);
+    
+    grandTotalElement.textContent = `${total}`;
 }
 
 async function updateAllShippingCosts(userAddress) {
