@@ -14,7 +14,7 @@ public class ReviewWrapper implements java.io.Serializable{
         this.productId = review.getProductId().getId();
         this.comment = review.getComment();
         this.userName = review.getUserId().getDisplayName() == null ? review.getUserId().getUsername() : review.getUserId().getDisplayName();
-        this.profileStringResourceId = review.getUserId().getProfileStringResourceId().getId();
+        this.profileStringResourceId = review.getUserId().getProfileStringResourceId() == null ? "test_png" : review.getUserId().getProfileStringResourceId().getId();
     }
 
     public int getId() {
