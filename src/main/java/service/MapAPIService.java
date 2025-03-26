@@ -19,12 +19,20 @@ import com.google.gson.JsonObject;
 public class MapAPIService {
 
     public static String getLongLat(String input) throws ClientProtocolException, IOException {
-        String address= URLEncoder.encode(input, StandardCharsets.UTF_8.toString());
-        String url= config.Config.GoongMapAPIConfig.API_GEO_CODE+"api_key="+config.Config.GoongMapAPIConfig.API_KEY+"&address="+address;
-        String geoCodeJson= Request.Get(url).addHeader("Accept", "application/json").execute().handleResponse(responseHandler);
-        JsonObject jobj = new Gson().fromJson(geoCodeJson, JsonObject.class);
-        Map<String,JsonElement> codeMap = jobj.getAsJsonArray("results").get(0).getAsJsonObject().get("geometry").getAsJsonObject().get("location").getAsJsonObject().asMap();
-        return codeMap.get("lat")+","+codeMap.get("lng");
+        try {
+            String address= URLEncoder.encode(input, StandardCharsets.UTF_8.toString());
+            String url= config.Config.GoongMapAPIConfig.API_GEO_CODE+"api_key="+config.Config.GoongMapAPIConfig.API_KEY+"&address="+address;
+            service.Logging.logger.info("Geocoding request URL: {}", url);
+            String geoCodeJson= Request.Get(url).addHeader("Accept", "application/json").execute().handleResponse(responseHandler);
+            service.Logging.logger.info("Geocoding response: {}", geoCodeJson);
+            JsonObject jobj = new Gson().fromJson(geoCodeJson, JsonObject.class);
+            Map<String,JsonElement> codeMap = jobj.getAsJsonArray("results").get(0).getAsJsonObject().get("geometry").getAsJsonObject().get("location").getAsJsonObject().asMap();
+            return codeMap.get("lat")+","+codeMap.get("lng");
+        } catch (Exception e) {
+            service.Logging.logger.error("Error in getLongLat for input: " + input, e);
+            throw e;
+        }
+        
     } 
 
     private static final ResponseHandler<String> responseHandler= response -> {
