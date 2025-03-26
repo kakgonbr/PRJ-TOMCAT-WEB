@@ -1,16 +1,14 @@
 package dao;
 
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.hibernate.Hibernate;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
-
-import java.util.Date;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import model.Cart;
 import model.OrderedItem;
 import model.ProductOrder;
 
@@ -155,6 +153,28 @@ public class OrderDAO {
 
         private static final String UPDATE_ORDER_PRICE = "WITH total AS ( SELECT SUM(totalPrice * quantity + shippingCost) AS total FROM tblOrderedItem WHERE orderId = ?1 ) UPDATE tblOrder SET finalPrice = ( SELECT CASE WHEN p.id IS NULL THEN t.total WHEN p.type = 1 THEN t.total - p.value WHEN p.type = 0 THEN t.total * (1 - p.value / 100.0) ELSE t.total END FROM total t LEFT JOIN tblOrder o ON o.id = ?1 LEFT JOIN tblPromotion p ON p.id = o.promotionId ) WHERE id = ?1;";
 
+        private static final String UPDATE_ORDER_PRICES = "WITH total AS ("
+                + " SELECT SUM(totalPrice * quantity) as itemTotal,"
+                + " SUM(shippingCost) as shippingTotal"
+                + " FROM tblOrderedItem"
+                + " WHERE orderId = ?1"
+                + " GROUP BY orderId"
+                + " )"
+                + " UPDATE tblOrder"
+                + " SET finalPrice = ("
+                + " SELECT"
+                + " CASE"
+                + " WHEN p.id IS NULL THEN t.itemTotal + t.shippingTotal"
+                + " WHEN p.type = 1 THEN (t.itemTotal + t.shippingTotal) - p.value"
+                + " WHEN p.type = 0 THEN (t.itemTotal + t.shippingTotal) * (1 - p.value / 100.0)"
+                + " ELSE t.itemTotal + t.shippingTotal"
+                + " END"
+                + " FROM total t"
+                + " LEFT JOIN tblOrder o ON o.id = ?1"
+                + " LEFT JOIN tblPromotion p ON p.id = o.promotionId"
+                + " )"
+                + " WHERE id = ?1";
+
         /**
          * Call this after every request the user made to add items from cart to
          * order.
@@ -169,7 +189,7 @@ public class OrderDAO {
                 try {
                     et.begin();
 
-                    if (em.createNativeQuery(UPDATE_ORDER_PRICE).setParameter(1, id)
+                    if (em.createNativeQuery(UPDATE_ORDER_PRICES).setParameter(1, id)
                             .executeUpdate() != 1) {
                         throw new java.sql.SQLException("CANNOT UPDATE THE PRICE OF ORDER, THE UPDATE COUNT IS NOT 1");
                     }

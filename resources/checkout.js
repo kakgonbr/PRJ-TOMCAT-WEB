@@ -11,11 +11,15 @@ function debounce(func, wait) {
     };
 }
 
-async function calculateShippingCost(shopAddress, userAddress, cartItemId) {
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function calculateShippingCost(shopAddress, userAddress, cartItemId, retryCount = 0) {
     try {
         console.log(`Calculating shipping cost for shop: ${shopAddress} to ${userAddress}`);
         
-        // Kiểm tra xem shop address đã có trong uniqueShopAddresses chưa
+        // Kiểm tra cache
         if (uniqueShopAddresses.has(shopAddress)) {
             const fee = uniqueShopAddresses.get(shopAddress);
             console.log(`Using cached shipping fee for ${shopAddress}: ${fee}`);
@@ -23,7 +27,7 @@ async function calculateShippingCost(shopAddress, userAddress, cartItemId) {
             
             const cell = document.querySelector(`td[data-cart-item-id="${cartItemId}"]`);
             if (cell) {
-                cell.textContent = `${fee} `;
+                cell.textContent = `${fee} VND`;
             }
             
             updateTotalShippingCost();
@@ -34,11 +38,6 @@ async function calculateShippingCost(shopAddress, userAddress, cartItemId) {
         console.log('Fetching shipping cost from:', url);
         
         const response = await fetch(url);
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
         const data = await response.json();
         console.log('API Response:', data);
         
@@ -48,11 +47,17 @@ async function calculateShippingCost(shopAddress, userAddress, cartItemId) {
             
             const cell = document.querySelector(`td[data-cart-item-id="${cartItemId}"]`);
             if (cell) {
-                cell.textContent = `${data.fee} `;
+                cell.textContent = `${data.fee} VND`;
             }
             
             updateTotalShippingCost();
         } else if (data.status === 'ERROR') {
+            if (data.message.includes('Rate limit exceeded') && retryCount < 3) {
+                // Thử lại sau 2 giây nếu bị rate limit
+                console.log(`Rate limit hit, retrying in 2 seconds... (attempt ${retryCount + 1}/3)`);
+                await delay(2000);
+                return calculateShippingCost(shopAddress, userAddress, cartItemId, retryCount + 1);
+            }
             throw new Error(data.message || 'Unknown error occurred');
         } else {
             throw new Error('Invalid response data');
@@ -63,11 +68,10 @@ async function calculateShippingCost(shopAddress, userAddress, cartItemId) {
         console.log('User address:', userAddress);
         console.log('Cart item ID:', cartItemId);
         
-        // Set shipping cost về 0 cho item này nếu có lỗi
         shippingCosts.set(cartItemId, 0);
         const cell = document.querySelector(`td[data-cart-item-id="${cartItemId}"]`);
         if (cell) {
-            cell.textContent = '0 ';
+            cell.textContent = '0 VND';
         }
         
         updateTotalShippingCost();
@@ -77,7 +81,7 @@ async function calculateShippingCost(shopAddress, userAddress, cartItemId) {
 
 function updateTotalShippingCost() {
     const totalShippingCost = Array.from(uniqueShopAddresses.values())
-        .reduce((sum, cost) => sum + cost, 0);
+.reduce((sum, cost) => sum + cost, 0);
     
     const totalShippingElement = document.getElementById('totalShippingCost');
     if (totalShippingElement) {
@@ -90,36 +94,54 @@ function updateGrandTotal(shippingCost) {
     const grandTotalElement = document.getElementById('grandTotal');
     if (!grandTotalElement) return;
 
-    let subtotal = parseFloat(document.querySelector('.price-summary .text-primary, .price-summary .text-success').textContent);
+    let subtotal = parseFloat(document.getElementById('subtotal').textContent);
+    let total = subtotal + shippingCost;
     
+    // Áp dụng promotion vào grand total
+    const promotionElement = document.getElementById('activePromotion');
+    if (promotionElement) {
+        const type = promotionElement.dataset.type === 'true';
+        const value = parseFloat(promotionElement.dataset.value);
+        
+        if (type) {
+            // Fixed amount
+            total = total - value;
+        } else {
+            // Percentage
+            total = total * (100 - value) / 100;
+        }
+    }
+    total = Math.max(0, total);
+    grandTotalElement.textContent = `${total}`;
+}
+/*
+function updateGrandTotal(shippingCost) {
+    const grandTotalElement = document.getElementById('grandTotal');
+    if (!grandTotalElement) return;
+
+    let subtotal = parseFloat(document.getElementById('subtotal').textContent);
     const newTotal = subtotal + shippingCost;
-    
     grandTotalElement.textContent = `${newTotal}`;
 }
-
+*/
 async function updateAllShippingCosts(userAddress) {
     if (!userAddress) return;
     
-    // Reset maps
     shippingCosts.clear();
     uniqueShopAddresses.clear();
     
     const shippingCells = document.querySelectorAll('td.shipping-cost');
     
-    // Sắp xếp cells theo shop address để tính các shop khác nhau trước
-    const sortedCells = Array.from(shippingCells).sort((a, b) => {
-        const shopA = a.dataset.shopAddress;
-        const shopB = b.dataset.shopAddress;
-        return shopA.localeCompare(shopB);
-    });
-    
-    // Tính shipping cost lần lượt
-    for (const cell of sortedCells) {
+    // Xử lý tuần tự với delay
+    for (const cell of shippingCells) {
         let shopAddress = cell.dataset.shopAddress;
         let cartItemId = cell.dataset.cartItemId;
         await calculateShippingCost(shopAddress, userAddress, cartItemId);
+        // Thêm delay 1 giây giữa các request
+        await delay(1000);
     }
 }
+
 
 function initializeAddressSearch() {
     addressInput = document.getElementById('address');
