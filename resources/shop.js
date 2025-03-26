@@ -178,17 +178,18 @@ function fetchNotifications(userId) {
 }
 
 function markNotificationAsRead(notificationId) {
+  let formData = new FormData();
+  formData.append("notificationIds", notificationId);
+
   fetch(contextPath + "/notification", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ notificationIds: [notificationId] }),
+    body: formData,
   })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.success) {
-        console.log("Notification marked as read:", notificationId);
+    .then((response) => {
+      if (response.ok) {
         let notifItem = document.getElementById(`notif-${notificationId}`);
-        if (notifItem) notifItem.classList.add("read");
+        if (notifItem) notifItem.classList.remove("unread");
+        notifItem.classList.add("read"); // Chuyển màu xanh nhạt
       }
     })
     .catch((error) =>

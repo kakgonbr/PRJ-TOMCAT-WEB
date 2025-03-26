@@ -11,14 +11,6 @@
 <t:genericpage title="User">
     <jsp:attribute name="head">
         <t:resources />
-        <script src="${pageContext.request.contextPath}/resources/shop_js"></script>
-        <script>
-            var contextPath = "${pageContext.request.contextPath}";
-            var userId = "${sessionScope.user.id}";
-            document.addEventListener("DOMContentLoaded", function () {
-                fetchNotifications(userId);
-            });
-        </script>
         <style>
             .notification-item {
                 padding: 10px;
@@ -27,22 +19,32 @@
                 cursor: pointer;
             }
             .notification-item.unread {
-                background-color: #f8d7da;
+                background-color: #f8d7da; /* Màu đỏ nhạt cho chưa đọc */
             }
             .notification-item.read {
-                background-color: #d4edda;
+                background-color: #d4edda; /* Màu xanh nhạt cho đã đọc */
             }
         </style>
     </jsp:attribute>
 
     <jsp:attribute name="header">
-        <t:error error="${error}" />
+        <t:error error="${param.error}" />
     </jsp:attribute>
 
     <jsp:attribute name="body">
-        <div id="notificationTable">
-            <p>Loading notifications...</p>
-        </div>
+        <h2 class="text-dark">Notification</h2>
+
+        <form action="${pageContext.request.contextPath}/notification" method="POST">
+            <c:forEach var="noti" items="${notification}">
+                <div class="notification-item ${noti.isRead ? 'read' : 'unread'}">
+                    <input type="checkbox" name="notificationIds" value="${noti.id}" />
+                    <h3>${noti.title}</h3>
+                    <p>${noti.body}</p>
+                </div>
+            </c:forEach>
+            <br>
+            <button type="submit">Đánh dấu đã đọc</button>
+        </form>
     </jsp:attribute>
 
     <jsp:attribute name="footer">

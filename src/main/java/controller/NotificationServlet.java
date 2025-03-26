@@ -13,7 +13,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-
 /**
  *
  * @author hoahtm
@@ -39,44 +38,34 @@ public class NotificationServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    response.setContentType("application/json");
-    response.setCharacterEncoding("UTF-8");
+            throws ServletException, IOException {
+        String[] notificationIds = request.getParameterValues("notificationIds");
 
-    String[] notificationIds = request.getParameterValues("notificationIds");
-
-    if (notificationIds == null || notificationIds.length == 0) {
-        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing notificationIds");
-        return;
-    }
-
-    java.util.List<java.util.Map<String, Object>> jsonResponse = new java.util.ArrayList<>();  // Danh sách kết quả thay vì JSONArray
-
-    try {
-        for (String idStr : notificationIds) {
-            int notificationId = Integer.parseInt(idStr);
-            model.Notification notification = new model.Notification();
-            notification.setId(notificationId);
-
-            dao.NotificationDAO.NotificationManager.markAsRead(notification);
-
-            java.util.Map<String, Object> notificationData = new java.util.HashMap<>();
-            notificationData.put("notificationId", notificationId);
-            notificationData.put("success", true);
-
-            jsonResponse.add(notificationData);
+        if (notificationIds == null || notificationIds.length == 0) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("Missing notificationIds");
+            return;
         }
 
-        com.google.gson.Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-        PrintWriter out = response.getWriter();
-        out.write(gson.toJson(jsonResponse)); 
-        out.flush();
+        try {
+            for (String idStr : notificationIds) {
+                int notificationId = Integer.parseInt(idStr);
+                model.Notification notification = new model.Notification();
+                notification.setId(notificationId);
+                dao.NotificationDAO.NotificationManager.markAsRead(notification);
+            }
 
-    } catch (NumberFormatException e) {
-        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid notificationId");
-    } catch (Exception e) {
-        e.printStackTrace();
-        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error marking notifications as read.");
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write("{\"success\": true}");
+
+        } catch (NumberFormatException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("Invalid notificationId");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("Error marking notifications as read.");
+        }
     }
-}
 }
