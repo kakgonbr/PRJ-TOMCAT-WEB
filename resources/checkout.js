@@ -80,7 +80,8 @@ async function calculateShippingCost(shopAddress, userAddress, cartItemId, retry
 }
 
 function updateTotalShippingCost() {
-    const totalShippingCost = Array.from(uniqueShopAddresses.values()).reduce((sum, cost) => sum + cost, 0);
+    const totalShippingCost = Array.from(uniqueShopAddresses.values())
+.reduce((sum, cost) => sum + cost, 0);
     
     const totalShippingElement = document.getElementById('totalShippingCost');
     if (totalShippingElement) {
@@ -89,6 +90,7 @@ function updateTotalShippingCost() {
     updateGrandTotal(totalShippingCost);
 }
 
+/*
 function updateGrandTotal(shippingCost) {
     const grandTotalElement = document.getElementById('grandTotal');
     if (!grandTotalElement) return;
@@ -116,6 +118,15 @@ function updateGrandTotal(shippingCost) {
     
     grandTotalElement.textContent = `${total}`;
 }
+*/
+function updateGrandTotal(shippingCost) {
+    const grandTotalElement = document.getElementById('grandTotal');
+    if (!grandTotalElement) return;
+
+    let subtotal = parseFloat(document.getElementById('subtotal').textContent);
+    const newTotal = subtotal + shippingCost;
+    grandTotalElement.textContent = `${newTotal}`;
+}
 
 async function updateAllShippingCosts(userAddress) {
     if (!userAddress) return;
@@ -134,6 +145,7 @@ async function updateAllShippingCosts(userAddress) {
         await delay(1000);
     }
 }
+
 
 function initializeAddressSearch() {
     addressInput = document.getElementById('address');
