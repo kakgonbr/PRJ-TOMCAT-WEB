@@ -681,11 +681,11 @@ INSERT INTO tblVariation (categoryId,name,datatype)
 
 INSERT INTO tblShop (ownerId, name, address, profileStringResourceId, visible)
 VALUES
-(1, 'Gadget World', '789 Tech Road', 'test_png', 1),
-(2, 'Sneaker Haven', '321 Fashion Blvd', 'test_png', 1),
-(3, 'Home Essentials', '567 Home Lane', 'test_png', 1),
-(4, 'Tech Universe', '123 Innovation St', 'test_png', 1),
-(5, 'Fashion Hub', '456 Style Ave', 'test_png', 1),
+(1, 'Gadget World', N'134 Nguyễn Thái Học, Phạm Ngũ Lão, Quận 1, Hồ Chí Minh', 'test_png', 1),
+(2, 'Sneaker Haven', N'299 Phan Châu Trinh, Phước Ninh, Hải Châu, Đà Nẵng', 'test_png', 1),
+(3, 'Home Essentials', N'310 Điện Biên Phủ, Thanh Khê, Đà Nẵng', 'test_png', 1),
+(4, 'Tech Universe', N'11 Lê Thánh Tôn, Hải Châu, Đà Nẵng', 'test_png', 1),
+(5, 'Fashion Hub', N'86 Nguyễn Tri Phương, Thanh Khê, Đà Nẵng', 'test_png', 1),
 (6, 'Fashion Path', N'154 Lê Lợi, Hải Châu, Đà Nẵng', 'test_png', 1);
 
 -- Understand that being in here means that the promotion will be active
