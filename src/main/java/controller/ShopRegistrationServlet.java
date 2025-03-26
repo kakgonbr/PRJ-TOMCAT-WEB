@@ -53,7 +53,7 @@ public class ShopRegistrationServlet extends HttpServlet {
         String shopName = request.getParameter("shopName");
         String address = request.getParameter("address");
         //validation!!
-        if (shopName == null || !misc.Utils.Validator.username(shopName)) {
+        if (shopName == null) {
             request.setAttribute("error", "shopName");
 
             request.getRequestDispatcher(config.Config.JSPMapper.SHOP_SIGNUP).forward(request, response);
