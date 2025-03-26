@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import org.apache.http.client.ClientProtocolException;
+
 public class MapAPI extends HttpServlet {
 
     @Override
