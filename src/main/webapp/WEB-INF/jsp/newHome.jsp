@@ -1,4 +1,4 @@
-<%-- POSSIBLE REQUEST ATTRIBUTES:  --%>
+ <%-- POSSIBLE REQUEST ATTRIBUTES:  --%>
 <%-- POSSIBLE REQUEST PARAMETERS:  --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -33,13 +33,13 @@
                         <div class="carousel-inner rounded">
                           <div class="carousel-item active">
                             <!--can be a link. the image can be different -->
-                            <img src="https://raw.githubusercontent.com/HoanghoDev/youtube_v2/main/auto_slider/images/slider2_2.png" class="d-block border rounded" alt="..." style="width: 100%; height: 550px; object-fit: cover;">
+                            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1999&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="d-block border rounded" alt="..." style="width: 100%; height: 550px; object-fit: cover;">
                           </div>
                           <div class="carousel-item">
-                            <img src="https://raw.githubusercontent.com/HoanghoDev/youtube_v2/main/auto_slider/images/slider2_2.png" class="d-block border rounded" alt="..." style="width: 100%; height: 550px; object-fit: cover;">
+                            <img src="https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" class="d-block border rounded" alt="..." style="width: 100%; height: 550px; object-fit: cover;">
                           </div>
                           <div class="carousel-item">
-                            <img src="https://raw.githubusercontent.com/HoanghoDev/youtube_v2/main/auto_slider/images/slider2_2.png" class="d-block border rounded" alt="..." style="width: 100%; height: 550px; object-fit: cover;">
+                            <img src="https://images.unsplash.com/photo-1560343090-f0409e92791a?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="d-block border rounded" alt="..." style="width: 100%; height: 550px; object-fit: cover;">
                           </div> 
                         </div>
                         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
