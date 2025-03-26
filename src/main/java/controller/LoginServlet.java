@@ -28,6 +28,10 @@ public class LoginServlet extends HttpServlet {
             try {
                 session.invalidate();
 
+                Cookie cookie = new Cookie(config.Config.CookieMapper.REMEMBER_ME_COOKIE, "");
+                cookie.setMaxAge(0);
+                response.addCookie(cookie);
+
                 dao.UserDAO.UserManager.deleteCookie(user.getId());
             } catch (java.sql.SQLException e) {
                 service.Logging.logger.info("Failed to delete cookie for user {}, reason: {}", user.getId(),
