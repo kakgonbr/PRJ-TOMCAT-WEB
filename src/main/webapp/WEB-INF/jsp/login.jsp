@@ -23,7 +23,7 @@
     </jsp:attribute>
 
     <jsp:attribute name="body">
-            <main class="container-fluid d-flex flex-column align-items-center justify-content-evenly mt-5 p-5"
+            <main class="container-fluid d-flex justify-content-evenly p-5"
                 style="background-color: #9BB3C8;">
             <!--login-->
             <div style="width: 35%;">
