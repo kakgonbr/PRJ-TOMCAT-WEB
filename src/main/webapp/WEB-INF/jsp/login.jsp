@@ -16,11 +16,15 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/login_css">
     </jsp:attribute>
 
-    <jsp:attribute name="body">
+    <jsp:attribute name="header">
+        <%-- <t:nav /> --%>
         <t:error error="${error}" />
         <t:error error="${param.reason}" />
+    </jsp:attribute>
+
+    <jsp:attribute name="body">
         <main class="container-fluid d-flex justify-content-evenly mt-5 p-5"
-            style="background-color: #9BB3C8 !important">
+            style="background-color: #9BB3C8;">
             <!--login-->
             <div style="width: 35%;">
                 <img src="${pageContext.request.contextPath}/resources/logoBM_png" alt="shop_logo"
@@ -93,6 +97,10 @@
             </div>
         </main>
 
+    </jsp:attribute>
+
+    <jsp:attribute name="footer">
+        <t:footer />
     </jsp:attribute>
 </t:genericpage>
 
