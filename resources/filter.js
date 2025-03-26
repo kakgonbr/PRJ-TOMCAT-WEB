@@ -12,12 +12,36 @@ function fetchCategory() {
   }
 }
 
+// function createCategoryElement(category) {
+//   let li = document.createElement("li");
+//   let label = document.createElement("label");
+//   let radio = document.createElement("input");
+//   radio.type = "radio";
+//   radio.name = "filter";
+//   radio.value = category.id;
+
+//   label.appendChild(radio);
+//   label.appendChild(document.createTextNode(" " + category.name));
+//   li.appendChild(label);
+
+//   if (category.children && category.children.length > 0) {
+//     let ul = document.createElement("ul");
+//     category.children.forEach(child => {
+//       ul.appendChild(createCategoryElement(child));
+//     });
+//     li.appendChild(ul);
+//   }
+//   return li;
+// }
+
+
 function createCategoryElement(category) {
   let li = document.createElement("li");
   let label = document.createElement("label");
   let radio = document.createElement("input");
+
   radio.type = "radio";
-  radio.name = "filter";
+  radio.name = "filter"; 
   radio.value = category.id;
 
   label.appendChild(radio);
@@ -26,14 +50,25 @@ function createCategoryElement(category) {
 
   if (category.children && category.children.length > 0) {
     let ul = document.createElement("ul");
+    ul.style.display = "none"; 
+
     category.children.forEach(child => {
       ul.appendChild(createCategoryElement(child));
     });
+
+    radio.addEventListener("change", function () {
+      if (radio.checked) {
+        ul.style.display = "block"; 
+      } else {
+        ul.style.display = "none"; 
+      }
+    });
+
     li.appendChild(ul);
   }
+
   return li;
 }
-
 
 
 
