@@ -170,6 +170,7 @@
                 </c:choose>
                 --%>
                 <!-- Subtotal -->
+                <%--
                 <c:choose>
                     <c:when test="${activePromotion == null}">
                         <p class="fw-bold">Subtotal: <span class="text-primary" id="subtotal">${total} VND</span></p>
@@ -200,9 +201,29 @@
                         </p>
                     </c:otherwise>
                 </c:choose>
+                --%>
+
+                <p class="fw-bold">Subtotal: <span class="text-primary" id="subtotal">${total} VND</span></p>
 
                 <!-- Shipping Cost -->
                 <p class="fw-bold">Total Shipping Cost: <span id="totalShippingCost" class="text-primary">0</span></p>
+
+                <!-- Promotion -->
+                <c:if test="${activePromotion != null}">
+                    <p class="fw-bold text-success" id="activePromotion" 
+                    data-type="${activePromotion.type}" 
+                    data-value="${activePromotion.value}">
+                        Active Promotion: [
+                        <c:choose>
+                            <c:when test="${activePromotion.type}">
+                                - ${activePromotion.value} VND
+                            </c:when>
+                            <c:otherwise>
+                                - ${activePromotion.value} %
+                            </c:otherwise>
+                        </c:choose>] ${activePromotion.name} - Expires on ${activePromotion.expireDate}
+                    </p>
+                </c:if>
 
                 <!-- Grand Total -->
                 <p class="fw-bold fs-5">Grand Total: <span id="grandTotal" class="text-primary">${total}</span></p>

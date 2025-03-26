@@ -90,35 +90,31 @@ function updateTotalShippingCost() {
     updateGrandTotal(totalShippingCost);
 }
 
-/*
 function updateGrandTotal(shippingCost) {
     const grandTotalElement = document.getElementById('grandTotal');
     if (!grandTotalElement) return;
 
     let subtotal = parseFloat(document.getElementById('subtotal').textContent);
-    
     let total = subtotal + shippingCost;
     
-    // Áp dụng promotion nếu có
-    const promotionElement = document.querySelector('.text-success');
+    // Áp dụng promotion vào grand total
+    const promotionElement = document.getElementById('activePromotion');
     if (promotionElement) {
-        const promotionText = promotionElement.textContent;
-        if (promotionText.includes('%')) {
-            // Percentage discount
-            const percentage = parseFloat(promotionText.match(/\d+/)[0]);
-            total = total * (100 - percentage) / 100;
+        const type = promotionElement.dataset.type === 'true';
+        const value = parseFloat(promotionElement.dataset.value);
+        
+        if (type) {
+            // Fixed amount
+            total = total - value;
         } else {
-            // Fixed amount discount
-            const amount = parseFloat(promotionText.match(/\d+/)[0]);
-            total = total - amount;
+            // Percentage
+            total = total * (100 - value) / 100;
         }
     }
-    
     total = Math.max(0, total);
-    
     grandTotalElement.textContent = `${total}`;
 }
-*/
+/*
 function updateGrandTotal(shippingCost) {
     const grandTotalElement = document.getElementById('grandTotal');
     if (!grandTotalElement) return;
@@ -127,7 +123,7 @@ function updateGrandTotal(shippingCost) {
     const newTotal = subtotal + shippingCost;
     grandTotalElement.textContent = `${newTotal}`;
 }
-
+*/
 async function updateAllShippingCosts(userAddress) {
     if (!userAddress) return;
     
