@@ -23,20 +23,21 @@ public class MapAPI extends HttpServlet {
                 out.flush();    
                 return;
             case "shippingFee":
+            try {
+                String origin = request.getParameter("addressOrigin");
+                String destination = request.getParameter("addressDestination");
+                
+                service.Logging.logger.info("Calculating shipping fee from {} to {}", origin, destination);
+                
+                if (origin == null || origin.trim().isEmpty() || 
+                    destination == null || destination.trim().isEmpty()) {
+                    String errorResponse = "{\"status\":\"ERROR\",\"message\":\"Missing address parameters\"}";
+                    service.Logging.logger.error("Invalid request: {}", errorResponse);
+                    out.print(errorResponse);
+                    return;
+                }
+        
                 try {
-                    String origin = request.getParameter("addressOrigin");
-                    String destination = request.getParameter("addressDestination");
-                    
-                    service.Logging.logger.info("Calculating shipping fee from {} to {}", origin, destination);
-                    
-                    if (origin == null || origin.trim().isEmpty() || 
-                        destination == null || destination.trim().isEmpty()) {
-                        String errorResponse = "{\"status\":\"ERROR\",\"message\":\"Missing address parameters\"}";
-                        service.Logging.logger.error("Invalid request: {}", errorResponse);
-                        out.print(errorResponse);
-                        return;
-                    }
-            
                     String distance = service.MapAPIService.getDistance(
                         service.MapAPIService.getLongLat(origin), 
                         service.MapAPIService.getLongLat(destination)
@@ -59,19 +60,26 @@ public class MapAPI extends HttpServlet {
                     );
                     service.Logging.logger.info("Shipping fee calculated successfully: {}", jsonResponse);
                     out.print(jsonResponse);
-                } 
-                catch (Exception e) {
-                    service.Logging.logger.error("Error calculating shipping fee", e);
-                    String errorResponse = String.format(
-                        "{\"status\":\"ERROR\",\"message\":\"%s\"}", 
-                        e.getMessage().replace("\"", "'")
-                    );
-                    out.print(errorResponse);
-                } 
-                finally {
-                    out.flush();
+                } catch (ClientProtocolException e) {
+                    if (e.getMessage().contains("429")) {
+                        String errorResponse = "{\"status\":\"ERROR\",\"message\":\"Rate limit exceeded. Please try again later.\"}";
+                        service.Logging.logger.warn("Rate limit exceeded for Goong Map API");
+                        out.print(errorResponse);
+                        return;
+                    }
+                    throw e;
                 }
-                return;
+            } catch (Exception e) {
+                service.Logging.logger.error("Error calculating shipping fee", e);
+                String errorResponse = String.format(
+                    "{\"status\":\"ERROR\",\"message\":\"%s\"}", 
+                    e.getMessage().replace("\"", "'")
+                );
+                out.print(errorResponse);
+            } finally {
+                out.flush();
+            }
+            return;
         }
     }
 
