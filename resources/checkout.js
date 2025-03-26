@@ -1,6 +1,6 @@
 let addressInput = null;
 let suggestionsContainer = null;
-let shippingCosts = new Map(); // Lưu trữ shipping cost cho mỗi item
+let shippingCosts = new Map(); 
 let uniqueShopAddresses = new Map();
 
 function debounce(func, wait) {
@@ -13,7 +13,26 @@ function debounce(func, wait) {
 
 async function calculateShippingCost(shopAddress, userAddress, cartItemId) {
     try {
+        console.log(`Calculating shipping cost for shop: ${shopAddress} to ${userAddress}`);
+        
+        // Kiểm tra xem shop address đã có trong uniqueShopAddresses chưa
+        if (uniqueShopAddresses.has(shopAddress)) {
+            const fee = uniqueShopAddresses.get(shopAddress);
+            console.log(`Using cached shipping fee for ${shopAddress}: ${fee}`);
+            shippingCosts.set(cartItemId, fee);
+            
+            const cell = document.querySelector(`td[data-cart-item-id="${cartItemId}"]`);
+            if (cell) {
+                cell.textContent = `${fee} `;
+            }
+            
+            updateTotalShippingCost();
+            return;
+        }
+
         const url = `https://kakgonbri.zapto.org:8443/prj/ajax/map?action=shippingFee&addressOrigin=${encodeURIComponent(shopAddress)}&addressDestination=${encodeURIComponent(userAddress)}`;
+        console.log('Fetching shipping cost from:', url);
+        
         const response = await fetch(url);
         
         if (!response.ok) {
@@ -21,6 +40,7 @@ async function calculateShippingCost(shopAddress, userAddress, cartItemId) {
         }
         
         const data = await response.json();
+        console.log('API Response:', data);
         
         if (data.status === 'OK' && typeof data.fee === 'number') {
             shippingCosts.set(cartItemId, data.fee);
@@ -28,10 +48,12 @@ async function calculateShippingCost(shopAddress, userAddress, cartItemId) {
             
             const cell = document.querySelector(`td[data-cart-item-id="${cartItemId}"]`);
             if (cell) {
-                cell.textContent = `${data.fee}`;
+                cell.textContent = `${data.fee} `;
             }
             
             updateTotalShippingCost();
+        } else if (data.status === 'ERROR') {
+            throw new Error(data.message || 'Unknown error occurred');
         } else {
             throw new Error('Invalid response data');
         }
@@ -39,7 +61,17 @@ async function calculateShippingCost(shopAddress, userAddress, cartItemId) {
         console.error('Error calculating shipping cost:', error);
         console.log('Shop address:', shopAddress);
         console.log('User address:', userAddress);
-        alert('Không thể tính phí vận chuyển. Vui lòng thử lại.');
+        console.log('Cart item ID:', cartItemId);
+        
+        // Set shipping cost về 0 cho item này nếu có lỗi
+        shippingCosts.set(cartItemId, 0);
+        const cell = document.querySelector(`td[data-cart-item-id="${cartItemId}"]`);
+        if (cell) {
+            cell.textContent = '0 ';
+        }
+        
+        updateTotalShippingCost();
+        alert(`Không thể tính phí vận chuyển: ${error.message}`);
     }
 }
 
@@ -68,18 +100,25 @@ function updateGrandTotal(shippingCost) {
 async function updateAllShippingCosts(userAddress) {
     if (!userAddress) return;
     
-    // Reset map 
+    // Reset maps
     shippingCosts.clear();
     uniqueShopAddresses.clear();
     
     const shippingCells = document.querySelectorAll('td.shipping-cost');
-    const promises = Array.from(shippingCells).map(cell => {
-        let shopAddress = cell.dataset.shopAddress;
-        let cartItemId = cell.dataset.cartItemId;
-        return calculateShippingCost(shopAddress, userAddress, cartItemId);
+    
+    // Sắp xếp cells theo shop address để tính các shop khác nhau trước
+    const sortedCells = Array.from(shippingCells).sort((a, b) => {
+        const shopA = a.dataset.shopAddress;
+        const shopB = b.dataset.shopAddress;
+        return shopA.localeCompare(shopB);
     });
     
-    await Promise.all(promises);
+    // Tính shipping cost lần lượt
+    for (const cell of sortedCells) {
+        let shopAddress = cell.dataset.shopAddress;
+        let cartItemId = cell.dataset.cartItemId;
+        await calculateShippingCost(shopAddress, userAddress, cartItemId);
+    }
 }
 
 function initializeAddressSearch() {

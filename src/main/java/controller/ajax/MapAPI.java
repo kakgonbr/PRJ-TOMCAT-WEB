@@ -27,9 +27,13 @@ public class MapAPI extends HttpServlet {
                     String origin = request.getParameter("addressOrigin");
                     String destination = request.getParameter("addressDestination");
                     
+                    service.Logging.logger.info("Calculating shipping fee from {} to {}", origin, destination);
+                    
                     if (origin == null || origin.trim().isEmpty() || 
                         destination == null || destination.trim().isEmpty()) {
-                        out.print("{\"status\":\"ERROR\",\"message\":\"Missing address parameters\"}");
+                        String errorResponse = "{\"status\":\"ERROR\",\"message\":\"Missing address parameters\"}";
+                        service.Logging.logger.error("Invalid request: {}", errorResponse);
+                        out.print(errorResponse);
                         return;
                     }
             
@@ -38,10 +42,14 @@ public class MapAPI extends HttpServlet {
                         service.MapAPIService.getLongLat(destination)
                     );
                     
+                    service.Logging.logger.info("Distance calculated: {}", distance);
+                    
                     Double shippingFee = service.MapAPIService.getShippingFee(distance);
                     
                     if (shippingFee == null) {
-                        out.print("{\"status\":\"ERROR\",\"message\":\"Could not calculate shipping fee\"}");
+                        String errorResponse = "{\"status\":\"ERROR\",\"message\":\"Could not calculate shipping fee\"}";
+                        service.Logging.logger.error("Shipping fee calculation failed: {}", errorResponse);
+                        out.print(errorResponse);
                         return;
                     }
                     
@@ -49,11 +57,18 @@ public class MapAPI extends HttpServlet {
                         "{\"status\":\"OK\",\"fee\":%.1f}", 
                         shippingFee
                     );
+                    service.Logging.logger.info("Shipping fee calculated successfully: {}", jsonResponse);
                     out.print(jsonResponse);
-                } catch (Exception e) {
+                } 
+                catch (Exception e) {
                     service.Logging.logger.error("Error calculating shipping fee", e);
-                    out.print("{\"status\":\"ERROR\",\"message\":\"" + e.getMessage() + "\"}");
-                } finally {
+                    String errorResponse = String.format(
+                        "{\"status\":\"ERROR\",\"message\":\"%s\"}", 
+                        e.getMessage().replace("\"", "'")
+                    );
+                    out.print(errorResponse);
+                } 
+                finally {
                     out.flush();
                 }
                 return;
