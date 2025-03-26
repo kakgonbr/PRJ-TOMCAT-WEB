@@ -97,9 +97,9 @@ public class User implements Serializable {
     @Size(max = 255)
     @Column(name = "bio")
     private String bio;
-    @OneToMany(mappedBy = "user1", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user1")
     private List<ChatBox> chatBoxList;
-    @OneToMany(mappedBy = "user2", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user2")
     private List<ChatBox> chatBoxList1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
     private List<Preference> preferenceList;
