@@ -49,13 +49,18 @@ public class MapAPIService {
     };
 
     public static String getDistance(String originCode, String destinationCode) throws ClientProtocolException, IOException {
-        String encodedOriginCode = URLEncoder.encode(originCode, StandardCharsets.UTF_8.toString());
-        String encodedDestinationCode = URLEncoder.encode(destinationCode, StandardCharsets.UTF_8.toString());
-        String url = config.Config.GoongMapAPIConfig.API_GEO_DIRECTION+"origin="+encodedOriginCode+"&destination="+encodedDestinationCode+"&vehicle=car&api_key="+config.Config.GoongMapAPIConfig.API_KEY;
-        String directionJson = Request.Get(url).addHeader("Accept", "application/json").execute().handleResponse(responseHandler);
-        JsonObject jobj = new Gson().fromJson(directionJson, JsonObject.class);
-        String distance = jobj.getAsJsonArray("routes").get(0).getAsJsonObject().getAsJsonArray("legs").get(0).getAsJsonObject().get("distance").getAsJsonObject().get("text").getAsString();
-        return distance;
+        try {
+            String encodedOriginCode = URLEncoder.encode(originCode, StandardCharsets.UTF_8.toString());
+            String encodedDestinationCode = URLEncoder.encode(destinationCode, StandardCharsets.UTF_8.toString());
+            String url = config.Config.GoongMapAPIConfig.API_GEO_DIRECTION+"origin="+encodedOriginCode+"&destination="+encodedDestinationCode+"&vehicle=car&api_key="+config.Config.GoongMapAPIConfig.API_KEY;
+            String directionJson = Request.Get(url).addHeader("Accept", "application/json").execute().handleResponse(responseHandler);
+            JsonObject jobj = new Gson().fromJson(directionJson, JsonObject.class);
+            String distance = jobj.getAsJsonArray("routes").get(0).getAsJsonObject().getAsJsonArray("legs").get(0).getAsJsonObject().get("distance").getAsJsonObject().get("text").getAsString();
+            return distance;
+        } catch (Exception e) {
+            service.Logging.logger.error("Error in getDistance for originCode: " + originCode + " and destinationCode: " + destinationCode, e);
+            throw e;
+        }
     }
 
     public static String getAddressAuto(String query) throws ClientProtocolException, IOException {

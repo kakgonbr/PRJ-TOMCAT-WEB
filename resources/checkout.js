@@ -13,10 +13,12 @@ function debounce(func, wait) {
 
 async function calculateShippingCost(shopAddress, userAddress, cartItemId) {
     try {
+        console.log(`Calculating shipping cost for shop: ${shopAddress} to ${userAddress}`);
+        
         // Kiểm tra xem shop address đã có trong uniqueShopAddresses chưa
         if (uniqueShopAddresses.has(shopAddress)) {
-            // Nếu có rồi thì lấy fee đã tính trước đó
             const fee = uniqueShopAddresses.get(shopAddress);
+            console.log(`Using cached shipping fee for ${shopAddress}: ${fee}`);
             shippingCosts.set(cartItemId, fee);
             
             const cell = document.querySelector(`td[data-cart-item-id="${cartItemId}"]`);
@@ -28,8 +30,9 @@ async function calculateShippingCost(shopAddress, userAddress, cartItemId) {
             return;
         }
 
-        // Nếu chưa có thì mới gọi API
         const url = `https://kakgonbri.zapto.org:8443/prj/ajax/map?action=shippingFee&addressOrigin=${encodeURIComponent(shopAddress)}&addressDestination=${encodeURIComponent(userAddress)}`;
+        console.log('Fetching shipping cost from:', url);
+        
         const response = await fetch(url);
         
         if (!response.ok) {
@@ -37,6 +40,7 @@ async function calculateShippingCost(shopAddress, userAddress, cartItemId) {
         }
         
         const data = await response.json();
+        console.log('API Response:', data);
         
         if (data.status === 'OK' && typeof data.fee === 'number') {
             shippingCosts.set(cartItemId, data.fee);
@@ -48,6 +52,8 @@ async function calculateShippingCost(shopAddress, userAddress, cartItemId) {
             }
             
             updateTotalShippingCost();
+        } else if (data.status === 'ERROR') {
+            throw new Error(data.message || 'Unknown error occurred');
         } else {
             throw new Error('Invalid response data');
         }
@@ -57,7 +63,7 @@ async function calculateShippingCost(shopAddress, userAddress, cartItemId) {
         console.log('User address:', userAddress);
         console.log('Cart item ID:', cartItemId);
         
-        // Nếu lỗi, set shipping cost về 0 cho item này
+        // Set shipping cost về 0 cho item này nếu có lỗi
         shippingCosts.set(cartItemId, 0);
         const cell = document.querySelector(`td[data-cart-item-id="${cartItemId}"]`);
         if (cell) {
@@ -65,7 +71,7 @@ async function calculateShippingCost(shopAddress, userAddress, cartItemId) {
         }
         
         updateTotalShippingCost();
-        alert('Không thể tính phí vận chuyển. Vui lòng thử lại.');
+        alert(`Không thể tính phí vận chuyển: ${error.message}`);
     }
 }
 
