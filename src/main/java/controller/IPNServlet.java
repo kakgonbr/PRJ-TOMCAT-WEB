@@ -18,6 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * <code>?vnp_Amount=1000000&vnp_BankCode=NCB&vnp_BankTranNo=VNP14226112&vnp_CardType=ATM&vnp_OrderInfo=Thanh+toan+don+hang+thoi+gian%3A+2023-12-07+17%3A00%3A44&vnp_PayDate=20231207170112&vnp_ResponseCode=00&vnp_TmnCode=CTTVNP01&vnp_TransactionNo=14226112&vnp_TransactionStatus=00&vnp_TxnRef=166117&vnp_SecureHash=b6dababca5e07a2d8e32fdd3cf05c29cb426c721ae18e9589f7ad0e2db4b657c6e0e5cc8e271cf745162bcb100fdf2f64520554a6f5275bc4c5b5b3e57dc4b4b</code>
  */
 public class IPNServlet extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -53,7 +54,25 @@ public class IPNServlet extends HttpServlet {
                     try {
                         dao.OrderDAO.OrderManager.markCompleted(orderId);
                         success = true;
-                    } catch (java.sql.SQLException e) {
+                        //add notif
+                        if (success) {
+                            try {
+                                model.ProductOrder order = dao.OrderDAO.OrderManager.getOrder(orderId);
+                                model.Notification notification = new model.Notification();
+                                
+                                notification.setUserId(order.getUserId());  
+                                notification.setTitle("THANH TOAN DON HANG THANH CONG");
+                                notification.setBody("Bạn đã Thanh toán thành công cho đơn hàng #" + orderId);
+                                notification.setIsRead(false); 
+                                
+                                dao.NotificationDAO.NotificationManager.add(notification);
+                                
+                                service.Logging.logger.info("Notification created for user {} regarding order {}", order.getUserId(), orderId);
+                            } catch (java.sql.SQLException e) {
+                                service.Logging.logger.error("FAILED TO CREATE NOTIFICATION FOR ORDER {}, REASON: {}", orderId, e.getMessage());
+                            }
+                        }
+                        }catch (java.sql.SQLException e) {
                         service.Logging.logger.error("FAILED TO MARK ORDER {} AS COMPLETED, REASON: {}", orderId, e.getMessage());
 
                         try {
@@ -65,29 +84,32 @@ public class IPNServlet extends HttpServlet {
                         return;
                     }
 
-                    service.Logging.logger.info("Order {} was successful.", orderId);
-                } else {
+                        service.Logging.logger.info("Order {} was successful.", orderId);
+                    }else {
                     // Xử lý/Cập nhật tình trạng giao dịch thanh toán "Không thành công"
                     // out.print("GD Khong thanh cong");
                     service.Logging.logger.info("Order {} failed.", orderId);
                 }
+                } else {
+                    service.Logging.logger.info("Order {} does not exist, or paid amount does not match", orderId);
+                }
             } else {
-                service.Logging.logger.info("Order {} does not exist, or paid amount does not match", orderId);
+                service.Logging.logger.info("Order {}'s checksum does not match.", orderId);
             }
-        } else {
-            service.Logging.logger.info("Order {}'s checksum does not match.", orderId);
+
+            if (!success) {
+                deleteUponFailure(orderId);
+            }
         }
 
-        if (!success) {
-            deleteUponFailure(orderId);
-        }
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+        @Override
+        protected void doPost
+        (HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doGet(request, response);
-    }
+            doGet(request, response);
+        }
+
+    
 
     private static boolean isOrderValid(int id, BigDecimal amount) {
         try {

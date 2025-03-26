@@ -1,6 +1,15 @@
 var senderUser;
 
-function openChat(targetUser, sender) {
+function openChat(self, targetUser, sender) {
+    let buttons = document.querySelectorAll('#chat-container button'); // Selects all buttons inside #parent-id
+
+    buttons.forEach(button => {
+        button.classList.remove("btn-primary");
+        button.classList.add("btn-secondary");
+    });
+
+    self.classList.add("btn-primary");
+
     senderUser = sender;
 
     if (window.chatSocket) {

@@ -116,7 +116,7 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form id="addProductForm" method="POST" action="${pageContext.request.contextPath}/promotion?action=addProductPromotion">
+                                        <form id="addProductForm" method="POST" action="${pageContext.request.contextPath}/sellercenter/promotion?action=addProductPromotion">
                                             <input type="hidden" name="promotionId" value="${param.promotionId}">
 
                                             <c:if test="${empty unpromotedProducts}">
