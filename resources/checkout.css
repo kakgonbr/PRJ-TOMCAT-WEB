@@ -24,3 +24,35 @@
     color: white;
     padding-left: 24px;
 }
+/*price and shipping cost*/
+.price-summary {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    border: 1px solid #dee2e6;
+}
+
+.price-summary p {
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.price-summary p:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.text-primary {
+    color: #0d6efd;
+}
+
+.text-success {
+    color: #198754;
+}
+
+.fs-5 {
+    font-size: 1.25rem;
+}

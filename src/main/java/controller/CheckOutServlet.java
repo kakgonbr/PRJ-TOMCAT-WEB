@@ -64,6 +64,9 @@ public class CheckOutServlet extends HttpServlet {
                         return;
                     }
 
+                    String shippingCostsJson = request.getParameter("shippingCosts");
+                    java.util.Map<String, Double> shippingCosts = new com.google.gson.Gson().fromJson(shippingCostsJson, new com.google.gson.reflect.TypeToken<java.util.Map<String, Double>>(){}.getType());
+
                     if (checkExceed(request, response, cart.getCartItemList().stream().map(model.CartItemWrapper::new).toList())) {
                         return;
                     }
@@ -81,7 +84,7 @@ public class CheckOutServlet extends HttpServlet {
                     int orderId = dao.OrderDAO.OrderManager.createOrder(order);
 
                     // the moment this goes through, item stock will be deducted
-                    dao.OrderDAO.OrderedItemManager.transferFromCart(orderId, cart.getCartItemList().stream().map(model.CartItemWrapper::new).toList());
+                    dao.OrderDAO.OrderedItemManager.transferFromCart(orderId, cart.getCartItemList().stream().map(model.CartItemWrapper::new).toList(), shippingCosts);
 
                     dao.OrderDAO.OrderManager.updatePrice(orderId);
 
