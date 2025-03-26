@@ -32,6 +32,7 @@
                         <th>Price (Per Item)</th>
                         <th>Stock</th>
                         <th>Customization</th>
+                        <th>Shipping Cost</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -77,6 +78,11 @@
                                     <p>${customization.name}: ${customization.value}
                                         ${customization.unit}</p>
                                 </c:forEach>
+                            </td>
+                            <td class="shipping-cost" 
+                                data-shop-address="${cartItem.productWrapper.shop.address}"
+                                data-cart-item-id="${cartItem.id}">
+                                0
                             </td>
                         </tr>
                         <c:choose>
@@ -134,36 +140,94 @@
                 <button type="submit" class="btn btn-primary">Apply</button>
             </form>
 
-            <c:choose>
-                <c:when test="${activePromotion == null}">
-                    <p class="fw-bold">Final Price: <span class="text-primary">${total}</span></p>
-                </c:when>
-                <c:otherwise>
-                    <p class="fw-bold text-success">Active Promotion: [
+            <div class="price-summary">
+                <%-- 
+                <c:choose>
+                    <c:when test="${activePromotion == null}">
+                        <p class="fw-bold">Final Price: <span class="text-primary">${total}</span></p>
+                    </c:when>
+                    <c:otherwise>
+                        <p class="fw-bold text-success">Active Promotion: [
+                            <c:choose>
+                                <c:when test="${activePromotion.type}">
+                                    - ${activePromotion.value} VND
+                                </c:when>
+                                <c:otherwise>
+                                    - ${activePromotion.value} %
+                                </c:otherwise>
+                            </c:choose>] ${activePromotion.name} - Expires on ${activePromotion.expireDate}
+                        </p>
+
                         <c:choose>
                             <c:when test="${activePromotion.type}">
-                                - ${activePromotion.value} VND
+                                <p class="fw-bold">Final Price: <span class="text-success">${total - activePromotion.value}</span></p>
                             </c:when>
                             <c:otherwise>
-                                - ${activePromotion.value} %
+                                <p class="fw-bold">Final Price: <span class="text-success">${total * (100.0 - activePromotion.value) / 100.0}</span></p>
                             </c:otherwise>
-                        </c:choose>] ${activePromotion.name} - Expires on ${activePromotion.expireDate}
-                    </p>
+                        </c:choose>
+                    </c:otherwise>
+                </c:choose>
+                --%>
+                <!-- Subtotal -->
+                <c:choose>
+                    <c:when test="${activePromotion == null}">
+                        <p class="fw-bold">Subtotal: <span class="text-primary" id="subtotal">${total}</span></p>
+                    </c:when>
+                    <c:otherwise>
+                        <p class="fw-bold text-success">Active Promotion: [
+                            <c:choose>
+                                <c:when test="${activePromotion.type}">
+                                    - ${activePromotion.value} VND
+                                </c:when>
+                                <c:otherwise>
+                                    - ${activePromotion.value} %
+                                </c:otherwise>
+                            </c:choose>] ${activePromotion.name} - Expires on ${activePromotion.expireDate}
+                        </p>
 
+                        <p class="fw-bold">Subtotal: 
+                            <span class="text-success" id="subtotal">
+                                <c:choose>
+                                    <c:when test="${activePromotion.type}">
+                                        ${total - activePromotion.value}
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${total * (100.0 - activePromotion.value) / 100.0}
+                                    </c:otherwise>
+                                </c:choose>
+                            </span>
+                        </p>
+                    </c:otherwise>
+                </c:choose>
+
+                <!-- Shipping Cost -->
+                <p class="fw-bold">Total Shipping Cost: <span id="totalShippingCost" class="text-primary">0</span></p>
+
+                <!-- Grand Total -->
+                <p class="fw-bold fs-5">Grand Total: <span id="grandTotal" class="text-primary">
                     <c:choose>
-                        <c:when test="${activePromotion.type}">
-                            <p class="fw-bold">Final Price: <span class="text-success">${total - activePromotion.value}</span></p>
+                        <c:when test="${activePromotion == null}">
+                            ${total}
                         </c:when>
                         <c:otherwise>
-                            <p class="fw-bold">Final Price: <span class="text-success">${total * (100.0 - activePromotion.value) / 100.0}</span></p>
+                            <c:choose>
+                                <c:when test="${activePromotion.type}">
+                                    ${total - activePromotion.value}
+                                </c:when>
+                                <c:otherwise>
+                                    ${total * (100.0 - activePromotion.value) / 100.0}
+                                </c:otherwise>
+                            </c:choose>
                         </c:otherwise>
-                    </c:choose>
-                </c:otherwise>
-            </c:choose>
+                    </c:choose></span>
+                </p>
+            </div>
 
             <form action="${pageContext.request.contextPath}/checkout" method="POST">
                 <input type="hidden" name="action" value="proceed">
                 <input type="hidden" name="address" id="hiddenAddress">
+                <input type="hidden" name="shippingCosts" id="shippingCosts">
                 
                 <c:if test="${activePromotion != null}">
                     <input type="hidden" name="promotionId" value="${activePromotion.id}">

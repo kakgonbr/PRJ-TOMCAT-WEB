@@ -225,7 +225,7 @@ public class OrderDAO {
          * @return
          * @throws java.sql.SQLException
          */
-        public static synchronized void transferFromCart(int orderId, java.util.List<model.CartItemWrapper> items)
+        public static synchronized void transferFromCart(int orderId, java.util.List<model.CartItemWrapper> items, java.util.Map<String, Double> shippingCosts)
                 throws java.sql.SQLException {
             try (EntityManager em = service.DatabaseConnection.getEntityManager()) {
                 EntityTransaction et = em.getTransaction();
@@ -243,6 +243,7 @@ public class OrderDAO {
                         //                 * (100.0 - item.getProductWrapper().getPromotion().getValue())
                         //                 / 100.0), 0);
 
+                        double shippingCost = shippingCosts.getOrDefault(String.valueOf(item.getId()), 0.0);
                         em.createNativeQuery(INSERT_INTO_ORDER).setParameter(1, orderId).setParameter(2, item.getProductItem().getId())
                                 .setParameter(3, item.getQuantity())
                                 .setParameter(4, item.getProductWrapper().getPromotion() == null
@@ -252,7 +253,8 @@ public class OrderDAO {
                                         - item.getProductWrapper().getPromotion().getValue()
                                         : item.getProductItem().getPrice()
                                         * (100.0 - item.getProductWrapper().getPromotion().getValue())
-                                        / 100.0)).setParameter(5, 0) // TODO: ADD SHIPPING COST
+                                        / 100.0))
+                                .setParameter(5, shippingCost) 
                                 .executeUpdate();
 
                         // service.Logging.logger.info("Deleting from tblCartItem id {}", item.getId());
