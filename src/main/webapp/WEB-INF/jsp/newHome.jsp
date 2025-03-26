@@ -39,7 +39,7 @@
                             <img src="https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" class="d-block border rounded" alt="..." style="width: 100%; height: 550px; object-fit: cover;">
                           </div>
                           <div class="carousel-item">
-                            <img src="https://images.unsplash.com/photo-1560343090-f0409e92791a?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="d-block border rounded" alt="..." style="width: 100%; height: 550px; object-fit: cover;">
+                            <img src="https://images.pexels.com/photos/15191189/pexels-photo-15191189/free-photo-of-collection-of-cosmetic-products-in-a-pink-storage-bin.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" class="d-block border rounded" alt="..." style="width: 100%; height: 550px; object-fit: cover;">
                           </div> 
                         </div>
                         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
