@@ -27,7 +27,7 @@
             style="background-color: var(--bs-custom-background-focus) !important">
             <!--login-->
             <div style="width: 35%;">
-                <img src="/logoBM.png" alt="shop_logo"
+                <img src="${pageContext.request.contextPath}/resources/logoBM_png" alt="shop_logo"
                     style="width: 100%;">
             </div>
             <!--form-->
