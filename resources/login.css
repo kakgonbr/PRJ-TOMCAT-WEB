@@ -3,8 +3,8 @@
     width: 100%;
 }
 #pageheader {
-    background-color: #9BB3C8;
+    background-color: #9BB3C8 !important;
 }
 #pagefooter {
-    background-color: #9BB3C8;
+    background-color: #9BB3C8 !important;
 }
