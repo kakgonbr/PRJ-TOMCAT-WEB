@@ -51,7 +51,7 @@ public class PayReturnServlet extends HttpServlet {
             request.setAttribute("status", "Invalid signature");
         }
 
-        request.getRequestDispatcher(config.Config.JSPMapper.USER_ORDER_COMPLETE).forward(request, response);
+        request.getRequestDispatcher(config.Config.JSPMapper.PAYMENT_RETURN_JSP).forward(request, response);
     }
 
     @Override

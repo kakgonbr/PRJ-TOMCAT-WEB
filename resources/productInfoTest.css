@@ -281,7 +281,7 @@
 }
 /*review form*/
 .review-form-container {
-    background-color: #f8f9fa;
+    background-color: var(--bs-custom-container-focus);
     padding: 20px;
     border-radius: 8px;
 }

@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.HashMap;
 
+import jakarta.mail.MessagingException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -57,7 +58,7 @@ public class IPNServlet extends HttpServlet {
                         //add notif
                         if (success) {
                             try {
-                                model.ProductOrder order = dao.OrderDAO.OrderManager.getOrder(orderId);
+                                model.ProductOrder order = dao.OrderDAO.OrderManager.getOrder(orderId, true);
                                 model.Notification notification = new model.Notification();
                                 
                                 notification.setUserId(order.getUserId());  
@@ -66,9 +67,11 @@ public class IPNServlet extends HttpServlet {
                                 notification.setIsRead(false); 
                                 
                                 dao.NotificationDAO.NotificationManager.add(notification);
+
+                                service.MailService.sendMail(order.getUserId().getId(), order.getOrderedItemList());
                                 
                                 service.Logging.logger.info("Notification created for user {} regarding order {}", order.getUserId(), orderId);
-                            } catch (java.sql.SQLException e) {
+                            } catch (java.sql.SQLException | MessagingException e) {
                                 service.Logging.logger.error("FAILED TO CREATE NOTIFICATION FOR ORDER {}, REASON: {}", orderId, e.getMessage());
                             }
                         }
